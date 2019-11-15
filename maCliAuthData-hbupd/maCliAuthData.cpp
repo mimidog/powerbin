@@ -332,6 +332,7 @@ int CMaCliAuthDataApp::FislBankStkTransfer(void)
 
   maCli_BeginWrite(m_hHandle);
   SET_JINZHENG_PACKET_HEAD("10305036", szMsgId, 'T', 'B', m_stUser.szSessionId, m_stUser.szIntOrg);
+  maCli_SetValueS(m_hHandle, "", "8810"); //临时操作员代码传空
   maCli_SetValueS(m_hHandle, m_stUser.szCuacctCode, "8920"); //资金账号
   maCli_SetValueC(m_hHandle, m_stTranData.szCurrency[0], "15"); //货币代码
   maCli_SetValueC(m_hHandle, m_stTranData.szTranType[0], "9081"); //转账类型
@@ -379,6 +380,7 @@ int CMaCliAuthDataApp::FislFundTransfer(void)
 
   maCli_BeginWrite(m_hHandle);
   SET_JINZHENG_PACKET_HEAD("10305015", szMsgId, 'T', 'B', m_stUser.szSessionId, m_stUser.szIntOrg);
+  maCli_SetValueS(m_hHandle, "", "8810"); //临时操作员代码传空
   maCli_SetValueS(m_hHandle, m_stUser.szCuacctCode, "8920");
   maCli_SetValueC(m_hHandle, m_stFundTran.szCurrency[0], "15");
   maCli_SetValueC(m_hHandle, m_stFundTran.szDirect[0], "9081");
