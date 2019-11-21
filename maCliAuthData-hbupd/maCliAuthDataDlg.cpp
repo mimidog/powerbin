@@ -105,8 +105,6 @@ BOOL CMaCliAuthDataDlg::OnInitDialog()
   GetDlgItem(IDC_EDIT6)->SetWindowText(theApp.m_stUser.szCuacctCode);
   GetDlgItem(IDC_EDIT7)->SetWindowText(theApp.m_stUser.szAuthData);
   GetDlgItem(IDC_EDIT3)->SetWindowText(theApp.m_stUser.szAuthDataNew);
-  GetDlgItem(IDC_EDIT7)->SetWindowText(theApp.m_stUser.szAuthData);
-  GetDlgItem(IDC_EDIT7)->SetWindowText(theApp.m_stUser.szAuthData);
   ((CComboBox*)GetDlgItem(IDC_COMBO1))->ResetContent();
   ((CComboBox*)GetDlgItem(IDC_COMBO1))->InsertString(0, "0:¹ÉÆ±");
   ((CComboBox*)GetDlgItem(IDC_COMBO1))->InsertString(1, "1:ÆÚÈ¨");
