@@ -1,0 +1,5 @@
+E:\vspro\maCliApi_Patch3.0(R)\bin\x64\maCliApi4CSharp.dll.config
+E:\vspro\maCliApi_Patch3.0(R)\bin\x64\maCliApi4CSharp.dll
+E:\vspro\maCliApi_Patch3.0(R)\bin\x64\maCliApi4CSharp.pdb
+E:\vspro\maCliApi_Patch3.0(R)\demo\c#\maCliApi4CSharp\obj\Release\maCliApi4CSharp.dll
+E:\vspro\maCliApi_Patch3.0(R)\demo\c#\maCliApi4CSharp\obj\Release\maCliApi4CSharp.pdb

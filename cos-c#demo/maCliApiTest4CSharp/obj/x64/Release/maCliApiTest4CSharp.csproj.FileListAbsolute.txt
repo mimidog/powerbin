@@ -1,0 +1,6 @@
+E:\vspro\maCliApi_Patch3.0(R)\demo\c#\maCliApiTest4CSharp\obj\x64\Release\maCliApiTest4CSharp.csprojResolveAssemblyReference.cache
+E:\vspro\maCliApi_Patch3.0(R)\bin\x64\maCliApiTest4CSharp.exe
+E:\vspro\maCliApi_Patch3.0(R)\bin\x64\maCliApiTest4CSharp.pdb
+E:\vspro\maCliApi_Patch3.0(R)\demo\c#\maCliApiTest4CSharp\obj\x64\Release\maCliApiTest4CSharp.exe
+E:\vspro\maCliApi_Patch3.0(R)\demo\c#\maCliApiTest4CSharp\obj\x64\Release\maCliApiTest4CSharp.pdb
+E:\vspro\maCliApi_Patch3.0(R)\bin\x64\maCliApiTest4CSharp.exe.config
