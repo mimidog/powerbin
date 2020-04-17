@@ -423,7 +423,7 @@ namespace macli
             maCliApi.maCli_SetHdrValueS(Handle, SessionId, (int)MACLI_HEAD_FID.USER_SESSION); //用户session值
             maCliApi.maCli_SetHdrValueC(Handle, 0x30, (int)MACLI_HEAD_FID.BIZ_CHANNEL);
 
-            _maCli_SetValueS(Handle, "0", "8810"); // 操作用户代码默认传0保证不为空
+            _maCli_SetValueS(Handle, stLoginInfo.CuacctCode != string.Empty ? stLoginInfo.CuacctCode : "0", "8810"); // 操作用户代码默认传0保证不为空
             _maCli_SetValueS(Handle, "1", "8811");
             _maCli_SetValueS(Handle, "0", "8812");
             _maCli_SetValueS(Handle, "o", "8813");
@@ -1787,7 +1787,7 @@ namespace macli
             return RetCode;
         }
 
-        //系统连接
+        //系统连接，用于外部再调用
         public static int ServerConnect(ref IntPtr Handle, string ipAddress, int port)
         {
             maCliApi.maCli_Init(ref Handle);
@@ -1820,14 +1820,7 @@ namespace macli
                 ThrowAnsError(Handle, out RetCode);
                 return -1;
             }
-            else
-            {
-                Console.WriteLine("客户端与服务器成功建立通信连接");
-                ST_MACLI_PSCALLBACK PsCallback = new ST_MACLI_PSCALLBACK();
-                PsCallback.strTopic = "*";
-                PsCallback.fnCallback = OnRecvPs;
-                RetCode = maCliApi.maCli_SetPsCallback(Handle, ref PsCallback);
-            }
+            Console.WriteLine("客户端与服务器成功建立通信连接");
             return 0;
         }
 
@@ -1840,11 +1833,9 @@ namespace macli
             Console.WriteLine("      6:委托查询             7:成交查询             8:资金查询             9:股份查询");
             Console.WriteLine("      m/M:菜单               x/X:退出");
         }
+        /*
         static void Main(string[] args)
         {
-            cosFunc.stLoginInfo.SessionId = ""; //会话凭证
-            cosFunc.stLoginInfo.CuacctCode = ""; //资金账号
-            cosFunc.stLoginInfo.IntOrg = 0; //机构编码
             IntPtr Handle = IntPtr.Zero;
             
             RetCode = maCliApi.maCli_Init(ref Handle);
@@ -1877,6 +1868,11 @@ namespace macli
             UserInfo.strPassword = "888888";
             UserInfo.strAppId = "KD_FORTUNE_2";
             RetCode = maCliApi.maCli_Open(Handle, ref UserInfo);
+            if (RetCode != 0)
+            {
+                ShowErrorInfo(RetCode);
+                ThrowAnsError(Handle, out RetCode);
+            }
             Console.WriteLine("客户端与服务器成功建立通信连接");
 
             ST_MACLI_PSCALLBACK PsCallback = new ST_MACLI_PSCALLBACK();
@@ -1950,5 +1946,6 @@ namespace macli
 
             //Console.ReadLine();
         }
+        */
     }
 }
