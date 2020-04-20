@@ -2,7 +2,8 @@
 //--------------------------------------------------------------------------------------------------
 // 修改日期      版本          作者            备注
 //--------------------------------------------------------------------------------------------------
-// 2020/4/16 星期三 下午 3:44:26    001.000.001  SHENGHB
+// 2020/4/16    001.000.001  SHENGHB          创建
+// 2020/4/20    001.000.001  SHENGHB          调整固定入参OpSite的传值，调整资金查询取值标志（新增必传）
 //--------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
@@ -425,7 +426,9 @@ namespace macli
 
             _maCli_SetValueS(Handle, stLoginInfo.CuacctCode != string.Empty ? stLoginInfo.CuacctCode : "0", "8810"); // 操作用户代码默认传0保证不为空
             _maCli_SetValueS(Handle, "1", "8811");
-            _maCli_SetValueS(Handle, "0", "8812");
+            IntPtr OpSite = Marshal.AllocHGlobal(32 + 1); ;
+            maCliApi.maCli_GetConnIpAddr(Handle, OpSite, 32);
+            _maCli_SetValueS(Handle, Marshal.PtrToStringAnsi(OpSite), "8812");
             _maCli_SetValueS(Handle, "o", "8813");
             //maCliApi.maCli_GetVersion(Handle, Buf, 64);
             _maCli_SetValueS(Handle, SessionId, "8814");
@@ -433,7 +436,7 @@ namespace macli
             _maCli_SetValueS(Handle, System.DateTime.Now.TimeOfDay.ToString(), "8816");
             maCliApi.maCli_SetValueN(Handle, stLoginInfo.IntOrg, "8821");
             maCliApi.maCli_SetValueC(Handle, (byte)'0', "8826");//操作账户类型字符型 需要调整
-
+            Marshal.FreeHGlobal(OpSite);
             Marshal.FreeHGlobal(Buf);
         }
 
@@ -457,7 +460,7 @@ namespace macli
         public static void ThrowAnsError(IntPtr Handle, out int RetCode)
         {
             maCliApi.maCli_GetLastErrorCode(Handle, out RetCode);
-            IntPtr ErrorMsg = Marshal.AllocHGlobal(256 + 1); ;
+            IntPtr ErrorMsg = Marshal.AllocHGlobal(256 + 1);
             maCliApi.maCli_GetLastErrorMsg(Handle, ErrorMsg, 256);
             Console.WriteLine("请求返回异常:{0}|{1}", RetCode, Marshal.PtrToStringAnsi(ErrorMsg));
             Marshal.FreeHGlobal(ErrorMsg);
@@ -1164,7 +1167,7 @@ namespace macli
             maCliApi.maCli_SetValueL(Handle, stReqField.CustCode, "8902");
             maCliApi.maCli_SetValueL(Handle, stReqField.CuacctCode, "8920");
             maCliApi.maCli_SetValueC(Handle, stReqField.Currency, "15");
-            maCliApi.maCli_SetValueN(Handle, stReqField.ValueFlag, "9080");
+            maCliApi.maCli_SetValueN(Handle, 15, "9080"); //0：均不计算,1：取MARKET_VALUE值,2：取FUND_VALUE值,4：取STK_VALUE值,8：取FUND_LOAN值(组合取值)
 
             maCliApi.maCli_EndWrite(Handle);
             maCliApi.maCli_Make(Handle, out ReqData, out ReqDataLen);
@@ -1281,7 +1284,7 @@ namespace macli
             _maCli_SetValueS(Handle, stReqField.QueryPos, "8991");
             maCliApi.maCli_SetValueN(Handle, stReqField.QueryNum, "8992");
             maCliApi.maCli_SetValueC(Handle, stReqField.ContractFlag, "8993");
-            maCliApi.maCli_SetValueC(Handle, stReqField.BizFlag, "8994");
+            maCliApi.maCli_SetValueC(Handle, stReqField.BizFlag, "8994"); //0、当前账户股份，1、当前信用账户对应的普通账户股份
             maCliApi.maCli_SetValueN(Handle, stReqField.IntOrg, "8911");
 
             maCliApi.maCli_EndWrite(Handle);
@@ -1498,13 +1501,8 @@ namespace macli
         /**************************功能调用操作**************************/
 
         //量化登录
-        public static int CosLogin(IntPtr Handle, FirstSetAns stFirstSetAns)//传入量化登录对象
+        public static int CosLogin(IntPtr Handle, ReqCosLogin stReqCosLogin, FirstSetAns stFirstSetAns)//传入量化登录对象
         {
-            //此处编辑输入参数
-            ReqCosLogin stReqCosLogin = new ReqCosLogin();
-            stReqCosLogin.UserCode = "900617";
-            stReqCosLogin.AuthData = "111111";
-            stReqCosLogin.EncryptKey = "123456";
             //******登录COS
             IntPtr ReqData;
             int ReqDataLen;

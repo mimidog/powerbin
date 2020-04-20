@@ -434,7 +434,7 @@ namespace macli
                 "资金交易冻结金额:{14}, 资金交易解冻金额:{15}, 资金交易在途金额:{16}, 资金交易轧差金额:{17}, 资金状态:{18}, 资金账户属性:{19}",
                 CustCode, CuacctCode, Currency, IntOrg, MarketValue, FundValue, StkValue,
                 FundLoan, FundLend, FundPrebln, FundBln, FundAvl, FundFrz, FundUfz,
-                FundTrdFrz, FundTrdUfz, FundTrdOtd, FundTrdBln, FundStatus, CuacctAttr);
+                FundTrdFrz, FundTrdUfz, FundTrdOtd, FundTrdBln, ((char)FundStatus).ToString(), ((char)CuacctAttr).ToString());
         }
     };
 
@@ -507,15 +507,15 @@ namespace macli
         {
             return String.Format(@"客户代码:{0}, 资产账户:{1}, 货币代码:{2}, 内部机构:{3}, 交易板块:{4}, 交易单元:{5}, 交易账户:{6}, " +
                 "证券代码:{7}, 证券名称:{8}, 证券类别:{9}, 证券昨日余额:{10}, 证券余额:{11}, 证券可用数量:{12}, 证券冻结数量:{13}, " +
-                "证券解冻数量:{14}, 证券交易冻结数量:{15}, 证券交易解冻数量:{16}, 证券交易在途数量:{17}, 证券交易轧差数量:{18}, 证券持仓成本:{19}" +
-                "证券持仓成本（实时）:{20}, 证券盈亏金额:{21}, 证券盈亏金额（实时）:{22}, 市值:{23}, 成本价格:{24}, 参考盈亏:{25}" +
-                "市值计算标识:{26}, 当前拥股数:{27}, 最新价格:{28}, 参考成本价:{29}, 可申赎数量:{30}, 已申赎数量:{31}" +
+                "证券解冻数量:{14}, 证券交易冻结数量:{15}, 证券交易解冻数量:{16}, 证券交易在途数量:{17}, 证券交易轧差数量:{18}, 证券持仓成本:{19}, " +
+                "证券持仓成本（实时）:{20}, 证券盈亏金额:{21}, 证券盈亏金额（实时）:{22}, 市值:{23}, 成本价格:{24}, 参考盈亏:{25}, " +
+                "市值计算标识:{26}, 当前拥股数:{27}, 最新价格:{28}, 参考成本价:{29}, 可申赎数量:{30}, 已申赎数量:{31}, " +
                 "盈亏:{32}, 余券可用数量:{33}, 卖出冻结数量:{34}",
                 CustCode, CuacctCode, Currency, IntOrg, Stkbd, Stkpbu, Trdacct,
-                StkCode, StkName, StkCls, StkPrebln, StkBln, StkAvl, StkFrz,
+                StkCode, StkName, ((char)StkCls).ToString(), StkPrebln, StkBln, StkAvl, StkFrz,
                 StkUfz, StkTrdFrz, StkTrdUfz, StkTrdOtd, StkTrdBln, StkPcost,
                 StkPcostRlt, StkPlamt, StkPlamtRlt, MktVal, CostPrice, ProIncome,
-                StkCalMktval, StkQty, CurrentPrice, ProfitPrice, StkDiff, StkTrdUnfrz,
+                ((char)StkCalMktval).ToString(), StkQty, CurrentPrice, ProfitPrice, StkDiff, StkTrdUnfrz,
                 Income, StkRemain, StkSale);
         }
     };

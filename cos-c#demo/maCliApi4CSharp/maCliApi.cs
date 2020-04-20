@@ -409,6 +409,11 @@ namespace macli
         public static extern int maCli_ComEncrypt(IntPtr Handle, IntPtr Output, int Size, string Input, string Key);
         [DllImport("maCliApi.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, EntryPoint = "maCli_ComDecrypt")]
         public static extern int maCli_ComDecrypt(IntPtr Handle, IntPtr Output, int Size, string Input, string Key);
+        //增加IP和MAC获取
+        [DllImport("maCliApi.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, EntryPoint = "maCli_GetConnIpAddr")]
+        public static extern int maCli_GetConnIpAddr(IntPtr Handle, IntPtr IpAddr, int Size);
+        [DllImport("maCliApi.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, EntryPoint = "maCli_GetConnMac")]
+        public static extern int maCli_GetConnMac(IntPtr Handle, IntPtr Mac, int Size);
 
     }
 }
