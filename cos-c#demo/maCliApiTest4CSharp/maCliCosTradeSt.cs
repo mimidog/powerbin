@@ -189,7 +189,7 @@ namespace macli
         public int OrderDate; //委托日期
         public int OrderNo; //委托编号
         public int OrderBsn; //委托批号
-        public int CliRemark; //备用信息 256
+        public string CliRemark; //备用信息 256
     }
 
     public struct RspCosCancelOrderField
