@@ -174,6 +174,7 @@ namespace macli
         public int nAnsMaxDepth;                //通信类型为4-SHM时填写共享内存应答队列最大深度
     }
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void MACLI_NOTIFY(IntPtr id, IntPtr buff, int len);
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
