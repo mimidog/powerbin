@@ -23,6 +23,7 @@ namespace macli
         public string UserCode; // 用户代码
         public string AuthData; // 认证数据
         public string EncryptKey; // 加密因子
+        public string ThirdPart; // 第三方加密串
     }
     // 用户登录
     public struct ReqAcctLogin
@@ -606,27 +607,37 @@ namespace macli
         public string OrderLocalId;//本地报单编号  ORDER_LOCAL_ID  VARCHAR(13)8722本地报单编号
         public int SequenceNo;         //序号      SEQUENCE_NO     SMALLINT   8832序号
         public string CliOrderNo; //客户端委托编号 CLI_ORDER_NO    VARCHAR(32)9102
-        public long VolumeTraded;      //已成交总量   VOLUME_TRADED   BIGINT     8753已成交总量
+        public string StkName; //证券名称 STK_NAME VARCHAR(16) 55
+        public long TotalMatchedQty;      //已成交总量   TOTAL_MATCHED_QTY   BIGINT     9100已成交总量
         public long WithdrawnQty;      //已撤单数量   WITHDRAWN_QTY   BIGINT     8837已撤单数量
+        public string TotalMatchedAmt; //累计成交金额 TOTAL_MATCHED_AMT CPRICE   9101累计成交金额
+        public long MatchBuyQty;       //买成交数量 MATCH_BUY_QTY 9152
+        public long MatchSellQty;       //卖成交数量 MATCH_SELL_QTY 9153
+        public string MatchBuyAmt;       //买成交金额 MATCH_BUY_AMT 9154
+        public string MatchSellAmt;       //卖成交金额 MATCH_SELL_AMT 9155
+        public string MatchBuyAvgPrice;       //买成交均价 MATCH_BUY_AVG_PRICE 9156
+        public string MatchSellAvgPrice;       //卖成交均价 MATCH_SELL_AVG_PRICE 9157
+        public string WithdrawnBuyQty;       //买撤单数量 WITHDRAWN_BUY_QTY 9158
+        public string WithdrawnSellQty;       //买撤单数量 WITHDRAWN_SELL_QTY 9158
 
         public override string ToString()
         {
-            return String.Format(@"品种类型:{0},成交编号:{1},交易市场:{2},证券代码:{3},委托编号:{4},合同序号:{5},交易账户:{6},成交数量:{7},成交价格:{8}," +
-                "委托冻结金额:{9},实时清算金额:{10},资金可用金额:{11},证券可用数量:{12},对方席位:{13},对方交易账号:{14},成交日期:{15},成交时间:{16}," +
-                "撤单标志:{17},客户代码:{18},资产账户:{19},委托批号:{20},账户序号:{21},交易板块:{22},成交类型:{23},委托状态:{24}," +
-                "证券业务:{25},证券业务行为:{26},委托日期:{27},委托序号:{28},内部机构:{29},交易单元:{30},证券账户子编码:{31},期权合约账户:{32}," +
-                "订单所有类型:{33},合约代码:{34},合约简称:{35},货币代码:{36},标的证券类别:{37},标的证券代码:{38},标的证券名称:{39},委托价格:{40}," +
-                "委托数量:{41},委托金额:{42},已成交金额:{43},预占用保证金:{44},占用保证金:{45},预释放保证金:{46},释放保证金:{47},错误代码:{48}," +
-                "错误信息:{49},经纪公司代码:{50},合约代码:{51},报单引用:{52},用户代码:{53},交易所代码:{54},报单编号:{55},组合开平标志:{56}," +
-                "组合投机套保标志:{57},本地报单编号:{58},序号:{59},客户端委托编号:{60},已成交总量:{61},已撤单数量:{62}",
-                TrdCodeCls, MatchedSn, ((char)Stkex).ToString(), StkCode, OrderNo, OrderId, Trdacct, MatchedQty, MatchedPrice,
+            return String.Format(@"品种类型:{0},成交编号:{1},交易市场:{2},证券代码:{3},证券名称:{4},委托编号:{5},合同序号:{6},交易账户:{7},成交数量:{8},成交价格:{9}," +
+                "委托冻结金额:{10},实时清算金额:{11},资金可用金额:{12},证券可用数量:{13},对方席位:{14},对方交易账号:{15},成交日期:{16},成交时间:{17}," +
+                "撤单标志:{18},客户代码:{19},资产账户:{20},委托批号:{21},账户序号:{22},交易板块:{23},成交类型:{24},委托状态:{25}," +
+                "证券业务:{26},证券业务行为:{27},委托日期:{28},委托序号:{29},内部机构:{30},交易单元:{31},证券账户子编码:{32},期权合约账户:{33}," +
+                "订单所有类型:{34},合约代码:{35},合约简称:{36},货币代码:{37},标的证券类别:{38},标的证券代码:{39},标的证券名称:{40},委托价格:{41}," +
+                "委托数量:{42},委托金额:{43},已成交金额:{44},预占用保证金:{45},占用保证金:{46},预释放保证金:{47},释放保证金:{48},错误代码:{49}," +
+                "错误信息:{50},经纪公司代码:{51},合约代码:{52},报单引用:{53},用户代码:{54},交易所代码:{55},报单编号:{56},组合开平标志:{57}," +
+                "组合投机套保标志:{58},本地报单编号:{59},序号:{60},客户端委托编号:{61},已成交总量:{62},已撤单数量:{63},累计成交金额:{64}",
+                TrdCodeCls, MatchedSn, ((char)Stkex).ToString(), StkCode, StkName, OrderNo, OrderId, Trdacct, MatchedQty, MatchedPrice,
                 OrderFrzAmt, RltSettAmt, FundAvl, StkAvl, OpptStkpbu, OpptTrdacct, MatchedDate, MatchedTime,
                 ((char)IsWithdraw).ToString(), CustCode, CuacctCode, OrderBsn, CuacctSn, Stkbd, ((char)MatchedType).ToString(), ((char)OrderStatus).ToString(),
                 StkBiz, StkBizAction, OrderDate, OrderSn, IntOrg, Stkpbu, SubacctCode, OptTrdacct,
                 OwnerType, OptCode, OptName, ((char)Currency).ToString(), ((char)OptUndlCls).ToString(), OptUndlCode, OptUndlName, OrderPrice,
                 OrderQty, OrderAmt, MatchedAmt, MarginPreFrz, MarginFrz, MarginPreUfz, MarginUfz, ErrorId,
                 ErrorMsg, BrokerId, InstrumentId, OrderRef, UserId, ExchangeId, OrderSysId, CombOffsetFlag,
-                CombHedgeFlag, OrderLocalId, SequenceNo, CliOrderNo, VolumeTraded, WithdrawnQty);
+                CombHedgeFlag, OrderLocalId, SequenceNo, CliOrderNo, TotalMatchedQty, WithdrawnQty, TotalMatchedAmt);
         }
     }
 

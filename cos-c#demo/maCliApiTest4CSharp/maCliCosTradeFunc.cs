@@ -4,6 +4,7 @@
 //--------------------------------------------------------------------------------------------------
 // 2020/4/16    001.000.001  SHENGHB          创建
 // 2020/4/20    001.000.001  SHENGHB          调整固定入参OpSite的传值，调整资金查询取值标志（新增必传）
+// 2020/4/27    001.000.001  SHENGHB          成交推送更新输出项，显示已成交数量和累计成交金额（用于分笔成交）
 //--------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
@@ -337,8 +338,10 @@ namespace macli
                 FieldData.OrderLocalId = _maCli_GetValueS(Handle, Buf, 64, "ORDER_LOCAL_ID");
                 maCliApi.maCli_GetValueN(Handle, ref FieldData.SequenceNo, "SEQUENCE_NO");
                 FieldData.CliOrderNo = _maCli_GetValueS(Handle, Buf, 64, "CLI_ORDER_NO");
-                maCliApi.maCli_GetValueL(Handle, ref FieldData.VolumeTraded, "VOLUME_TRADED");
+                FieldData.StkName = _maCli_GetValueS(Handle, Buf, 64, "STK_NAME");
+                maCliApi.maCli_GetValueL(Handle, ref FieldData.TotalMatchedQty, "TOTAL_MATCHED_QTY");
                 maCliApi.maCli_GetValueL(Handle, ref FieldData.WithdrawnQty, "WITHDRAWN_QTY");
+                FieldData.TotalMatchedAmt = _maCli_GetValueS(Handle, Buf, 64, "TOTAL_MATCHED_AMT");
                 Console.WriteLine("[成交信息]");
                 Console.WriteLine("{0}", FieldData.ToString());
             }
@@ -426,7 +429,7 @@ namespace macli
 
             _maCli_SetValueS(Handle, stLoginInfo.CuacctCode != string.Empty ? stLoginInfo.CuacctCode : "0", "8810"); // 操作用户代码默认传0保证不为空
             _maCli_SetValueS(Handle, "1", "8811");
-            IntPtr OpSite = Marshal.AllocHGlobal(32 + 1); ;
+            IntPtr OpSite = Marshal.AllocHGlobal(32 + 1);
             maCliApi.maCli_GetConnIpAddr(Handle, OpSite, 32);
             _maCli_SetValueS(Handle, Marshal.PtrToStringAnsi(OpSite), "8812");
             _maCli_SetValueS(Handle, "o", "8813");
@@ -1831,7 +1834,6 @@ namespace macli
             Console.WriteLine("      6:委托查询             7:成交查询             8:资金查询             9:股份查询");
             Console.WriteLine("      m/M:菜单               x/X:退出");
         }
-        /*
         static void Main(string[] args)
         {
             IntPtr Handle = IntPtr.Zero;
@@ -1842,13 +1844,13 @@ namespace macli
             IntPtr PtrConnOpt = Marshal.AllocHGlobal(Marshal.SizeOf(ConnOpt));
             ConnOpt.nCommType = 3;
             ConnOpt.nProtocal = 1;
-            ConnOpt.szSvrAddress = "192.168.25.226"; //连接服务器地址
+            ConnOpt.szSvrAddress = "180.168.116.152"; //连接服务器地址
             ConnOpt.nSvrPort = 42000; //连接服务器端口
             Marshal.StructureToPtr(ConnOpt, PtrConnOpt, false);
             RetCode = maCliApi.maCli_SetOptions(Handle, (int)MACLI_OPTION.CONNECT_PARAM, PtrConnOpt, Marshal.SizeOf(ConnOpt));
             Marshal.FreeHGlobal(PtrConnOpt);
 
-            int SyncTimeout = 1;
+            int SyncTimeout = 10;
             IntPtr PtrSyncTimeout = Marshal.AllocHGlobal(Marshal.SizeOf(SyncTimeout));
             Marshal.WriteInt32(PtrSyncTimeout, SyncTimeout);
             RetCode = maCliApi.maCli_SetOptions(Handle, (int)MACLI_OPTION.SYNCCALL_TIMEOUT, PtrSyncTimeout, Marshal.SizeOf(SyncTimeout));
@@ -1870,6 +1872,7 @@ namespace macli
             {
                 ShowErrorInfo(RetCode);
                 ThrowAnsError(Handle, out RetCode);
+                return;
             }
             Console.WriteLine("客户端与服务器成功建立通信连接");
 
@@ -1904,20 +1907,54 @@ namespace macli
                     {
                         case 101:
                             //量化登录测试CosLogin
+                            FirstSetAns FirstSetLogin = new FirstSetAns(); //返回码以及提示信息
+                            ReqCosLogin stReqCosLogin = new ReqCosLogin();
+                            stReqCosLogin.UserCode = "900617";
+                            stReqCosLogin.AuthData = "111111";
+                            stReqCosLogin.EncryptKey = "123456";
+                            CosLogin(Handle, stReqCosLogin, FirstSetLogin);
                             break;
                         case 0:
                             //账户登录测试
+                            //账户登录
+                            FirstSetAns FirstSet = new FirstSetAns(); //返回码以及提示信息
+                            List<RspUserLogin> UserLoginAns = new List<RspUserLogin>(); //返回结果
+                            ReqAcctLogin stReqAcctLogin = new ReqAcctLogin();
+                            stReqAcctLogin.AcctType = "Z"; //账号类型:Z-资金账号，U-客户代码
+                            stReqAcctLogin.AcctId = "1653039999"; //账号
+                            stReqAcctLogin.Encryptkey = "111111"; //加密因子
+                            stReqAcctLogin.AuthData = "111111"; //密码
+                            RetCode = cosFunc.AcctLogin(Handle, stReqAcctLogin, FirstSet, UserLoginAns);
                             break;
                         case 1:
                             //成交回报主题订阅
-                            //CosSubTopic(Handle, "MATCH*", "*", "0");
+                            //CosSubTopic(Handle, "MARKET1", "*", "0");
+                            //CosSubTopic(Handle, "MARKET0", "SZ000001", "0");
+                            CosSubTopic(Handle, "TSU_ORDER", "A196498999", "1");
+                            CosSubTopic(Handle, "MATCH10", "A196498999", "1");
+                            //CosSubTopic(Handle, "MARKET1", "SH10002369", "0");
                             break;
                         case 2:
                             //主题退订
-                            //CosUnSubTopic(Handle, "MATCH*", "");
+                            CosUnSubTopic(Handle, "MATCH*", "");
                             break;
                         case 3:
                             //量化委托CosOrder
+                            ReqCosOrderField stReqOrder = new ReqCosOrderField();
+                            stReqOrder.TrdCode = "600050";
+                            stReqOrder.OrderQty = 100;
+                            stReqOrder.OrderPrice = "5.32";
+                            stReqOrder.CuacctCode = stLoginInfo.CuacctCode;
+                            stReqOrder.CustCode = stLoginInfo.CustCode;
+                            stReqOrder.Trdacct = stLoginInfo.ShAcct;
+                            stReqOrder.Stkbd = "10";
+                            stReqOrder.StkBiz = 100;
+                            stReqOrder.StkBizAction = 100;
+                            stReqOrder.IntOrg = stLoginInfo.IntOrg;
+                            stReqOrder.CliOrderNo = "20200422-02";
+                            FirstSetAns stFirst = new FirstSetAns();
+                            List<RspCosOrderField> AnsOrder = new List<RspCosOrderField>();
+                            CosOrder(Handle, stReqOrder, stFirst, AnsOrder);
                             break;
                         case 4:
                             break;
@@ -1930,8 +1967,20 @@ namespace macli
                         case 7:
                             break;
                         case 8:
+                            //资金查询
+                            FirstSetAns FirstSetFund = new FirstSetAns(); //返回码以及提示信息
+                            ReqStkQryFundField stReqField = new ReqStkQryFundField();
+                            stReqField.CuacctCode = long.Parse(stLoginInfo.CuacctCode);
+                            stReqField.ValueFlag = 15;
+                            List<RspStkQryFundField> rspFundField = new List<RspStkQryFundField>();
+                            CosQryStkFund(Handle, stReqField, FirstSetFund, rspFundField);
                             break;
                         case 9:
+                            FirstSetAns FirstSetShares = new FirstSetAns(); //返回码以及提示信息
+                            ReqStkQrySharesField stReqShare = new ReqStkQrySharesField();
+                            stReqShare.CuacctCode = long.Parse(stLoginInfo.CuacctCode);
+                            List<RspStkQrySharesField> rspSharesField = new List<RspStkQrySharesField>();
+                            CosQryStkShares(Handle, stReqShare, FirstSetShares, rspSharesField);
                             break;
                         default:
                             Console.WriteLine("其他");
@@ -1944,6 +1993,5 @@ namespace macli
 
             //Console.ReadLine();
         }
-        */
     }
 }
