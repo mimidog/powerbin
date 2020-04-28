@@ -271,8 +271,10 @@ namespace macli
             RetCode = maCliApi.maCli_Parse(Handle, buff, len);
 
             IntPtr Buf = Marshal.AllocHGlobal(256);
-            string FuncId;
-            FuncId = _maCli_GetValueS(Handle, Buf, 64, "8815");
+            IntPtr FuncIdPtr = Marshal.AllocHGlobal(16 + 1);
+            maCliApi.maCli_GetHdrValueS(Handle, FuncIdPtr, 16, (int)MACLI_HEAD_FID.FUNC_ID);
+            string FuncId = Marshal.PtrToStringAnsi(FuncIdPtr);
+            Console.WriteLine(DateTime.Now.ToString());
             if (FuncId == "00102023")
             {
                 //交易成交推送 MATCH+XX
@@ -386,6 +388,7 @@ namespace macli
                 Console.WriteLine("{0}", FieldData.ToString());
             }
             Marshal.FreeHGlobal(Buf);
+            Marshal.FreeHGlobal(FuncIdPtr);
         }
 
         public static void OnRecvAsyn(IntPtr id, IntPtr buff, int len)
