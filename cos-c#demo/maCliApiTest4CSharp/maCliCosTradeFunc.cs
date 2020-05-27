@@ -5,6 +5,7 @@
 // 2020/4/16    001.000.001  SHENGHB          创建
 // 2020/4/20    001.000.001  SHENGHB          调整固定入参OpSite的传值，调整资金查询取值标志（新增必传）
 // 2020/4/27    001.000.001  SHENGHB          成交推送更新输出项，显示已成交数量和累计成交金额（用于分笔成交）
+// 2020/5/26    001.000.002  SHENGHB          新增双融客户负债信息查询
 //--------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
@@ -262,7 +263,7 @@ namespace macli
 
         public static int RetCode = 0;
         public static int size = 0;
-        public static LoginInfo stLoginInfo = new LoginInfo( "0", "0", "0", "0", "0", 0, "o", "", "", ""); //用于缓存登录信息
+        public static LoginInfo stLoginInfo = new LoginInfo( "0", "0", "0", 0x00, "0", 0, "o", "", "", ""); //用于缓存登录信息
 
         public static void OnRecvPs(IntPtr id, IntPtr buff, int len) //订阅主题推送
         {
@@ -430,7 +431,7 @@ namespace macli
             maCliApi.maCli_SetHdrValueS(Handle, SessionId, (int)MACLI_HEAD_FID.USER_SESSION); //用户session值
             maCliApi.maCli_SetHdrValueC(Handle, 0x30, (int)MACLI_HEAD_FID.BIZ_CHANNEL);
 
-            _maCli_SetValueS(Handle, stLoginInfo.CuacctCode != string.Empty ? stLoginInfo.CuacctCode : "0", "8810"); // 操作用户代码默认传0保证不为空
+            _maCli_SetValueS(Handle, stLoginInfo.CustCode != string.Empty ? stLoginInfo.CustCode : "0", "8810"); // 操作用户代码默认传0保证不为空
             _maCli_SetValueS(Handle, "1", "8811");
             IntPtr OpSite = Marshal.AllocHGlobal(32 + 1);
             maCliApi.maCli_GetConnIpAddr(Handle, OpSite, 32);
@@ -441,7 +442,7 @@ namespace macli
             _maCli_SetValueS(Handle, FunId, "8815");
             _maCli_SetValueS(Handle, System.DateTime.Now.TimeOfDay.ToString(), "8816");
             maCliApi.maCli_SetValueN(Handle, stLoginInfo.IntOrg, "8821");
-            maCliApi.maCli_SetValueC(Handle, (byte)'0', "8826");//操作账户类型字符型 需要调整
+            maCliApi.maCli_SetValueC(Handle, stLoginInfo.CuacctType, "8826");//操作账户类型字符型 需要调整
             Marshal.FreeHGlobal(OpSite);
             Marshal.FreeHGlobal(Buf);
         }
@@ -545,8 +546,9 @@ namespace macli
                     maCliApi.maCli_GetValueS(Handle, Buf, 128, "8814");
                     FieldData.SessionId = Marshal.PtrToStringAnsi(Buf);
                     stLoginInfo.SessionId = FieldData.SessionId; //保存session值
-                    maCliApi.maCli_GetValueC(Handle, ref FieldData.IsLv2Auth, "8989");
-                    maCliApi.maCli_GetValueC(Handle, ref FieldData.MtkProType, "8990");
+                    maCliApi.maCli_GetValueN(Handle, ref FieldData.MenuValidDays, "8941");
+                    //maCliApi.maCli_GetValueC(Handle, ref FieldData.IsLv2Auth, "8989");
+                    //maCliApi.maCli_GetValueC(Handle, ref FieldData.MtkProType, "8990");
                     Marshal.FreeHGlobal(Buf);
                     Console.WriteLine("{0}", FieldData.ToString());
                 }
@@ -563,7 +565,7 @@ namespace macli
         public static void MakePkgAcctLogin(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqAcctLogin stReqField)
         {
             maCliApi.maCli_BeginWrite(Handle);
-
+            stLoginInfo.CuacctType = (byte)'0';
             SetPacketHead(Handle, "10301105", (byte)'T', (byte)'B');
 
             _maCli_SetValueS(Handle, stReqField.AcctType, "8987");
@@ -644,6 +646,28 @@ namespace macli
                 return -1;
             }
             return 0;
+        }
+
+        //信用登录组包
+        public static void MakePkgAcctLoginFisl(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqAcctLogin stReqField)
+        {
+            maCliApi.maCli_BeginWrite(Handle);
+            stLoginInfo.CuacctType = (byte)'3';
+            SetPacketHead(Handle, "10301105", (byte)'T', (byte)'B');
+            _maCli_SetValueS(Handle, stReqField.AcctType, "8987");
+            _maCli_SetValueS(Handle, stReqField.AcctId, "9081");
+            _maCli_SetValueS(Handle, "0", "9082");
+            _maCli_SetValueS(Handle, stReqField.Encryptkey, "9086");
+            _maCli_SetValueS(Handle, "0", "9083");
+            IntPtr szAuthData = Marshal.AllocHGlobal(256 + 1);
+            maCliApi.maCli_ComEncrypt(Handle, szAuthData, 256, stReqField.AuthData, "111111");
+            maCliApi.maCli_SetValue(Handle, szAuthData, 256, "9084");
+            stLoginInfo.EnAuthData = Marshal.PtrToStringAnsi(szAuthData);
+
+            maCliApi.maCli_EndWrite(Handle);
+
+            maCliApi.maCli_Make(Handle, out ReqData, out ReqDataLen);
+            Marshal.FreeHGlobal(szAuthData);
         }
 
         //COS量化委托组包
@@ -1504,6 +1528,136 @@ namespace macli
             }
         }
 
+        //COS客户负债查询组包
+        public static void MakePkgCreditCustDebts(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqFislQryCreditCustDebtsField stReqField)
+        {
+            maCliApi.maCli_BeginWrite(Handle);
+            SetPacketHead(Handle, "10323006", (byte)'T', (byte)'B');
+
+            maCliApi.maCli_SetValueL(Handle, stReqField.CuacctCode, "8920");
+            maCliApi.maCli_SetValueC(Handle, stReqField.Currency, "15");
+
+            maCliApi.maCli_EndWrite(Handle);
+            maCliApi.maCli_Make(Handle, out ReqData, out ReqDataLen);
+        }
+
+        //COS客户负债查询解包
+        public static int ParsePkgCreditCustDebts(IntPtr Handle, ref IntPtr AnsData, ref int AnsDataLen, FirstSetAns stFirstSetAns, List<RspFislQryCreditCustDebtsField> FislQryCreditCustDebtsAns)
+        {
+            RetCode = maCliApi.maCli_Parse(Handle, AnsData, AnsDataLen);
+            int TableCount;
+            RetCode = maCliApi.maCli_GetTableCount(Handle, out TableCount);
+            if (TableCount > 0)
+            {
+                ParseAnsTb1(Handle, "信用账户资金查询请求响应", stFirstSetAns);
+            }
+            else
+            {
+                return -1;
+            }
+            if (RetCode == 0 && TableCount > 1)
+            {
+                RetCode = maCliApi.maCli_OpenTable(Handle, 2);
+                int RowCount;
+                RetCode = maCliApi.maCli_GetRowCount(Handle, out RowCount);
+                for (int Row = 0; Row < RowCount; ++Row)
+                {
+                    RetCode = maCliApi.maCli_ReadRow(Handle, Row + 1);
+                    IntPtr Buf = Marshal.AllocHGlobal(256 + 1);
+                    RspFislQryCreditCustDebtsField FieldData = new RspFislQryCreditCustDebtsField();
+
+                    maCliApi.maCli_GetValueL(Handle, ref FieldData.CustCode, "8902");
+                    maCliApi.maCli_GetValueL(Handle, ref FieldData.CuacctCode, "8920");
+                    maCliApi.maCli_GetValueC(Handle, ref FieldData.Currency, "15");
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9240");
+                    FieldData.FiRate = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9241");
+                    FieldData.SlRate = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9141");
+                    FieldData.FreeIntRate = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueC(Handle, ref FieldData.CreditStatus, "9242");
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9243");
+                    FieldData.MarginRate = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9244");
+                    FieldData.RealRate = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9245");
+                    FieldData.TotalAssert = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9246");
+                    FieldData.TotalDebts = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9081");
+                    FieldData.MarginValue = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "8861");
+                    FieldData.FundAvl = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "8984");
+                    FieldData.FundBln = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9247");
+                    FieldData.SlAmt = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9248");
+                    FieldData.GuaranteOut = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9222");
+                    FieldData.ColMktVal = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9224");
+                    FieldData.FiAmt = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9227");
+                    FieldData.TotalFiFee = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9249");
+                    FieldData.FiTotalDebts = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9251");
+                    FieldData.SlMktVal = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9237");
+                    FieldData.TotalSlFee = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9250");
+                    FieldData.SlTotalDebts = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9154");
+                    FieldData.FiCredit = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9220");
+                    FieldData.FiCreditAvl = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9252");
+                    FieldData.FiCreditFrz = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9155");
+                    FieldData.SlCredit = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9230");
+                    FieldData.SlCreditAvl = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9253");
+                    FieldData.SlCreditFrz = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9254");
+                    FieldData.Rights = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9255");
+                    FieldData.RightsUncomer = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueL(Handle, ref FieldData.RightsQty, "9256");
+                    maCliApi.maCli_GetValueL(Handle, ref FieldData.RightsQtyUncomer, "9257");
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9258");
+                    FieldData.TotalCredit = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9259");
+                    FieldData.TotalCteditAvl = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9853");
+                    FieldData.FiUsedMargin = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9854");
+                    FieldData.SlUsedMargin = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9858");
+                    FieldData.OpenFiMtkConVal = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9301");
+                    FieldData.FiContractPlval = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9302");
+                    FieldData.SlContractPlval = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "8999");
+                    FieldData.Mayrepay = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "9001");
+                    FieldData.StkValue = Marshal.PtrToStringAnsi(Buf);
+                    FislQryCreditCustDebtsAns.Add(FieldData);
+                    Marshal.FreeHGlobal(Buf);
+                    Console.WriteLine("返回内容: [{0},{1}] ", RowCount, Row + 1);
+                    Console.WriteLine("{0}", FieldData.ToString());
+                }
+            }
+            else
+            {
+                ThrowAnsError(Handle, out RetCode);
+                return -1;
+            }
+            return 0;
+        }
+
         /**************************功能调用操作**************************/
 
         //量化登录
@@ -1554,6 +1708,29 @@ namespace macli
             return RetCode;
         }
 
+        //信用登录
+        public static int AcctLoginFisl(IntPtr Handle, ReqAcctLogin stReqAcctLogin, FirstSetAns stFirstSetAns, List<RspUserLogin> UserLoginAns)//传入量化登录对象
+        {
+            //******调用账户登录
+            IntPtr ReqData;
+            int ReqDataLen;
+            MakePkgAcctLoginFisl(Handle, out ReqData, out ReqDataLen, stReqAcctLogin);
+
+            ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
+            SyscCall.strFuncId = "10301105";
+            SyscCall.strMsgId = "10301105103011051030110510301105";
+            SyscCall.nTimeout = 0;
+            IntPtr AnsData;
+            int AnsDataLen;
+            RetCode = maCliApi.maCli_SyncCall2(Handle, ref SyscCall, ReqData, ReqDataLen, out AnsData, out AnsDataLen);
+            if (RetCode != 0)
+            {
+                Console.WriteLine("maCli_SyncCall2 Call end ,iRetCode={0}", RetCode);
+                return -1;
+            }
+            RetCode = ParsePkgAcctLogin(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, UserLoginAns);
+            return RetCode;
+        }
         //量化委托
         public static int CosOrder(IntPtr Handle, ReqCosOrderField stReqCosOrderField, FirstSetAns stFirstSetAns, List<RspCosOrderField> CosOrderAns)
         {
@@ -1791,6 +1968,31 @@ namespace macli
             return RetCode;
         }
 
+        //客户负债查询--信用
+        public static int CosQryCreditCustDebts(IntPtr Handle, ReqFislQryCreditCustDebtsField stReqField, FirstSetAns stFirstSetAns, List<RspFislQryCreditCustDebtsField> FislQryCreditCustDebtsAns)
+        {
+            if (CheckIsLogin() == -1) return -1;
+            //******查询资金信息
+            IntPtr ReqData;
+            int ReqDataLen;
+            MakePkgCreditCustDebts(Handle, out ReqData, out ReqDataLen, stReqField);
+
+            ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
+            SyscCall.strFuncId = "10303001";
+            SyscCall.strMsgId = "10303001103030011030300110303001";
+            SyscCall.nTimeout = 0;
+            IntPtr AnsData;
+            int AnsDataLen;
+            RetCode = maCliApi.maCli_SyncCall2(Handle, ref SyscCall, ReqData, ReqDataLen, out AnsData, out AnsDataLen);
+            if (RetCode != 0)
+            {
+                Console.WriteLine("maCli_SyncCall2 Call end ,iRetCode={0}", RetCode);
+                return -1;
+            }
+            RetCode = ParsePkgCreditCustDebts(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, FislQryCreditCustDebtsAns);
+            return RetCode;
+        }
+
         //系统连接，用于外部再调用
         public static int ServerConnect(ref IntPtr Handle, string ipAddress, int port)
         {
@@ -1831,10 +2033,10 @@ namespace macli
         //功能选项菜单
         public static void CosMenu()
         {
-            Console.WriteLine("      101:量化登录           0:现货登录");
-            Console.WriteLine("      1:订阅主题请求         2:退订主题请求");
-            Console.WriteLine("      3:量化委托             4:批量委托             5:委托撤单");
-            Console.WriteLine("      6:委托查询             7:成交查询             8:资金查询             9:股份查询");
+            Console.WriteLine("      101:量化登录           0:现货登录             1:信用登录");
+            Console.WriteLine("      2:订阅主题请求         3:退订主题请求");
+            Console.WriteLine("      4:量化委托             5:批量委托             6:委托撤单");
+            Console.WriteLine("      7:委托查询             8:成交查询             9:资金查询             10:股份查询");
             Console.WriteLine("      m/M:菜单               x/X:退出");
         }
         static void Main(string[] args)
@@ -1847,13 +2049,13 @@ namespace macli
             IntPtr PtrConnOpt = Marshal.AllocHGlobal(Marshal.SizeOf(ConnOpt));
             ConnOpt.nCommType = 3;
             ConnOpt.nProtocal = 1;
-            ConnOpt.szSvrAddress = "180.168.116.152"; //连接服务器地址
+            ConnOpt.szSvrAddress = "192.168.25.24"; //连接服务器地址
             ConnOpt.nSvrPort = 42000; //连接服务器端口
             Marshal.StructureToPtr(ConnOpt, PtrConnOpt, false);
             RetCode = maCliApi.maCli_SetOptions(Handle, (int)MACLI_OPTION.CONNECT_PARAM, PtrConnOpt, Marshal.SizeOf(ConnOpt));
             Marshal.FreeHGlobal(PtrConnOpt);
 
-            int SyncTimeout = 10;
+            int SyncTimeout = 1;
             IntPtr PtrSyncTimeout = Marshal.AllocHGlobal(Marshal.SizeOf(SyncTimeout));
             Marshal.WriteInt32(PtrSyncTimeout, SyncTimeout);
             RetCode = maCliApi.maCli_SetOptions(Handle, (int)MACLI_OPTION.SYNCCALL_TIMEOUT, PtrSyncTimeout, Marshal.SizeOf(SyncTimeout));
@@ -1912,7 +2114,7 @@ namespace macli
                             //量化登录测试CosLogin
                             FirstSetAns FirstSetLogin = new FirstSetAns(); //返回码以及提示信息
                             ReqCosLogin stReqCosLogin = new ReqCosLogin();
-                            stReqCosLogin.UserCode = "900617";
+                            stReqCosLogin.UserCode = "112358";
                             stReqCosLogin.AuthData = "111111";
                             stReqCosLogin.EncryptKey = "123456";
                             CosLogin(Handle, stReqCosLogin, FirstSetLogin);
@@ -1927,49 +2129,65 @@ namespace macli
                             stReqAcctLogin.AcctId = "1653039999"; //账号
                             stReqAcctLogin.Encryptkey = "111111"; //加密因子
                             stReqAcctLogin.AuthData = "111111"; //密码
-                            RetCode = cosFunc.AcctLogin(Handle, stReqAcctLogin, FirstSet, UserLoginAns);
+                            RetCode = AcctLogin(Handle, stReqAcctLogin, FirstSet, UserLoginAns);
                             break;
                         case 1:
-                            //成交回报主题订阅
-                            //CosSubTopic(Handle, "MARKET1", "*", "0");
-                            //CosSubTopic(Handle, "MARKET0", "SZ000001", "0");
-                            CosSubTopic(Handle, "TSU_ORDER", "A196498999", "1");
-                            CosSubTopic(Handle, "MATCH10", "A196498999", "1");
-                            //CosSubTopic(Handle, "MARKET1", "SH10002369", "0");
+                            //账户登录测试
+                            //账户登录
+                            FirstSetAns FirstSetFisl = new FirstSetAns(); //返回码以及提示信息
+                            List<RspUserLogin> UserLoginAnsFisl = new List<RspUserLogin>(); //返回结果
+                            ReqAcctLogin stReqAcctLoginFisl = new ReqAcctLogin();
+                            stReqAcctLoginFisl.AcctType = "Z"; //账号类型:Z-资金账号，U-客户代码
+                            stReqAcctLoginFisl.AcctId = "1653123321"; //账号
+                            stReqAcctLoginFisl.Encryptkey = "111111"; //加密因子
+                            stReqAcctLoginFisl.AuthData = "111111"; //密码
+                            RetCode = AcctLoginFisl(Handle, stReqAcctLoginFisl, FirstSetFisl, UserLoginAnsFisl);
                             break;
                         case 2:
+                            //成交回报主题订阅
+                            //CosSubTopic(Handle, "MARKET1", "*", "0");
+                            //CosSubTopic(Handle, "MARKET0", "SZ002139", "0");
+                            CosSubTopic(Handle, "TSU_ORDER", stLoginInfo.SzAcct, "1");
+                            //CosSubTopic(Handle, "MATCH10", stLoginInfo.ShAcct, "1");
+                            CosSubTopic(Handle, "MATCH00", stLoginInfo.SzAcct, "1");
+                            break;
+                        case 3:
                             //主题退订
                             CosUnSubTopic(Handle, "MATCH*", "");
                             break;
-                        case 3:
+                        case 4:
                             //量化委托CosOrder
                             ReqCosOrderField stReqOrder = new ReqCosOrderField();
-                            stReqOrder.TrdCode = "600050";
+                            stReqOrder.TrdCode = "002230";
                             stReqOrder.OrderQty = 100;
-                            stReqOrder.OrderPrice = "5.32";
+                            stReqOrder.OrderPrice = "33.97";
                             stReqOrder.CuacctCode = stLoginInfo.CuacctCode;
                             stReqOrder.CustCode = stLoginInfo.CustCode;
-                            stReqOrder.Trdacct = stLoginInfo.ShAcct;
-                            stReqOrder.Stkbd = "10";
-                            stReqOrder.StkBiz = 100;
+                            stReqOrder.Trdacct = stLoginInfo.SzAcct;
+                            stReqOrder.Stkbd = "00";
+                            stReqOrder.StkBiz = 702;
                             stReqOrder.StkBizAction = 100;
                             stReqOrder.IntOrg = stLoginInfo.IntOrg;
-                            stReqOrder.CliOrderNo = "20200422-02";
-                            FirstSetAns stFirst = new FirstSetAns();
-                            List<RspCosOrderField> AnsOrder = new List<RspCosOrderField>();
-                            CosOrder(Handle, stReqOrder, stFirst, AnsOrder);
-                            break;
-                        case 4:
+                            
+                            for (int i = 0; i < 1; i++)
+                            {
+                                stReqOrder.CliOrderNo = "20200527-23-"+i;
+                                FirstSetAns stFirst = new FirstSetAns();
+                                List<RspCosOrderField> AnsOrder = new List<RspCosOrderField>();
+                                CosOrder(Handle, stReqOrder, stFirst, AnsOrder);
+                            }
                             break;
                         case 5:
-                            //委托撤单CosCancelOrder
                             break;
                         case 6:
-                            //委托查询CosQryOrderInfo
+                            //委托撤单CosCancelOrder
                             break;
                         case 7:
+                            //委托查询CosQryOrderInfo
                             break;
                         case 8:
+                            break;
+                        case 9:
                             //资金查询
                             FirstSetAns FirstSetFund = new FirstSetAns(); //返回码以及提示信息
                             ReqStkQryFundField stReqField = new ReqStkQryFundField();
@@ -1978,7 +2196,7 @@ namespace macli
                             List<RspStkQryFundField> rspFundField = new List<RspStkQryFundField>();
                             CosQryStkFund(Handle, stReqField, FirstSetFund, rspFundField);
                             break;
-                        case 9:
+                        case 10:
                             FirstSetAns FirstSetShares = new FirstSetAns(); //返回码以及提示信息
                             ReqStkQrySharesField stReqShare = new ReqStkQrySharesField();
                             stReqShare.CuacctCode = long.Parse(stLoginInfo.CuacctCode);

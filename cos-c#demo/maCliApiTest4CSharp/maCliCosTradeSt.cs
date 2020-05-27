@@ -2,7 +2,8 @@
 //--------------------------------------------------------------------------------------------------
 // 修改日期      版本          作者            备注
 //--------------------------------------------------------------------------------------------------
-// 2020/4/16 星期三 下午 3:44:26    001.000.001  SHENGHB
+// 2020/4/16    001.000.001  SHENGHB          创建
+// 2020/5/26    001.000.002  SHENGHB          新增双融客户负债信息查询
 //--------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
@@ -41,12 +42,11 @@ namespace macli
         public string UserCode;
         public string PhoneNum;
         public string SessionId;
-        public byte IsLv2Auth;
-        public byte MtkProType;
+        public int MenuValidDays;
         public override string ToString()
         {
-            return String.Format(@"UserCode:{0},PhoneNum:{1},SessionId:{2},IsLv2Auth:{3},MtkProType:{4}",
-                UserCode, PhoneNum, SessionId, ((char)IsLv2Auth).ToString(), ((char)MtkProType).ToString());
+            return String.Format(@"UserCode:{0},PhoneNum:{1},SessionId:{2},MenuValidDays:{3}",
+                UserCode, PhoneNum, SessionId, MenuValidDays);
         }
     }
 
@@ -374,7 +374,7 @@ namespace macli
                 "交易角色:{28}, 组合开平标志:{29}, 组合投机套保标志:{30}, 成交价来源:{31}, 交易所交易员代码:{32}, 结算会员编号:{33}, " +
                 "经纪公司报单编号:{34}, 合约编码:{35}, 撤单标志:{36}, 成交金额:{37}, 委托冻结金额:{38}, 累计成交金额:{39}, " +
                 "实时清算金额:{40}, 已成交总量:{41}, 已撤单数量:{42}, 委托状态:{43}, 客户端委托编号:{44}, 品种代码名称:{45}",
-                QryPos, OrderDate, MatchedType, MatchedSn, OrderBsn, CliOrderGroupNo, ClientId,
+                QryPos, OrderDate, ((char)MatchedType).ToString(), MatchedSn, OrderBsn, CliOrderGroupNo, ClientId,
                 OrderNo, OrderId, CuacctCode, ((char)CuacctType).ToString(), CustCode, Trdacct, ((char)Exchange).ToString(),
                 Stkbd, StkBiz, StkBizAction, TrdCode, MatchedQty, MatchedPrice, MatchedDate,
                 MatchedTime, Subsys, SubsysSn, ErrorId, ErrorMsg, BrokerId, ParticipantId,
@@ -433,7 +433,7 @@ namespace macli
             return String.Format(@"客户代码:{0}, 资产账户:{1}, 货币代码:{2}, 内部机构:{3}, 资产总值:{4}, 资金资产:{5}, 市值:{6}, " +
                 "融资总金额:{7}, 融券总金额:{8}, 资金昨日余额:{9}, 资金余额:{10}, 资金可用余额:{11}, 资金冻结金额:{12}, 资金解冻金额:{13}, " +
                 "资金交易冻结金额:{14}, 资金交易解冻金额:{15}, 资金交易在途金额:{16}, 资金交易轧差金额:{17}, 资金状态:{18}, 资金账户属性:{19}",
-                CustCode, CuacctCode, Currency, IntOrg, MarketValue, FundValue, StkValue,
+                CustCode, CuacctCode, ((char)Currency).ToString(), IntOrg, MarketValue, FundValue, StkValue,
                 FundLoan, FundLend, FundPrebln, FundBln, FundAvl, FundFrz, FundUfz,
                 FundTrdFrz, FundTrdUfz, FundTrdOtd, FundTrdBln, ((char)FundStatus).ToString(), ((char)CuacctAttr).ToString());
         }
@@ -512,7 +512,7 @@ namespace macli
                 "证券持仓成本（实时）:{20}, 证券盈亏金额:{21}, 证券盈亏金额（实时）:{22}, 市值:{23}, 成本价格:{24}, 参考盈亏:{25}, " +
                 "市值计算标识:{26}, 当前拥股数:{27}, 最新价格:{28}, 参考成本价:{29}, 可申赎数量:{30}, 已申赎数量:{31}, " +
                 "盈亏:{32}, 余券可用数量:{33}, 卖出冻结数量:{34}",
-                CustCode, CuacctCode, Currency, IntOrg, Stkbd, Stkpbu, Trdacct,
+                CustCode, CuacctCode, ((char)Currency).ToString(), IntOrg, Stkbd, Stkpbu, Trdacct,
                 StkCode, StkName, ((char)StkCls).ToString(), StkPrebln, StkBln, StkAvl, StkFrz,
                 StkUfz, StkTrdFrz, StkTrdUfz, StkTrdOtd, StkTrdBln, StkPcost,
                 StkPcostRlt, StkPlamt, StkPlamtRlt, MktVal, CostPrice, ProIncome,
@@ -727,14 +727,14 @@ namespace macli
         public string CuacctCode; //资金账号
         public string CustCode; //客户代码
         public string EnAuthData; //账户登录密码
-        public string CuacctType; //操作账户类型
+        public byte CuacctType; //操作账户类型
         public int IntOrg; //机构代码
         public string Channel; //渠道
         public string SessionId; //会话凭证
         public string ShAcct; //沪A股东账户
         public string SzAcct; //深A股东账户
 
-        public LoginInfo(string usercode, string cuacctcode, string custcode, string cuaccttype, string enauthdata, int intorg, string channel, string sessionid, string shacct, string szacct)
+        public LoginInfo(string usercode, string cuacctcode, string custcode, byte cuaccttype, string enauthdata, int intorg, string channel, string sessionid, string shacct, string szacct)
         {
             UserCode = usercode;
             CuacctCode = cuacctcode;
@@ -748,4 +748,84 @@ namespace macli
             SzAcct = szacct;
         }
     }
+
+    //终端信息
+    public struct TermInfo
+    {
+        public string Mac;
+        public string Hd;
+        public string Lip;
+        public string AppName;
+        public string CpuInfo;
+        public string CpuId;
+        public string PcName;
+        public string OsVer;
+    }
+
+    /************融资融券功能************/
+    public struct ReqFislQryCreditCustDebtsField
+    {
+        public long CuacctCode;                 // 资产账户
+        public byte Currency;                   // 货币代码
+    };
+
+    public struct RspFislQryCreditCustDebtsField
+    {
+        public long CustCode;                   // 客户代码        
+        public long CuacctCode;                 // 资产账户        
+        public byte Currency;                   // 货币代码        
+        public string FiRate;             // 融资利率        
+        public string SlRate;             // 融券利率        
+        public string FreeIntRate;        // 罚息利率        
+        public byte CreditStatus;               // 信用状态        
+        public string MarginRate;         // 维持担保比例    
+        public string RealRate;           // 实时担保比例    
+        public string TotalAssert;        // 总资产          
+        public string TotalDebts;         // 总负债          
+        public string MarginValue;        // 保证金可用余额  
+        public string FundAvl;            // 资金可用金额    
+        public string FundBln;            // 资金余额        
+        public string SlAmt;              // 融券卖出所得资金
+        public string GuaranteOut;        // 可转出担保资产  
+        public string ColMktVal;          // 担保证券市值    
+        public string FiAmt;              // 融资本金        
+        public string TotalFiFee;         // 融资息费        
+        public string FiTotalDebts;       // 融资负债合计    
+        public string SlMktVal;           // 应付融券市值    
+        public string TotalSlFee;         // 融券息费        
+        public string SlTotalDebts;       // 融券负债合计    
+        public string FiCredit;           // 融资授信额度    
+        public string FiCreditAvl;        // 融资可用额度    
+        public string FiCreditFrz;        // 融资额度冻结    
+        public string SlCredit;           // 融券授信额度    
+        public string SlCreditAvl;        // 融券可用额度    
+        public string SlCreditFrz;        // 融券额度冻结    
+        public string Rights;             // 红利权益        
+        public string RightsUncomer;      // 红利权益（在途）
+        public long RightsQty;                  // 红股权益        
+        public long RightsQtyUncomer;           // 红股权益（在途）
+        public string TotalCredit;        // 总额度          
+        public string TotalCteditAvl;     // 总可用额度
+        public string FiUsedMargin;     //融资占用保证金
+        public string SlUsedMargin;     //融券占用保证金
+        public string OpenFiMtkConVal;     //未了结融资市值折算
+        public string FiContractPlval;    //融资盈亏
+        public string SlContractPlval;    //融券盈亏
+        public string Mayrepay;           //直接还款可用金额
+        public string StkValue;          //证券市值
+
+        public override string ToString()
+        {
+            return String.Format(@"客户代码:{0}, 资产账户:{1}, 货币代码:{2}, 融资利率:{3}, 融券利率:{4}, 罚息利率:{5}, 信用状态:{6}, 维持担保比例:{7}, 实时担保比例:{8}, " +
+                "总资产:{9}, 总负债:{10}, 保证金可用余额:{11}, 资金可用金额:{12}, 资金余额:{13}, 融券卖出所得资金:{14}, 可转出担保资产:{15}, 担保证券市值:{16}, 融资本金:{17}, " +
+                "融资息费:{18}, 融资负债合计:{19}, 应付融券市值:{20}, 融券息费:{21}, 融券负债合计:{22}, 融资授信额度:{23}, 融资可用额度:{24}, 融资额度冻结:{25}, 融券授信额度:{26}, " +
+                "融券可用额度:{27}, 融券额度冻结:{28}, 红利权益:{29}, 红利权益（在途）:{30}, 红股权益:{31}, 红股权益（在途）:{32}, 总额度:{33}, 总可用额度:{34}, 融资占用保证金:{35}, 融券占用保证金:{36}" +
+                "未了结融资市值折算:{37}, 融资盈亏:{38}, 融券盈亏:{39}, 直接还款可用:{40}, 证券市值:{41}",
+                CustCode, CuacctCode, ((char)Currency).ToString(), FiRate, SlRate, FreeIntRate, ((char)CreditStatus).ToString(), MarginRate, RealRate, 
+                TotalAssert, TotalDebts, MarginValue, FundAvl, FundBln, SlAmt, GuaranteOut, ColMktVal, FiAmt, 
+                TotalFiFee, FiTotalDebts, SlMktVal, TotalSlFee, SlTotalDebts, FiCredit, FiCreditAvl, FiCreditFrz, SlCredit,
+                SlCreditAvl, SlCreditFrz, Rights, RightsUncomer, RightsQty, RightsQtyUncomer, TotalCredit, TotalCteditAvl, FiUsedMargin, SlUsedMargin,
+                OpenFiMtkConVal, FiContractPlval, SlContractPlval, Mayrepay, StkValue);
+        }
+    };
 }
