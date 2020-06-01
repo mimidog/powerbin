@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace macli
 {
@@ -2107,6 +2108,12 @@ namespace macli
                 }
                 else
                 {
+                    bool isInt = Regex.IsMatch(str, @"^([0-9]+)$");
+                    if (!isInt)
+                    {
+                        Console.WriteLine("非法的功能选项，请重新输入！");
+                        continue;
+                    }
                     iSelect = int.Parse(str);
                     switch (iSelect)
                     {
