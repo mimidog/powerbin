@@ -789,6 +789,8 @@ namespace macli
             maCliApi.maCli_SetValueN(Handle, stReqField.OrderNo, "9106");//委托编号
             maCliApi.maCli_SetValueN(Handle, stReqField.OrderBsn, "66");//委托批号
             maCliApi.maCli_SetValueC(Handle, stReqField.CuacctType, "8826");//账户类型
+            //stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //后面跟随API3.2启用，按最新终端信息规范自动填充
+            _maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
 
             maCliApi.maCli_EndWrite(Handle);
 
