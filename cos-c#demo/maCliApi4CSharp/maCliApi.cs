@@ -62,6 +62,8 @@ namespace macli
         SYS_VOL             = 18,
         OS_VER              = 19,
         SIP_ADDR            = 20,
+        LPORT               = 21,
+        IPORT               = 22,
     }
 
     // 日志模式定义

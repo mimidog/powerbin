@@ -35,6 +35,7 @@ namespace macli
         public string AuthData; // 认证数据
         public byte AuthType; // 认证类型
         public byte UseScope; // 使用范围
+        public byte EncryptType; // 加密方式
     }
 
     public struct RspCosLogin
@@ -542,6 +543,64 @@ namespace macli
                 Topic, Filter, DataSet, Channel, AcceptSn);
         }
     }
+    //-------------------------------委托确认回报-----------------------------------------------------
+    public struct RtnStkOrderConfirmField
+    {
+        public byte Stkex;                    // 交易市场
+        public string StkCode;           // 证券代码
+        public string OrderId;          // 合同序号
+        public string Trdacct;          // 交易账户
+        public byte IsWithdraw;               // 撤单标志
+        public long CustCode;                 // 客户代码
+        public long CuacctCode;               // 资产账户
+        public int OrderBsn;                  // 委托批号
+        public int CuacctSn;                  // 账户序号
+        public string Stkbd;             // 交易板块
+        public byte OrderStatus;              // 委托状态
+        public int StkBiz;                    // 证券业务
+        public int StkBizAction;              // 业务行为
+        public byte CuacctAttr;               // 账户属性
+        public int OrderDate;                 // 委托日期
+        public int OrderSn;                   // 委托序号
+        public int IntOrg;                    // 内部机构
+        public string Stkpbu;            // 交易单元
+        public string OrderPrice;       // 委托价格
+        public long OrderQty;                 // 委托数量
+        public string SubacctCode;       // 证券账户子编码
+        public string OptTrdacct;       // 期权合约账户
+        public string OptCode;          // 合约代码
+        public string OptName;          // 合约简称
+        public byte Currency;                 // 货币代码
+        public byte OptUndlCls;               // 标的证券类别
+        public string OptUndlCode;       // 标的证券代码
+        public string OptUndlName;      // 标的证券名称
+        public string CombNum;          // 组合编码       构建组合、解除组合时填写，其他情况填空
+        public string CombStraCode;     // 组合策略代码    构建组合、解除组合时填写，其他情况填空
+        public string Leg1Num;          // 成分一合约编码  构建组合、解除组合、行权指令合并申报时填写，其他情况填空
+        public string Leg2Num;          // 成分二合约编码  构建组合、解除组合、行权指令合并申报时填写，其他情况填空
+        public string Leg3Num;          // 成分三合约编码  构建组合、解除组合时填写，其他情况填空
+        public string Leg4Num;          // 成分四合约编码  构建组合、解除组合时填写，其他情况填空
+        public string Remark1;          // 预留字段1
+        public string Remark2;          // 预留字段2
+        public string Remark3;          // 预留字段3
+        public string Remark4;          // 预留字段4
+        public string Remark5;          // 预留字段5
+        public string Remark6;          // 预留字段6
+        public string Remark7;          // 预留字段7
+        public string Remark8;          // 预留字段8
+        public string Remark9;          // 预留字段9
+        public string RemarkA;          // 预留字段A
+
+        public override string ToString()
+        {
+            return String.Format(@"交易市场:{0},证券代码:{1},合同序号:{2},交易账户:{3},撤单标志:{4},客户代码:{5},资产账户:{6},委托批号:{7},账户序号:{8}," +
+                "交易板块:{9},委托状态:{10},证券业务:{11},业务行为:{12},账户属性:{13},委托日期:{14},委托序号:{15},内部机构:{16},交易单元:{17},委托价格:{18}," +
+                "委托数量:{19},证券账户子编码:{20},期权合约账户:{21},合约代码:{22},合约简称:{23},货币代码:{24},标的证券类别:{25},标的证券代码:{26},标的证券名称:{27}",
+                ((char)Stkex).ToString(), StkCode, OrderId, Trdacct, ((char)IsWithdraw).ToString(), CustCode, CuacctCode, OrderBsn, CuacctSn,
+                Stkbd, OrderStatus, StkBiz, StkBizAction, ((char)CuacctAttr).ToString(), OrderDate, OrderSn, IntOrg, Stkpbu, OrderPrice,
+                OrderQty, SubacctCode, OptTrdacct, OptCode, OptName, ((char)Currency).ToString(), ((char)OptUndlCls).ToString(), OptUndlCode, OptUndlName);
+        }
+    }
 
     //成交回报响应
     public struct RtnOrderField
@@ -749,17 +808,33 @@ namespace macli
         }
     }
 
-    //终端信息
-    public struct TermInfo
+    // 终端信息参数
+    public struct ReqClientField
     {
-        public string Mac;
-        public string Hd;
-        public string Lip;
-        public string AppName;
-        public string CpuInfo;
-        public string CpuId;
-        public string PcName;
-        public string OsVer;
+        public string Iip;              // 公网IP
+        public string Iport;             // 公网IP端口号
+        public string Lip;              // 内网IP
+        public string Mac;              // MAC地址
+        public string Hd;               // 硬盘序列号
+        public string Pcn;              // PC终端设备名
+        public string Cpu;              // CPU序列号
+        public string Pi;               // 硬盘分区信息
+        public string Vol;              // 系统盘卷标号
+        public string Ext;              // 扩展信息 以‘;’进行分隔
+
+        public ReqClientField(string iip, string iport, string lip, string mac, string hd, string pcn, string cpu, string pi, string vol, string ext)
+        {
+            Iip = iip;
+            Iport = iport;
+            Lip = lip;
+            Mac = mac;
+            Hd = hd;
+            Pcn = pcn;
+            Cpu = cpu;
+            Pi = pi;
+            Vol = vol;
+            Ext = ext;
+        }
     }
 
     /************融资融券功能************/

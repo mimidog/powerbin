@@ -265,6 +265,7 @@ namespace macli
         public static int RetCode = 0;
         public static int size = 0;
         public static LoginInfo stLoginInfo = new LoginInfo( "0", "0", "0", 0x00, "0", 0, "o", "", "", ""); //用于缓存登录信息
+        public static ReqClientField stClientInfo = new ReqClientField("", "", "", "", "", "", "", "", "", ""); //缓存终端信息
 
         public static void OnRecvPs(IntPtr id, IntPtr buff, int len) //订阅主题推送
         {
@@ -352,6 +353,50 @@ namespace macli
             else if (FuncId == "00102024")
             {
                 //交易确认推送 CONFIRM+XX
+                RtnStkOrderConfirmField FieldData = new RtnStkOrderConfirmField();
+                maCliApi.maCli_GetValueC(Handle, ref FieldData.Stkex, "STKEX");
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "STK_CODE");
+                FieldData.StkCode = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "ORDER_ID");
+                FieldData.OrderId = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "TRDACCT");
+                FieldData.Trdacct = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueC(Handle, ref FieldData.IsWithdraw, "IS_WITHDRAW");
+                maCliApi.maCli_GetValueL(Handle, ref FieldData.CustCode, "CUST_CODE");
+                maCliApi.maCli_GetValueL(Handle, ref FieldData.CuacctCode, "CUACCT_CODE");
+                maCliApi.maCli_GetValueN(Handle, ref FieldData.OrderBsn, "ORDER_BSN");
+                maCliApi.maCli_GetValueN(Handle, ref FieldData.CuacctSn, "CUACCT_SN");
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "STKBD");
+                FieldData.Stkbd = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueC(Handle, ref FieldData.OrderStatus, "ORDER_STATUS");
+                maCliApi.maCli_GetValueN(Handle, ref FieldData.StkBiz, "STK_BIZ");
+                maCliApi.maCli_GetValueN(Handle, ref FieldData.StkBizAction, "STK_BIZ_ACTION");
+                maCliApi.maCli_GetValueC(Handle, ref FieldData.CuacctAttr, "CUACCT_ATTR");
+                maCliApi.maCli_GetValueN(Handle, ref FieldData.OrderDate, "ORDER_DATE");
+                maCliApi.maCli_GetValueN(Handle, ref FieldData.OrderSn, "ORDER_SN");
+                maCliApi.maCli_GetValueN(Handle, ref FieldData.IntOrg, "INT_ORG");
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "STKPBU");
+                FieldData.Stkpbu = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "ORDER_PRICE");
+                FieldData.OrderPrice = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueL(Handle, ref FieldData.OrderQty, "ORDER_QTY");
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "SUBACCT_CODE");
+                FieldData.SubacctCode = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "OPT_TRDACCT");
+                FieldData.OptTrdacct = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "OPT_CODE");
+                FieldData.OptCode = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "OPT_NAME");
+                FieldData.OptName = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueC(Handle, ref FieldData.Currency, "CURRENCY");
+                maCliApi.maCli_GetValueC(Handle, ref FieldData.OptUndlCls, "OPT_UNDL_CLS");
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "OPT_UNDL_CODE");
+                FieldData.OptUndlCode = Marshal.PtrToStringAnsi(Buf);
+                maCliApi.maCli_GetValueS(Handle, Buf, 64, "OPT_UNDL_NAME");
+                FieldData.OptUndlName = Marshal.PtrToStringAnsi(Buf);
+                Console.WriteLine("[委托确认回报信息]");
+                Console.WriteLine("{0}", FieldData.ToString());
+
             }
             else if (FuncId == "00102025")
             {
@@ -415,6 +460,108 @@ namespace macli
             return 0;
         }
 
+        //终端信息自动填充
+        public static string AutoFillClientInfo(IntPtr Handle, string clientInfo)
+        {
+            if (clientInfo == null ||clientInfo.Length == 0)
+            {
+                IntPtr Buf = Marshal.AllocHGlobal(64 + 1);
+                if (stClientInfo.Iip.Length == 0)
+                {
+                    stClientInfo.Iip = "NA";
+                }
+                if (stClientInfo.Iport.Length == 0 || stClientInfo.Iport.Substring(0, 1) == "N")
+                {
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.LPORT, Buf, 6);
+                    stClientInfo.Iport = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Iport.Length == 0)
+                    {
+                        stClientInfo.Iport = "NA";
+                    }
+                }
+                if (stClientInfo.Lip.Length == 0 || stClientInfo.Lip.Substring(0, 1) == "N")
+                {
+                    maCliApi.maCli_GetConnIpAddr(Handle, Buf, 16);
+                    stClientInfo.Lip = Marshal.PtrToStringAnsi(Buf);
+                    string str1 = stClientInfo.Lip.Substring(stClientInfo.Lip.Length - 1, 1);
+                    Console.WriteLine(stClientInfo.Lip.Length);
+                    if (stClientInfo.Lip.Length == 0)
+                    {
+                        stClientInfo.Lip = "NA";
+                    }
+                }
+                if (stClientInfo.Mac.Length == 0 || stClientInfo.Mac.Substring(0, 1) == "N")
+                {
+                    maCliApi.maCli_GetConnMac(Handle, Buf, 19);
+                    stClientInfo.Mac = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Mac.Length == 0)
+                    {
+                        stClientInfo.Mac = "NA";
+                    }
+                }
+                if(stClientInfo.Hd.Length == 0)
+                {
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.HD_ID, Buf, 32);
+                    stClientInfo.Hd = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Hd.Length == 0)
+                    {
+                        stClientInfo.Hd = "NA";
+                    }
+                }
+                if (stClientInfo.Pcn.Length == 0)
+                {
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.PC_NAME, Buf, 20);
+                    stClientInfo.Pcn = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Pcn.Length == 0)
+                    {
+                        stClientInfo.Pcn = "NA";
+                    }
+                }
+                if (stClientInfo.Cpu.Length == 0)
+                {
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.CPU_ID, Buf, 20);
+                    stClientInfo.Cpu = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Cpu.Length == 0)
+                    {
+                        stClientInfo.Cpu = "NA";
+                    }
+                }
+                if (stClientInfo.Pi.Length == 0)
+                {
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.HD_PART, Buf, 20);
+                    stClientInfo.Pi = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Pi.Length == 0)
+                    {
+                        stClientInfo.Pi = "NA";
+                    }
+                }
+                if (stClientInfo.Vol.Length == 0)
+                {
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.SYS_VOL, Buf, 10);
+                    stClientInfo.Vol = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Vol.Length == 0)
+                    {
+                        stClientInfo.Vol = "NA";
+                    }
+                }
+                if (stClientInfo.Ext.Length == 0)
+                {
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.APP_NAME, Buf, 53);
+                    stClientInfo.Ext = Marshal.PtrToStringAnsi(Buf);
+                    if (stClientInfo.Ext.Length == 0)
+                    {
+                        stClientInfo.Ext = "NA";
+                    }
+                }
+                Marshal.FreeHGlobal(Buf);
+                clientInfo = string.Format("PC;IIP={0};IPORT={1};LIP={2};MAC={3};HD={4};PCN={5};CPU={6};PI={7};VOL={8}{9}{10}",
+                    stClientInfo.Iip, stClientInfo.Iport, stClientInfo.Lip, stClientInfo.Mac, stClientInfo.Hd,
+                    stClientInfo.Pcn, stClientInfo.Cpu, stClientInfo.Pi, stClientInfo.Vol, "@", stClientInfo.Ext);
+            }
+            Console.WriteLine(clientInfo);
+            return clientInfo;
+        }
+
         //固定入参传值
         public static void SetPacketHead(IntPtr Handle, string FunId, byte FunType, byte PktType)
         {
@@ -428,9 +575,10 @@ namespace macli
             maCliApi.maCli_SetHdrValueC(Handle, 0x52, (int)MACLI_HEAD_FID.MSG_TYPE);
             maCliApi.maCli_SetHdrValueS(Handle, "01", (int)MACLI_HEAD_FID.PKT_VER);
             maCliApi.maCli_SetHdrValueC(Handle, PktType, (int)MACLI_HEAD_FID.PKT_TYPE);
-            RetCode = maCliApi.maCli_SetHdrValueS(Handle, System.DateTime.Now.TimeOfDay.ToString(), (int)MACLI_HEAD_FID.TIMESTAMP);
+            string strTimestamp = string.Format("{0:yyyyMMddHHmmssffff}", System.DateTime.Now);
+            IntPtr ipTimestamp = Marshal.StringToHGlobalAnsi(strTimestamp);
+            RetCode = maCliApi.maCli_SetHdrValue(Handle, ipTimestamp, 17, (int)MACLI_HEAD_FID.TIMESTAMP);
             maCliApi.maCli_SetHdrValueS(Handle, SessionId, (int)MACLI_HEAD_FID.USER_SESSION); //用户session值
-            maCliApi.maCli_SetHdrValueC(Handle, 0x30, (int)MACLI_HEAD_FID.BIZ_CHANNEL);
 
             _maCli_SetValueS(Handle, stLoginInfo.CustCode != string.Empty ? stLoginInfo.CustCode : "0", "8810"); // 操作用户代码默认传0保证不为空
             _maCli_SetValueS(Handle, "1", "8811");
@@ -477,11 +625,11 @@ namespace macli
         //重写string类型设置值的方法,无初始值时进行特殊处理
         public static int _maCli_SetValueS(IntPtr Handle, string Value, string FieldIdx)
         {
-            if (Value == null)
+            if (Value != null)
             {
-                return -1;
+                maCliApi.maCli_SetValueS(Handle, Value, FieldIdx);
             }
-            return maCliApi.maCli_SetValueS(Handle, Value, FieldIdx);//合约编码
+            return -1;
         }
 
         public static string _maCli_GetValueS(IntPtr Handle, IntPtr Buf, int FieldLen, string FieldCode)
@@ -562,8 +710,8 @@ namespace macli
             return 0;
         }
 
-        //用户登录组包
-        public static void MakePkgAcctLogin(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqAcctLogin stReqField)
+        //现货登录组包
+        public static void MakePkgStkLogin(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqAcctLogin stReqField)
         {
             maCliApi.maCli_BeginWrite(Handle);
             stLoginInfo.CuacctType = (byte)'0';
@@ -571,11 +719,11 @@ namespace macli
 
             _maCli_SetValueS(Handle, stReqField.AcctType, "8987");
             _maCli_SetValueS(Handle, stReqField.AcctId, "9081");
-            _maCli_SetValueS(Handle, "0", "9082");
+            maCliApi.maCli_SetValueC(Handle, stReqField.UseScope, "9082");
             _maCli_SetValueS(Handle, stReqField.Encryptkey, "9086");
-            _maCli_SetValueS(Handle, "0", "9083");
+            maCliApi.maCli_SetValueC(Handle, stReqField.AuthType, "9083");
             IntPtr szAuthData = Marshal.AllocHGlobal(256 + 1);
-            maCliApi.maCli_ComEncrypt(Handle, szAuthData, 256, stReqField.AuthData, "111111");
+            maCliApi.maCli_ComEncrypt(Handle, szAuthData, 256, stReqField.AuthData, stReqField.Encryptkey);
             maCliApi.maCli_SetValue(Handle, szAuthData, 256, "9084");
             stLoginInfo.EnAuthData = Marshal.PtrToStringAnsi(szAuthData);
 
@@ -585,8 +733,8 @@ namespace macli
             Marshal.FreeHGlobal(szAuthData);
         }
 
-        //用户登录解包
-        public static int ParsePkgAcctLogin(IntPtr Handle, ref IntPtr AnsData, ref int AnsDataLen, FirstSetAns stFirstSetAns, List<RspUserLogin> UserLoginAns)
+        //现货登录解包
+        public static int ParsePkgStkLogin(IntPtr Handle, ref IntPtr AnsData, ref int AnsDataLen, FirstSetAns stFirstSetAns, List<RspUserLogin> UserLoginAns)
         {
             RetCode = maCliApi.maCli_Parse(Handle, AnsData, AnsDataLen);
             int TableCount;
@@ -704,6 +852,7 @@ namespace macli
             _maCli_SetValueS(Handle, stReqField.ExercisePrice, "8973");//行权价
             maCliApi.maCli_SetValueL(Handle, stReqField.ConUnit, "8974");//合约单位
             _maCli_SetValueS(Handle, stReqField.CliOrderNo, "9102");//客户端委托编号
+            //stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //后面跟随API3.2启用
             _maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
             _maCli_SetValueS(Handle, stReqField.BusinessUnit, "8717");//业务单元
             _maCli_SetValueS(Handle, stReqField.GtdData, "8723");//GTD日期
@@ -790,7 +939,7 @@ namespace macli
             maCliApi.maCli_SetValueN(Handle, stReqField.OrderBsn, "66");//委托批号
             maCliApi.maCli_SetValueC(Handle, stReqField.CuacctType, "8826");//账户类型
             //stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //后面跟随API3.2启用，按最新终端信息规范自动填充
-            _maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
+            //_maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
 
             maCliApi.maCli_EndWrite(Handle);
 
@@ -1437,7 +1586,7 @@ namespace macli
 
             _maCli_SetValueS(Handle, stReqField.Topic, "TOPIC");
             _maCli_SetValueS(Handle, stReqField.Filter, "FILTER");
-            maCliApi.maCli_SetValueS(Handle, stReqField.DataSet, "DATA_SET");
+            _maCli_SetValueS(Handle, stReqField.DataSet, "DATA_SET");
 
             maCliApi.maCli_EndWrite(Handle);
             maCliApi.maCli_Make(Handle, out ReqData, out ReqDataLen);
@@ -1673,7 +1822,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10388750";
-            SyscCall.strMsgId = "10388750103887501038875010388750";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1687,17 +1835,16 @@ namespace macli
             return RetCode;
         }
 
-        //用户登录
+        //用户登录（后面调整成StkLogin）
         public static int AcctLogin(IntPtr Handle, ReqAcctLogin stReqAcctLogin, FirstSetAns stFirstSetAns, List<RspUserLogin> UserLoginAns)//传入量化登录对象
         {
             //******调用账户登录
             IntPtr ReqData;
             int ReqDataLen;
-            MakePkgAcctLogin(Handle, out ReqData, out ReqDataLen, stReqAcctLogin);
+            MakePkgStkLogin(Handle, out ReqData, out ReqDataLen, stReqAcctLogin);
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10301105";
-            SyscCall.strMsgId = "10301105103011051030110510301105";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1707,7 +1854,7 @@ namespace macli
                 Console.WriteLine("maCli_SyncCall2 Call end ,iRetCode={0}", RetCode);
                 return -1;
             }
-            RetCode = ParsePkgAcctLogin(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, UserLoginAns);
+            RetCode = ParsePkgStkLogin(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, UserLoginAns);
             return RetCode;
         }
 
@@ -1721,7 +1868,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10301105";
-            SyscCall.strMsgId = "10301105103011051030110510301105";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1731,9 +1877,10 @@ namespace macli
                 Console.WriteLine("maCli_SyncCall2 Call end ,iRetCode={0}", RetCode);
                 return -1;
             }
-            RetCode = ParsePkgAcctLogin(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, UserLoginAns);
+            RetCode = ParsePkgStkLogin(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, UserLoginAns);
             return RetCode;
         }
+        
         //量化委托
         public static int CosOrder(IntPtr Handle, ReqCosOrderField stReqCosOrderField, FirstSetAns stFirstSetAns, List<RspCosOrderField> CosOrderAns)
         {
@@ -1745,7 +1892,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10388101";
-            SyscCall.strMsgId = "10388101103881011038810110388101";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1770,7 +1916,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10388102";
-            SyscCall.strMsgId = "10388101103881011038810110388101";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1795,7 +1940,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10388301";
-            SyscCall.strMsgId = "10388301103883011038830110388301";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1820,7 +1964,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10388312";
-            SyscCall.strMsgId = "10388312103883121038831210388312";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1845,7 +1988,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10388108";
-            SyscCall.strMsgId = "10388108103881081038810810388108";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1870,7 +2012,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10303001";
-            SyscCall.strMsgId = "10303001103030011030300110303001";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1895,7 +2036,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "10303002";
-            SyscCall.strMsgId = "10303002103030021030300210303002";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1923,7 +2063,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "00102012";
-            SyscCall.strMsgId = "001020120010201200102012";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -1957,7 +2096,6 @@ namespace macli
 
             ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
             SyscCall.strFuncId = "00102013";
-            SyscCall.strMsgId = "001020120010201200102012";
             SyscCall.nTimeout = 0;
             IntPtr AnsData;
             int AnsDataLen;
@@ -2036,11 +2174,13 @@ namespace macli
         //功能选项菜单
         public static void CosMenu()
         {
-            Console.WriteLine("      101:量化登录           0:现货登录             1:信用登录");
+            Console.WriteLine("----------------------------------------------------------------------------------------------");
+            Console.WriteLine("      101:量化登录           102:现货登录           103:信用登录");
             Console.WriteLine("      2:订阅主题请求         3:退订主题请求");
             Console.WriteLine("      4:量化委托             5:批量委托             6:委托撤单");
             Console.WriteLine("      7:委托查询             8:成交查询             9:资金查询             10:股份查询");
             Console.WriteLine("      m/M:菜单               x/X:退出");
+            Console.WriteLine("----------------------------------------------------------------------------------------------");
         }
         static void Main(string[] args)
         {
@@ -2052,7 +2192,7 @@ namespace macli
             IntPtr PtrConnOpt = Marshal.AllocHGlobal(Marshal.SizeOf(ConnOpt));
             ConnOpt.nCommType = 3;
             ConnOpt.nProtocal = 1;
-            ConnOpt.szSvrAddress = "192.168.25.24"; //连接服务器地址
+            ConnOpt.szSvrAddress = "192.168.25.226"; //连接服务器地址
             ConnOpt.nSvrPort = 42000; //连接服务器端口
             Marshal.StructureToPtr(ConnOpt, PtrConnOpt, false);
             RetCode = maCliApi.maCli_SetOptions(Handle, (int)MACLI_OPTION.CONNECT_PARAM, PtrConnOpt, Marshal.SizeOf(ConnOpt));
@@ -2123,13 +2263,13 @@ namespace macli
                             //量化登录测试CosLogin
                             FirstSetAns FirstSetLogin = new FirstSetAns(); //返回码以及提示信息
                             ReqCosLogin stReqCosLogin = new ReqCosLogin();
-                            stReqCosLogin.UserCode = "112358";
+                            stReqCosLogin.UserCode = "900617";
                             stReqCosLogin.AuthData = "111111";
                             stReqCosLogin.EncryptKey = "123456";
                             CosLogin(Handle, stReqCosLogin, FirstSetLogin);
                             break;
-                        case 0:
-                            //账户登录测试
+                        case 102:
+                            //股票账户登录测试
                             //账户登录
                             FirstSetAns FirstSet = new FirstSetAns(); //返回码以及提示信息
                             List<RspUserLogin> UserLoginAns = new List<RspUserLogin>(); //返回结果
@@ -2138,27 +2278,29 @@ namespace macli
                             stReqAcctLogin.AcctId = "1653039999"; //账号
                             stReqAcctLogin.Encryptkey = "111111"; //加密因子
                             stReqAcctLogin.AuthData = "111111"; //密码
-                            RetCode = AcctLogin(Handle, stReqAcctLogin, FirstSet, UserLoginAns);
+                            stReqAcctLogin.AuthType = (byte)'0';
+                            stReqAcctLogin.UseScope = (byte)'0';
+                            RetCode = StkLogin(Handle, stReqAcctLogin, FirstSet, UserLoginAns);
                             break;
-                        case 1:
-                            //账户登录测试
+                        case 103:
+                            //信用账户登录测试
                             //账户登录
                             FirstSetAns FirstSetFisl = new FirstSetAns(); //返回码以及提示信息
                             List<RspUserLogin> UserLoginAnsFisl = new List<RspUserLogin>(); //返回结果
                             ReqAcctLogin stReqAcctLoginFisl = new ReqAcctLogin();
                             stReqAcctLoginFisl.AcctType = "Z"; //账号类型:Z-资金账号，U-客户代码
-                            stReqAcctLoginFisl.AcctId = "1653123321"; //账号
+                            stReqAcctLoginFisl.AcctId = "3900000066"; //账号
                             stReqAcctLoginFisl.Encryptkey = "111111"; //加密因子
                             stReqAcctLoginFisl.AuthData = "111111"; //密码
                             RetCode = AcctLoginFisl(Handle, stReqAcctLoginFisl, FirstSetFisl, UserLoginAnsFisl);
                             break;
                         case 2:
                             //成交回报主题订阅
-                            //CosSubTopic(Handle, "MARKET1", "*", "0");
-                            //CosSubTopic(Handle, "MARKET0", "SZ002139", "0");
-                            CosSubTopic(Handle, "TSU_ORDER", stLoginInfo.SzAcct, "1");
-                            //CosSubTopic(Handle, "MATCH10", stLoginInfo.ShAcct, "1");
-                            CosSubTopic(Handle, "MATCH00", stLoginInfo.SzAcct, "1");
+                            //CosSubTopic(Handle, "MARKET1", "SH600000", "0");
+                            //CosSubTopic(Handle, "MARKET0", "SZ90000055", "0");
+                            //CosSubTopic(Handle, "TSU_ORDER", stLoginInfo.ShAcct, "1");
+                            CosSubTopic(Handle, "MATCH15", stLoginInfo.ShAcct, "1");
+                            CosSubTopic(Handle, "CONFIRM15", stLoginInfo.ShAcct, "1");
                             break;
                         case 3:
                             //主题退订
@@ -2190,9 +2332,23 @@ namespace macli
                             break;
                         case 6:
                             //委托撤单CosCancelOrder
+                            ReqCosCancelOrderField stReqCancel = new ReqCosCancelOrderField();
+                            stReqCancel.CuacctCode = stLoginInfo.CuacctCode;
+                            stReqCancel.OrderNo = 1140038807;
+                            FirstSetAns stFirstCancel = new FirstSetAns();
+                            List<RspCosCancelOrderField> AnsCancel = new List<RspCosCancelOrderField>();
+                            CosCancelOrder(Handle, stReqCancel, stFirstCancel, AnsCancel);
                             break;
                         case 7:
                             //委托查询CosQryOrderInfo
+                            ReqCosOrderInfoField stReqOrderInfo = new ReqCosOrderInfoField();
+                            stReqOrderInfo.CuacctCode = stLoginInfo.CuacctCode;
+                            stReqOrderInfo.OrderNo = 1140038807;
+                            stReqOrderInfo.QueryFlag = (byte)'0';
+                            stReqOrderInfo.QueryNum = 100;
+                            FirstSetAns stFirstInfo = new FirstSetAns();
+                            List<RspCosOrderInfoField> AnsOrderInfo = new List<RspCosOrderInfoField>();
+                            CosQryOrderInfo(Handle, stReqOrderInfo, stFirstInfo, AnsOrderInfo);
                             break;
                         case 8:
                             break;
