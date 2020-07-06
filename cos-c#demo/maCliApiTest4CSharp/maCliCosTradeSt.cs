@@ -903,4 +903,77 @@ namespace macli
                 OpenFiMtkConVal, FiContractPlval, SlContractPlval, Mayrepay, StkValue);
         }
     };
+
+    //K线行情获取
+    public struct ReqKLineData
+    {
+        public byte Market; //市场
+        public string Code; //代码
+        public byte CqFlag; //除权标志 0不复权
+        public int CqDate; //复权日期
+        public byte QjFlag; //全价标志
+        public string CycType; //数据周期
+        public int CycDef; //周期数量
+        public byte AutoComplete; //自动补齐
+        public int BegDate; //开始日期
+        public int EndDate; //结束日期
+        public int BegTime; //开始时间
+        public int EndTime; //结束时间
+        public byte Order; //数据顺序
+    }
+
+    public struct RspKLineData
+    {
+        public byte Market; //市场
+        public string Code; //代码
+        public int Amount; //数量
+        public int BegDate; //开始日期
+        public int EndDate; //结束日期
+        public int BegTime; //开始时间
+        public int EndTime; //结束时间
+        public long MarktDataTime; //接收时间
+        public long MatchedVol; //成交总量
+        public long MatchedAmtTot; //成交总金额
+        public string Data; //数据
+
+        public override string ToString()
+        {
+            return String.Format(@"市场:{0}, 代码:{1}, 数量:{2}, 开始日期:{3}, 结束日期:{4}, 开始时间:{5}, 结束时间:{6}, 接收时间:{7}, " +
+                "成交总量:{8}, 成交总金额:{9}, 行情数据:{10}",
+                ((char)Market).ToString(), Code, Amount, BegDate, EndDate, BegTime, EndTime, MarktDataTime,
+                MatchedVol, MatchedAmtTot, Data);
+        }
+    }
+
+    //行情数据(推送)
+    public struct ST_MKT_DATA
+    {
+        public long MktDataTime;              // 接收时间(YYYYMMDDHHMMSSmmm)
+        public byte Exchange;                 // 交易所
+        public string TrdCode;          // 品种代码
+        public int TrdDate;                   // 行情日期
+        public int DataTime;                  // 行情时间(HHMMSSmmm)
+        public string Status;              // 品种状态
+
+        public int CurPrice;                 // 最新价（价格*10000)
+        public int[] AnsPrice;             // 申卖价（价格*10000)
+        public long[] AnsVol;               // 申卖量
+        public int[] BidPrice;             // 申买价（价格*10000)
+        public long[] BidVol;               // 申买量
+        public int MatchedCnt;               // 成交笔数
+        public long MatchedVol;               // 成交量
+        public long MatchedValue;             // 成交金额
+
+        public int PreClosePrice;            // 昨收盘价 2016/8/16新增
+        public int Reserved1;                // 最高价   2016/8/16新增
+        public int Reserved2;                // 最低价   2016/8/16新增
+        public int Reserved3;                // 涨停价   2016/8/16新增
+        public int Reserved4;                // 跌停价   2016/8/16新增
+        public int Reserved5;                // 预留5    2019/9/6新增
+        public int Reserved6;                // 预留6    2019/9/6新增
+        public int Reserved7;                // 预留7    2019/9/6新增
+        public int Reserved8;                // 预留8    2019/9/6新增
+        public int OpenPrice;                // 开盘价   2019/9/6新增
+
+    }
 }

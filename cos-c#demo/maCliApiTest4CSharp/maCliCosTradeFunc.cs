@@ -436,6 +436,7 @@ namespace macli
             }
             Marshal.FreeHGlobal(Buf);
             Marshal.FreeHGlobal(FuncIdPtr);
+            RetCode = maCliApi.maCli_Exit(Handle);
         }
 
         public static void OnRecvAsyn(IntPtr id, IntPtr buff, int len)
@@ -939,7 +940,7 @@ namespace macli
             maCliApi.maCli_SetValueN(Handle, stReqField.OrderBsn, "66");//委托批号
             maCliApi.maCli_SetValueC(Handle, stReqField.CuacctType, "8826");//账户类型
             //stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //后面跟随API3.2启用，按最新终端信息规范自动填充
-            //_maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
+            _maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
 
             maCliApi.maCli_EndWrite(Handle);
 
@@ -2169,6 +2170,107 @@ namespace macli
             }
             Console.WriteLine("客户端与服务器成功建立通信连接");
             return 0;
+        }
+
+        /*******************行情数据获取处理*******************/
+        //COSk线历史数据
+
+        public static void MakePkgKLine(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqKLineData StReqFiled)
+        {
+            maCliApi.maCli_BeginWrite(Handle);
+            SetPacketHead(Handle, "10388210", (byte)'T', (byte)'B');
+
+            maCliApi.maCli_SetValueC(Handle, StReqFiled.Market, "8899");
+            _maCli_SetValueS(Handle, StReqFiled.Code, "8900");
+            maCliApi.maCli_SetValueC(Handle, StReqFiled.CqFlag, "8901");
+            maCliApi.maCli_SetValueN(Handle, StReqFiled.CqDate, "8902");
+            maCliApi.maCli_SetValueC(Handle, StReqFiled.QjFlag, "8903");
+            _maCli_SetValueS(Handle, StReqFiled.CycType, "8904");
+            maCliApi.maCli_SetValueN(Handle, StReqFiled.CycDef, "8905");
+            maCliApi.maCli_SetValueC(Handle, StReqFiled.AutoComplete, "8906");
+            maCliApi.maCli_SetValueN(Handle, StReqFiled.BegDate, "8907");
+            maCliApi.maCli_SetValueN(Handle, StReqFiled.EndDate, "8908");
+            maCliApi.maCli_SetValueN(Handle, StReqFiled.BegTime, "8909");
+            maCliApi.maCli_SetValueN(Handle, StReqFiled.EndTime, "8910");
+            maCliApi.maCli_SetValueC(Handle, StReqFiled.Order, "8911");
+
+            maCliApi.maCli_EndWrite(Handle);
+            maCliApi.maCli_Make(Handle, out ReqData, out ReqDataLen);
+        }
+
+        public static int ParsePkgKLine(IntPtr Handle, ref IntPtr AnsData, ref int AnsDataLen, FirstSetAns stFirstSetAns, List<RspKLineData> CosKLineAns)
+        {
+            RetCode = maCliApi.maCli_Parse(Handle, AnsData, AnsDataLen);
+            int TableCount;
+            RetCode = maCliApi.maCli_GetTableCount(Handle, out TableCount);
+            if (TableCount > 0)
+            {
+                ParseAnsTb1(Handle, "K线数据查询响应", stFirstSetAns);
+            }
+            else
+            {
+                return -1;
+            }
+            if (RetCode == 0 && TableCount > 1)
+            {
+                RetCode = maCliApi.maCli_OpenTable(Handle, 2);
+                int RowCount;
+                RetCode = maCliApi.maCli_GetRowCount(Handle, out RowCount);
+                for (int Row = 0; Row < RowCount; ++Row)
+                {
+                    RetCode = maCliApi.maCli_ReadRow(Handle, Row + 1);
+                    IntPtr Buf = Marshal.AllocHGlobal(512 + 1);
+                    RspKLineData FieldData = new RspKLineData();
+
+                    maCliApi.maCli_GetValueC(Handle, ref FieldData.Market, "8899");
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "8900");
+                    FieldData.Code = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueN(Handle, ref FieldData.Amount, "8902");
+                    maCliApi.maCli_GetValueN(Handle, ref FieldData.BegDate, "8907");
+                    maCliApi.maCli_GetValueN(Handle, ref FieldData.EndDate, "8908");
+                    maCliApi.maCli_GetValueN(Handle, ref FieldData.BegTime, "8909");
+                    maCliApi.maCli_GetValueN(Handle, ref FieldData.EndTime, "8910");
+                    maCliApi.maCli_GetValueL(Handle, ref FieldData.MarktDataTime, "8911");
+                    maCliApi.maCli_GetValueL(Handle, ref FieldData.MatchedVol, "8912");
+                    maCliApi.maCli_GetValueL(Handle, ref FieldData.MatchedAmtTot, "8913");
+                    maCliApi.maCli_GetValueS(Handle, Buf, 512, "8901");
+                    FieldData.Data = Marshal.PtrToStringAnsi(Buf);
+                    Marshal.FreeHGlobal(Buf);
+                    CosKLineAns.Add(FieldData);
+                    Console.WriteLine("返回内容: [{0},{1}] ", RowCount, Row + 1);
+                    Console.WriteLine("{0}", FieldData.ToString());
+                }
+            }
+            else
+            {
+                ThrowAnsError(Handle, out RetCode);
+                return -1;
+            }
+            return 0;
+        }
+
+        //K线行情查询
+        public static int CosQryKLine(IntPtr Handle, ReqKLineData stReqField, FirstSetAns stFirstSetAns, List<RspKLineData> CosKLineAns)
+        {
+            //if (CheckIsLogin() == -1) return -1;
+            //******查询K线数据
+            IntPtr ReqData;
+            int ReqDataLen;
+            MakePkgKLine(Handle, out ReqData, out ReqDataLen, stReqField);
+
+            ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
+            SyscCall.strFuncId = "10388210";
+            SyscCall.nTimeout = 0;
+            IntPtr AnsData;
+            int AnsDataLen;
+            RetCode = maCliApi.maCli_SyncCall2(Handle, ref SyscCall, ReqData, ReqDataLen, out AnsData, out AnsDataLen);
+            if (RetCode != 0)
+            {
+                Console.WriteLine("maCli_SyncCall2 Call end ,iRetCode={0}", RetCode);
+                return -1;
+            }
+            RetCode = ParsePkgKLine(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, CosKLineAns);
+            return RetCode;
         }
 
         //功能选项菜单
