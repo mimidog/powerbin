@@ -502,7 +502,7 @@ namespace macli
                 }
                 if(stClientInfo.Hd.Length == 0)
                 {
-                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.HD_ID, Buf, 32);
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.HD_ID, Buf, 33);
                     stClientInfo.Hd = Marshal.PtrToStringAnsi(Buf);
                     if (stClientInfo.Hd.Length == 0)
                     {
@@ -511,7 +511,7 @@ namespace macli
                 }
                 if (stClientInfo.Pcn.Length == 0)
                 {
-                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.PC_NAME, Buf, 20);
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.PC_NAME, Buf, 21);
                     stClientInfo.Pcn = Marshal.PtrToStringAnsi(Buf);
                     if (stClientInfo.Pcn.Length == 0)
                     {
@@ -520,7 +520,7 @@ namespace macli
                 }
                 if (stClientInfo.Cpu.Length == 0)
                 {
-                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.CPU_ID, Buf, 20);
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.CPU_ID, Buf, 21);
                     stClientInfo.Cpu = Marshal.PtrToStringAnsi(Buf);
                     if (stClientInfo.Cpu.Length == 0)
                     {
@@ -529,7 +529,7 @@ namespace macli
                 }
                 if (stClientInfo.Pi.Length == 0)
                 {
-                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.HD_PART, Buf, 20);
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.HD_PART, Buf, 21);
                     stClientInfo.Pi = Marshal.PtrToStringAnsi(Buf);
                     if (stClientInfo.Pi.Length == 0)
                     {
@@ -538,7 +538,7 @@ namespace macli
                 }
                 if (stClientInfo.Vol.Length == 0)
                 {
-                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.SYS_VOL, Buf, 10);
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.SYS_VOL, Buf, 20);
                     stClientInfo.Vol = Marshal.PtrToStringAnsi(Buf);
                     if (stClientInfo.Vol.Length == 0)
                     {
@@ -547,7 +547,7 @@ namespace macli
                 }
                 if (stClientInfo.Ext.Length == 0)
                 {
-                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.APP_NAME, Buf, 53);
+                    maCliApi.maCli_GetOptions(Handle, (int)MACLI_OPTION.APP_NAME, Buf, 54);
                     stClientInfo.Ext = Marshal.PtrToStringAnsi(Buf);
                     if (stClientInfo.Ext.Length == 0)
                     {
@@ -559,7 +559,6 @@ namespace macli
                     stClientInfo.Iip, stClientInfo.Iport, stClientInfo.Lip, stClientInfo.Mac, stClientInfo.Hd,
                     stClientInfo.Pcn, stClientInfo.Cpu, stClientInfo.Pi, stClientInfo.Vol, "@", stClientInfo.Ext);
             }
-            Console.WriteLine(clientInfo);
             return clientInfo;
         }
 
@@ -853,7 +852,7 @@ namespace macli
             _maCli_SetValueS(Handle, stReqField.ExercisePrice, "8973");//行权价
             maCliApi.maCli_SetValueL(Handle, stReqField.ConUnit, "8974");//合约单位
             _maCli_SetValueS(Handle, stReqField.CliOrderNo, "9102");//客户端委托编号
-            //stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //后面跟随API3.2启用
+            stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //跟随API3.2启用
             _maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
             _maCli_SetValueS(Handle, stReqField.BusinessUnit, "8717");//业务单元
             _maCli_SetValueS(Handle, stReqField.GtdData, "8723");//GTD日期
@@ -939,7 +938,7 @@ namespace macli
             maCliApi.maCli_SetValueN(Handle, stReqField.OrderNo, "9106");//委托编号
             maCliApi.maCli_SetValueN(Handle, stReqField.OrderBsn, "66");//委托批号
             maCliApi.maCli_SetValueC(Handle, stReqField.CuacctType, "8826");//账户类型
-            //stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //后面跟随API3.2启用，按最新终端信息规范自动填充
+            stReqField.CliRemark = AutoFillClientInfo(Handle, stReqField.CliRemark); //跟随API3.2启用，按最新终端信息规范自动填充
             _maCli_SetValueS(Handle, stReqField.CliRemark, "8914");//留痕信息
 
             maCliApi.maCli_EndWrite(Handle);
@@ -1579,6 +1578,79 @@ namespace macli
             return 0;
         }
 
+        //证券信息查询组包
+        public static void MakePkgQryStkInfo(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqStkInfoField stReqField)
+        {
+            maCliApi.maCli_BeginWrite(Handle);
+            SetPacketHead(Handle, "10388367", (byte)'T', (byte)'B');
+
+            _maCli_SetValueS(Handle, stReqField.Stkbd, "625");
+            maCliApi.maCli_SetValueC(Handle, stReqField.QueryFlag, "9080");
+            _maCli_SetValueS(Handle, stReqField.StkCode, "48");
+            _maCli_SetValueS(Handle, stReqField.QueryPos, "8991");
+            maCliApi.maCli_SetValueN(Handle, stReqField.QueryNum, "8992");
+            maCliApi.maCli_SetValueL(Handle, long.Parse(stLoginInfo.CuacctCode), "8920");
+
+            maCliApi.maCli_EndWrite(Handle);
+
+            maCliApi.maCli_Make(Handle, out ReqData, out ReqDataLen);
+        }
+
+        //证券信息查询解包
+        public static int ParsePkgQryStkInfo(IntPtr Handle, ref IntPtr AnsData, ref int AnsDataLen, FirstSetAns stFirstSetAns, List<RspStkInfoField> StkInfoAns)
+        {
+            RetCode = maCliApi.maCli_Parse(Handle, AnsData, AnsDataLen);
+            int TableCount;
+            RetCode = maCliApi.maCli_GetTableCount(Handle, out TableCount);
+            if (TableCount > 0)
+            {
+                ParseAnsTb1(Handle, "证券信息查询请求响应", stFirstSetAns);
+            }
+            else
+            {
+                return -1;
+            }
+            if (RetCode == 0 && TableCount > 1)
+            {
+                RetCode = maCliApi.maCli_OpenTable(Handle, 2);
+                int RowCount;
+                RetCode = maCliApi.maCli_GetRowCount(Handle, out RowCount);
+                for (int Row = 0; Row < RowCount; ++Row)
+                {
+                    RetCode = maCliApi.maCli_ReadRow(Handle, Row + 1);
+                    IntPtr Buf = Marshal.AllocHGlobal(128 + 1);
+                    RspStkInfoField FieldData = new RspStkInfoField();
+
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "8991");
+                    FieldData.QueryPos = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "625");
+                    FieldData.Stkbd = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "48");
+                    FieldData.StkCode = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "55");
+                    FieldData.StkName = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueC(Handle, ref FieldData.StkCls, "461");
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "8519");
+                    FieldData.StkUplmtPrice = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueS(Handle, Buf, 64, "8520");
+                    FieldData.StkLwlmtPrice = Marshal.PtrToStringAnsi(Buf);
+                    maCliApi.maCli_GetValueN(Handle, ref FieldData.StkLotSize, "461");
+                    maCliApi.maCli_GetValueC(Handle, ref FieldData.StkSuspended, "8956");
+                    maCliApi.maCli_GetValueC(Handle, ref FieldData.StkStatus, "326");
+                    Marshal.FreeHGlobal(Buf);
+                    StkInfoAns.Add(FieldData);
+                    Console.WriteLine("返回内容:[{0},{1}]", RowCount, Row + 1);
+                    Console.WriteLine("{0}", FieldData.ToString());
+                }
+            }
+            else
+            {
+                ThrowAnsError(Handle, out RetCode);
+                return -1;
+            }
+            return 0;
+        }
+
         //主题订阅
         public static void MakePkgSubTopic(IntPtr Handle, out IntPtr ReqData, out int ReqDataLen, ReqSubTopicField stReqField)
         {
@@ -2049,7 +2121,31 @@ namespace macli
             RetCode = ParsePkgStkQryShares(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, StkQrySharesAns);
             return RetCode;
         }
+        
+        //证券信息查询
+        public static int CosQryStkInfoQk(IntPtr Handle, ReqStkInfoField stReqField, FirstSetAns stFirstSetAns, List<RspStkInfoField> QryStkInfoAns)
+        {
+            if (CheckIsLogin() == -1) return -1;
+            //******查询证券信息
+            IntPtr ReqData;
+            int ReqDataLen;
+            MakePkgQryStkInfo(Handle, out ReqData, out ReqDataLen, stReqField);
 
+            ST_MACLI_SYNCCALL SyscCall = new ST_MACLI_SYNCCALL();
+            SyscCall.strFuncId = "10388367";
+            SyscCall.nTimeout = 0;
+            IntPtr AnsData;
+            int AnsDataLen;
+            RetCode = maCliApi.maCli_SyncCall2(Handle, ref SyscCall, ReqData, ReqDataLen, out AnsData, out AnsDataLen);
+            if (RetCode != 0)
+            {
+                Console.WriteLine("maCli_SyncCall2 Call end ,iRetCode={0}", RetCode);
+                return -1;
+            }
+            RetCode = ParsePkgQryStkInfo(Handle, ref AnsData, ref AnsDataLen, stFirstSetAns, QryStkInfoAns);
+            return RetCode;
+        }
+        
         //订阅主题
         public static int CosSubTopic(IntPtr Handle, string Topic, string Filter, string DataSet)
         {
@@ -2281,6 +2377,7 @@ namespace macli
             Console.WriteLine("      2:订阅主题请求         3:退订主题请求");
             Console.WriteLine("      4:量化委托             5:批量委托             6:委托撤单");
             Console.WriteLine("      7:委托查询             8:成交查询             9:资金查询             10:股份查询");
+			Console.WriteLine("      11:K线行情查询         12:证券信息查询");
             Console.WriteLine("      m/M:菜单               x/X:退出");
             Console.WriteLine("----------------------------------------------------------------------------------------------");
         }
@@ -2401,8 +2498,8 @@ namespace macli
                             //CosSubTopic(Handle, "MARKET1", "SH600000", "0");
                             //CosSubTopic(Handle, "MARKET0", "SZ90000055", "0");
                             //CosSubTopic(Handle, "TSU_ORDER", stLoginInfo.ShAcct, "1");
-                            CosSubTopic(Handle, "MATCH15", stLoginInfo.ShAcct, "1");
-                            CosSubTopic(Handle, "CONFIRM15", stLoginInfo.ShAcct, "1");
+                            CosSubTopic(Handle, "MATCH00", stLoginInfo.SzAcct, "0");
+                            CosSubTopic(Handle, "TSU_ORDER", stLoginInfo.SzAcct, "0");
                             break;
                         case 3:
                             //主题退订
@@ -2413,18 +2510,18 @@ namespace macli
                             ReqCosOrderField stReqOrder = new ReqCosOrderField();
                             stReqOrder.TrdCode = "002230";
                             stReqOrder.OrderQty = 100;
-                            stReqOrder.OrderPrice = "33.97";
+                            stReqOrder.OrderPrice = "38.97";
                             stReqOrder.CuacctCode = stLoginInfo.CuacctCode;
                             stReqOrder.CustCode = stLoginInfo.CustCode;
                             stReqOrder.Trdacct = stLoginInfo.SzAcct;
                             stReqOrder.Stkbd = "00";
-                            stReqOrder.StkBiz = 702;
+                            stReqOrder.StkBiz = 100;
                             stReqOrder.StkBizAction = 100;
                             stReqOrder.IntOrg = stLoginInfo.IntOrg;
                             
                             for (int i = 0; i < 1; i++)
                             {
-                                stReqOrder.CliOrderNo = "20200527-23-"+i;
+                                stReqOrder.CliOrderNo = "20200716-23-"+i;
                                 FirstSetAns stFirst = new FirstSetAns();
                                 List<RspCosOrderField> AnsOrder = new List<RspCosOrderField>();
                                 CosOrder(Handle, stReqOrder, stFirst, AnsOrder);

@@ -74,6 +74,39 @@ namespace macli
         }
     }
 
+    // 证券信息查询（10388367）
+    public struct ReqStkInfoField
+    {
+        public string Stkbd;              // 交易板块
+        public string StkCode;              // 交易板块
+        public byte QueryFlag;             // 查询方向
+        public string QueryPos;              // 定位串
+        public int QueryNum;              // 查询行数,最大1000
+    }
+
+    public struct RspStkInfoField
+    {
+        public string QueryPos;           // 定位串
+        public string Stkbd;              // 交易板块
+        public string StkCode;            // 证券代码
+        public string StkName;            // 证券名称
+        public byte StkCls;             // 证券类别
+        public int StkCirculation;     // 流通量
+        public string StkUplmtPrice;      // 涨停价
+        public string StkLwlmtPrice;      // 跌停价
+        public int StkLotSize;         // 每手数量
+        public byte StkSuspended;       //停牌标志
+        public byte StkStatus;          //证券状态
+
+        public override string ToString()
+        {
+            return String.Format(@"定位串:{0},交易板块:{1},证券代码:{2},证券名称:{3},证券类别:{4}," +
+                "流通量:{5},涨停价:{6},跌停价:{7},每手数量:{8},停牌标志{9},证券状态{10}",
+                QueryPos, Stkbd, StkCode, StkName, ((char)StkCls).ToString(), StkCirculation,
+                StkUplmtPrice, StkLwlmtPrice, StkLotSize, ((char)StkSuspended).ToString(), ((char)StkStatus).ToString());
+        }
+    }
+
     // 10388101:量化委托
     public struct ReqCosOrderField
     {
