@@ -86,7 +86,7 @@ namespace macli
         }
     }
 
-    // 10388101:委托
+    // 10302001:委托
     public struct ReqStkOrderField
     {
         public long CustCode; //客户代码
@@ -152,7 +152,7 @@ namespace macli
         }
     }
 
-    //10388102:委托撤单
+    //103802004:委托撤单
     public struct ReqStkCancelOrderField
     {
         public long CuacctCode; //资产账户
