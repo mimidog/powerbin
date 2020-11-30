@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+	<resultMap id="ProcResultMap" type="org.apache.commons.collections.map.CaseInsensitiveMap"></resultMap>
+	<select id="frameSysMenuQuery" parameterType="hashmap" resultType="java.util.HashMap">
+   	<if test="OP_POST == '8888' or USER_CODE=='8888' or OP_POST == '9999' or USER_CODE=='9999'">
+   		SELECT M.MENU_ID,
+	       M.MENU_NAME,
+	       M.PAR_MENU,
+	       M.MENU_PUR,
+	       M.MENU_LINK,
+	       M.MENU_ICO,
+	       M.MENU_LVL,
+	       M.MENU_PLAT
+	       FROM UPM_MENU M
+	       WHERE M.MENU_STA = '1'
+	       <if test="MENU_PUR == '-1'">
+	       AND M.MENU_PUR = '1'
+	       </if>
+	       <if test="MENU_PUR != '-1'">
+	       AND M.MENU_PUR &lt;&gt; '1'
+	       </if>
+	       ORDER BY M.MENU_LVL
+   	</if>
+   	
+   	<if test="OP_POST != 1 and USER_CODE!='8888' and OP_POST != '9999' and USER_CODE != '9999'">
+   	SELECT M.MENU_ID,
+	       M.MENU_NAME,
+	       M.PAR_MENU,
+	       M.MENU_PUR,
+	       M.MENU_LINK,
+	       M.MENU_ICO,
+	       M.MENU_LVL,
+	       M.MENU_PLAT,
+	       UUPC.CONS_ID,
+	       ISNULL(UUPC.CONS_MAX, UPC.CONS_MAX) AS CONS_MAX,
+		   ISNULL(UUPC.CONS_MIN, UPC.CONS_MIN) AS CONS_MIN,
+	       ISNULL(UUPC.CONS_TYPE, UPC.CONS_TYPE) AS CONS_TYPE
+	  FROM UUM_USER_PERM UP
+	  JOIN UUM_PERMISSION P
+	    ON P.PERM_ID = UP.PERM_ID
+	  JOIN UPM_MENU M
+	    ON P.PERM_VAL = M.MENU_ID
+	  LEFT JOIN (SELECT UUPC.AUTH_ID,UUPC.CONS_ID,UUPC.CONS_MAX,UUPC.CONS_MIN,UC.CONS_TYPE FROM UUM_USER_PERM_CONS UUPC,UUM_CONSTRAINTS UC 
+	  WHERE UC.CONS_ID = UUPC.CONS_ID  AND UC.CONS_STATE = 1 AND UUPC.CONS_MAX IS NOT NULL) UUPC
+	    ON UUPC.AUTH_ID = UP.AUTH_ID
+	  LEFT JOIN (SELECT UPC.PERM_ID, UPC.CONS_ID, UPC.CONS_MAX, UPC.CONS_MIN,UC.CONS_TYPE
+			   FROM UPM_PERM_CONS UPC, UUM_CONSTRAINTS UC
+			  WHERE UC.CONS_ID = UPC.CONS_ID
+				AND UC.CONS_STATE = 1
+				AND UPC.CONS_MAX IS NOT NULL) UPC
+    ON UPC.PERM_ID = UP.PERM_ID
+	 WHERE UP.AUTH_TYPE = '1'
+	   AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+	   AND P.PERM_STA = '1'
+	   AND M.MENU_STA = '1'
+	   <if test="MENU_PUR == '-1'">
+	   AND M.MENU_PUR = '1'
+       </if>
+       <if test="MENU_PUR != '-1'">
+       AND M.MENU_PUR &lt;&gt; '1'
+       </if>
+	   AND UP.OBJ_TYPE = '2'
+	   AND UP.OBJ_ID = '${USER_CODE}'
+	UNION
+	SELECT M.MENU_ID,
+	       M.MENU_NAME,
+	       M.PAR_MENU,
+	       M.MENU_PUR,
+	       M.MENU_LINK,
+	       M.MENU_ICO,
+	       M.MENU_LVL,
+	       M.MENU_PLAT,
+	       UUPC.CONS_ID,
+	       ISNULL(UUPC.CONS_MAX, UPC.CONS_MAX) AS CONS_MAX,
+		   ISNULL(UUPC.CONS_MIN, UPC.CONS_MIN) AS CONS_MIN,
+	      ISNULL(UUPC.CONS_TYPE, UPC.CONS_TYPE) AS CONS_TYPE
+	  FROM UUM_USER_PERM UP
+	  JOIN UUM_PERMISSION P
+	    ON P.PERM_ID = UP.PERM_ID
+	  JOIN UPM_MENU M
+	    ON P.PERM_VAL = M.MENU_ID
+	  LEFT JOIN (SELECT UUPC.AUTH_ID,UUPC.CONS_ID,UUPC.CONS_MAX,UUPC.CONS_MIN,UC.CONS_TYPE FROM UUM_USER_PERM_CONS UUPC,UUM_CONSTRAINTS UC 
+	  WHERE UC.CONS_ID = UUPC.CONS_ID  AND UC.CONS_STATE = 1 AND UUPC.CONS_MAX IS NOT NULL) UUPC
+	    ON UUPC.AUTH_ID = UP.AUTH_ID
+      LEFT JOIN (SELECT UPC.PERM_ID, UPC.CONS_ID, UPC.CONS_MAX, UPC.CONS_MIN,UC.CONS_TYPE
+			   FROM UPM_PERM_CONS UPC, UUM_CONSTRAINTS UC
+			  WHERE UC.CONS_ID = UPC.CONS_ID
+				AND UC.CONS_STATE = 1
+				AND UPC.CONS_MAX IS NOT NULL) UPC
+    ON UPC.PERM_ID = UP.PERM_ID
+	 WHERE UP.AUTH_TYPE = '1'
+	   AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+	   AND P.PERM_STA = '1'
+	   AND M.MENU_STA = '1'
+	   <if test="MENU_PUR == '-1'">
+	   AND M.MENU_PUR = '1'
+       </if>
+       <if test="MENU_PUR != '-1'">
+       AND M.MENU_PUR &lt;&gt; '1'
+       </if>
+	   AND UP.OBJ_TYPE = '1'
+	   AND EXISTS (SELECT 1
+	          FROM UUM_USER_ROLE UR, UUM_ROLE R
+	         WHERE UP.OBJ_ID = UR.ROLE_ID
+	           AND UR.ROLE_ID = R.ROLE_ID
+	           AND R.ROLE_STA = '1'
+	           AND UR.USER_CODE = '${USER_CODE}')
+	UNION
+	SELECT M.MENU_ID,
+	       M.MENU_NAME,
+	       M.PAR_MENU,
+	       M.MENU_PUR,
+	       M.MENU_LINK,
+	       M.MENU_ICO,
+	       M.MENU_LVL,
+	       M.MENU_PLAT,
+	       UUPC.CONS_ID,
+	       ISNULL(UUPC.CONS_MAX, UPC.CONS_MAX) AS CONS_MAX,
+		   ISNULL(UUPC.CONS_MIN, UPC.CONS_MIN) AS CONS_MIN,
+	       ISNULL(UUPC.CONS_TYPE, UPC.CONS_TYPE) AS CONS_TYPE
+	  FROM UUM_USER_PERM UP
+	  JOIN UUM_PERMISSION P
+	    ON P.PERM_ID = UP.PERM_ID
+	  JOIN UPM_MENU M
+	    ON P.PERM_VAL = M.MENU_ID
+	  LEFT JOIN (SELECT UUPC.AUTH_ID,UUPC.CONS_ID,UUPC.CONS_MAX,UUPC.CONS_MIN,UC.CONS_TYPE FROM UUM_USER_PERM_CONS UUPC,UUM_CONSTRAINTS UC 
+	  WHERE UC.CONS_ID = UUPC.CONS_ID  AND UC.CONS_STATE = 1 AND UUPC.CONS_MAX IS NOT NULL) UUPC
+	    ON UUPC.AUTH_ID = UP.AUTH_ID
+		LEFT JOIN (SELECT UPC.PERM_ID, UPC.CONS_ID, UPC.CONS_MAX, UPC.CONS_MIN,UC.CONS_TYPE
+			   FROM UPM_PERM_CONS UPC, UUM_CONSTRAINTS UC
+			  WHERE UC.CONS_ID = UPC.CONS_ID
+				AND UC.CONS_STATE = 1
+				AND UPC.CONS_MAX IS NOT NULL) UPC
+    ON UPC.PERM_ID = UP.PERM_ID
+	 WHERE UP.AUTH_TYPE = '1'
+	   AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+	   AND P.PERM_STA = '1'
+	   AND M.MENU_STA = '1'
+	   <if test="MENU_PUR == '-1'">
+	   AND M.MENU_PUR = '1'
+       </if>
+       <if test="MENU_PUR != '-1'">
+       AND M.MENU_PUR &lt;&gt; '1'
+       </if>
+	   AND UP.OBJ_TYPE = '3'
+	   AND EXISTS (SELECT 1
+	          FROM UUM_POST P, UUM_OPER_POST OP
+	         WHERE UP.OBJ_ID = OP.POST_ID
+	           AND OP.POST_ID = P.POST_ID
+	           AND P.POST_STA = '1'
+	           AND OP.USER_CODE = '${USER_CODE}')
+	UNION
+	SELECT M.MENU_ID,
+	       M.MENU_NAME,
+	       M.PAR_MENU,
+	       M.MENU_PUR,
+	       M.MENU_LINK,
+	       M.MENU_ICO,
+	       M.MENU_LVL,
+	       M.MENU_PLAT,
+	       UUPC.CONS_ID,
+	       ISNULL(UUPC.CONS_MAX, UPC.CONS_MAX) AS CONS_MAX,
+		   ISNULL(UUPC.CONS_MIN, UPC.CONS_MIN) AS CONS_MIN,
+	       ISNULL(UUPC.CONS_TYPE, UPC.CONS_TYPE) AS CONS_TYPE
+	  FROM UUM_USER_PERM UP
+	  JOIN UUM_PERMISSION P
+	    ON P.PERM_ID = UP.PERM_ID
+	  JOIN UPM_MENU M
+	    ON P.PERM_VAL = M.MENU_ID
+	  LEFT JOIN (SELECT UUPC.AUTH_ID,UUPC.CONS_ID,UUPC.CONS_MAX,UUPC.CONS_MIN,UC.CONS_TYPE FROM UUM_USER_PERM_CONS UUPC,UUM_CONSTRAINTS UC 
+	  WHERE UC.CONS_ID = UUPC.CONS_ID  AND UC.CONS_STATE = 1 AND UUPC.CONS_MAX IS NOT NULL) UUPC
+	    ON UUPC.AUTH_ID = UP.AUTH_ID 
+      LEFT JOIN (SELECT UPC.PERM_ID, UPC.CONS_ID, UPC.CONS_MAX, UPC.CONS_MIN,UC.CONS_TYPE
+			   FROM UPM_PERM_CONS UPC, UUM_CONSTRAINTS UC
+			  WHERE UC.CONS_ID = UPC.CONS_ID
+				AND UC.CONS_STATE = 1
+				AND UPC.CONS_MAX IS NOT NULL) UPC
+    ON UPC.PERM_ID = UP.PERM_ID
+	 WHERE UP.AUTH_TYPE = '1'
+	   AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+	   AND P.PERM_STA = '1'
+	   AND M.MENU_STA = '1'
+	   <if test="MENU_PUR == '-1'">
+	   AND M.MENU_PUR = '1'
+       </if>
+       <if test="MENU_PUR != '-1'">
+       AND M.MENU_PUR &lt;&gt; '1'
+       </if>
+	   AND UP.OBJ_TYPE = '4'
+	   AND EXISTS (SELECT 1
+	          FROM UUM_USER U, UPM_ORG O
+	         WHERE UP.OBJ_ID = U.ORG_CODE
+	           AND U.ORG_CODE = O.ORG_CODE
+	           AND O.ORG_STA = '1'
+	           AND U.USER_CODE = '${USER_CODE}')
+	 ORDER BY MENU_LVL
+	 </if>
+	</select>
+	<select id="frameDictItemQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT I.ITEM_ID, I.DICT_CODE, I.DICT_ITEM, I.DICT_ITEM_NAME, I.DICT_ORD, I.ORG_CODE AS INT_ORG
+		FROM UPM_DICT_ITEMS I
+		<if test="DICT_CODE != '-1'">
+	    AND I.DICT_CODE = '${DICT_CODE}'
+	    </if>
+		ORDER BY I.DICT_CODE,I.DICT_ORD,I.ITEM_ID
+	</select>
+	<select id="frameUserLogin" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT U.USER_CODE,
+			   USER_NAME,
+			   USER_PASS,
+			   USER_TYPE,
+			   USER_STA,
+			   OPEN_DATE,
+			   LOG_IP,
+			   CONVERT(VARCHAR,LOG_DATE, 120) AS LOG_DATE,
+			   EMP_ID,
+			   USER_ICON,
+			   ORG_CODE,
+			   (SELECT top 1 P.ORG_CODE +' '+P.ORG_NAME  FROM UPM_ORG P
+			WHERE U.ORG_CODE = P.ORG_CODE AND )  AS ORG_NAME,
+			   OFF_TEL,
+			   MOBILE,
+			   EMAIL,
+			   SIGNATRUE,
+			   'DODHk/35t/2dfAWSuU3hlFzfL69Y9csJ' AS USER_TICKET_INFO,
+			   (SELECT MAX(P.POST_ID) FROM UUM_OPER_POST P
+			WHERE U.USER_CODE = P.USER_CODE)  AS USER_POST,
+			  (SELECT top 1 P.ROLE_ID FROM UUM_USER_ROLE P
+			WHERE U.USER_CODE = P.USER_CODE AND )  AS USER_ROLE,
+			   '0' AS IRETCODE
+		  FROM UUM_USER U 
+		 WHERE U.USER_CODE =  #{USER_CODE, jdbcType=VARCHAR}
+		   AND USER_PASS = '${TRD_PWD}'
+	</select>
+	<select id="frameUserLogin_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT U.USER_CODE,
+			   USER_NAME,
+			   USER_PASS,
+			   USER_TYPE,
+			   USER_STA,
+			   OPEN_DATE,
+			   LOG_IP,
+			   CONVERT(VARCHAR,LOG_DATE, 120) AS LOG_DATE,
+			   EMP_ID,
+			   USER_ICON,
+			   ORG_CODE,
+			   (SELECT top 1 P.ORG_CODE +' '+P.ORG_NAME  FROM UPM_ORG P
+			WHERE U.ORG_CODE = P.ORG_CODE)  AS ORG_NAME,
+			   OFF_TEL,
+			   MOBILE,
+			   EMAIL,
+			   SIGNATRUE,
+			   'DODHk/35t/2dfAWSuU3hlFzfL69Y9csJ' AS USER_TICKET_INFO,
+			   (SELECT  top 1  P.POST_ID FROM UUM_OPER_POST P
+			WHERE U.USER_CODE = P.USER_CODE)  AS USER_POST,
+			   '0' AS IRETCODE
+		  FROM UUM_USER U 
+		 WHERE U.USER_CODE = #{USER_CODE, jdbcType=VARCHAR}
+		   AND USER_PASS = '${TRD_PWD}'
+	</select>
+	<update id="frameUserLoginUpdate" parameterType="hashmap">
+		UPDATE UUM_USER
+		   SET LOG_IP = '${LOG_IP}', LOG_DATE = GETDATE()
+		 WHERE USER_CODE = '${USER_CODE}'
+	</update>
+	<update id="frameUserLoginUpdate_MSSQL" parameterType="hashmap">
+		UPDATE UUM_USER
+		   SET LOG_IP = '${LOG_IP}', LOG_DATE = GETDATE()
+		 WHERE USER_CODE = '${USER_CODE}'
+	</update>
+	<update id="frameUserUpdate" parameterType="hashmap">
+        UPDATE UUM_USER
+        <set>
+            <if test="OFF_TEL != null">OFF_TEL='${OFF_TEL}',</if>
+            <if test="MOBILE != null">MOBILE='${MOBILE}',</if>
+            <if test="EMAIL != null">EMAIL='${EMAIL}',</if>
+            <if test="SIGNATRUE != null">SIGNATRUE='${SIGNATRUE}',</if>
+             <if test="USER_ICON != null">USER_ICON='${USER_ICON}'</if>
+        </set>
+        WHERE USER_CODE='${USER_CODE}'
+    </update>
+    <update id="frameUserUpdateIcon" parameterType="hashmap">
+        UPDATE UUM_USER
+        <set>
+            <if test="USER_ICON != null">USER_ICON='${USER_ICON}'</if>
+        </set>
+        WHERE USER_CODE='${USER_CODE}'
+    </update>
+
+	
+	<insert id="frameIconUpload" parameterType="hashmap">
+	  INSERT INTO UPM_SYS_ATTR (ATT_ID,ATT_TYPE,ATT_CON,ATT_TIT,ATT_SIZE,UPLOAD_DATE,ATT_PATH) 
+        VALUES ((NEXT VALUE FOR SEQ_ATT_ID),'${ATT_TYPE}','${ATT_CON}','${ATT_TIT}','${ATT_SIZE}',GETDATE(),'${ATT_PATH}')
+	</insert>
+	<insert id="frameIconUpload_MSSQL" parameterType="hashmap">
+	  INSERT INTO UPM_SYS_ATTR (ATT_ID,ATT_TYPE,ATT_CON,ATT_TIT,ATT_SIZE,UPLOAD_DATE,ATT_PATH) 
+        VALUES ('${ID}','${ATT_TYPE}','${ATT_CON}','${ATT_TIT}','${ATT_SIZE}',GETDATE(),'${ATT_PATH}')
+	</insert>
+	<select id="frameParMaxLvlQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT (SELECT MAX(${LVL_FLD}) FROM ${TB_NAME} WHERE ${PID_FLD} = '${PID}') AS MAX_LVL,(SELECT ISNULL(${LVL_FLD},'')  FROM ${TB_NAME} WHERE ${ID_FLD} = '${PID}') AS PAR_LVL
+	</select>
+	<select id="frameParMaxLvlQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT (SELECT MAX(${LVL_FLD}) FROM ${TB_NAME} WHERE ${PID_FLD} = '${PID}') AS MAX_LVL,ISNULL((SELECT ${LVL_FLD}  FROM ${TB_NAME} WHERE ${ID_FLD} = '${PID}'),'') AS PAR_LVL
+	</select>
+	<select id="FRAMESEQ_ORA" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT NEXT VALUE FOR ${SEQ_NAME} AS ID
+	</select>
+	<insert id="FRAMESEQ_MSSQL" parameterType="hashmap">
+	  INSERT INTO ${SEQ_NAME} (SEQVAL) VALUES ('A')
+	  <selectKey keyProperty="ID" resultType="java.math.BigInteger" > 
+	     SELECT @@IDENTITY AS ID 
+	  </selectKey> 
+	</insert>
+	<delete id="FRAMESEQDELETE_MSSQL" parameterType="hashmap">
+	  DELETE FROM ${SEQ_NAME} WHERE SEQID = #{ID}
+	</delete>
+
+	<insert id="testTrans1" parameterType="hashmap">
+	  insert into kdbase.test1(a) values('${C}')
+	</insert>
+	<insert id="testTrans2" parameterType="hashmap">
+	  INSERT INTO KJDP.UPM_LOCALE (LOC_CODE,LOC_NAME) 
+        VALUES ('${LOC_CODE2}','${LOC_NAME2}')
+	</insert>
+	<insert id="testTrans30" parameterType="hashmap">
+	  insert into kdbase.test1(a) values('${A}')
+	</insert>
+	<insert id="testTrans40" parameterType="hashmap">
+	  insert into kduas.test1(a) values('${A}')
+	</insert>
+	<insert id="testTrans50" parameterType="hashmap">
+	  insert into kdbase.test1(a) values('${B}')
+	</insert>
+	<insert id="testTrans60" parameterType="hashmap">
+	  insert into kduas.test1(a) values('${B}')
+	</insert>
+</mapper>

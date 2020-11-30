@@ -1,0 +1,308 @@
+﻿@CHARSET "UTF-8";
+/*----begin---ui.front-window.css中界面部分*/
+.window {
+	background: url("../../frame/images/portal/compact/plugin/window-bg2.png") repeat-x scroll 0 0 transparent !important;
+}
+
+.window-trans {
+	background: url("../../frame/images/portal/compact/plugin/window-bg.png") repeat-x scroll 0 0 transparent !important;
+}
+
+.window .window-header .panel-tool-close {
+  background: url("../../frame/images/portal/compact/plugin/window-tools.png") no-repeat scroll -80px 0px transparent !important;
+}
+
+.window .window-header .panel-tool-close:hover {
+  background: url("../../frame/images/portal/compact/plugin/window-tools.png") no-repeat scroll -80px -19px transparent !important;
+}
+
+.main-panel .panel-loading {
+  background: url('../../frame/images/portal/trans/portal-loading.gif') no-repeat 50% 49% !important;
+}
+.panel-tool-close {
+  background: url('../../frame/images/portal/compact/plugin/panel_tools.png') no-repeat -16px 0px !important;
+}
+.panel-tool-min {
+  background: url('../../frame/images/portal/compact/plugin/window-tools.png') no-repeat 0px 0px !important;
+}
+.panel-tool-min:hover {
+  background: url('../../frame/images/portal/compact/plugin/window-tools.png') no-repeat 0px -19px !important;
+}
+.panel-tool-max {
+  background: url('../../frame/images/portal/compact/plugin/window-tools.png') no-repeat -28px 0px !important;
+}
+.panel-tool-max:hover {
+  background: url('../../frame/images/portal/compact/plugin/window-tools.png') no-repeat -28px -19px !important;
+}
+.panel-tool-restore {
+  background: url('../../frame/images/portal/compact/plugin/window-tools.png') no-repeat -28px 0px !important;
+}
+.panel-tool-collapse {
+  background: url('../../frame/images/portal/compact/plugin/panel_tools.png') no-repeat -32px 0 !important;
+}
+.panel-tool-editHref {
+  background: url('../../frame/images/portal/compact/plugin/pencil_edit.png') no-repeat !important;
+}
+.panel-tool-expand {
+  background: url('../../frame/images/portal/compact/plugin/panel_tools.png') no-repeat -32px -16px !important;
+}
+.panel-header {
+  background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%) !important;
+  background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%) !important;
+  background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%) !important;
+  background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0) !important;
+}
+.panel-title {
+  background: url('../../frame/images/portal/compact/plugin/blank.gif') no-repeat !important;
+}
+/*----end---ui.front-window.css中界面部分*/
+
+/*----------------------------------------------------------------*/
+
+/*----begin---front-main.css中界面部分*/
+.window-toolbox {
+	background: url("../../frame/images/portal/compact/plugin/edit-desktop-bg.png") repeat-x scroll 0 0 transparent !important;
+}
+
+.top-bar {
+	background: url("../../frame/images/portal/compact/typical-top-bar-bg.png") repeat-x scroll top center transparent;
+}
+
+.top-bar-shadow {
+	background: url("../../frame/images/portal/compact/typical-top-bar-shadow.png") repeat-x scroll top center transparent;
+}
+
+.switch-box-wrap .switch-box-btn {
+	background-image: url("../../frame/images/portal/compact/top-arrow-bg.png");
+}
+
+.switch-box-wrap .switch-box .switch-item {
+	background-image:url("../../frame/images/portal/compact/top-swich-bg.png");
+}
+
+.top-bar .search-box .search-input{
+	background-color:#2F2F2F;
+}
+.top-bar .search-box .search-items-panel {
+	background-color: #FFFFFF;
+	color:#9E9E9E;
+	border:1px solid #e8e8e8;
+}
+.top-bar .search-box .search-items-panel .search-item:hover {
+	background-color:orange;
+	color:#FFFFFF;
+}
+.top-bar .search-box .search-items-panel .search-item-selected {
+	background-color:#018ED6 !important;
+	color:#FFFFFF;
+}
+
+.top-bar .icon-small-div .icon-small {
+	background-image:url(../../frame/images/portal/compact/ui-frame-topbar-setbg.png);
+}
+.top-bar .icon-small-div .icon-small:hover {
+	background-image:url(../../frame/images/portal/compact/ui-frame-topbar-setbg-hover.png);
+}
+.top-bar .line {
+   	background: url("../../frame/images/portal/compact/top-splite-line.png") no-repeat scroll 3px 8px transparent;
+}
+
+.left-toolbar{
+	background:url(../../frame/images/portal/compact/typical-left-bar-bg.png) repeat-x top center #2e2e2e;
+}
+.left-toolbar-padding {
+   padding:0 3px;	
+}
+.left-collapse-box {
+	/*background-image:url(../../frame/images/portal/compact/left-tree-switch-bar-bg.png);*/
+}
+
+.left-collapse-box .collpase-btn {
+	background-image:url(../../frame/images/portal/compact/trans-switch-bar-bg.png);
+}
+.left-collapse-box .collpase-btn:hover {
+	background-image:url(../../frame/images/portal/compact/trans-switch-bar-bg2.png);
+}
+
+.left-menu-box .menu-box .menu-box-btn {
+	background-image:url(../../frame/images/portal/compact/menu-arrow-bg.png);
+}
+.left-menu-box .menu-box .menu-box-center .menu-button-selected{
+	background: url("../../frame/images/portal/compact/left-menu-selected-bg.png") no-repeat top;
+}
+.left-menu-box .menu-box .menu-box-center .menu-button-hover{
+	background: url("../../frame/images/portal/compact/left-menu-selected-bg.png") no-repeat top;
+}
+.left-menu-box .prompt-icon {
+    background: url("../../frame/images/portal/compact/ui-frame-icon-bg.png") repeat scroll 0 0 transparent;
+}
+.drag-wrap .prompt-icon {
+    background: url("../../frame/images/portal/trans/ui-frame-icon-bg.png") repeat scroll 0 0 transparent;
+}
+.main-panel-other .layout-wrap{
+	/*background:url(../images/portal/compact/main-panel-bg.png) top center repeat-x #ffffff;*/
+	background-color: #FFFFFF;
+}
+.bottom-bar {
+	background: url("../../frame/images/portal/compact/ui-frame-bottom-tab-bg.png") repeat-x scroll 0 0 transparent;
+}
+.status-bar {
+    background: url("../../frame/images/portal/compact/task-bar-bg-black.png") repeat scroll 0 0 transparent;
+}
+.status-bar .status-bar-icon {
+    background: url("../../frame/images/portal/compact/info2.png") no-repeat scroll 2px 5px transparent;
+}
+.status-bar .status-bar-content {
+    color: #FFFFFF;
+}
+.status-bar .status-sys-name {
+    color: #3BAAF0;
+}
+.status-bar .status-sys-key {
+    color: #2F7CD4;
+}
+.status-bar .status-sys-value {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.login-window {
+	background: url("../../frame/images/portal/compact/plugin/login-pic-bg.png") no-repeat scroll 0 0 transparent !important;
+}
+.login-panel .large-div {
+	background-image: url("../../frame/images/portal/compact/login-imgs.png");
+}
+.login-panel .login-div input {
+	background: url("../../frame/images/portal/compact/login-imgs.png") repeat-x scroll 0px -133px transparent;
+}
+.login-panel .login-div input:hover {
+	background: url("../../frame/images/portal/compact/login-imgs.png") repeat-x scroll 0px -163px transparent;
+}
+.task-bar .task-bar-left {
+	background: url("../../frame/images/portal/compact/ui-frame-bottom-tab-arrow.png") no-repeat scroll 10px 5px transparent;
+}
+
+.task-bar .task-bar-right {
+	background: url("../../frame/images/portal/compact/ui-frame-bottom-tab-arrow.png") no-repeat scroll -12px 5px transparent;
+}
+.task-bar .task-bar-item {
+	background-image: url("../../frame/images/portal/compact/ui-frame-bottom-tab-btnbg.png");
+	color:#919191;
+}
+.task-bar .task-bar-item-selected {
+	color:#000000;
+}
+
+.task-bar .task-bar-item-hover {
+	color:#37b1ff;
+}
+
+.left-menu-box .tree > li > .tree-node .tree-hit{
+	margin-left:5px;
+}
+
+.left-menu-box .tree .tree-hit {
+	background-image: url("../images/portal/compact/left-menu-point.png") !important;
+}
+
+.left-menu-box .tree > li .tree-node .tree-collapsed {
+	background-position: -83px 9px !important;
+}
+
+.left-menu-box .tree > li .tree-node .tree-expanded {
+	background-position: -103px 9px !important;
+}
+
+.left-menu-box .tree .tree-node-hover {
+	background-image: url("../images/portal/compact/left-tree-menu-hover-bg.png") !important;
+}
+.left-menu-box .tree .tree-node-selected {
+	background-color:#018ed6 !important;
+	background-image:none !important;
+}
+.left-menu-box .tree .tree-icon {
+	/*background-image: url("../images/portal/compact/left-menu-point.png");*/
+	background-image: none;
+	right:0px !important;
+}
+.left-menu-box .tree .tree-node-selected .tree-file {
+	background: url("../images/portal/compact/left-menu-point.png") no-repeat scroll -121px 10px transparent;
+}
+.left-menu-box .tree > li > .tree-node {
+	background-color:#313131 ;
+	border-top:#393939 1px solid;
+	border-bottom:#202020 1px solid;
+	background-image: none !important
+}
+.left-menu-box .tree .tree-node {
+	background-image: url("../images/portal/compact/left-secmenu-bg.png");
+}
+.left-menu-box .tree > li > .tree-node-hover {
+	background-color:#018ed6 !important;
+}
+.left-menu-box .tree > li > .tree-node-selected {
+	background:#018ed6 !important;
+	border-top:#393939 1px solid;
+	border-bottom:#202020 1px solid;
+}
+
+.left-menu-box .tree > li > ul {
+	background: url("../../frame/images/portal/compact/trans-bg-black-10.png") repeat scroll 0 0 transparent;
+}
+.menu-dir-win {
+	background: url("../../frame/images/portal/compact/plugin/diy-toolbox-bg2.png") repeat-x scroll 0 0 transparent !important;
+}
+.comp-wrap-cont {
+	background: url("../../frame/images/portal/compact/plugin/diy-toolbox-bg.png") repeat-x scroll 0 0 transparent !important;
+}
+.cont-panel-wrap .menu-icon-dir {
+	background:url("../../frame/images/portal/compact/diy-icon-folder.png") no-repeat scroll 25px 5px transparent;
+}
+
+.self-plat-switch-wrap {
+	background: url("../../frame/images/portal/compact/diy-switch-bg.png") no-repeat scroll 2px 1px transparent;
+}
+.self-plat-switch-wrap .self-switch-item {
+    background: url("../../frame/images/portal/compact/diy-switch-num-bg.png") no-repeat scroll -22px 1px transparent;
+}
+/*----end---front-main.css中界面部分*/
+
+/*----------------------------------------------------------------*/
+
+/*----begin---front-common.css中界面部分*/
+.sync-mask .content{
+    background-image: url("../../frame/images/portal/compact/plugin/loading.gif");
+}
+.comp-wrap {
+	background: url("../../frame/images/portal/compact/plugin/window-bg3.png") repeat-x scroll 0 0 transparent;
+}
+
+.comp-wrap-no-head {
+	background: url("../../frame/images/portal/compact/plugin/window-bg.png") repeat-x scroll 0 -40px transparent;
+}
+
+.self-comp-body {
+	background:url(../images/portal/compact/main-panel-bg.png) top center repeat-x #ffffff;
+}
+
+.comp-body .cont-tab-wrap .cont-tab-item-top {
+	background-image: url("../../frame/images/portal/compact/tab-item-bg-tb.png");
+}
+
+.comp-body .cont-tab-wrap .cont-tab-item-right {
+	background-image: url("../../frame/images/portal/compact/tab-item-bg-lr.png");
+}
+
+.comp-body .cont-tab-wrap .cont-tab-item-bottom {
+	background-image: url("../../frame/images/portal/compact/tab-item-bg-tb.png");
+}
+
+.comp-body .cont-tab-wrap .cont-tab-item-left {
+	background-image: url("../../frame/images/portal/compact/tab-item-bg-lr.png");
+}
+
+.comp-body .cont-tab-wrap .cont-tab-body {
+	/*background: url("../../frame/images/portal/compact/tab-bg-normal.png") repeat scroll 0 0 transparent;*/
+	background-color: #FFFFFF;
+}
+/*----end---front-common.css中界面部分*/

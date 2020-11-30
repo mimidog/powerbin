@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services> 
+  <!--KGE_TABSservice设置start-->  
+  <service service_code="P006001" service_name="对象模型查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TABSQuery" business_method="" serial_no="1" business_name="模型表查询" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <service service_code="P006002" service_name="对象模型新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TABSInsert" business_method="" serial_no="1" business_name="模型表新增" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <service service_code="P006003" service_name="对象模型修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TABSUpdate" business_method="" serial_no="1" business_name="模型表修改" business_type="1" business_cate="1" attr1=""/>  
+      <service_business business_code="KGE_TAB_COLSTnameUpdate" business_method="" serial_no="1" business_name="字段表名称修改" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <service service_code="P006004" service_name="对象模型删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TABSDelete" business_method="" serial_no="1" business_name="模型表删除" business_type="1" business_cate="1" attr1=""/>  
+      <service_business business_code="KGE_TAB_COLSDeleteAll" business_method="" serial_no="1" business_name="字段删除" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <service service_code="P0006020" service_name="生成对象模型配置" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1=""> 
+    <businesses> 
+      <service_business business_code="generatorModelConf" serial_no="1" business_type="3" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <!--KGE_TABSservice设置end-->  
+  <!--KGE_TAB_COLSservice设置start-->  
+  <service service_code="P006011" service_name="字段查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TAB_COLSQuery" business_method="" serial_no="1" business_name="字段查询" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <service service_code="P006012" service_name="字段新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TAB_COLSInsert" business_method="" serial_no="1" business_name="字段新增" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <service service_code="P006013" service_name="字段修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TAB_COLSUpdate" business_method="" serial_no="1" business_name="字段修改" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <service service_code="P006014" service_name="字段删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2=""> 
+    <businesses> 
+      <service_business business_code="KGE_TAB_COLSDelete" business_method="" serial_no="1" business_name="字段删除" business_type="1" business_cate="1" attr1=""/> 
+    </businesses> 
+  </service>  
+  <!--KGE_TAB_COLSservice设置end-->  
+  <!--T_KHservice设置start-->
+  <service service_code="KGE_T_KHQueryAll" service_name="客户测试查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2="">
+    <businesses>
+      <service_business business_code="KGE_T_KHQueryAll" business_method="" serial_no="1" business_name="客户测试查询" business_type="1" business_cate="1" attr1=""/>
+    </businesses>
+  </service>
+  <service service_code="KGE_T_KHInsert" service_name="客户测试新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2="">
+    <businesses>
+      <service_business business_code="KGE_T_KHInsert" business_method="" serial_no="1" business_name="客户测试新增" business_type="1" business_cate="1" attr1=""/>
+    </businesses>
+  </service>
+  <service service_code="KGE_T_KHUpdate" service_name="客户测试修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2="">
+    <businesses>
+      <service_business business_code="KGE_T_KHUpdate" business_method="" serial_no="1" business_name="客户测试修改" business_type="1" business_cate="1" attr1=""/>
+    </businesses>
+  </service>
+  <service service_code="KGE_T_KHDelete" service_name="客户测试删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" attr2="">
+    <businesses>
+      <service_business business_code="KGE_T_KHDelete" business_method="" serial_no="1" business_name="客户测试删除" business_type="1" business_cate="1" attr1=""/>
+    </businesses>
+  </service>
+  <!--T_KHservice设置end-->
+</services>

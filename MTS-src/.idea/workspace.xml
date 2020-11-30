@@ -1,0 +1,1292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="MTS_WEB" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0371d9bd-4c29-4c93-b21b-ea846914f887" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8/storage_v2/_src_/database/mts.rKcBAA/schema/dbo.sYMBAA.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8/storage_v2/_src_/database/mts.rKcBAA/schema/dbo.sYMBAA.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8/storage_v2/_src_/database/mts.rKcBAA/schema/dbo.sYMBAA.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8/storage_v2/_src_/database/mts.rKcBAA/schema/dbo.sYMBAA.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/WebRoot/WEB-INF/classes/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="127.0.0.1" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="127.0.0.1" type="feb32156:DbDataSourceImpl" />
+        <item name="mts: database" type="ccb7ac2a:MsImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="127.0.0.1" type="feb32156:DbDataSourceImpl" />
+        <item name="mts: database" type="ccb7ac2a:MsImplModel$Database" />
+        <item name="dbo: schema" type="2865ee2e:MsImplModel$Schema" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-holdasset.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="232">
+              <caret line="941" column="60" lean-forward="true" selection-start-line="941" selection-start-column="12" selection-end-line="941" selection-end-column="60" />
+              <folding>
+                <element signature="e#257#2268#0" />
+                <element signature="e#2296#3347#0" />
+                <element signature="e#3376#4131#0" />
+                <element signature="e#4160#7188#0" />
+                <element signature="e#9389#12205#0" />
+                <element signature="e#13015#14836#0" />
+                <element signature="e#14865#17594#0" />
+                <element signature="e#18454#21047#0" />
+                <element signature="e#22196#23730#0" />
+                <element signature="e#23758#24025#0" />
+                <element signature="e#24053#28680#0" />
+                <element signature="e#28707#30078#0" />
+                <element signature="e#30414#31977#0" />
+                <element signature="e#32363#34270#0" />
+                <element signature="e#36586#37267#0" />
+                <element signature="e#37303#38106#0" />
+                <element signature="e#38141#38828#0" />
+                <element signature="e#39172#39852#0" />
+                <element signature="e#39889#40806#0" />
+                <element signature="e#40841#41525#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>clearFundHolder</find>
+      <find>queryStockTrendInfoAtom</find>
+      <find>query_T_STOCK_HQ</find>
+      <find>M0000052</find>
+      <find>queryStockTrendInfo</find>
+      <find>mts_OMS_table</find>
+      <find>M0000045</find>
+      <find>M0000053</find>
+      <find>M0000063</find>
+      <find>alert</find>
+      <find>mapObject</find>
+      <find>ctrlTypeVals</find>
+      <find>mts_perCustOpenInfo_table</find>
+      <find>M0000009</find>
+      <find>queryPerCustOpenAcctInfoAtom</find>
+      <find>query_T_CUSTOMER_OPEN_INF</find>
+      <find>rule</find>
+      <find>int</find>
+      <find>de</find>
+      <find>default</find>
+      <find>queryPerCustOpenAcctInfo</find>
+      <find>insert_T_CUSTOMER</find>
+      <find>speTxt</find>
+      <find>insert_OMS_BY_BUY_BUILD_POS</find>
+      <find>createOmsByStockBuildPos</find>
+      <find>M0000113</find>
+      <find>find</find>
+      <find>validOrderlimitByBuyEntractAtom</find>
+      <find>validOrderlimitByBuyEntract</find>
+      <find>SELL_BUILD_POS_LIST</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>OP_POST == 1</replace>
+      <replace />
+      <replace>OP_POST != 1</replace>
+      <replace>192.168.11.50</replace>
+      <replace>变更</replace>
+      <replace>手机号</replace>
+      <replace>buyStockPos_submit</replace>
+      <replace>kui-options</replace>
+      <replace>handBuySignalStaAudit_table</replace>
+      <replace>handSellSignalStaAudit_table</replace>
+      <replace>127.0.0.1</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>E:\mts_pro\MTS\WebRoot\WEB-INF\conf\metaData\viewConf</dir>
+      <dir>E:\mts_pro\MTS\WebRoot\WEB-INF\</dir>
+      <dir>E:\mts_pro\MTS\WebRoot\business\accinInfo</dir>
+      <dir>E:\mts_pro\MTS\WebRoot\business\</dir>
+      <dir>E:\mts_pro\MTS\webapp</dir>
+      <dir>E:\mts_pro\MTS\WebRoot</dir>
+      <dir>E:\mts_pro\MTS\otcts</dir>
+      <dir>E:\mts_pro\MTS\</dir>
+      <dir>E:\mts_pro\MTS\WebRoot\WEB-INF\conf\metaData\bexConf</dir>
+      <dir>E:\mts_pro\MTS\WebRoot\</dir>
+    </dirStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/WebRoot/opp/authManage/js/funcAuthorization.js" />
+        <option value="$PROJECT_DIR$/WebRoot/opp/authManage/funcAuthorization.html" />
+        <option value="$PROJECT_DIR$/WebRoot/opp/authManage/js/objAuth.js" />
+        <option value="$PROJECT_DIR$/WebRoot/business/sysmanager/dataVisitAuth.html" />
+        <option value="$PROJECT_DIR$/WebRoot/opp/authManage/permInfoManage.html" />
+        <option value="$PROJECT_DIR$/otcts/business/sett/settAmtImport.html" />
+        <option value="$PROJECT_DIR$/otcts/frame/js/ajax-pushlet-client.js" />
+        <option value="$PROJECT_DIR$/otcts/frame/js/formessage.js" />
+        <option value="$PROJECT_DIR$/WebRoot/business/reportAnalysis/traderSurplusSheet.html" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/opp/mapper-uum.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/opp-uum-view.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/opp/userManage/operPassReset.html" />
+        <option value="$PROJECT_DIR$/src/com/szkingdom/business/mts/AcctInfoManager.java" />
+        <option value="$PROJECT_DIR$/WebRoot/opp/authManage/operPremManage.html" />
+        <option value="$PROJECT_DIR$/WebRoot/opp/userManage/operDelAccount.html" />
+        <option value="$PROJECT_DIR$/WebRoot/opp/authManage/js/operPremManage.js" />
+        <option value="$PROJECT_DIR$/WebRoot/business/accinInfo/custSecondLevelQuery.html" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/bexConf/mts-holdasset-bex.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/atomConf/mts-holdasset-atom.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/serviceConf/mts-holdasset-service.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-holdasset.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/business/omsInfo/handEntryBuildPos.html" />
+        <option value="$PROJECT_DIR$/src/com/szkingdom/business/mts/SysConfigManager.java" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/atomConf/mts-oms-atom.xml" />
+        <option value="$PROJECT_DIR$/src/com/szkingdom/business/mts/StockFileImport.java" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/serviceConf/mts-oms-service.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/business/omsInfo/handSignalStaAudit.html" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/mts-riskcontrol-view.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/business/riskControl/traderStockRisk.html" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/mts-holdasset-view.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/common/js/common.js" />
+        <option value="$PROJECT_DIR$/WebRoot/business/omsInfo/handSellBuildPos.html" />
+        <option value="$PROJECT_DIR$/src/com/szkingdom/business/mts/CustHoldAssetManager.java" />
+        <option value="$PROJECT_DIR$/WebRoot/business/omsInfo/handSellSignalStaAudit.html" />
+        <option value="$PROJECT_DIR$/WebRoot/business/omsInfo/handBuySignalStaAudit.html" />
+        <option value="$PROJECT_DIR$/src/com/szkingdom/business/common/AtomError.java" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/bexConf/mts-oms-bex.xml" />
+        <option value="$PROJECT_DIR$/src/com/szkingdom/business/mts/OMSInfoManager.java" />
+        <option value="$PROJECT_DIR$/WebRoot/business/omsInfo/omsEntractInfo.html" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/mts-oms-view.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/mts_conf.properties" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/ds.properties" />
+        <option value="$PROJECT_DIR$/WebRoot/business/omsInfo/handBuyBuildPos.html" />
+        <option value="$PROJECT_DIR$/WebRoot/business/sysmanager/clearRegress.html" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-acctinfo.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/mts-acctinfo-view.xml" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8/console.sql" />
+        <option value="$PROJECT_DIR$/WebRoot/business/accinInfo/custOpenInfo.html" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-oms.xml" />
+        <option value="$PROJECT_DIR$/WebRoot/WEB-INF/conf/frame-spring.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand />
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="1940" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="MTS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MTS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MTS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MTS" type="462c0819:PsiDirectoryNode" />
+              <item name="WebRoot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MTS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MTS" type="462c0819:PsiDirectoryNode" />
+              <item name="WebRoot" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MTS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MTS" type="462c0819:PsiDirectoryNode" />
+              <item name="WebRoot" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="conf" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MTS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MTS" type="462c0819:PsiDirectoryNode" />
+              <item name="WebRoot" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="conf" type="462c0819:PsiDirectoryNode" />
+              <item name="mybatis" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MTS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MTS" type="462c0819:PsiDirectoryNode" />
+              <item name="WebRoot" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="conf" type="462c0819:PsiDirectoryNode" />
+              <item name="mybatis" type="462c0819:PsiDirectoryNode" />
+              <item name="mts" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="sqlserver&#10;mysql" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554543802030" />
+    <property name="database.console.LAST_STATE" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\mts_product\MTS\WebRoot\business\omsInfo" />
+      <recent name="E:\mts_pro\MTS\WebRoot\business\sysmanager\js" />
+      <recent name="E:\mts_pro\MTS\WebRoot\business\sysmanager" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 7.0.28" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.28" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="START_JAVASCRIPT_DEBUGGER" value="true" />
+      <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m" />
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <deployment>
+        <artifact name="mts_web">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_MTS" />
+        <option name="JNDI_PORT" value="1098" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="1504" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpringBeansView">
+    <option name="beanDetailsProportion" value="0.3" />
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\Administrator\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="E:\mts_product\MTS" />
+          <option name="myCopyRoot" value="E:\mts_product\MTS" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="E:\mts_product\MTS\.idea" />
+          <option name="myCopyRoot" value="E:\mts_product\MTS\.idea" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="E:\mts_product\MTS" />
+          <option name="myCopyRoot" value="E:\mts_product\MTS" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0371d9bd-4c29-4c93-b21b-ea846914f887" name="Default" comment="" />
+      <created>1548225459639</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1548225459639</updated>
+      <workItem from="1548225464106" duration="376000" />
+      <workItem from="1548225871492" duration="835000" />
+      <workItem from="1548227173579" duration="1224000" />
+      <workItem from="1548228473755" duration="5486000" />
+      <workItem from="1548238183467" duration="426000" />
+      <workItem from="1548349633252" duration="32000" />
+      <workItem from="1554531443768" duration="183000" />
+      <workItem from="1554543605590" duration="198000" />
+      <workItem from="1554544052565" duration="781000" />
+      <workItem from="1558158151071" duration="1086000" />
+      <workItem from="1558247495258" duration="602000" />
+      <workItem from="1559198912262" duration="473000" />
+      <workItem from="1559870926800" duration="22014000" />
+      <workItem from="1559996842448" duration="114000" />
+      <workItem from="1560003463536" duration="11743000" />
+      <workItem from="1560144260090" duration="115000" />
+      <workItem from="1561181599693" duration="9632000" />
+      <workItem from="1561193176427" duration="8145000" />
+      <workItem from="1561279396126" duration="1144000" />
+      <workItem from="1561355546908" duration="629000" />
+      <workItem from="1561369206606" duration="7789000" />
+      <workItem from="1561386234352" duration="4087000" />
+      <workItem from="1561396943949" duration="1216000" />
+      <workItem from="1561431227571" duration="20000" />
+      <workItem from="1561451548319" duration="756000" />
+      <workItem from="1561461717588" duration="11768000" />
+      <workItem from="1562210748123" duration="263000" />
+      <workItem from="1562914773275" duration="4462000" />
+      <workItem from="1562919925782" duration="927000" />
+      <workItem from="1563157694283" duration="12447000" />
+      <workItem from="1563186675906" duration="3888000" />
+      <workItem from="1563201518670" duration="8825000" />
+      <workItem from="1563241112463" duration="44000" />
+      <workItem from="1563285262557" duration="5756000" />
+      <workItem from="1563294866380" duration="2903000" />
+      <workItem from="1563373510616" duration="11635000" />
+      <workItem from="1563417177633" duration="482000" />
+      <workItem from="1563418626388" duration="476000" />
+      <workItem from="1563427175843" duration="1251000" />
+      <workItem from="1563434760485" duration="696000" />
+      <workItem from="1563514322147" duration="619000" />
+      <workItem from="1563546174507" duration="1691000" />
+      <workItem from="1563591480870" duration="5265000" />
+      <workItem from="1563873466387" duration="587000" />
+      <workItem from="1563933450362" duration="170000" />
+      <workItem from="1563946003258" duration="2216000" />
+      <workItem from="1563964739643" duration="1105000" />
+      <workItem from="1563980003847" duration="1078000" />
+      <workItem from="1563982460063" duration="791000" />
+      <workItem from="1564025630920" duration="126000" />
+      <workItem from="1564638968307" duration="1429000" />
+      <workItem from="1564672417260" duration="1486000" />
+      <workItem from="1564716382386" duration="1203000" />
+      <workItem from="1565538901270" duration="99000" />
+      <workItem from="1570853074540" duration="1944000" />
+      <workItem from="1571319110983" duration="15902000" />
+      <workItem from="1571407445791" duration="5448000" />
+      <workItem from="1573366795904" duration="16608000" />
+      <workItem from="1573482625431" duration="108000" />
+      <workItem from="1573572617035" duration="3110000" />
+      <workItem from="1574168115541" duration="6926000" />
+      <workItem from="1574339641470" duration="2134000" />
+      <workItem from="1574565652482" duration="36000" />
+      <workItem from="1575905145919" duration="417000" />
+      <workItem from="1576078396989" duration="148000" />
+      <workItem from="1578797534800" duration="7645000" />
+      <workItem from="1578809915707" duration="299000" />
+      <workItem from="1587187886857" duration="3979000" />
+      <workItem from="1587282716127" duration="874000" />
+      <workItem from="1587284561016" duration="110000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="228482000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21744967" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Web" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" sideWeight="0.75503355" visible="true" weight="0.16936672" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.43555555" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="5" sideWeight="0.6691275" weight="0.17820324" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.17185186" />
+      <window_info anchor="bottom" id="Application Servers" order="7" weight="0.3293718" />
+      <window_info anchor="bottom" id="Spring" order="8" weight="0.32820514" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.33087248" side_tool="true" weight="0.4859259" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.43463498" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.17517006" />
+      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="14" weight="0.32991454" />
+      <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Console" order="16" weight="0.16200295" />
+      <window_info anchor="bottom" id="Tail" order="17" />
+      <window_info anchor="bottom" id="MyBatis Log" order="18" />
+      <window_info anchor="bottom" id="Analysis" order="19" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Maven Projects" order="5" />
+      <window_info anchor="right" id="Database" order="6" weight="0.11208054" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Maven" order="9" weight="0.3295302" />
+      <window_info anchor="right" id="Preview" order="10" weight="0.3295302" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22818792" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Web" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.75503355" visible="true" weight="0.1362963" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.4888889" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="5" sideWeight="0.6691275" weight="0.09925926" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.17185186" />
+      <window_info anchor="bottom" id="Application Servers" order="7" weight="0.3293718" />
+      <window_info anchor="bottom" id="Spring" order="8" weight="0.32820514" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.33087248" side_tool="true" weight="0.4859259" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.43463498" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.17517006" />
+      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="14" weight="0.32991454" />
+      <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Console" order="16" weight="0.05102041" />
+      <window_info anchor="bottom" id="Tail" order="17" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Maven Projects" order="5" />
+      <window_info anchor="right" id="Database" order="6" weight="0.11270802" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Maven" order="9" />
+      <window_info anchor="right" id="Preview" order="10" weight="0.32980332" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/WebRoot/common/js/common.js</url>
+          <line>1336</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/WebRoot/business/accinInfo/cuacctOpenInfo.html</url>
+          <line>69</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/WebRoot/business/omsInfo/omsEntractInfo.html</url>
+          <line>431</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/WebRoot/business/omsInfo/omsEntractInfo.html</url>
+          <line>1444</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/WebRoot/business/omsInfo/omsEntractInfo.html</url>
+          <line>111</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/WebRoot/business/accinInfo/custOpenInfo.html</url>
+          <line>57</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/szkingdom/business/mts/OMSInfoManager.java</url>
+          <line>232</line>
+          <properties />
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
+        <watch expression="(unmatchAmtSum.add(instBalSum)).compareTo(stkLwlmtAmt)" language="JAVA" />
+      </configuration>
+      <configuration name="JavascriptDebugType">
+        <watch expression="$('#chkHoldProfit').attr('checked')" language="HTML" />
+        <watch expression="$('#refreshTime').validatebox('validate')" language="HTML" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="dashboard.Configurable">
+    <option name="showingStartFixConfirmationMessage" value="true" />
+    <option name="showingPopUpsOnFixEvent" value="true" />
+    <option name="userName" value="Administrator" />
+    <option name="resultsURL" value="" />
+    <option name="browserPath" value="" />
+    <option name="multicastHost" value="236.1.2.3" />
+    <option name="multicastPort" value="3274" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>(unmatchAmtSum.add(instBalSum)).compareTo(stkLwlmtAmt)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>unmatchAmtSum.add(instBalSum)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ObjectUtils.toString(result2.getDataList().get(0).get(&quot;INST_BAL_SUM&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>Integer.parseInt(String.valueOf(totalHoldCost))</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>params.get(&quot;QRY_HOLD_PROFIT_MINUS&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>$('#refreshTime').validatebox('validate')</expression-string>
+        <language-id>HTML</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>params.get(&quot;QRY_HOLD_PROFIT_MINUS&quot;).equals(&quot;true&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>params.get(&quot;QRY_HOLD_PROFIT_MINUS&quot;)==&quot;true&quot;</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>$('#chkHoldProfit').attr('checked')</expression-string>
+        <language-id>HTML</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>$('#chkHoldProfit:checked')</expression-string>
+        <language-id>HTML</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/omsInfo/handBuySignalStaAudit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="55" column="29" selection-start-line="55" selection-start-column="21" selection-end-line="55" selection-end-column="29" />
+          <folding>
+            <element signature="e#1674#2196#0" />
+            <element signature="e#2252#2537#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/kjdp-3.5.4.102-SNAPSHOT.jar!/com/szkingdom/frame/business/atom/AtomResult.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="35" column="71" selection-start-line="35" selection-start-column="63" selection-end-line="35" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/jdk/jdk1.6/src.zip!/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="349" column="19" selection-start-line="349" selection-start-column="19" selection-end-line="349" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/common/AtomError.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="544" column="69" selection-start-line="544" selection-start-column="63" selection-end-line="544" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/kjdp-3.5.4.102-SNAPSHOT.jar!/com/szkingdom/frame/business/atom/AtomBusinessImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="176" selection-start-line="176" selection-end-line="176" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="552" column="4" selection-start-line="552" selection-start-column="4" selection-end-line="552" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/bexConf/mts-oms-bex.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="46" column="128" selection-start-line="46" selection-start-column="100" selection-end-line="46" selection-end-column="128" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/commons-lang-2.5.jar!/org/apache/commons/lang/ObjectUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="62" column="25" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="25" />
+          <folding>
+            <element signature="e#1920#1921#0" expanded="true" />
+            <element signature="e#1976#1977#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/ds.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/sysmanager/sysClear.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+          <folding>
+            <element signature="e#1632#3237#0" />
+            <element signature="e#3411#5326#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/atomConf/mts-holdasset-atom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="49" column="93" selection-start-line="49" selection-start-column="93" selection-end-line="49" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/omsInfo/handSellSignalStaAudit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="45" column="41" selection-start-line="45" selection-start-column="41" selection-end-line="45" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/omsInfo/handSellBuildPos.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="80" column="25" selection-start-line="80" selection-start-column="17" selection-end-line="80" selection-end-column="25" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#td#1;n#tr#0;n#table#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#td#1;n#tr#2;n#table#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#td#1;n#tr#3;n#table#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#table#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/omsInfo/handBuyBuildPos.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="76" column="25" selection-start-line="76" selection-start-column="17" selection-end-line="76" selection-end-column="25" />
+          <folding>
+            <element signature="e#981#1102#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/mts/ProductInfoManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="414" column="29" lean-forward="true" selection-start-line="414" selection-start-column="29" selection-end-line="414" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-productinfo.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="313" column="37" selection-start-line="313" selection-start-column="21" selection-end-line="313" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/atomConf/mts-productinfo-atom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="77" column="96" selection-start-line="77" selection-start-column="96" selection-end-line="77" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/serviceConf/mts-productinfo-service.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="126" column="68" selection-start-line="126" selection-start-column="45" selection-end-line="126" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/mts-oms-view.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="28" column="50" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="50" />
+          <folding>
+            <element signature="n#view#15;n#views#0;n#!!top" />
+            <element signature="n#view#19;n#views#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/mts/CustHoldAssetManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="806" lean-forward="true" selection-start-line="806" selection-end-line="806" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/sysmanager/clearRegress.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="732">
+          <caret line="129" column="18" selection-start-line="129" selection-start-column="18" selection-end-line="129" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/sysOperater/operterSettleApp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6264">
+          <caret line="348" column="17" selection-start-line="348" selection-start-column="17" selection-end-line="348" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/serviceConf/mts-holdasset-service.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="63" column="67" selection-start-line="63" selection-start-column="45" selection-end-line="63" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/accinInfo/firstLevelHoldingQuery.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/7c56c7c0-27c8-4202-9caa-b857f5cd0ab5/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/riskControl/riskInfoCfg.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="178" column="24" selection-start-line="178" selection-start-column="12" selection-end-line="178" selection-end-column="24" />
+          <folding>
+            <element signature="n#style#0;n#col#0;n#colgroup#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#col#0;n#colgroup#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/common/js/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="1336" column="18" selection-start-line="1336" selection-start-column="9" selection-end-line="1336" selection-end-column="18" />
+          <folding>
+            <element signature="e#63#594#0" />
+            <element signature="e#642#760#0" />
+            <element signature="e#783#2388#0" />
+            <element signature="e#2460#2801#0" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="e#2860#3593#0" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/accinInfo/CustCuacctSubInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="180" column="50" selection-start-line="180" selection-start-column="50" selection-end-line="180" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/accinInfo/cuacctOpenInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="172" column="50" selection-start-line="172" selection-start-column="50" selection-end-line="172" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/mts-acctinfo-view.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="87" selection-start-line="4" selection-start-column="80" selection-end-line="4" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/serviceConf/mts-acctinfo-service.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="56" column="73" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/atomConf/mts-acctinfo-atom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="35" column="97" lean-forward="true" selection-start-line="35" selection-start-column="97" selection-end-line="35" selection-end-column="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/61a95a2f-e61d-4bfc-b1f9-2bbd7d5559b8/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/mts/AcctInfoManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="259" column="29" lean-forward="true" selection-start-line="259" selection-start-column="29" selection-end-line="259" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/kui-base/js/comp_src/jquery.validatebox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="127" column="24" selection-start-line="127" selection-start-column="8" selection-end-line="127" selection-end-column="24" />
+          <folding>
+            <element signature="e#3908#47038#0" />
+            <element signature="e#3929#6320#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/viewConf/mts-productinfo-view.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="26" column="82" selection-start-line="26" selection-start-column="70" selection-end-line="26" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/accinInfo/custOpenInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/applicationContext-quartz.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="33" column="64" lean-forward="true" selection-start-line="33" selection-start-column="64" selection-end-line="33" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/frame-spring.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" selection-start-line="9" selection-end-line="9" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/util/ImportTxtFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="15" column="21" lean-forward="true" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/mts/OMSInfoManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="583" column="103" selection-start-line="583" selection-start-column="103" selection-end-line="583" selection-end-column="103" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/mts_conf.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" selection-start-line="7" selection-end-line="9" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/util/FileUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="27" column="9" lean-forward="true" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/atomConf/mts-oms-atom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="79" column="98" selection-start-line="79" selection-start-column="98" selection-end-line="79" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/metaData/serviceConf/mts-oms-service.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="115" column="76" selection-start-line="115" selection-start-column="45" selection-end-line="115" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-acctinfo.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1748">
+          <caret line="227" column="50" lean-forward="true" selection-start-line="227" selection-start-column="50" selection-end-line="227" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/util/DBUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="36" column="5" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/szkingdom/business/mts/StockFileImport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="107" column="39" selection-start-line="107" selection-start-column="39" selection-end-line="107" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/business/omsInfo/omsEntractInfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="566" column="25" selection-start-line="566" selection-start-column="17" selection-end-line="566" selection-end-column="25" />
+          <folding>
+            <element signature="e#3691#3802#0" />
+            <element signature="e#3847#7070#0" />
+            <element signature="e#7268#7939#0" />
+            <element signature="e#7993#8762#0" />
+            <element signature="e#8822#9018#0" />
+            <element signature="e#9089#9929#0" />
+            <element signature="e#9999#10833#0" />
+            <element signature="e#10905#11206#0" />
+            <element signature="e#11268#12832#0" />
+            <element signature="e#12886#14962#0" />
+            <element signature="e#15016#16632#0" />
+            <element signature="e#16695#17070#0" />
+            <element signature="e#22514#24615#0" />
+            <element signature="e#24689#26390#0" />
+            <element signature="e#26442#26726#0" />
+            <element signature="e#26768#29135#0" />
+            <element signature="e#29176#29521#0" />
+            <element signature="e#29572#29839#0" />
+            <element signature="e#29892#30126#0" />
+            <element signature="e#30184#32272#0" />
+            <element signature="e#32328#38221#0" />
+            <element signature="e#38278#40308#0" />
+            <element signature="e#40365#43630#0" />
+            <element signature="e#51523#52275#0" />
+            <element signature="e#52337#52575#0" />
+            <element signature="e#52624#52890#0" />
+            <element signature="e#52932#53240#0" />
+            <element signature="e#53288#53569#0" />
+            <element signature="e#53628#53728#0" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#table#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#form#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#style#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#2;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-oms.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="422" column="49" selection-start-line="422" selection-start-column="30" selection-end-line="422" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/conf/mybatis/mts/mapper-mts-holdasset.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="941" column="60" lean-forward="true" selection-start-line="941" selection-start-column="12" selection-end-line="941" selection-end-column="60" />
+          <folding>
+            <element signature="e#257#2268#0" />
+            <element signature="e#2296#3347#0" />
+            <element signature="e#3376#4131#0" />
+            <element signature="e#4160#7188#0" />
+            <element signature="e#9389#12205#0" />
+            <element signature="e#13015#14836#0" />
+            <element signature="e#14865#17594#0" />
+            <element signature="e#18454#21047#0" />
+            <element signature="e#22196#23730#0" />
+            <element signature="e#23758#24025#0" />
+            <element signature="e#24053#28680#0" />
+            <element signature="e#28707#30078#0" />
+            <element signature="e#30414#31977#0" />
+            <element signature="e#32363#34270#0" />
+            <element signature="e#36586#37267#0" />
+            <element signature="e#37303#38106#0" />
+            <element signature="e#38141#38828#0" />
+            <element signature="e#39172#39852#0" />
+            <element signature="e#39889#40806#0" />
+            <element signature="e#40841#41525#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>mts_web</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Web (MTS)|Web</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Web|MTS</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>activation-1.1</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

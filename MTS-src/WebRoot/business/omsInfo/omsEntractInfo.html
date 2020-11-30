@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>订单信息</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.north-div{
+    background-image: url('../../common/image/north-back-img.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50px;
+}
+
+.con-mot-t{
+    height: 40px;
+    overflow: hidden;
+    margin: 0px 0 6px 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+.motBg {
+    border: 1px solid #fdcd9d;
+    overflow: hidden;
+    padding-top: 10px;
+}
+.con-mot-t thead td {
+    color: #000;
+    background: #ebf4fd;
+    height: 22px;
+    display: table-cell;
+    vertical-align: inherit;
+    font-weight:bold;
+
+}
+.con-mot-t td {
+    border: 1px solid #DDE7D4;
+    display: table-cell;
+    vertical-align: inherit;
+    font-family: 'Roboto Condensed', Avenir, sans-serif;
+    color: #5141d6;
+    -webkit-font-smoothing: antialiased;
+
+}
+.west-div-tit{
+    background-image: url('../../common/image/tit-01.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 28px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+.west-div-tit span {
+    font-family: 'Audiowide';
+    text-align: center;
+    color: #ff1493;
+    -webkit-transition: all 1.5s ease;
+    transition: all 1.5s ease;
+    -webkit-animation: Glow 1.5s ease infinite alternate;
+    animation: Glow 1.5s ease infinite alternate;
+}
+.west-div-tit span :hover {
+    color: #fff;
+    -webkit-animation: Glow 1.5s ease infinite alternate;
+    animation: Glow 1.5s ease infinite alternate;
+
+}
+.form-label {
+    text-align: right;
+
+}
+#stockMaket_div tr{
+    vertical-align: text-bottom;
+    vertical-align: bottom;
+}
+#stockMaket_div{
+    font-weight:bold;
+    color: #00ee00;
+
+}
+
+</style>
+<script type="text/javascript">
+$(function () {
+    $('#west_div_1').width(270);
+    var westDiv1=$('#west_div_1').width();
+    var westDiv=($(document).width()-westDiv1)/2;
+    $('#westDiv').width(westDiv);
+    $('#west_div_2').width(westDiv);
+})
+//存1储五档行情查询结果
+var _rsStockFiveInfo=[];
+
+var _selOrderInfo=null;
+
+//得到系统日期
+function getSysDate(){
+    var sysControlInfo = commonRequest({
+        service:'M0001001'
+    });
+    return sysControlInfo[0].SYSTEM_DATE;
+}
+$(window).resize(function () {
+    location.reload();
+})
+
+
+window.$ready=function () {
+
+    //渲染订单页面头部信息
+    drawOmsTractHead();
+    //一分钟刷新一下下单表格
+    setInterval(function () {
+        var omsOrderConf=$.builder.format.datagrid($.parser.getConfigs(['mts_OMS_table_no_condition']))
+        var omsOrderRs=commonRequest(omsOrderConf.req[0]);
+
+        $('#mts_OMS_table_no_condition').datagrid('loadData',{"rows": omsOrderRs, "total": omsOrderRs.length});
+    },parseInt(getSysParamValuebyCode('OMS_ORDER_TIMER'))*1000);
+
+    //刷新总资产、二级股份持仓
+    setInterval(function () {
+        drawFundSub();
+        var assetSubConf=$.builder.format.datagrid($.parser.getConfigs(['mts_AESSET_SUB_EMP_INFO_1_table']))
+        var assetSubRs=commonRequest(assetSubConf.req[0]);
+
+        $('#mts_AESSET_SUB_EMP_INFO_1_table').datagrid('loadData',{"rows": assetSubRs, "total": assetSubRs.length});
+        //刷新【五档行情】上面的表格的信息
+        if(_selOrderInfo !=null){
+            drawStockTrendInfo(_selOrderInfo['STK_ID'],_selOrderInfo['STK_NAME'])
+        }
+
+    },parseInt(getSysParamValuebyCode('OMS_HOLD_ASSET_TIMER'))*1000);
+
+}
+//渲染订单页面头部信息
+function drawOmsTractHead() {
+    $('#OmsPageHeader').find('td').eq(0).text(g_user.userName);
+
+     //查询当前登录交易员对应二级资金信息
+    drawFundSub()
+}
+
+//查询当前登录交易员对应二级资金信息
+function drawFundSub() {
+
+    var totalFundBal=0;
+    var totalFundAvl=0;
+    var totalFundTrdFrz=0;
+
+    //转入资金
+    var callotInFund=0;
+    var callotOutFund=0;
+
+   var opFundSub=commonRequest({
+        service:'M0000055',
+        OP_ID:g_user.userId
+    });
+  if(opFundSub.length>0){
+     for(var i=0; i<opFundSub.length;i++){
+         totalFundBal+= parseFloat(opFundSub[i].FUND_BAL);
+         totalFundAvl+=parseFloat(opFundSub[i].FUND_AVL);
+         totalFundTrdFrz+= parseFloat(opFundSub[i].FUND_TRD_FRZ);
+         callotInFund+=parseFloat(opFundSub[i].CALLOT_IN_FUND);
+         callotOutFund+=parseFloat(opFundSub[i].CALLOT_OUT_FUND);
+     }
+
+  }
+   var initialFunds=callotInFund-callotOutFund;
+    //期初总资产
+    $('#OmsPageHeader_fundSub').find('td').eq(0).text(toThousands(initialFunds.toFixed(2)));
+    //资金余额
+    $('#OmsPageHeader_fundSub').find('td').eq(6).text(toThousands(totalFundBal.toFixed(2)));
+    //资金可用
+    $('#OmsPageHeader_fundSub').find('td').eq(7).text(toThousands(totalFundAvl.toFixed(2)));
+    //冻结金额
+    $('#OmsPageHeader_fundSub').find('td').eq(8).text(toThousands(totalFundTrdFrz.toFixed(2)));
+    //总市值
+    var totalMaketVal=0;
+    //总持仓成本
+    var totalHoldCost=0;
+    //总持仓盈亏
+    var totalHoldProfit=0;
+
+
+    var opToatalFundSub=commonRequest({
+        service:'M0000063',
+        OP_ID:g_user.userId
+    });
+    if(opToatalFundSub.length>0){
+
+        totalMaketVal=Math.round(opToatalFundSub[0].TOTAL_MAKET_VAL);
+        totalHoldCost=Math.round(opToatalFundSub[0].TOTAL_HOLD_COST);
+
+    }
+
+    totalHoldProfit=initialFunds-totalMaketVal;
+
+
+    //设置总市值
+    $('#OmsPageHeader_fundSub').find('td').eq(2).text(toThousands(totalMaketVal.toFixed(2)));
+
+    var totalOpAsset=totalFundBal+totalMaketVal;
+    //设置总资产
+    $('#OmsPageHeader_fundSub').find('td').eq(1).text(toThousands(totalOpAsset.toFixed(2)));
+
+     //总持仓盈亏=总资产-期初总资产
+    totalHoldProfit=totalOpAsset-initialFunds;
+
+    //仓位
+    if(totalMaketVal ==0 || totalOpAsset==0){
+        $('#OmsPageHeader_fundSub').find('td').eq(3).text('0%');
+    }else{
+        $('#OmsPageHeader_fundSub').find('td').eq(3).text(Math.round((totalMaketVal/totalOpAsset)*100)+'%');
+    }
+   //总盈亏比例=总持仓/期初总资产*100
+    var totalProfitRatio=initialFunds<=0 ? 0+"%" :
+                                        (totalHoldProfit/initialFunds*100).toFixed(2)+'%';
+
+    //持仓盈亏
+    if(totalHoldProfit>0){
+         //大于0是绿色
+        $('#OmsPageHeader_fundSub').find('td').eq(4).css({'color':'green','font-weight':'900'}).text(toThousands(totalHoldProfit.toFixed(2)));
+        $('#OmsPageHeader_fundSub').find('td').eq(5).css({'color':'green','font-weight':'900'}).text(totalProfitRatio);
+    }else{
+        $('#OmsPageHeader_fundSub').find('td').eq(4).css({'color':'red',}).text(toThousands(totalHoldProfit.toFixed(2)));
+        $('#OmsPageHeader_fundSub').find('td').eq(5).css({'color':'red'}).text(totalProfitRatio);
+    }
+
+
+
+   var traderTCost=0;
+   var traderCostRs=commonRequest({
+       service:'M0000094',
+       OP_ID:g_user.userId
+    });
+     if(traderCostRs.length>0 && $.trim(traderCostRs[0].TOTAL_COST) !=''){
+         traderTCost=parseFloat(traderCostRs[0].TOTAL_COST).toFixed(2)
+    }
+
+    //设置费用汇总
+    $('#OmsPageHeader_fundSub').find('td').eq(9).text(toThousands(traderTCost));
+}
+//格式化订单状态
+function  fmtOmsStauts_new(value) {
+    return '<span style="color:red;font-weight: bold;">'+getSysDictOpt('OMS_STATUS',value)+'</span>'
+}
+//查询订单信息
+function queyOmsInfo(rowIndex,rowData) {
+
+    //渲染订单信息
+    $('#omsRead_Table').find('td[name]').each(function () {
+        $(this).text(rowData[$(this).attr('name')]);
+        if($(this).attr('dict')){
+            $(this).text(getSysDictOpt($(this).attr('dict'),rowData[$(this).attr('name')]))
+        }
+    })
+
+    //渲染股票行情
+    drawStockTrendInfo(rowData['STK_ID'],rowData['STK_NAME']);
+    //设置【委托表单】中委托数量、委托价格、
+    $('#fm_deposQty').val(rowData['OMS_QTY']);
+    $('#fm_deposPrice').val(rowData['OMS_PRICE']);
+    $('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val(rowData['TRADE_DIRECT']);
+
+    $('#omsEntract_form').find(':input[name=OMS_ID]').val(rowData['OMS_ID']);
+
+    _selOrderInfo=rowData;
+}
+//渲染股票行情
+function drawStockTrendInfo(stockId,stkName){
+    _rsStockFiveInfo=[];
+    var rs=commonRequest({
+        service:'M0000052',
+        STK_ID:stockId
+    });
+    if(rs.length>0){
+
+        var rateLess=false;
+
+        $('#stockMaket_div').find('span[ctl_color]').css('color','red');
+
+        $('#stockMaket_div').find('span[name]').each(function () {
+
+            $(this).text(rs[0][$(this).attr('name')]);
+            if($(this).attr('rate')=='true'){
+                $(this).text($(this).text()+' %');
+                if(parseFloat(rs[0][$(this).attr('name')])<0){
+                    rateLess=true;
+                }
+            }
+        });
+        //当股份比例小于0
+        if(rateLess){
+            $('#stockMaket_div').find('span[ctl_color]').css('color','#00cc00');
+        }
+
+        _rsStockFiveInfo=rs;
+    }
+}
+
+//判断资金是允许为负数
+function judgeFundMinus(subtractVal,strHint) {
+    var isMinus=getSysParamValuebyCode('IS_FUND_MINUS') =='1'? true:false
+    if(!isMinus && subtractVal<0){
+        alert('提示信息',strHint,'error');
+        return false;
+    }
+    return true;
+}
+
+/**
+ * 委托时校验资金是否负数(相减的资金)
+ */
+function entractValidFundMinus(selRow) {
+
+    var rsFirstFund=commonRequest({
+        service: 'M0000054',
+        CUST_ID: selRow['CUST_ID'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsFirstFund.length>0 &&!judgeFundMinus(parseFloat(rsFirstFund[0].FUND_AVL)-parseFloat($('#fm_deposPrice').val())*parseInt($('#fm_deposQty').val()),
+                                 "一级资金持仓【可用资金】不足！")){
+                   return false;
+    }
+    var rsSecondFund=commonRequest({
+        service: 'M0000055',
+        CUST_ID: selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsSecondFund.length>0 && !judgeFundMinus(parseFloat(rsSecondFund[0].FUND_AVL)-parseFloat($('#fm_deposPrice').val())*parseInt($('#fm_deposQty').val()),
+                                    "二级资金持仓【可用资金】不足！")){
+             return false;
+    }
+   return true;
+}
+/**
+ * 委托时校验股份是否负数(相减的股份)
+ */
+function entractValidStockMinus(selRow){
+
+    var rsFirstStock=commonRequest({
+        service:'M0000059',
+        CUST_ID:selRow['CUST_ID'],
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsFirstStock.length>0 &&!judgeFundMinus(parseInt(rsFirstStock[0].INST_AVL)-parseInt($('#fm_deposQty').val()),
+        "一级股份持仓【可用股份】不足！")){
+        return false;
+    }
+    var rsSecendStock=commonRequest({
+        service:'M0000053',
+        CUST_ID:selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+
+    });
+    if(rsSecendStock.length>0 && !judgeFundMinus(parseInt(rsSecendStock[0].INST_AVL)-parseInt($('#fm_deposQty').val()),
+        "二级股份持仓【可用股份】不足！")){
+        return false;
+    }
+    return true;
+
+}
+/**
+ * 根据【操作员编号】与【交易方向】查询客户禁止交易信息
+ */
+function queryIsBanTrade(selRow) {
+    //是否禁止交易
+    var isBan=false;
+    var banTradeRs=commonRequest({
+        service: 'M0000073',
+        OP_ID: selRow['OP_ID'],
+        TRADE_DIRECT:selRow['TRADE_DIRECT'],
+        TRADE_STA:'1'       //0-正常,1-禁止交易
+    });
+    if(banTradeRs.length>0){
+        isBan=true;
+    }
+    return isBan;
+}
+/**
+ * 根据证券类别查出相应费用
+ */
+function stockOutlayByStkCls(selRow) {
+    //存储股票费用记录
+    var OutLayRec={MIN_PROC_COST:0,PROC_COST:0,TRANSFER_COST:0,OTHER_COST:0,STAMP_TAX:0};
+
+    //客户号头的对应的费率
+    var rsCustStockCost=commonRequest({
+        service: 'M0000069',
+        CUST_ID:selRow['CUST_ID'],
+        TRADE_DIRECT:selRow['TRADE_DIRECT'] //交易方向
+    });
+    if(rsCustStockCost.length>0){
+        //最低手续费
+        OutLayRec['MIN_PROC_COST']=parseInt(rsCustStockCost[0].MIN_PROC_COST);
+        //手续费率
+        OutLayRec['PROC_COST']=parseFloat(rsCustStockCost[0].PROC_COST);
+        //过户费率
+        OutLayRec['TRANSFER_COST']=parseFloat(rsCustStockCost[0].TRANSFER_COST);
+        //其它费率
+        OutLayRec['OTHER_COST']=parseFloat(rsCustStockCost[0].OTHER_COST);
+        //印花税率
+        OutLayRec['STAMP_TAX']=parseFloat(rsCustStockCost[0].STAMP_TAX);
+    }else{
+        //资金账号级别头上对应的费用
+        var cuacctLvlCost=commonRequest({
+            service: 'M0000069',
+            CUACCT_LVL:selRow['CUACCT_LVL'],
+            TRADE_DIRECT:selRow['TRADE_DIRECT'], //交易方向
+        });
+        if(cuacctLvlCost.length>0){
+            //最低手续费
+            OutLayRec['MIN_PROC_COST']=parseInt(cuacctLvlCost[0].MIN_PROC_COST);
+            //手续费率
+            OutLayRec['PROC_COST']=parseFloat(cuacctLvlCost[0].PROC_COST);
+            //过户费率
+            OutLayRec['TRANSFER_COST']=parseFloat(cuacctLvlCost[0].TRANSFER_COST);
+            //其它费率
+            OutLayRec['OTHER_COST']=parseFloat(cuacctLvlCost[0].OTHER_COST);
+            //印花税率
+            OutLayRec['STAMP_TAX']=parseFloat(cuacctLvlCost[0].STAMP_TAX);
+        }
+    }
+    return OutLayRec;
+}
+
+//委托买入提交后更新资金信息
+function  entractBuyChgFund(selRow) {
+
+    var rsFirstFund=commonRequest({
+            service: 'M0000054',
+            CUST_ID: selRow['CUST_ID'],
+            CUACCT_ID:selRow['CUACCT_ID']
+        });
+
+    if(rsFirstFund.length>0){
+        //处理一级资金账户的资产
+        commonRequest({
+            service:'M0000056',
+            CUST_ID:selRow['CUST_ID'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用资金减少-股票费用(如手续费)
+            FUND_AVL:parseFloat(rsFirstFund[0].FUND_AVL)-parseFloat(selRow['TOTAL_PRICE'])
+                     -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                     -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX']),
+            //冻结资金增加+股票费用(如手续费)
+            FUND_TRD_FRZ:parseFloat(rsFirstFund[0].FUND_TRD_FRZ)+parseFloat(selRow['TOTAL_PRICE'])
+                         +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                         +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+    var rsSecondFund=commonRequest({
+        service: 'M0000055',
+        CUST_ID: selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsSecondFund.length>0){
+
+        //处理二级资金账户的资产
+        commonRequest({
+            service:'M0000057',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用资金减少-股票费用(如手续费)
+            FUND_AVL:parseFloat(rsSecondFund[0].FUND_AVL)-parseFloat(selRow['TOTAL_PRICE'])
+                    -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                    -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX']),
+            //冻结资金增加+股票费用(如手续费)
+            FUND_TRD_FRZ:parseFloat(rsSecondFund[0].FUND_TRD_FRZ)+parseFloat(selRow['TOTAL_PRICE'])
+                         +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                         +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+    //查询当前登录交易员对应二级资金信息
+    drawFundSub();
+
+}
+//委托卖出提交后更新股份信息
+function entractSellChgStock(selRow) {
+    //查询一级股份持仓信息
+    var rsFirstStock=commonRequest({
+        service:'M0000059',
+        CUST_ID:selRow['CUST_ID'],
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsFirstStock.length>0){
+        //处理一级股份账户的资产
+        commonRequest({
+            service:'M0000060',
+            CUST_ID:selRow['CUST_ID'],
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用股份余额减少=原可用股份-委托数量
+            INST_AVL:parseInt(rsFirstStock[0].INST_AVL)-parseInt($('#fm_deposQty').val()),
+            //冻结股份增加=原可用股份+委托数量
+            INST_TRD_FRZ:parseInt(rsFirstStock[0].INST_TRD_FRZ)+parseInt($('#fm_deposQty').val())
+        });
+    }
+    //查询二级股份持仓信息
+    var rsSecendStock=commonRequest({
+        service:'M0000053',
+        CUST_ID:selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+
+    });
+    if(rsSecendStock.length>0){
+        //处理二级资金账户的资产
+        commonRequest({
+            service:'M0000062',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用股份余额减少=原可用股份-委托数量
+            INST_AVL:parseInt(rsSecendStock[0].INST_AVL)-parseInt($('#fm_deposQty').val()),
+            //冻结股份增加=原可用股份+委托数量
+            INST_TRD_FRZ:parseInt(rsSecendStock[0].INST_TRD_FRZ)+parseInt($('#fm_deposQty').val())
+        });
+    }
+}
+//卖委托时要判断是否存在二级股份表中
+function entractSellExistSecAsset(selRow) {
+   //当是委托卖出方向时一定要存在在二级股份表中
+   var isExist=false;
+
+   var  rsSecendStock=commonRequest({
+        service:'M0000053',
+        CUST_ID:selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+       CUACCT_ID:selRow['CUACCT_ID']
+
+    });
+   if(rsSecendStock.length>0){
+       isExist=true;
+   }
+    return isExist;
+}
+//校验订单额度限制
+function validOrderlimit(selRow) {
+
+    var isCloseOrder=false;
+
+    var buyValidateRs=commonRequest({
+        service:'M0000113',
+        STK_ID:selRow['STK_ID'],
+        INST_ID:selRow['STK_ID'],
+        UP_DATE:selRow['UP_DATE'],
+        OP_ID:g_user.userId
+    });
+    if(buyValidateRs.length>0 && buyValidateRs[0].ORDER_LVL==2){
+        isCloseOrder=true;
+    }
+    return  isCloseOrder;
+}
+
+//委托下单
+function entractOPt_btn() {
+
+    var selRow = _selOrderInfo;
+    if (selRow == null) {
+        alert("请选中【委托】左边的订单表格中的一条数据！");
+        return;
+    }
+    if(Number($('#fm_deposPrice').val())<=0){
+        alert('提示信息','委托价格不能小于或等于0','error');
+        return;
+    }
+    if(Number($('#fm_deposQty').val())<=0){
+        alert('提示信息','委托数量不能小于或等于0','error');
+        return;
+    }
+    if(Number($('#fm_deposQty').val())>Number(selRow['OMS_QTY'])){
+        alert('提示信息','委托数量不能大于下单数量！','error');
+        return;
+    }
+
+    if($.trim($('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val())=='2'
+          && !entractSellExistSecAsset(selRow)){
+        alert('提示信息','您的交易证券持仓不存在！','error');
+        return;
+    }
+    //委托时校验肌份是否负数(相减的肌份)
+    if($.trim($('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val())=='2' &&
+        entractValidStockMinus(selRow)==false){
+        return;
+    }
+
+    //委托时校验资金是否负数(相减的资金)
+    if($.trim($('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val())=='1' &&
+        entractValidFundMinus(selRow)==false){
+        return;
+    }
+    if($.trim($('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val())=='1' &&
+        parseInt($('#fm_deposQty').val())<100){
+        alert('买入方向的委托数量必须至少等于100');
+        return;
+    }
+    if($.trim($('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val())=='2' &&
+        parseInt($('#fm_deposQty').val())==0){
+        alert('卖出方向的委托数量必须大于0');
+        return;
+    }
+
+    //存储股票费用比率记录
+    var OutLayRec=stockOutlayByStkCls(selRow);
+    //得到委托总价
+    var totalPriceCalc=parseFloat($('#fm_deposPrice').val())*parseInt($('#fm_deposQty').val());
+    //手续费用
+    var procCost=(totalPriceCalc * OutLayRec['PROC_COST']).toFixed(4);
+           procCost=procCost>OutLayRec['MIN_PROC_COST'] ? procCost : OutLayRec['MIN_PROC_COST'];
+    //过户费用
+    var transferCost=(totalPriceCalc * OutLayRec['TRANSFER_COST']).toFixed(4);
+    //其它费
+    var otherCost=(totalPriceCalc * OutLayRec['OTHER_COST']).toFixed(4);
+    //印花税
+    var stampTax=(totalPriceCalc * OutLayRec['STAMP_TAX']).toFixed(4);
+
+
+
+    if(queryIsBanTrade(selRow)){
+        if(selRow['TRADE_DIRECT']==1){
+            alert('提示信息','您【买入方向】已经被禁止交易','error');
+        }else if(selRow['TRADE_DIRECT']==2){
+            alert('提示信息','您【卖出方向】已经被禁止交易','error');
+        }
+        return;
+    }
+    if(selRow['TRADE_DIRECT']==1 && validOrderlimit(selRow)){
+        alert('该产品市值超出最大可买额度！');
+        return ;
+    }
+
+    ajaxRequest({
+        req:[{
+            service:'M0000047',
+            OMS_ID:selRow['OMS_ID'],
+            DEPOS_PRICE:$('#fm_deposPrice').val(),
+            DEPOS_QTY:$('#fm_deposQty').val(),
+            OMS_STATUS:'1' ,   //订单状态：1-委托，2-成交，3-撤单
+            UNMATCH_QTY:$('#fm_deposQty').val(),   //未成交数量=委托数量
+            PROC_COST:procCost,
+            TRANSFER_COST:transferCost,
+            OTHER_COST:otherCost,
+            STAMP_TAX:stampTax,
+            TRADE_DIRECT:selRow['TRADE_DIRECT']
+        }],
+        func:function(data){
+            alert('委托提交成功！');
+
+            selRow['TOTAL_PRICE']=totalPriceCalc;
+            selRow['PROC_COST']=procCost;
+            selRow['TRANSFER_COST']=transferCost;
+            selRow['OTHER_COST']=otherCost;
+            selRow['STAMP_TAX']=stampTax;
+            //委托提交后更新资金资产-->买入方向
+            if($.trim($('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val())=='1'){
+                //委托买入提交后更新资金信息
+                entractBuyChgFund(selRow);
+
+                //委托提交后更新股份信息-->卖出方向
+            }else if($.trim($('#omsEntract_form').find(':input[name=TRADE_DIRECT]').val())=='2'){
+                entractSellChgStock(selRow);
+            }
+
+
+            setTimeout(function () {
+
+                $('#mts_OMS_table_no_condition').datagrid('clean');
+                var omsTableNoCondConf = $.builder.format.datagrid($.parser.getConfigs(['mts_OMS_table_no_condition']));
+                var omsTableNoCondRs=commonRequest(omsTableNoCondConf.req[0]);
+                $('#mts_OMS_table_no_condition').datagrid('loadData',{rows:omsTableNoCondRs,total:omsTableNoCondRs.length});
+
+                $('#mts_OMS_table').datagrid('clean');
+                var omsTableConf = $.builder.format.datagrid($.parser.getConfigs(['mts_OMS_table']));
+                var omsTableRs=commonRequest(omsTableConf.req[0]);
+                $('#mts_OMS_table').datagrid('loadData',{rows:omsTableRs,total:omsTableRs.length});
+
+
+                $('#mts_AESSET_SUB_EMP_INFO_1_table').datagrid('clean');
+                var assetEmpConf = $.builder.format.datagrid($.parser.getConfigs(['mts_AESSET_SUB_EMP_INFO_1_table']));
+                var assetEmpRs=commonRequest(assetEmpConf.req[0]);
+                $('#mts_AESSET_SUB_EMP_INFO_1_table').datagrid('loadData',{rows:assetEmpRs,total:assetEmpRs.length});
+
+                //刷新总资产信息
+                drawOmsTractHead();
+                $('#omsEntract_form').form('clear');
+            },1000);
+
+            _selOrderInfo=null;
+
+        }
+    });
+}
+//委托买入的撤单-改变资金信息 跟股份关系
+function entractBuyCancelOrder_chgFund(selRow) {
+    var rsFirstFund=commonRequest({
+        service: 'M0000054',
+        CUST_ID: selRow['CUST_ID'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+
+
+    if(rsFirstFund.length>0){
+        //处理一级资金账户的资产
+        commonRequest({
+            service:'M0000056',
+            CUST_ID:selRow['CUST_ID'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用资金增加=原可用资金+未成交金额+股票费用(如手续费)
+            FUND_AVL:parseFloat(rsFirstFund[0].FUND_AVL)+parseFloat(selRow['TOTAL_PRICE'])
+                    +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                    +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX']),
+            //冻结资金减少=原冻结资金-未成交金额-股票费用(如手续费)
+            FUND_TRD_FRZ:parseFloat(rsFirstFund[0].FUND_TRD_FRZ)-parseFloat(selRow['TOTAL_PRICE'])
+                        -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                        -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+    var rsSecondFund=commonRequest({
+        service: 'M0000055',
+        CUST_ID: selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsSecondFund.length>0){
+        //处理二级资金账户的资产
+        commonRequest({
+            service:'M0000057',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用资金增加=原可用资金+未成交金额+股票费用(如手续费)
+            FUND_AVL:parseFloat(rsSecondFund[0].FUND_AVL)+parseFloat(selRow['TOTAL_PRICE'])
+                    +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                    +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX']),
+            //冻结资金减少=原冻结资金-未成交金额-股票费用(如手续费)
+            FUND_TRD_FRZ:parseFloat(rsSecondFund[0].FUND_TRD_FRZ)-parseFloat(selRow['TOTAL_PRICE'])
+                        -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                        -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+
+    //查询当前登录交易员对应二级资金信息
+    drawFundSub();
+}
+
+//委托卖出的撤单-改变股份信息 跟资金关系
+function entractSellCancelOrder_chgStock(selRow) {
+    //查询一级股份持仓信息
+    var rsFirstStock=commonRequest({
+        service:'M0000059',
+        CUST_ID:selRow['CUST_ID'],
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsFirstStock.length>0){
+        //处理一级股份账户的资产
+        commonRequest({
+            service:'M0000060',
+            CUST_ID:selRow['CUST_ID'],
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用股份余额减少=原可用股份+未成交股份数
+            INST_AVL:parseInt(rsFirstStock[0].INST_AVL)+parseInt(selRow['UNMATCH_QTY']),
+            //冻结股份增加=原可用股份-未成交股份数
+            INST_TRD_FRZ:parseInt(rsFirstStock[0].INST_TRD_FRZ)-parseInt(selRow['UNMATCH_QTY'])
+        });
+    }
+    //查询二级股份持仓信息
+    var rsSecendStock=commonRequest({
+        service:'M0000053',
+        CUST_ID:selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+
+    });
+    if(rsSecendStock.length>0){
+        //处理二级资金账户的资产
+        commonRequest({
+            service:'M0000062',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //可用股份余额减少=原可用股份+未成交股份数
+            INST_AVL:parseInt(rsFirstStock[0].INST_AVL)+parseInt(selRow['UNMATCH_QTY']),
+            //冻结股份增加=原可用股份-未成交股份数
+            INST_TRD_FRZ:parseInt(rsFirstStock[0].INST_TRD_FRZ)-parseInt(selRow['UNMATCH_QTY'])
+        });
+
+        //更新股份持仓明细表
+        $('#mts_AESSET_SUB_EMP_INFO_1_table').datagrid('reload');
+    }
+}
+//统计一个委托单的成交金额
+function calcMatchAmtByOmsId(omsId) {
+   var matchAmt=0;
+
+   var rsMatchInfo=commonRequest({
+        service:'M0000049',
+        OMS_ID:omsId
+    });
+   if(rsMatchInfo.length>0){
+       for(var i=0;i<rsMatchInfo.length;i++){
+           matchAmt += parseFloat(rsMatchInfo[i].MATCH_AMT);
+       }
+   }
+  return matchAmt;
+}
+
+//委托撤单
+function enTractCancelOrder_btn(){
+    var selRow = $("#mts_OMS_unmatch_table").datagrid("getSelected");
+    if (selRow == null) {
+        alert("请选中表格中的一条数据！");
+        return;
+    }
+    if(selRow['OMS_STATUS']=='3'){
+        alert('提示信息','该记录已撤单','error');
+        return;
+    }
+    //查询是否存在禁止交易
+    if(queryIsBanTrade(selRow)){
+        if(selRow['TRADE_DIRECT']==1){
+            alert('提示信息','您【买入方向】已经被禁止交易','error');
+        }else if(selRow['TRADE_DIRECT']==2){
+            alert('提示信息','您【卖出方向】已经被禁止交易','error');
+        }
+        return;
+    }
+    //存储股票费用比率记录
+    var OutLayRec=stockOutlayByStkCls(selRow);
+    //未成交金额=委托金额-成交金额
+    var totalPriceCalc=parseFloat(selRow['DEPOS_PRICE'])*parseInt(selRow['DEPOS_QTY'])-calcMatchAmtByOmsId(selRow['OMS_ID']);
+    //手续费用
+    var procCost=(totalPriceCalc * OutLayRec['PROC_COST']).toFixed(4);
+    procCost=procCost>OutLayRec['MIN_PROC_COST'] ? procCost : OutLayRec['MIN_PROC_COST'];
+    //过户费用
+    var transferCost=(totalPriceCalc * OutLayRec['TRANSFER_COST']).toFixed(4);
+    //其它费
+    var otherCost=(totalPriceCalc * OutLayRec['OTHER_COST']).toFixed(4);
+    //印花税
+    var stampTax=(totalPriceCalc * OutLayRec['STAMP_TAX']).toFixed(4);
+
+    confirm('提示', '您确认要委托撤单吗', function (flag) {
+        if (flag) {
+
+            ajaxRequest({
+                async:false,
+                req:[{
+                    service:'M0000047',
+                    OMS_STATUS:'3' ,   //订单状态：1-委托，2-成交，3-撤单
+                    OMS_ID:selRow['OMS_ID']
+                }],
+                func:function(data){
+
+                    selRow['TOTAL_PRICE']=totalPriceCalc;
+                    selRow['PROC_COST']=procCost;
+                    selRow['TRANSFER_COST']=transferCost;
+                    selRow['OTHER_COST']=otherCost;
+                    selRow['STAMP_TAX']=stampTax;
+
+                    //买入方向的撤单
+                    if($.trim(selRow['TRADE_DIRECT'])=='1'){
+                        //委托买入的撤单-改变资金信息 跟股份关系
+                        entractBuyCancelOrder_chgFund(selRow);
+
+                        //卖出方向的撤单
+                    }else if($.trim(selRow['TRADE_DIRECT'])=='2'){
+                        //委托卖出的撤单-改变股份信息 跟资金关系
+                        entractSellCancelOrder_chgStock(selRow);
+                    }
+                    //更新未成交明细表
+                    $('#mts_OMS_unmatch_table').datagrid('reload');
+
+                }
+            });
+        }
+    });
+}
+
+//在成交表单中计算成交金额
+function calcMatchAmt() {
+    if($.trim($('#matchPrice').val()) !='' && $.trim($('#matchQty').val())!=''){
+
+        var totalAmt=new Number($('#matchPrice').val())*parseInt($('#matchQty').val()).toFixed(4);
+        $('#mts_OMS_match_form').find(':input[name=MATCH_AMT]').val(totalAmt);
+        $('#mts_OMS_match_form').find('td[cont=MATCH_AMT]').text(totalAmt);
+    }
+}
+//查询成交信息
+function  queyOmsMatch(rowIndex,rowData) {
+    $('#mts_OMS_match_table').datagrid({
+        req:[{
+            service:'M0000049',
+            CUST_ID:rowData['CUST_ID'],
+            STK_ID:rowData['STK_ID'],
+            OMS_DATE:rowData['OMS_DATE'],
+            OMS_ID:rowData['OMS_ID']
+        }]
+    });
+}
+
+//提交未成交数量
+function submitUnMatchQry(omsId,unMaQty) {
+    ajaxRequest({
+        async:false,
+        req:[{
+                service:'M0000047',
+                OMS_ID:omsId,
+                UNMATCH_QTY:unMaQty,
+            }
+        ],
+        func:function (data) {
+        }
+    });
+}
+
+//买入成交后更新资金信息  ==买入资金
+function  buyMatchChgFund(selRow) {
+
+    var rsFirstFund=commonRequest({
+        service: 'M0000054',
+        CUST_ID: selRow['CUST_ID'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+
+
+     if(rsFirstFund.length>0){
+         //处理一级资金账户的资产
+         commonRequest({
+             service:'M0000056',
+             CUST_ID:selRow['CUST_ID'],
+             CUACCT_ID:selRow['CUACCT_ID'],
+             //资金余额减少 - 股票费用(如手续费)
+             FUND_BAL:parseFloat(rsFirstFund[0].FUND_BAL)-parseFloat(selRow['TOTAL_PRICE'])
+                       -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                       -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX']),
+             //冻结资金减少 - 股票费用(如手续费)
+             FUND_TRD_FRZ:parseFloat(rsFirstFund[0].FUND_TRD_FRZ)-parseFloat(selRow['TOTAL_PRICE'])
+                          -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                          -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX']),
+         });
+     }
+
+    var rsSecondFund=commonRequest({
+        service: 'M0000055',
+        CUST_ID: selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsSecondFund.length>0){
+        //处理二级资金账户的资产
+        commonRequest({
+            service:'M0000057',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //资金余额减少 - 股票费用(如手续费)
+            FUND_BAL:parseFloat(rsSecondFund[0].FUND_BAL)-parseFloat(selRow['TOTAL_PRICE'])
+                     -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                     -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX']),
+            //冻结资金减少 - 股票费用(如手续费)
+            FUND_TRD_FRZ:parseFloat(rsSecondFund[0].FUND_TRD_FRZ)-parseFloat(selRow['TOTAL_PRICE'])
+                        -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                        -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+
+    //查询当前登录交易员对应二级资金信息
+    drawFundSub();
+
+}
+//买入成交后更新股份信息 ==买入股份
+function buyMatchChgStock(selRow) {
+
+    //查询一级股份持仓信息
+    var rsFirstStock=commonRequest({
+        service:'M0000059',
+        CUST_ID:selRow['CUST_ID'],
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsFirstStock.length>0){
+        //处理一级股份账户的资产 -修改
+        commonRequest({
+            service:'M0000060',
+            CUST_ID:selRow['CUST_ID'],
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //股份余额增加=原股份余额+成交的股份数
+            INST_BAL:parseInt(rsFirstStock[0].INST_BAL)+parseInt($('#matchQty').val()),
+            //冻结股份增加=原冻结股份+成交的股份数
+            INST_TRD_FRZ:parseInt(rsFirstStock[0].INST_TRD_FRZ)+parseInt($('#matchQty').val()),
+            //成本价=(原成本价X原股份余额+(总成交价+手续费+过户费+印花锐))/(原股份余额+成交数量)
+            COST_PRICE:(parseFloat(rsFirstStock[0].COST_PRICE) * parseInt(rsFirstStock[0].INST_BAL)
+                        +parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                       +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                        +parseFloat(selRow['STAMP_TAX']))
+                        /(parseInt(rsFirstStock[0].INST_BAL)+parseInt($('#matchQty').val())),
+            //买入成本金额=原成本金额+总成交价+手续费+过户费+印花锐
+            BUY_COST_AMT:parseFloat(rsFirstStock[0].BUY_COST_AMT)+parseFloat(selRow['TOTAL_PRICE'])
+                         +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                         +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX'])
+        });
+    }else{
+        //处理一级股份账户的资产-新增
+        commonRequest({
+            service:'M0000058',
+            CUST_ID:selRow['CUST_ID'],
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //股份余额增加=原股份余额+成交的股份数
+            INST_BAL:parseInt($('#matchQty').val()),
+            //冻结股份增加=原冻结股份+成交的股份数
+            INST_TRD_FRZ:parseInt($('#matchQty').val()),
+            //成本价=(总成交价+手续费+过户费+印花锐)/数量
+            COST_PRICE:(parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                        +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                        +parseFloat(selRow['STAMP_TAX']))/parseInt($('#matchQty').val()),
+            //买入成本金额=总成交价+手续费+过户费+印花锐
+            BUY_COST_AMT:parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                        +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                        +parseFloat(selRow['STAMP_TAX'])
+        });
+
+    }
+        //查询二级股份持仓信息
+    var rsSecendStock=commonRequest({
+        service:'M0000053',
+        CUST_ID:selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsSecendStock.length>0){
+        //存储持仓成本
+        var costPrice=0;
+        if(parseInt(rsSecendStock[0].INST_BAL)<=0){
+            costPrice= (parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                +parseFloat(selRow['STAMP_TAX'])-
+                parseFloat(selRow['HOLD_SURPLUS']))
+                /(parseInt(rsSecendStock[0].INST_BAL)+parseInt($('#matchQty').val()))
+
+
+        }else{
+            //成本价=(原成本价X原股份余额+(总成交价+手续费+过户费+印花锐))/(原股份余额+成交数量)
+            costPrice= (parseFloat(rsSecendStock[0].COST_PRICE) * parseInt(rsSecendStock[0].INST_BAL)
+                        +parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                        +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                        +parseFloat(selRow['STAMP_TAX']))
+                    /(parseInt(rsSecendStock[0].INST_BAL)+parseInt($('#matchQty').val()))
+        }
+
+        //处理二级资金账户的资产 --修改
+        commonRequest({
+            service:'M0000062',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //股份余额增加=原股份余额+成交的股份数
+            INST_BAL:parseInt(rsSecendStock[0].INST_BAL)+parseInt($('#matchQty').val()),
+            //冻结股份增加=原冻结股份+成交的股份数
+            INST_TRD_FRZ:parseInt(rsSecendStock[0].INST_TRD_FRZ)+parseInt($('#matchQty').val()),
+            COST_PRICE:costPrice,
+            //买入成本金额=总成交价+手续费+过户费+印花锐
+            BUY_COST_AMT:parseInt(rsSecendStock[0].BUY_COST_AMT)+parseFloat(selRow['TOTAL_PRICE'])
+                         +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                         +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX'])
+
+        });
+    }else{
+        //处理二级资金账户的资产 --新增
+        commonRequest({
+            service:'M0000061',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //股份余额增加=原股份余额+成交的股份数
+            INST_BAL:parseInt($('#matchQty').val()),
+            //冻结股份增加=原冻结股份+成交的股份数
+            INST_TRD_FRZ:parseInt($('#matchQty').val()),
+            //成本价=(总成交价+手续费+过户费+印花锐)/数量
+            COST_PRICE:(parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                    +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                    +parseFloat(selRow['STAMP_TAX']))/parseInt($('#matchQty').val()),
+            //买入成本金额=总成交价+手续费+过户费+印花锐
+            BUY_COST_AMT:parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                        +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                        +parseFloat(selRow['STAMP_TAX'])
+
+        });
+    }
+
+
+}
+//卖出成交后更新资金信息  ==卖出资金
+function sellMatchChgFund(selRow) {
+
+    var rsFirstFund=commonRequest({
+        service: 'M0000054',
+        CUST_ID: selRow['CUST_ID'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsFirstFund.length>0){
+        //处理一级资金账户的资产
+        commonRequest({
+            service:'M0000056',
+            CUST_ID:selRow['CUST_ID'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //资金余额增加 -股票费用(如手续费)
+            FUND_BAL:parseFloat(rsFirstFund[0].FUND_BAL)+parseFloat(selRow['TOTAL_PRICE'])
+                     -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                     -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX']),
+            //可用资金增加 -股票费用(如手续费)
+            FUND_AVL:parseFloat(rsFirstFund[0].FUND_AVL)+parseFloat(selRow['TOTAL_PRICE'])
+                    -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                    -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+    var rsSecondFund=commonRequest({
+        service: 'M0000055',
+        CUST_ID: selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsSecondFund.length>0){
+
+        //处理二级资金账户的资产
+        commonRequest({
+            service:'M0000057',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //资金余额增加 - 股票费用(如手续费)
+            FUND_BAL:parseFloat(rsSecondFund[0].FUND_BAL)+parseFloat(selRow['TOTAL_PRICE'])
+                    -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                    -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX']),
+            //可用资金增加 -  股票费用(如手续费)
+            FUND_AVL:parseFloat(rsSecondFund[0].FUND_AVL)+parseFloat(selRow['TOTAL_PRICE'])
+                    -parseFloat(selRow['PROC_COST'])-parseFloat(selRow['TRANSFER_COST'])
+                    -parseFloat(selRow['OTHER_COST'])-parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+
+    //查询当前登录交易员对应二级资金信息
+    drawFundSub();
+}
+//卖出成交后更新股份信息 ==卖出股份
+function sellMatchChgStock(selRow) {
+
+    //查询一级股份持仓信息
+    var rsFirstStock=commonRequest({
+        service:'M0000059',
+        CUST_ID:selRow['CUST_ID'],
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsFirstStock.length>0){
+        //处理一级股份账户的资产
+        commonRequest({
+            service:'M0000060',
+            CUST_ID:selRow['CUST_ID'],
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //股份余额减少=原股份余额-成交的股份数
+            INST_BAL:parseInt(rsFirstStock[0].INST_BAL)-parseInt($('#matchQty').val()),
+            //冻结股份减少=原冻结股份-成交的股份数
+            INST_TRD_FRZ:parseInt(rsFirstStock[0].INST_TRD_FRZ)-parseInt($('#matchQty').val()),
+            //成本价=(原成本价x 股份余额 -总成交价+手续费+过户费+印花锐)/(股份余额-成交数量)
+            COST_PRICE:(parseFloat(rsFirstStock[0].COST_PRICE) * parseInt(rsFirstStock[0].INST_BAL)
+                       -parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                        +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                        +parseFloat(selRow['STAMP_TAX']))
+                        /(parseInt(rsFirstStock[0].INST_BAL)-parseInt($('#matchQty').val())),
+            //买入成本金额=原成本金额+总成交价+手续费+过户费+印花锐
+            BUY_COST_AMT:parseFloat(rsFirstStock[0].BUY_COST_AMT)-parseFloat(selRow['TOTAL_PRICE'])
+                        +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                        +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+    //查询二级股份持仓信息
+    var rsSecendStock=commonRequest({
+        service:'M0000053',
+        CUST_ID:selRow['CUST_ID'],
+        OP_ID:g_user.userId,
+        INST_ID:selRow['STK_ID'],
+        TRDACCT:selRow['TRDACCT'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+    if(rsSecendStock.length>0){
+        //修改客户股份二级持仓信息
+        commonRequest({
+            service:'M0000062',
+            CUST_ID:selRow['CUST_ID'],
+            OP_ID:g_user.userId,
+            INST_ID:selRow['STK_ID'],
+            TRDACCT:selRow['TRDACCT'],
+            CUACCT_ID:selRow['CUACCT_ID'],
+            //股份余额减少=原股份余额-成交的股份数
+            INST_BAL:parseInt(rsSecendStock[0].INST_BAL)-parseInt($('#matchQty').val()),
+            //冻结股份减少=原冻结股份-成交的股份数
+            INST_TRD_FRZ:parseInt(rsSecendStock[0].INST_TRD_FRZ)-parseInt($('#matchQty').val()),
+            //成本价=(原成本价x 股份余额 -总成交价+手续费+过户费+印花锐)/(股份余额-成交数量)
+            COST_PRICE:(parseFloat(rsFirstStock[0].COST_PRICE) * parseInt(rsSecendStock[0].INST_BAL)
+                        -parseFloat(selRow['TOTAL_PRICE'])+parseFloat(selRow['PROC_COST'])
+                        +parseFloat(selRow['TRANSFER_COST'])+parseFloat(selRow['OTHER_COST'])
+                        +parseFloat(selRow['STAMP_TAX']))
+                        /(parseInt(rsSecendStock[0].INST_BAL)-parseInt($('#matchQty').val())),
+            //买入成本金额=原成本金额+总成交价+手续费+过户费+印花锐
+            BUY_COST_AMT:parseFloat(rsSecendStock[0].BUY_COST_AMT)-parseFloat(selRow['TOTAL_PRICE'])
+                        +parseFloat(selRow['PROC_COST'])+parseFloat(selRow['TRANSFER_COST'])
+                        +parseFloat(selRow['OTHER_COST'])+parseFloat(selRow['STAMP_TAX'])
+        });
+    }
+
+
+}
+//订单成交新增
+function  omsMatch_add() {
+    var selRow = $("#mts_OMS_table").datagrid("getSelected");
+    if (selRow == null) {
+        alert("请选中左下角的订单表格中的一条数据！");
+        return;
+    }
+    $('#mts_OMS_match_form').form('clear').form('load',selRow);
+
+    $('#mts_OMS_match_form').find(':input[name=MATCH_PRICE]').val(selRow['DEPOS_PRICE']);
+    $('#mts_OMS_match_form').find(':input[name=MATCH_QTY]').val(selRow['UNMATCH_QTY']);
+    $('#mts_OMS_match_form').find(':input[name=MATCH_AMT]').val(parseFloat(selRow['DEPOS_PRICE'])*parseInt(selRow['UNMATCH_QTY']));
+
+
+    $('#dePosQty').val(selRow['DEPOS_QTY']);
+    if(parseInt(selRow['DEPOS_QTY'])<=0){
+        $('#dePosQty').val(selRow['OMS_QTY']);
+    }
+
+    $('#mts_OMS_match_form').find('td[cont=MATCH_AMT]').text(new Number($('#mts_OMS_match_form').find(':input[name=MATCH_AMT]').val()).toFixed(4));
+
+    //渲染订单数据信息
+    drawOmsInfo($('#mts_OMS_match_form'),selRow);
+
+    if(queryIsBanTrade(selRow)){
+        if(selRow['TRADE_DIRECT']==1){
+            alert('提示信息','您【买入方向】已经被禁止交易','error');
+        }else if(selRow['TRADE_DIRECT']==2){
+            alert('提示信息','您【卖出方向】已经被禁止交易','error');
+        }
+        return;
+    }
+
+    using('dialog',function () {
+        $("#mts_OMS_match_Dialog").dialog({
+            title: '成交新增信息',
+            width: 550,
+            height: 250,
+            modal: true,
+            resizable: true,
+            onOpen: function() {
+
+            },
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function () {
+
+                    if(Number($('#matchPrice').val())<=0){
+                        alert('提示信息','成交价格不能小于或等于0','warning');
+                        return;
+                    }
+                    if(Number($('#matchQty').val())<=0){
+                        alert('提示信息','成交数量不能小于或等于0','warning');
+                        return;
+                    }
+
+                    if(Number($('#matchQty').val())>Number(selRow['DEPOS_QTY'])){
+                        alert('提示信息','成交数量不能大于委托数量！','warning');
+                        return;
+                    }
+
+                    if(selRow['TRADE_DIRECT']=='1' && parseInt($('#matchQty').val())<100){
+                        alert('买入方向的成交数量必须至少等于100');
+                        return;
+                    }
+
+                    if(selRow['TRADE_DIRECT']=='2' && parseInt($('#matchQty').val())<=0){
+                        alert('卖出方向的成交数量必须大于0');
+                        return;
+                    }
+
+                    //未成交数量
+                    var unMaQty=parseInt(selRow['UNMATCH_QTY'])-parseInt($('#matchQty').val());
+
+                    if(unMaQty<0){
+                        alert('提示信息','成交数量不能大于委托数量','warning');
+                        return;
+                    }
+                    if(parseInt(calcAlreadyMatchQry(selRow['OMS_ID'],selRow['MATCH_ID']))+parseInt($('#matchQty').val())>parseInt($('#dePosQty').val())){
+                        alert('提示信息','同一个申请单号所有成交数量不能大于委托数量','warning');
+                        return;
+                    }
+
+
+                    //存储股票费用比率
+                    var OutLayRec=stockOutlayByStkCls(selRow);
+                    //股票总价
+                    var totalPriceCalc=parseFloat($('#mts_OMS_match_form').find('td[cont=MATCH_AMT]').text());
+
+                    //手续费用
+                    var procCost=(totalPriceCalc * OutLayRec['PROC_COST']).toFixed(4);
+                    procCost=procCost>OutLayRec['MIN_PROC_COST'] ? procCost : OutLayRec['MIN_PROC_COST'];
+
+                    //过户费用
+                    var transferCost=(totalPriceCalc * OutLayRec['TRANSFER_COST']).toFixed(4);
+                    //其它费
+                    var otherCost=(totalPriceCalc * OutLayRec['OTHER_COST']).toFixed(4);
+                    //印花税
+                    var stampTax=(totalPriceCalc * OutLayRec['STAMP_TAX']).toFixed(4);
+                    //持仓盈余
+                    var holdSurplus= commonRequest({service:'M0000091',OP_ID:g_user.userId,INST_ID:selRow['STK_ID']})[0].HOLD_SURPLUS;
+
+                    $('#mts_OMS_match_form').form('submit',{
+                        req:[{
+                            service:'M0000050',
+                            MATCH_STATUS:'1',   //订单状态：1-委托，2-成交，3-撤单
+                            OP_ID:g_user.userId,
+                            PROC_COST:procCost,
+                            TRANSFER_COST:transferCost,
+                            OTHER_COST:otherCost,
+                            STAMP_TAX:stampTax,
+                            ORDER_TYPE:selRow['ORDER_TYPE']
+
+                        }],
+                        success:function(){
+
+                            alert('订单成交成功！');
+                            //修改订单表中未成交数量
+                            submitUnMatchQry(selRow['OMS_ID'],unMaQty);
+                            //当买入成交时，增加冻结资金减少，资金余额减少
+
+                            selRow['TOTAL_PRICE']=totalPriceCalc;
+                            selRow['PROC_COST']=procCost;
+                            selRow['TRANSFER_COST']=transferCost;
+                            selRow['OTHER_COST']=otherCost;
+                            selRow['STAMP_TAX']=stampTax;
+
+                            if(selRow['TRADE_DIRECT']=='1') {
+                                //买入成交后更新资金信息
+                                buyMatchChgFund(selRow);
+
+                                selRow['HOLD_SURPLUS']=holdSurplus;
+                                //买入成交后更新股份信息
+                                buyMatchChgStock(selRow);
+
+                            }else if(selRow['TRADE_DIRECT']=='2'){
+                                //卖出成交后更新资金信息
+                                sellMatchChgFund(selRow);
+                                 //卖出成交后更新股份信息
+                                sellMatchChgStock(selRow);
+
+                            }
+
+                                $("#mts_OMS_match_Dialog").dialog('close');
+                            setTimeout(function () {
+                                //刷新二级持仓
+                                $('#mts_AESSET_SUB_EMP_INFO_1_table').datagrid('clean');
+                                var assetEmpConf = $.builder.format.datagrid($.parser.getConfigs(['mts_AESSET_SUB_EMP_INFO_1_table']));
+                                var assetEmpRs=commonRequest(assetEmpConf.req[0]);
+                                $('#mts_AESSET_SUB_EMP_INFO_1_table').datagrid('loadData',{rows:assetEmpRs,total:assetEmpRs.length});
+
+                                //刷新订单成交表
+                                $('#mts_OMS_match_table').datagrid('clean');
+                                var omsMatchConf = $.builder.format.datagrid($.parser.getConfigs(['mts_OMS_match_table']));
+                                omsMatchConf['OMS_ID']=selRow['OMS_ID'];
+                                var omsMatchRs=commonRequest(omsMatchConf.req[0]);
+                                $('#mts_OMS_match_table').datagrid('loadData',{rows:omsMatchRs,total:omsMatchRs.length});
+
+                                //刷新订单表
+                                $('#mts_OMS_table').datagrid('clean');
+                                var omsTableConf = $.builder.format.datagrid($.parser.getConfigs(['mts_OMS_table']));
+                                var omsTableRs=commonRequest(omsTableConf.req[0]);
+                                $('#mts_OMS_table').datagrid('loadData',{rows:omsTableRs,total:omsTableRs.length});
+                                //刷新页面头部信息
+                                drawOmsTractHead();
+
+                            },600);
+                        }
+                    });
+
+
+                }
+            },
+                {
+                    text: '取消',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        $("#mts_OMS_match_Dialog").dialog('close');
+                    }
+                }
+            ]
+        });
+    })
+
+}
+//订单成交删除
+function omsMatch_del() {
+    var selRow = $("#mts_OMS_match_table").datagrid("getSelected");
+    if (selRow == null) {
+        alert("请选中右下角的成交表格中的一条数据！");
+        return;
+    }
+    confirm('提示', '确定要删除选择的记录吗?',
+        function(flag) {
+            if (flag) {
+
+                    ajaxRequest({
+                        req: [{
+                            service:'M0000110',
+                            MATCH_ID:selRow['MATCH_ID']
+                        }],
+                        func: function(data) {
+                            alert("删除成功！")
+                            $("#mts_OMS_match_table").datagrid('reload');
+                            $("#mts_OMS_table").datagrid('reload');
+                        }
+                    });
+                 }
+        });
+
+}
+
+//统计同一个申请单名的成交量
+function calcAlreadyMatchQry(omsId,matchId) {
+    var calcQty=0;
+    var rs=commonRequest({
+        service:'M0000049',
+        OMS_ID:omsId,
+        NOT_MATCH_ID:matchId
+    })
+    for(var i=0;i<rs.length;i++){
+        calcQty+=parseInt(rs[i].MATCH_QTY)
+    }
+    return calcQty;
+}
+//渲染订单数据信息
+function drawOmsInfo(formObj,stkRec) {
+    formObj.find('td[cont]').each(function () {
+        if($(this).attr('dist')){
+            $(this).text(kui.getSysDict($(this).attr('dist'),stkRec[$(this).attr('cont')]));
+        }else{
+            $(this).text(stkRec[$(this).attr('cont')]);
+        }
+    })
+}
+//查询股票五档行情
+function viewStockFiveSpeed() {
+  if(_rsStockFiveInfo ==undefined || _rsStockFiveInfo.length<=0){
+      alert('五档情况信息不存在或未选择下单信息！');
+      return ;
+  }
+
+    $('#stockFiveSpeed_dlg').find('span[name]').each(function () {
+        $(this).text(_rsStockFiveInfo[0][$(this).attr('name')]);
+    });
+    $('#stockFiveSpeed_dlg').slideToggle();
+}
+//页面最下面的tab触发事件
+function tabSelet(title,index) {
+    if(index==1){
+        $('#mts_OMS_match_detail_table').datagrid('reload');
+    }else if(index==2){
+        $('#mts_OMS_unmatch_table').datagrid('reload');
+    }else{
+        $('#mts_OMS_table').datagrid('reload');
+        $('#mts_OMS_match_table').datagrid('reload');
+    }
+}
+//设置委托明细中的行背景色
+function setMtsOmsViewBakColor(index, row) {
+    if(parseInt(row['UNMATCH_QTY'])<=0){
+        return 'color:#ffa8a8;font-weight:bold;';
+    }
+}
+</script>
+</head>
+<body>
+<div  id="main_layout" class="kui-layout" kui-options="fit:true">
+    <div kui-options="region:'north'" style="height:60px">
+       <div class="north-div">
+               <div style="background:url('../../common/image/motTit.gif'); width:37px; height:37px; position:absolute;
+                              left:0px; top:0px; z-index:1;"></div>
+               <table border="0"  cellspacing="0" cellpadding="0" class="con-mot-t" style="width: 98%;font-weight:bold;
+                      font-size: 15px">
+                   <tr  id="OmsPageHeader">
+                       <td rowspan="2"></td>
+                       <td>期初总资产</td>
+                       <td>总资产</td>
+                       <td>总市值</td>
+                       <td>仓位</td>
+                       <td>盈亏汇总</td>
+                       <td>盈亏比例</td>
+                       <td>资金余额</td>
+                       <td>资金可用</td>
+                       <td>冻结金额</td>
+                       <td>费用汇总</td>
+                   </tr>
+                   <tr id="OmsPageHeader_fundSub">
+                       <td></td>
+                       <td></td>
+                       <td></td>
+                       <td></td>
+                       <td style="font-weight: bold;"></td>
+                       <td ></td>
+                       <td ></td>
+                       <td ></td>
+                       <td ></td>
+                       <td ></td>
+                   </tr>
+               </table>
+       </div>
+    </div>
+    <div  id="westDiv"  kui-options="region:'west'" style="width: 400px;font-size: 0;overflow: hidden;" >
+        <table id="mts_OMS_table_no_condition" class="kui-datagrid"></table>
+    </div>
+    <div  id="west_div_1"  kui-options="region:'center',maxWidth:270" style="width:270px;background-color: #E1F2FF;
+           overflow: hidden">
+         <table id="stockMaket_div"  width="270" height="20%" style="border: 0.5px solid #ff7d27;" cellpadding="0" cellspacing="0">
+             <tr >
+                 <td class="form-label" width="150" style="border:1px dashed #ff7d27; text-align: left;font-size: 16px;font-weight:bold;">
+                     <span style="color:blue;">卖</span>
+                     <span  name="SELL_ONE" style="color:#FE0000;margin-right:2px;" ctl_color>
+
+                               </span>
+                     <span  name="SELL_ONE_VOLUME" style="color:black;font-size: 12px;float: right;margin-right: 5px;font-weight:normal;">
+                               </span>
+                 </td>
+                 <td rowspan="2" style="border:1px dashed #ff7d27;border-left:none;">
+                     <div style="width: 140px;padding-right: 5px;text-align: right;">
+                         <span name="STK_PRICE" style="color:#FE0000; font-size: 32px;" ctl_color></span>
+                     </div>
+                     <div style="padding-right: 5px;width: 140px;text-align: right;">
+                         <span name="RATE" style="color:#FE0000;" rate="true" ctl_color></span>
+                     </div>
+
+                 </td>
+             </tr>
+             <tr >
+                 <td class="form-label" style="border:1px dashed #ff7d27;border-top:none; text-align: left;font-size: 16px;">
+                     <span style="color: blue;">买</span>
+                     <span name="BUY_ONE" style="color:#FE0000;" ctl_color>
+
+                                 </span>
+                     <span  name="BUY_ONE_VOLUME" style="color:black;font-size: 12px;float: right;margin-right: 5px;font-weight:normal;">
+                                 </span>
+                 </td>
+             </tr>
+         </table>
+         <form id="omsEntract_form" style="height: 62%;width: 100%;" >
+             <input type="hidden" name="OMS_ID">
+             <input type="hidden" name="TRADE_DIRECT"/>
+             <input type="hidden" name="STK_ID"/>
+             <input type="hidden" name="STK_NAME"/>
+             <table id="omsRead_Table" width="270" height="100%"  cellpadding="0" cellspacing="0" >
+                 <tr >
+                     <td  width="30" style="color: #3bbcf0;font-weight: bold">
+                         <a href="javascript:void(0)" id="fiveSppenBtn" onclick="viewStockFiveSpeed()">五档</a></td>
+                     <td class="form-label" style="width: 70px;">订单类型：</td>
+                     <td name="OMS_TYPE" dict="OMS_TYPE" style="width: 83px;font-size: 12px;font-weight: bold;">
+                     </td>
+                     <td name="TRADE_DIRECT" dict="TRADE_DIRECT" width="80"  style="font-size: 16px;font-weight: bold;color: #eb939a;text-align: center">
+                     </td>
+                 </tr>
+                 <tr>
+                     <td ></td>
+                     <td class="form-label">订单价格：</td>
+                     <td name="OMS_PRICE" style="font-size: 12px;font-weight: bold;">
+                     </td>
+                     <td name="STK_NAME" STYLE="font-weight: bold;font-size: 16px;text-align: right;"></td>
+                 </tr>
+                 <tr>
+                     <td ></td>
+                     <td class="form-label" >订单数量：</td>
+                     <td name="OMS_QTY" style="font-size: 12px;font-weight: bold;">
+                     </td>
+                     <td></td>
+                 </tr>
+                 <tr>
+                     <td width="30"></td>
+                     <td class="form-label" style="width: 70px;">委托价格：</td>
+                     <td>
+                         <input id="fm_deposPrice" name="DEPOS_PRICE"
+                                class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]'"
+                                style="width:80px;"/>
+                     </td>
+                     <td></td>
+                 </tr>
+                 <tr>
+                     <td ></td>
+                     <td class="form-label" >委托数量：</td>
+                     <td>
+                         <input id="fm_deposQty" name="DEPOS_QTY"
+                                class="kui-validatebox" kui-options="required:true,validType:'zint[19]'"
+                                style="width:80px;"/>
+                     </td>
+                     <td></td>
+                 </tr>
+             </table>
+         </form>
+         <div id="entractOPt_btn_div" style="text-align: center;margin-top:10px;">
+             <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="entractOPt_btn()"
+             >委托</a>
+         </div>
+     </div>
+    <div id="west_div_2" kui-options="region:'east'"  style="width: 580px;">
+        <table id="mts_AESSET_SUB_EMP_INFO_1_table" class="kui-datagrid"></table>
+    </div>
+    <div id="southDiv" kui-options="region:'south',split:true" style="height:255px;" >
+        <hr style="border: 1px solid #3bbcf0;"/>
+        <div id="tab_main_div" class="kui-tabs" kui-options="onSelect:tabSelet,fit:true" >
+            <div title="委托明细" >
+                <div class="kui-layout" kui-options="fit:true">
+                    <div id="westFrame" kui-options="region:'west'" style="width:630px;">
+                        <table id="mts_OMS_table" class="kui-datagrid"></table>
+                    </div>
+                    <div id="centerFrame" kui-options="region:'center'" style="width: 100%;">
+                        <table id="mts_OMS_match_table" class="kui-datagrid" ></table>
+                    </div>
+                </div>
+            </div>
+            <div title="成交明细" >
+                <table id="mts_OMS_match_detail_table" class="kui-datagrid"></table>
+            </div>
+            <div title="未成交明细" >
+                <table id="mts_OMS_unmatch_table" class="kui-datagrid"></table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!--成交信息对话框-->
+<div id="mts_OMS_match_Dialog" style="display: none;">
+    <form id="mts_OMS_match_form" class="kui-form">
+        <!--隐藏域内容-->
+        <input name="MATCH_ID" type="hidden">
+        <input name="OMS_ID" type="hidden">
+        <input name="OMS_DATE" type="hidden">
+        <input name="OMS_TYPE" type="hidden">
+        <input name="CUST_ID" type="hidden">
+        <input name="CUACCT_ID" type="hidden">
+        <input name="CUACCT_LVL" type="hidden">
+        <input name="STKBD" type="hidden">
+        <input name="TRDACCT" type="hidden">
+        <input name="STK_ID" type="hidden">
+        <input name="TRADE_DIRECT" type="hidden">
+        <input name="CHANNEL" type="hidden">
+        <input name="TRADER_ID" type="hidden">
+        <input name="MATCH_AMT" type="hidden">
+
+        <table class="form-table" style="width:100%;">
+            <tr>
+                <td class="form-label">申请编号：</td>
+                <td cont="OMS_ID">
+
+                </td>
+                <td class="form-label">申请日期：</td>
+                <td cont="OMS_DATE" >
+
+                </td>
+            </tr>
+            <tr>
+                <td class="form-label">交易指令类别：</td>
+                <td cont="OMS_TYPE" dist="OMS_TYPE">
+
+                </td>
+                <td class="form-label">交易方向：</td>
+                <td cont="TRADE_DIRECT" dist="TRADE_DIRECT">
+
+                </td>
+            </tr>
+            <tr>
+                <td class="form-label">证券代码：</td>
+                <td cont="STK_ID">
+
+                </td>
+                <td class="form-label">证券名称：</td>
+                <td cont="STK_NAME">
+
+                </td>
+
+            </tr>
+            <tr>
+                <td class="form-label">交易员：</td>
+                <td cont="TRADER_NAME">
+                <td class="form-label">委托数量：</td>
+                <td>
+                    <input id="dePosQty" name="DEPOS_QTY" class="kui-validatebox" kui-options="required:true,validType:'zint[19]',disabled:true"
+                           style="width: 100px;"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="form-label">成交价格：</td>
+                <td >
+                    <input  id="matchPrice" name="MATCH_PRICE" class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]'"
+                            onkeyup="calcMatchAmt()"  style="width: 100px;"/>
+                </td>
+                <td class="form-label">成交数量：</td>
+                <td >
+                    <input id="matchQty" name="MATCH_QTY" class="kui-validatebox" kui-options="required:true,validType:'zint[19]'"
+                            onkeyup="calcMatchAmt()"  style="width: 100px;"/>
+                </td>
+            </tr>
+            <tr>
+
+                <td class="form-label">成交金额：</td>
+                <td cont="MATCH_AMT">
+
+                </td>
+                <td class="form-label">备注：</td>
+                <td colspan="3">
+                    <input name="REMARK" class="kui-validatebox" kui-options="validType:'val[1,200]'"  style="width: 100px;"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!--股票五档行情信息-->
+<div id="stockFiveSpeed_dlg" style="display: none; position:absolute;left:0px; top:0px;z-index:10;height: 320px;width: 305px; background: #b4cfff">
+    <table border="0" style="border-bottom: 1px dotted #666;border-collapse: separate;border-spacing: 1.5px;"
+           width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="20" class="td-txt-center">卖⑤</td>
+            <td width="20" class="td-txt-right" >
+                <span name="SELL_FIVE"></span>
+            </td>
+            <td width="20" class="td-txt-center"></td>
+            <td width="40" class="td-txt-right" >
+                <span name="SELL_FIVE_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-txt-center">卖④</td>
+            <td class="td-txt-right" >
+                <span name="SELL_FOUR"></span>
+            </td>
+            <td width="10" class="td-txt-center"></td>
+            <td  class="td-txt-right" >
+                <span name="SELL_FOUR_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-txt-center">卖③</td>
+            <td  class="td-txt-right" >
+                <span name="SELL_THREE"></span>
+            </td>
+            <td ></td>
+            <td  class="td-txt-right">
+                <span name="SELL_THREE_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td  class="td-txt-center">卖②</td>
+            <td class="td-txt-right" >
+                <span name="SELL_TWO"></span>
+            </td>
+            <td ></td>
+            <td class="td-txt-right">
+                <span name="SELL_TWO_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-txt-center">卖①</td>
+            <td  class="td-txt-right" >
+                <span name="SELL_ONE"></span>
+            </td>
+            <td ></td>
+            <td  class="td-txt-right" >
+                <span name="SELL_ONE_VOLUME"></span>
+            </td>
+        </tr>
+    </table>
+    <table border="0" style="border-bottom: 1px dotted #666;border-collapse: separate;border-spacing: 1.5px;"
+           width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="td-txt-center">买①</td>
+            <td  class="td-txt-right" >
+                <span name="BUY_ONE"></span>
+            </td>
+            <td ></td>
+            <td  class="td-txt-right" >
+                <span name="BUY_ONE_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td  class="td-txt-center">买②</td>
+            <td class="td-txt-right">
+                <span name="BUY_TWO"></span>
+            </td>
+            <td ></td>
+            <td class="td-txt-right" >
+                <span name="BUY_TWO_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-txt-center">买③</td>
+            <td  class="td-txt-right" >
+                <span name="BUY_THREE"></span>
+            </td>
+            <td ></td>
+            <td  class="td-txt-right" >
+                <span name="BUY_THREE_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-txt-center">买④</td>
+            <td class="td-txt-right" >
+                <span name="BUY_FOUR"></span>
+            </td>
+            <td width="10" class="td-txt-center"></td>
+            <td  class="td-txt-right" >
+                <span name="BUY_FOUR_VOLUME"></span>
+            </td>
+        </tr>
+        <tr>
+            <td width="20" class="td-txt-center">买⑤</td>
+            <td width="30" class="td-txt-right" >
+                <span name="BUY_FIVE"></span>
+            </td>
+            <td width="20" class="td-txt-center"></td>
+            <td width="40" class="td-txt-right" >
+                <span name="BUY_FIVE_VOLUME"></span>
+            </td>
+        </tr>
+    </table>
+    <table border="0" style="border-bottom: 1px dotted #666;border-collapse: separate;border-spacing: 1px;" width="100%"
+           cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="20" class="td-txt-center">今开</td>
+            <td width="20" class="td-txt-right" >
+                <span name="TODAY_PRICE"></span>
+            </td>
+            <td width="20" class="td-txt-right">昨收</td>
+            <td width="30" class="td-txt-right" >
+                <span name="YEST_PRICE"></span>
+            </td>
+        </tr>
+        <tr>
+            <td width="20" class="td-txt-center">涨停</td>
+            <td width="20" class="td-txt-right">
+                <span name="LIMIT_UP"></span>
+            </td>
+            <td width="15" class="td-txt-right">最高</td>
+            <td width="30" class="td-txt-right">
+                <span name="HIGHEST"></span>
+            </td>
+        </tr>
+        <tr>
+            <td width="20" class="td-txt-center">跌停</td>
+            <td width="20" class="td-txt-right">
+                <span name="LIMIT_DOWN"></span>
+            </td>
+            <td width="15" class="td-txt-right">最低</td>
+            <td width="30" class="td-txt-right">
+                <span name="LOWEST"></span>
+            </td>
+        </tr>
+
+    </table>
+</div>
+</body>
+</html>

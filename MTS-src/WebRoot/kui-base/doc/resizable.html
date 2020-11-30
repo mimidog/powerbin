@@ -1,0 +1,261 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>resizable - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>缩放</h3>
+
+<p>使用$.fn.resizable.defaults重载默认值。</p>
+
+
+
+<h4>使用方法</h4>
+<h5>创建缩放</h5>
+
+<p>1. 使用标签创建。对&lt;div&gt;标签引用'kjaxui-resizable'类。</p>
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="rr"</span>  <span style="color:red">class</span><span style="color:blue">="kjaxui-resizable"</span> <span style="color:red">
+		data-options</span><span style="color:blue">="maxWidth:</span><span style="color:red">800</span><span style="color:blue">,maxHeight:</span><span style="color:red">600</span><span style="color:blue">"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">100px;</span><span style="color:blue">height:</span><span style="color:red">100px;</span><span style="color:blue">border:</span><span style="color:red">1px</span> <span style="color:blue">solid #ccc;"&gt;&lt;/div&gt;</span> 
+</pre>
+<p>2. 使用脚本创建。</p>
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="rr"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">100px;</span><span style="color:blue">height:</span><span style="color:red">100px;</span><span style="color:blue">border:</span><span style="color:red">1px</span> <span style="color:blue">solid #ccc;"&lt;/div&gt;</span>
+</pre>
+
+<pre class="code">
+	$(<span style="color:blue">'#rr'</span>).resizable({
+		maxWidth:<span style="color:red">800</span>,
+		maxHeight:<span style="color:red">600</span>
+	});
+</pre>
+
+
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>disabled（禁止缩放）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>如果设置为true将禁止缩放。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>handles（句柄）</td>
+
+
+
+<td>string（字符串）</td>
+
+<td>说明缩放的方向，'n'表示向上（北）,'e'表示向右（东）等。</td>
+
+<td>n, e, s, w, ne, se, sw, nw, all</td>
+
+</tr>
+
+<tr>
+
+<td>minWidth（最小宽度）</td>
+
+<td>number（数字）</td>
+
+<td>缩放时所允许的最小宽度。</td>
+
+<td>10</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>minHeight（最小高度）</td>
+
+<td>number（数字）</td>
+
+<td>缩放时所允许的最小高度。</td>
+
+<td>10</td>
+
+</tr>
+
+<tr>
+
+<td>maxWidth（最大宽度）</td>
+
+<td>number（数字）</td>
+
+<td>缩放时所允许的最大宽度。</td>
+
+
+
+<td>10000</td>
+
+</tr>
+
+<tr>
+
+<td>maxHeight</td>
+
+<td>number（数字）</td>
+
+<td>缩放时所允许的最大高度。</td>
+
+<td>10000</td>
+
+</tr>
+
+<tr>
+
+<td>edge（边界）</td>
+
+<td>number（数字）</td>
+
+
+
+<td>将被缩放的边框的边界。</td>
+
+<td>5</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>事件</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>onStartResize</td>
+
+<td>e</td>
+
+<td>当开始缩放时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onResize</td>
+
+<td>e</td>
+
+
+
+<td>在缩放过程中触发，当返回false时, DOM元素将不再缩放。</td>
+
+</tr>
+
+<tr>
+
+<td>onStopResize</td>
+
+<td>e</td>
+
+<td>当缩放停止是触发。</td>
+
+</tr>
+
+</table>
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>options</td>
+
+<td>none</td>
+
+<td>返回缩放属性对象。</td>
+
+</tr>
+
+<tr>
+
+<td>enable</td>
+
+<td>none</td>
+
+
+
+<td>设置缩放可用</td>
+
+</tr>
+
+<tr>
+
+<td>disable</td>
+
+<td>none</td>
+
+<td>设置缩放不可用。</td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

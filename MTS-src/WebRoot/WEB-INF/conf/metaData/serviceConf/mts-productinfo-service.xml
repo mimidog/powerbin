@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+    <service service_code="M0000020" service_title="查询维度设置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryTradeDimensionCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000021" service_title="新增维度设置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addTradeDimensionCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000022" service_title="修改维度设置信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="2">
+        <businesses>
+            <service_business business_code="modTradeDimensionCfgInfoAtom" business_type="3" business_cat="1"/>
+            <service_business business_code="modTradeDimensionCfgStaInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000023" service_title="删除维度设置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delTradeDimensionCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000024" service_title="查询维度证券信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryDimensionStockInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000025" service_title="新增维度证券信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addDimensionStockInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000026" service_title="修改维度证券信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modDimensionStockInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000027" service_title="删除维度证券信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delDimensionStockInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000028" service_title="查询股票产品信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryStockInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000082" service_title="新增股票产品信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="INSERT_T_STK_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+    <service service_code="M0000083" service_title="修改股票产品信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="UPDATE_T_STK_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+    <service service_code="M0000084" service_title="删除股票产品信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="DELETE_T_STK_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000029" service_title="查询交易员分配股票池信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryStockPoolAllotInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000030" service_title="新增交易员分配股票池信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addStockPoolAllotInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000031" service_title="修改交易员分配股票池信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modStockPoolAllotInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000032" service_title="删除股票池产品信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delStockPoolAllotInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000033" service_title="查询股票池配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryStockPoolCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000034" service_title="新增股票池配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addStockPoolCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000035" service_title="修改股票池配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modStockPoolCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000036" service_title="删除股票池配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delStockPoolCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000052" service_title="查询股票池行情信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryStockTrendInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000100" service_title="查询分配股票池产品信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="query_T_STK_POOL_PRODUCT_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000105" service_title="维度产品导入" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="DemensionProductImportAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000111" service_title="产品股票池设置" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="stockSubscriptionSetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000112" service_title="产品黑名单设置" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="stockBlackListSetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+</services>

@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <META http-equiv="Expires" CONTENT="0">
+  <META http-equiv="Cache-Control" CONTENT="no-cache">
+  <META http-equiv="Pragma" CONTENT="no-cache">
+  <META http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript" src="../../business/js/common.js"></script>
+	<script type="text/javascript"> 
+			function fun(data){
+				$("#tt").selected("setValue",data);
+			}
+	</script> 
+	
+</head> 
+<body> 
+<br /><br /> 
+<div id="tt" class="kui-selected" kui-options="width:'500'"></div>
+<div id="aa" class="kui-obviousbox" kui-options="width:'500',typeName:'功能类型',paramName:'aa',multiple:true,
+										data:[{id:'a_1',text:'高'},
+										{id:'a_2',text:'中'},{id:'a_3',text:'低'},{id:'a_4',text:'中高'},
+										{id:'a_5',text:'中低'},{id:'a_6',text:'中低'},{id:'a_7',text:'中低'},
+										{id:'a_8',text:'中低'},{id:'a_9',text:'中低'},{id:'a_11',text:'高'},
+										{id:'a_12',text:'中'},{id:'a_13',text:'低'},{id:'a_14',text:'中高'},
+										{id:'a_15',text:'中低'},{id:'a_16',text:'中低'},{id:'a_17',text:'中低'},
+										{id:'a_18',text:'中低'},{id:'a_19',text:'中低'}],callBack:fun">
+</div><br />
+<div id="bb" class="kui-obviousbox" kui-options="width:'500',typeName:'日志等级',paramName:'bb',multiple:false,
+										data:[{id:'log_1',text:'info'},{id:'log_2',text:'debug'},
+												{id:'log_3',text:'error'}],callBack:fun">
+</div><br />
+<div id="cc" class="kui-obviousbox" kui-options="width:'500',typeName:'机构类别',paramName:'cc',multiple:false,
+										data:[{id:'log_5',text:'info'},{id:'log_6',text:'debug'},
+												{id:'log_7',text:'error'}],callBack:fun">
+</div>
+</body> 
+</html> 

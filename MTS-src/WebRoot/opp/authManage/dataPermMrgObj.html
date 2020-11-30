@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>数据权限管理对象</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="js/dataPermMrgObj.js"></script>
+</head>
+<body>
+<div class="kui-panel" title="">
+	<table id="dataPermMrgObjTbl" title="数据权限管理对象"></table>
+</div>
+<div id="dataPermMrgObjDialog" style="display: none;">
+	<form id="dataPermMrgObjForm" class="kui-form">
+		<table style="width: 640px;">
+			<tr>
+				<input type="hidden" id="CTRL_OBJ_ID">
+				<td style="padding-top: 10px;" align="right">可管理对象名称：</td>
+				<td style="padding-top: 10px;"><input id="CTRL_OBJ_NAME" class="kui-validatebox" kui-options="required:true,validType:'val[1,64]'" style="width: 150px;"></td>
+				<td style="padding-top: 10px;width: 120px;" align="right">可管理对象类型：</td>
+				<td style="padding-top: 10px;"><input id="CTRL_OBJ_TYPE" class="kui-combobox" kui-options="dict:'CTRL_OBJ_TYPE',required:true" style="width: 153px;"></td>
+			</tr>
+			<tr>
+				<td style="padding-top: 10px;width: 130px;" align="right">候选数据加载方式：</td>
+				<td style="padding-top: 10px;"><input id="DATA_LOAD_TYPE" class="kui-combobox" kui-options="dict:'DATA_LOAD_TYPE',onSelect:$dataPermMrgObj.isDataLoad,onClear:$dataPermMrgObj.dataLoadClear,required:true" style="width: 153px;" ></td>
+				<td id="t1" style="padding-top: 10px;" align="right"></td>
+				<td id="t2" style="padding-top: 10px;"></td>
+			</tr>
+			<tr id="t3">
+			</tr>
+			<tr id="t4">
+			</tr>
+			<tr id="t5">
+			</tr>
+			<tr id="t6">
+			</tr>
+			<tr>
+				<td style="padding-top: 10px;width: 190px;" align="right">备注信息：</td>
+				<td style="padding-top: 10px;" colspan="3"><textarea rows="" cols="" id="REMARK" class="kui-validatebox" name="REMARK" kui-options="validType:'val[0,256]'" style="min-width: 455px;min-height: 30px; max-width: 455px;max-height: 30px;"></textarea></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</body>
+</html>

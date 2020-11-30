@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Load Form Data - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Load Form Data</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the buttons below to load form data.</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="loadLocal()">LoadLocal</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="loadRemote()">LoadRemote</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="clearForm()">Clear</a>
+	</div>
+	<div class="kui-panel" title="New Topic" style="width:400px">
+		<div style="padding:10px 0 10px 60px">
+	    <form id="ff" class="kui-form" method="post"  kui-options="url:'form_data1Xml.json',req:[{
+    'service': 'empManage',
+    'conf': 'true',
+    'pageoffset': '0',
+    'pagecount': '20',
+    'param1': '0',
+    'param2': '15'
+	},
+  	{
+  	'service': 'empManage1',
+    'conf': 'true',
+    'pageoffset': '0',
+    'pagecount': '20',
+    'param1': '0',
+    'param2': '15'
+  	}]
+  	,   
+		 success:function(data){   
+		    alert('返回：'+data);   
+		 }">
+	    	<table>
+	    		<tr>
+	    			<td>Name:</td>
+	    			<td><input class="kui-validatebox" type="text" name="name" kui-options="required:true" value='wbs'></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Email:</td>
+	    			<td><input class="kui-validatebox" type="text" name="email" kui-options="required:true,validType:'email'" value="wbs5520@163.com"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Subject:</td>
+	    			<td><input class="kui-validatebox" type="text" name="subject" kui-options="required:true" value='shuxue'></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Message:</td>
+	    			<td><textarea class="kui-textarea" name="message" style="height:60px;"></textarea></td>
+	    		</tr>
+	    			<tr>
+	    			<td>selecttree:</td>
+	    			<td><input class="kui-selecttree" name="selecttree" value="122" kui-options="url:'tree_data1Xml.json',required:true" style="width:200px;"></td>
+	    		</tr>
+	    		
+	    		<tr>
+	    			<td>Language:</td>
+	    			<td>
+	    				<select class="kui-combobox" name="language"><option value="ar">Arabic</option><option value="bg">Bulgarian</option><option value="ca">Catalan</option><option value="zh-cht">Chinese Traditional</option><option value="cs">Czech</option><option value="da">Danish</option><option value="nl">Dutch</option><option value="en" selected="selected">English</option><option value="et">Estonian</option><option value="fi">Finnish</option><option value="fr">French</option><option value="de">German</option><option value="el">Greek</option><option value="ht">Haitian Creole</option><option value="he">Hebrew</option><option value="hi">Hindi</option><option value="mww">Hmong Daw</option><option value="hu">Hungarian</option><option value="id">Indonesian</option><option value="it">Italian</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="lv">Latvian</option><option value="lt">Lithuanian</option><option value="no">Norwegian</option><option value="fa">Persian</option><option value="pl">Polish</option><option value="pt">Portuguese</option><option value="ro">Romanian</option><option value="ru">Russian</option><option value="sk">Slovak</option><option value="sl">Slovenian</option><option value="es">Spanish</option><option value="sv">Swedish</option><option value="th">Thai</option><option value="tr">Turkish</option><option value="uk">Ukrainian</option><option value="vi">Vietnamese</option></select>
+	    			</td>
+	    		</tr>
+	    		
+	    	</table>
+	    </form>
+	    </div>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="kui-linkbutton" onclick="submitForm()">Submit</a>
+	    	<a href="javascript:void(0)" class="kui-linkbutton" onclick="jsSubmitForm()">js提交</a>
+	    	<a href="javascript:void(0)" class="kui-linkbutton" onclick="clearForm()">Clear</a>
+	    </div>
+	</div>
+	<script>
+		function loadLocal(){
+			$('#ff').form('load',{
+				name:'myname',
+				email:'mymail@gmail.com',
+				subject:'subject',
+				message:'message',
+				language:'en'
+			});
+		}
+		function loadRemote(){
+			$('#ff').form('load', 'form_data1Xml.json');
+		}
+		function clearForm(){
+			$('#ff').form('reset');
+		}
+		function submitForm(){
+			$('#ff').form('submit');
+		}
+		
+		function jsSubmitForm(){
+			$('#ff').form({   
+    		url:'form_data1Xml.json',  
+		    req:[{
+			    'service': 'empManage',
+			    'conf': 'true',
+			    'pageoffset': '0',
+			    'pagecount': '20',
+			    'param1': '0',
+			    'param2': '15'
+				},
+			  {
+			  	'service': 'empManage1',
+			    'conf': 'true',
+			    'pageoffset': '0',
+			    'pagecount': '20',
+			    'param1': '0',
+			    'param2': '15'
+		  	}], 
+    		onSubmit: function(){
+    			alert("提交表单！"); 
+    		},   
+		    success:function(data){   
+		        alert(data);   
+		    }   
+		});   }
+	</script>
+</body>
+</html>

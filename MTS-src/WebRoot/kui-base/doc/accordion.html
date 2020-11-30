@@ -1,0 +1,409 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>accordion - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>可伸缩面板</h3>
+
+<p>使用$.fn.accordion.defaults重载默认值</p>
+
+<img src="images/accordion.png"/>
+
+
+
+<h4>依赖关系</h4>
+
+<ul>
+
+	<li>控制面板</li>
+
+</ul>
+
+
+
+<h4>使用方法</h4>
+
+<h5>创建可伸缩面板</h5>
+
+<p>使用html标签创建可伸缩面板，只须要对&lt;div&gt;标签引用'easyui-accordion'类。</p>
+
+
+<p>提交表单数据：</p>
+
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="aa"</span> <span style="color:red">class</span><span style="color:blue">="easyui-accordion"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">300px;</span><span style="color:blue">height:</span><span style="color:red">200px;</span><span style="color:blue">"&gt;</span>
+		<span style="color:blue">&lt;div</span> <span style="color:red">title</span><span style="color:blue">="Title1"</span> <span style="color:red">iconCls</span><span style="color:blue">="icon-save"</span> <span style="color:red">style</span><span style="color:blue">="overflow:</span><span style="color:red">auto;</span><span style="color:blue">padding:</span><span style="color:red">10px;</span>"<span style="color:blue">&gt;</span>
+			<span style="color:blue">&lt;h3</span> <span style="color:red">style</span><span style="color:blue">="color</span><span style="color:red">:#0099FF;</span><span style="color:blue">"&gt;</span>Accordion for jQuery<span style="color:blue">&lt;/h3</span><span style="color:blue">&gt;</span>
+			<span style="color:blue">&lt;p</span><span style="color:blue">&gt;</span>Accordion is a part of easyui framework for jQuery. 
+			It lets you define your accordion component on web page more easily.<span style="color:blue">&lt;/p</span><span style="color:blue">&gt;</span>
+		<span style="color:blue">&lt;/div</span><span style="color:blue">&gt;</span>
+		<span style="color:blue">&lt;div</span> <span style="color:red">title</span><span style="color:blue">="Title2"</span> <span style="color:red">iconCls</span><span style="color:blue">="icon-reload"</span> <span style="color:red">selected</span><span style="color:blue">="true"</span> <span style="color:red">style</span><span style="color:blue">="padding:</span><span style="color:red">10px;</span><span style="color:blue">"&gt;</span>
+			content2
+		<span style="color:blue">&lt;/div</span><span style="color:blue">&gt;</span>
+		<span style="color:blue">&lt;div</span> <span style="color:red">title</span><span style="color:blue">="Title3"&gt;</span>
+			content3
+		<span style="color:blue">&lt;/div</span><span style="color:blue">&gt;</span>
+	<span style="color:blue">&lt;/div</span><span style="color:blue">&gt;</span>
+</pre>
+
+<p>在后面将介绍如何改变或者重建可伸缩面板以及修改一些特性。</p>
+
+<pre class="code">
+	$(<span style="color:blue">'#aa'</span>).accordion({
+		animate:<span style="color:#7F0055">false</span>
+	});
+</pre>
+
+
+
+<br/>
+
+<h5>刷新可伸缩面板的内容</h5>
+
+<p>调用'getSelected'方法获取当前面板（的名称），接着可以调用控制面板的'refresh'方法来载入新的内容。</p>
+
+<pre class="code">
+	<span style="color:blue">var</span> pp = $(<span style="color:blue">'#aa'</span>).accordion('getSelected'</span>);	<span style="color:green">//获取当前选择的可伸缩面板</span>
+	if (pp){
+		pp.panel('refresh'</span>,<span style="color:red">'new_content.php'</span>);<span style="color:green">	//调用'refresh'方法载入新内容</span>
+	}
+</pre>
+
+
+
+<p>&nbsp;</p>
+
+<h4>容器属性（可伸缩面板所在的容器，通常称为‘盒子’）</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>width（宽度）</td>
+
+<td>number（数字）</td>
+
+<td>可伸缩面板所在容器的宽度。</td>
+
+
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>height（高度）</td>
+
+<td>number（数字）</td>
+
+<td>可伸缩面板所在容器的高度。</td>
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>fit（铺满浏览器）</td>
+
+<td>boolean（布尔型）</td>
+
+
+
+<td>如果设置为true，可伸缩面板所在容器将铺满它所在的父容器（浏览器）</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>border（边框）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否显示边框。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>animate（动画效果）</td>
+
+
+
+<td>boolean（布尔型）</td>
+
+<td>定义当延伸或者折叠面板时是否显示动画效果。</td>
+
+<td>true</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>可伸缩面板属性</h4>
+
+<p>可伸缩面板继承控制面板的属性，以下是额外的属性:</p>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+
+
+<td>selected（被选择）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>设置为true将默认展开面板。</td>
+
+<td>false</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>事件</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>onSelect</td>
+
+<td>title,index</td>
+
+<td>当一个可伸缩面板被选择时触发。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>onAdd</td>
+
+<td>title,index</td>
+
+<td>在一个新面板被添加时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeRemove</td>
+
+<td>title,index</td>
+
+<td>在可伸缩面板被移除之前触发，返回false将取消移除。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>onRemove</td>
+
+<td>title,index</td>
+
+<td>在一个可伸缩面板被移除时触发。</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>options</td>
+
+<td>none</td>
+
+<td>返回容器属性对象。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>panels</td>
+
+<td>none</td>
+
+<td>获取所有的面板。</td>
+
+</tr>
+
+<tr>
+
+<td>resize</td>
+
+<td>none</td>
+
+<td>重置可伸缩面板。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>getSelected</td>
+
+<td>none</td>
+
+<td>获取被选择的面板。</td>
+
+</tr>
+
+<tr>
+
+<td>getPanel</td>
+
+<td>which</td>
+
+<td>获取特定的可伸缩面板。which包括title或index</td>
+
+</tr>
+
+<tr>
+
+<td>getPanelIndex</td>
+
+<td>panel</td>
+
+<td>获取特定的可伸缩面板索引。
+<pre>
+<span style="color:green">
+var p = $('#aa').accordion('getSelected');
+if (p){
+  var index = $('#aa').accordion('getPanelIndex', p);
+  alert(index);
+}	
+</span>
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>select</td>
+
+
+
+<td>which</td>
+
+<td>选择特定的面板。which包括title或index</td>
+
+</tr>
+
+<tr>
+
+<td>add</td>
+
+<td>options</td>
+
+<td>添加一个先的可伸缩面板。
+<pre>
+<span style="color:green">
+$('#aa').accordion('add', {
+  title: 'New Title',
+  content: 'New Content',
+  selected: false
+});
+</span>
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>remove</td>
+
+<td>which</td>
+
+
+
+<td>移除特定的面板。which包括title或index</td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

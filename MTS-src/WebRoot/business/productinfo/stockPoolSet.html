@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>股票池分配设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+body {
+  font: 13px '微软雅黑' arial sans-serif;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.form-label {
+  text-align: right;
+  font: 12px '微软雅黑' arial sans-serif;
+  vertical-align: baseline;
+  line-height: 15px;
+}
+.form-table tr{
+  vertical-align: baseline;
+}
+</style>
+<script type="text/javascript">
+//股票池选择事件
+function poolIdSel(rec) {
+
+   var poolRs=commonRequest({
+        service:'M0000033',
+        POOL_ID_IN:($('#poolId').combobox('getValues')).toString()
+    })
+  var tradeIds='';
+  $.each(poolRs,function (idx, obj) {
+      tradeIds+=obj.TRADE_ID+','
+  })
+    tradeIds=tradeIds.substring(0,tradeIds.length-1);
+
+  $('#mts_DimensionStockInfoSearch_table').datagrid({
+      req:[{service:'M0000024',TRADE_ID_IN:tradeIds}]
+  });
+}
+//操作类型选择事件
+function allotTypeSel(rec) {
+
+    $('#poolId').combobox('clear');
+
+    if($('#opID').combogrid('getValue') != ''){
+        if($('#allotType').combobox('getValue')=='1'){
+            $('#poolId').combobox({
+                req:[{
+                    service:'M0000033',
+                    UNALLOT_STK_POOL:'1', //是否查询未分配置股票池
+                    OP_ID:$('#opID').combogrid('getValue')
+                }]
+            })
+        }else   if($('#allotType').combobox('getValue')=='2'){
+            $('#poolId').combobox({
+                req:[{
+                    service:'M0000029',
+                    OP_ID:$('#opID').combogrid('getValue')
+                }]
+            })
+        }
+    }
+
+}
+/**
+ * @method_desc:操作类型触发事件
+ */
+function opIdRowClick(rowIndex, rowData) {
+    if($('#allotType').combobox('getValue')==''){
+        alert('请选择【操作类型】！')
+        return;
+    }
+    $('#poolId').combobox('clear');
+    if($('#allotType').combobox('getValue')=='1'){
+        $('#poolId').combobox({
+            req:[{
+                service:'M0000033',
+                UNALLOT_STK_POOL:'1', //是否查询未分配置股票池
+                OP_ID:rowData['USER_CODE']
+            }]
+        })
+    }else   if($('#allotType').combobox('getValue')=='2'){
+        $('#poolId').combobox({
+            req:[{
+                service:'M0000029',
+                OP_ID:rowData['USER_CODE']
+            }]
+        })
+    }
+
+
+
+}
+/**
+ * @method_desc:新增股票池信息产品
+ */
+function stockPoolAdd(e) {
+
+    var paramJson1 = kui.serialize2Json(kui.serialize('#mts_stockPool_1_form'));
+
+    if($('#allotType').combobox('getValue')=='1'){
+        var reqMap={ service:'M0000030'};
+        $.extend(reqMap,paramJson1);
+
+        ajaxRequest({
+            async:false,
+            req:[reqMap],
+            func:function (data) {
+                alert('交易员配置股票池成功！');
+                $('#mts_stockPool_1_form').form('clear');
+                $('#mts_DimensionStockInfoSearch_table').datagrid({
+                    req:[{service:'M0000024',TRADE_ID:'-1'}]
+                });
+
+            }
+        });
+
+    } else if($('#allotType').combobox('getValue')=='2'){
+        var reqMap={ service:'M0000032'};
+        $.extend(reqMap,paramJson1);
+
+        confirm('提示', '你确定要解除该交易员的股票池配置吗?', function (flag) {
+            if (flag) {
+                ajaxRequest({
+                    async:false,
+                    req:[reqMap],
+                    func:function (data) {
+                        alert('交易员配置股票池解除成功！');
+                        $('#mts_stockPool_1_form').form('clear');
+                        $('#mts_DimensionStockInfoSearch_table').datagrid({
+                            req:[{service:'M0000024',TRADE_ID:'-1'}]
+                        });
+
+                    }
+                });
+            }
+        });
+    }
+}
+
+</script>
+</head>
+<body>
+
+<div id="main_layout" class="kui-layout" kui-options="fit:true">
+  <div kui-options="region:'west'" style="width:300px;overflow:auto" title="交易员与股票配置">
+    <form id="mts_stockPool_1_form" class="kui-form">
+      <table class="form-table" style="width:100%; margin-top:20px;">
+        <tr>
+          <td class="form-label">操作类型：</td>
+          <td >
+            <input name="ALLOT_TYPE" id="allotType" class="kui-combobox"
+                   kui-options="required:true,valueField:'value',textField:'text',data:[{value:'1',text:'分配股票池'},{value:'2',text:'解除股票池'}],
+                    autoFill:true,onSelect:allotTypeSel" />
+          </td>
+        </tr>
+        <tr>
+          <td class="form-label">交易员代码：</td>
+          <td>
+            <input  id="opID" name="OP_ID"  class="kui-combogrid" kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 250,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'USER_CODE',
+                                    textField: 'USER_CODE',
+                                    req: [{
+                                        service: 'P0001008',
+                                        USER_STA:'1',
+                                        POST_ID:getSysParamValuebyCode('TRADER_POST_ID')
+                                    }],
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '交易员名称', field: 'USER_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field:'USER_CODE',title:'交易员代码',width:70,sortable:true,sortType:'number'},
+                                        {field:'USER_NAME',title:'交易员名称',width:70},
+                                        {field:'USER_TYPE',title:'交易员类型',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('USER_TYPE',value);
+                                          }
+                                        }
+                                    ]],
+                                onClickRow:opIdRowClick"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="form-label">股票池名称：</td>
+          <td >
+            <input name="POOL_IDS" id="poolId" class="kui-combobox"
+                    kui-options="required:true,valueField:'POOL_ID',textField:'POOL_NAME',
+                    onSelect:poolIdSel,panelHeight:100,multiple:true" />
+          </td>
+        </tr>
+      </table>
+    </form>
+    <div style="text-align: center;position: relative;top: 20px;">
+      <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="stockPoolAdd()">提交</a>
+    </div>
+  </div>
+  <div id="center_layout"  kui-options="region:'center',split:true" title="股票池产品信息">
+      <table id="mts_DimensionStockInfoSearch_table" class="kui-datagrid"></table>
+   </div>
+</div>
+
+</body>
+</html>

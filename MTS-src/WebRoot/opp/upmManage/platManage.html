@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>关联平台管理</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+  function platModify(){
+	  $("#addplatForm").form('reset');
+	  var rows = $('#UPM_platform').datagrid('getSelections');
+		if(rows.length == 0){
+			alert("请选择一条数据！");
+			return false ;
+		}else if(rows[0].ID=="0"){
+			alert("基础数据不允许修改！");
+			return false ;
+		}
+		$("#addplatForm")[0].reset();
+		$("#PLAT_NAME").val(rows[0].PLAT_NAME);
+   	  	$("#STATUS").combobox("setValue",rows[0].STATUS);
+   	  	$("#SEQ").val(rows[0].SEQ);
+   	   	$("#IS_VALIDATE").combobox("setValue",rows[0].IS_VALIDATE);
+   	 	$("#AUTH_MODE").combobox("setValue",rows[0].AUTH_MODE);
+   	 	
+   	 	$("#VALIDATE_CODE").val(rows[0].VALIDATE_CODE);
+   	 	$("#ID").val(rows[0].ID);
+   	 	isValidFun(rows[0].IS_VALIDATE);
+	  using('dialog', function () {
+          var d=$('#addPlatDialog');
+	        d.dialog({
+	          title:'修改平台信息',
+	          width:600,
+	          height:200,
+	          modal:true,
+	          iconCls:'icon-edit',
+	          buttons:[
+	            {
+	              text:'保存',
+	              iconCls:'icon-save',
+	              handler:function () {
+	            	  if(!$("#addplatForm").form('validate')) return false;
+	            	  var plat_name = $("#PLAT_NAME").val();
+	            	  var plat_sta = $("#STATUS").combobox("getValue");
+	            	  var seq = $("#SEQ").val();
+	            	  var isValid = $("#IS_VALIDATE").combobox("getValue");
+	            	  var auth_mode = $("#AUTH_MODE").combobox("getValue");
+					  var is_main=$("#IS_MAIN").combobox("getValue");
+
+	            	  if(isValid == '0')
+	            	  {
+	            		  auth_mode = "";
+	            	  }
+	            	  var validdate_code = $("#VALIDATE_CODE").val();
+                      d.find(".l-btn").linkbutton("disable");
+	            	  ajaxRequest({
+	                      req:[{
+	                    	  service:'P0000183',
+	                    	  PLAT_NAME:plat_name,
+	                    	  STATUS:plat_sta,
+	                    	  SEQ:seq,
+	                    	  AUTH_MODE:auth_mode=="null"?"":auth_mode,
+	                    	  IS_VALIDATE:isValid,
+	                    	  VALIDATE_CODE:validdate_code,
+	                    	  ID:$("#ID").val(),
+							  IS_MAIN:is_main
+	                      }],
+	                      func:function(data){
+	                          $('#addPlatDialog').dialog('close');
+	                          $('#UPM_platform').datagrid('reload');
+	                          $("#addplatForm")[0].reset();
+	                          alert("修改成功！");
+                              d.find(".l-btn").linkbutton("enable");
+	                      },
+                          error:function(e){
+                              alert("修改失败！");
+                              d.find(".l-btn").linkbutton("enable");
+                          }
+	                    });
+	              }
+	            },
+	            {
+	              text:'取消',
+	              iconCls:'icon-cancel',
+	              handler:function () {
+	            	  $('#addPlatDialog').dialog('close');
+	            	  $("#addplatForm")[0].reset();
+	              }
+	            }
+	          ]
+	        });
+	      });
+	  if(rows[0].AUTH_MODE == "3"){
+   	 	  $("#VALIDATE_CODE").removeClass("validatebox-must");
+		  $("#VALIDATE_CODE").validatebox("disabled");
+   	 	}
+  }
+  function platDelete(){
+	  	var rows = $('#UPM_platform').datagrid('getSelections');
+		if(rows.length == 0){
+			alert("请选择一条数据！");
+			return false ;
+		}else if(rows[0].ID=="0"){
+			alert("基础数据不允许删除！");
+			return false ;
+		}
+		confirm("提示","删除了会删除整个平台的相关数据，确定删除该数据？",function(isOk){
+			if(isOk){
+                $(".l-btn").linkbutton("disable");
+				ajaxRequest({
+		            req:[{
+		            	  service:'P0000184',
+		            	  ID:rows[0].ID
+		                }],
+		            func:function(data){
+		                alert("删除成功！");
+                        $(".l-btn").linkbutton("enable");
+			            $("#UPM_platform").datagrid("reload");
+		            },
+                    error:function(e){
+                        alert("删除失败！");
+                        $(".l-btn").linkbutton("enable");
+                    }
+		        });
+			}
+		});
+  }
+  function platAdd(){
+	  $("#addplatForm").form('reset');
+	  createDialog('新增平台信息','P0000182');
+  }
+  
+  
+  function createDialog(title,serv){
+	  isValidFun(1);
+	  using('dialog', function () {
+          var d=$('#addPlatDialog');
+	        d.dialog({
+	          title:title,
+	          width:600,
+	          height:200,
+	          modal:true,
+	          iconCls:'icon-add',
+	          buttons:[
+	            {
+	              text:'保存',
+	              iconCls:'icon-save',
+	              handler:function () {
+	            	  if(!$("#addplatForm").form('validate')) return false;
+	            	  var plat_name = $("#PLAT_NAME").val();
+	            	  var plat_sta = $("#STATUS").combobox("getValue");
+	            	  var seq = $("#SEQ").val();
+	            	  var isValid = $("#IS_VALIDATE").combobox("getValue");
+	            	  var auth_mode = $("#AUTH_MODE").combobox("getValue");
+					  var is_main=$("#IS_MAIN").combobox("getValue");
+	            	  if(isValid == '0')
+	            	  {
+	            		  auth_mode = "";
+	            	  }
+	            	  var validdate_code = $("#VALIDATE_CODE").val();
+                      d.find(".l-btn").linkbutton("disable");
+	            	  ajaxRequest({
+	                      req:[{
+	                    	  service:serv,
+	                    	  PLAT_NAME:plat_name,
+	                    	  STATUS:plat_sta,
+	                    	  SEQ:seq,
+	                    	  AUTH_MODE:auth_mode=="null"?"":auth_mode,
+	                    	  IS_VALIDATE:isValid,
+	                    	  VALIDATE_CODE:validdate_code,
+							  IS_MAIN:is_main
+	                      }],
+	                      func:function(data){
+	                          $('#addPlatDialog').dialog('close');
+	                          $('#UPM_platform').datagrid('reload');
+	                          $("#addplatForm")[0].reset();
+	                          alert("新增成功！");
+                              d.find(".l-btn").linkbutton("enable");
+	                      },
+                          error:function(e){
+                              alert("新增失败！");
+                              d.find(".l-btn").linkbutton("enable");
+                          }
+	                    });
+	              }
+	            },
+	            {
+	              text:'取消',
+	              iconCls:'icon-cancel',
+	              handler:function () {
+	            	  $('#addPlatDialog').dialog('close');
+	            	  $("#addplatForm")[0].reset();
+	              }
+	            }
+	          ]
+	        });
+	      });
+  }
+  
+  function isValidFun(isValid){
+	  if(isValid == 0){
+		  $("#AUTH_MODE").combobox("hidePanel");
+		  $("#AUTH_MODE").combobox("clear");
+		  $("#AUTH_MODE").next(".combo").removeClass("validatebox-must");
+		  $("#AUTH_MODE").combobox("disable");
+		  
+		  $("#VALIDATE_CODE").val("");
+		  $("#VALIDATE_CODE").removeClass("validatebox-must");
+		  $("#VALIDATE_CODE").validatebox("disabled");
+		  
+	  }else{
+		  $("#AUTH_MODE").next(".combo").addClass("validatebox-must");
+		  $("#AUTH_MODE").combobox("enable");
+		  $("#VALIDATE_CODE").addClass("validatebox-must");
+		  $("#VALIDATE_CODE").validatebox("enabled");
+	  }
+  }
+  
+  function chooseVal(){
+	  var isValid = $("#IS_VALIDATE").combobox("getValue");
+	  isValidFun(isValid);
+  }
+  function chooseAuthMode(){
+	  var authMode = $("#AUTH_MODE").combobox("getValue");
+	  if(authMode == '3'){
+		  $("#VALIDATE_CODE").val("");
+		  $("#VALIDATE_CODE").removeClass("validatebox-must");
+		  $("#VALIDATE_CODE").validatebox("disabled");
+	  }else{
+		  $("#VALIDATE_CODE").addClass("validatebox-must");
+		  $("#VALIDATE_CODE").validatebox("enabled");
+	  }
+  }
+  </script>
+</head>
+<body>
+<table id="UPM_platform" title="业务平台管理" class="kui-datagrid"></table>
+
+<div id="addPlatDialog" style="display: none;">
+<form class="kui-form" id="addplatForm">
+  <table width="100%">
+      <tr>
+      <input type="hidden" id="ID" >
+        <td style="width: 100px" align="right">平台名称：</td>
+        <td style="width: 200px" align="left">
+          <input name="PLAT_NAME" id="PLAT_NAME" class="kui-validatebox" style="width:145px" kui-options="required:'true',validType:'val[1,32]'"> </input>
+        </td>
+        <td style="width: 100px" align="right">状态：</td>
+        <td style="width: 200px" align="left">
+          <input name="STATUS" id="STATUS" class="kui-combobox" kui-options="dict:'COMM_STA',required:'true'"  style="width:145px" > </input>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 100px" align="right">是否验证：</td>
+        <td style="width: 200px" align="left">
+          <input name="IS_VALIDATE" id="IS_VALIDATE" class="kui-combobox" kui-options="dict:'TRUE_FALSE',required:'true',onSelect:chooseVal,value:'1'" style="width:145px"> </input>
+        </td>
+        <td style="width: 100px" align="right">验证方式：</td>
+        <td style="width: 200px" align="left">
+          <input name="AUTH_MODE" id="AUTH_MODE" class="kui-combobox" kui-options="dict:'OPP_AUTH_MODE',required:'true',onSelect:chooseAuthMode" style="width:145px" > </input>
+        </td>
+      </tr>
+      <tr>
+      	<td style="width: 100px" align="right">服务号：</td>
+        <td style="width: 200px" align="left">
+          <input name="VALIDATE_CODE" id="VALIDATE_CODE" class="kui-validatebox" style="width:145px" kui-options="required:'true',validType:'val[1,32]'"> </input>
+        </td>
+        <td style="width: 100px" align="right">显示顺序：</td>
+        <td align="left">
+          <input name="SEQ" id="SEQ" class="kui-validatebox" style="width:145px" kui-options="required:'true',validType:'zint[4]'"> </input>
+        </td>
+      </tr>
+	  <tr>
+		  <td style="width: 100px" align="right">是否主平台：</td>
+		  <td style="width: 200px" align="left" colspan="3">
+			  <input name="IS_MAIN"  id="IS_MAIN" class="kui-combobox" kui-options="dict:'YES_OR_NO',autoFill:'true'" style="width:145px" />
+		  </td>
+
+	  </tr>
+    </table>
+</form>
+</div>
+
+</body>
+</html>

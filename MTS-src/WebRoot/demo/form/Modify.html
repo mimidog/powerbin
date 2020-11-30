@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Modify Form Data - jQuery EasyUI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Modify Form Data</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the buttons below to load form data.</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="loadLocal()">加载本地数据</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="loadRemote()">加载远程数据</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="submitForm()">修改</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="clearForm()">Clear</a>
+	</div>
+	<div class="kui-panel" title="New Topic" style="width:700px">
+		<div style="padding:10px 0 10px 60px">
+	  <form id="ff" class="kui-form" method="post" kui-options="req:[{
+    					'service': 'service3'
+					}]">
+	    	<table>
+	    		<tr>
+	    			<td>Code:</td>
+	    			<td>
+	    				<input type="hidden" name="id"/>
+	    				<input class="kui-validatebox" type="text" name="code" kui-options="showMessage:true,required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Name:</td>
+	    			<td><input class="kui-validatebox" type="text" name="name" kui-options="showMessage:true,required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Age:</td>
+	    			<td><input class="kui-validatebox" type="text" name="age" kui-options="showMessage:true,required:true,validType:'length[2,2]'"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Email:</td>
+	    			<td><input class="kui-validatebox" type="text" name="email" kui-options="showMessage:true,required:true,validType:'email'"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>selecttree:</td>
+	    			<td><input class="kui-selecttree" name="selecttree" value="122" kui-options="url:'tree_data1Xml.json',required:true" style="width:200px;"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Select1:</td>
+	    			<td>
+	    				<select value="en" class="kui-combobox" name="select1"><option value="ar">Arabic</option><option value="bg">Bulgarian</option><option value="ca">Catalan</option><option value="zh-cht">Chinese Traditional</option><option value="cs">Czech</option><option value="da">Danish</option><option value="nl">Dutch</option><option value="en" selected="selected">English</option><option value="et">Estonian</option><option value="fi">Finnish</option><option value="fr">French</option><option value="de">German</option><option value="el">Greek</option><option value="ht">Haitian Creole</option><option value="he">Hebrew</option><option value="hi">Hindi</option><option value="mww">Hmong Daw</option><option value="hu">Hungarian</option><option value="id">Indonesian</option><option value="it">Italian</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="lv">Latvian</option><option value="lt">Lithuanian</option><option value="no">Norwegian</option><option value="fa">Persian</option><option value="pl">Polish</option><option value="pt">Portuguese</option><option value="ro">Romanian</option><option value="ru">Russian</option><option value="sk">Slovak</option><option value="sl">Slovenian</option><option value="es">Spanish</option><option value="sv">Swedish</option><option value="th">Thai</option><option value="tr">Turkish</option><option value="uk">Ukrainian</option><option value="vi">Vietnamese</option></select>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td>Datebox:</td>
+	    			<td>
+	    				<input name="rq" class="kui-datebox" required="required" kui-options="showMessage:true" type="text"></input>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td>Obviousbox:</td>
+	    			<td><select class="kui-obviousbox" name="entity" kui-options="multiple:true,data:[{'all1':'全部'},{'10':'CSIHK'},{'20':'CSIUS'},{'30':'CSISING'},{'40':'CSIHKG'},{'50':'CSBJ'},{'60':'中信香港开口'},{'50':'CSBJ'},{'60':'中信香港开口'},{'50':'CSBJ'},{'60':'中信香港开口'}]"></select></td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    </div>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="kui-linkbutton" onclick="submitForm()">Submit</a>
+	    	<a href="javascript:void(0)" class="kui-linkbutton" onclick="jsSubmitForm()">js提交</a>
+	    	<a href="javascript:void(0)" class="kui-linkbutton" onclick="clearForm()">Clear</a>
+	    </div>
+	</div>
+	<script>
+		function loadLocal(){
+			$('#ff').form('load',{
+				name:'myname',
+				email:'mymail@gmail.com',
+				subject:'subject',
+				message:'message',
+				language:'en'
+			});
+		}
+		function loadRemote(){
+			$('#ff').form('load',{
+				req:[{
+    					'service': 'service1',
+    					'id':'27'
+					}]
+				});
+		}
+		function clearForm(){
+			$('#ff').form('clear');
+		}
+		function submitForm(){
+			$('#ff').form('submit');
+		}
+		
+		/**
+		js获取表单提交
+		*/
+		function jsSubmitForm(){
+			$('#ff').form({
+		    req:[{
+			    'service': 'service3'
+				}], 
+    		onSubmit: function(){ 
+    		},   
+		    success:function(data){   
+		        alert(data);   
+		    }   
+		});   
+		// submit the form   
+		//$('#ff').form('submit');
+		$('#ff').submit();
+			
+		}	
+		
+		function clearForm(){
+			$('#ff').form('clear');
+		}
+	</script>
+</body>
+</html>

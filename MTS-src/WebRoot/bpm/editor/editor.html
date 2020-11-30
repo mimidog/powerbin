@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:b3mn="http://b3mn.org/2007/b3mn"
+xmlns:ext="http://b3mn.org/2007/ext"
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:atom="http://b3mn.org/2007/atom+xhtml">
+<head profile="http://purl.org/NET/erdf/profile">
+<title>KJDP3.5 BPM suite</title>
+<!-- libraries -->
+<meta charset="UTF-8">
+<link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+<link rel="schema.dcTerms" href="http://purl.org/dc/terms/" />
+<link rel="schema.b3mn" href="http://b3mn.org" />
+<link rel="schema.oryx" href="http://oryx-editor.org/" />
+<link rel="schema.raziel" href="http://raziel.org/" />
+
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<link rel="Stylesheet" media="screen" href="../editor/css/theme_norm.css" type="text/css" />
+<link rel="Stylesheet" media="screen" href="../editor/css/theme_norm_signavio.css" type="text/css" />
+<link rel="Stylesheet" media="screen" href="../editor/css/xtheme-smoky.css" type="text/css" />
+<link rel="Stylesheet" media="screen" href="../editor/css/custom-style.css" type="text/css" />
+
+<style type="text/css">
+ body {
+	overflow: hidden;
+	height: 100%;
+	border: medium none;
+	margin: 0px;
+	padding: 0px;
+}
+.treeNode{
+	background: url("images/tree_icons.png") no-repeat scroll -240px 0 rgba(0, 0, 0, 0);
+}
+.liNode{
+	margin-top:5px;
+	cursor: move;
+}
+
+.north_view {           
+    background: url("./images/signavio/smoky/header_background_bottom.png") repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+    height: 28px !important;
+    left: 0;
+
+}
+
+</style>
+
+<script src="../../kui-base/js/core/jquery-1.8.3.js" type="text/javascript" ></script>
+<script src="../../opp/js/common.js" type="text/javascript"></script>
+<script src="../../kui-base/js/core/kui.loader.js" type="text/javascript" ></script>
+
+<script src="../editor/js/jquery.json-2.4.js" type="text/javascript" ></script>
+<script src="../editor/js/hash.js" type="text/javascript" ></script>
+<script src="../editor/js/path_parser.js" type="text/javascript" ></script>
+<script src="../editor/i18n/translation_zh_CN.js" type="text/javascript" ></script>
+<script src="../editor/i18n/translation_signavio_zh_CN.js" type="text/javascript" ></script>
+<script src="../editor/oryx.debug.js" type="text/javascript" ></script>
+<script type="text/javascript">
+window.$ready = function() {
+	
+	if(window.parent.$k) {
+		window.parent.$k.editorWeb = ORYX;
+	}
+	
+	using("validatebox",function() {
+		$.extend($.fn.validatebox.methods, {
+			remove: function (jq, newposition) {
+				return jq.each(function () {
+					$(this).removeClass("validatebox-text validatebox-invalid").unbind('focus').unbind('blur');
+				});
+			},
+
+			reduce: function (jq, newposition) {
+				return jq.each(function () {
+					var opt = $(this).data().validatebox.options;
+					$(this).addClass("validatebox-text").validatebox(opt);
+				});
+			}
+		}); 
+	});
+};
+</script>
+</head>
+<body>
+	<div id="main" class="kui-layout" kui-options="fit:true">
+		<div kui-options="region:'north',border:false" style="height:28px;width:100%;overflow:hidden" 
+			class="x-panel-body x-panel-body-noheader x-panel-body-noborder">
+			<div id="toolbar" style="heigth:20px;" class="north_view">
+				
+			</div>
+		</div>
+		<div id="eastproperty" kui-options="region:'east',split:true" title="对象属性" style="width:220px;">
+			<table id="propertyPanel" class="kui-propertygrid" 
+			kui-options="fit:true,fitColumns:true,showGroup:true,scrollbarSize:0,pagination:false,columns: [[{
+					field: 'name',
+					title: ORYX.I18N.PropertyWindow.name,
+					width: 100,
+					sortable: true
+				},
+				{
+					field: 'value',
+					title: ORYX.I18N.PropertyWindow.value,
+					width: 100,
+					resizable: false
+				}]]"></table>
+		</div>
+		<div id="delegateTaskDialog" style="display:none">
+			<table id="allocation"></table>
+		</div>
+		<div kui-options="region:'west',split:true" title="流程引擎对象" style="width:150px;padding:0px;">
+			<div id="objNode"></div>
+		</div>
+		<div kui-options="region:'center'">
+			<div id="divSvg" style="position:relative"></div>
+		</div>
+	</div>
+</body>
+</html>

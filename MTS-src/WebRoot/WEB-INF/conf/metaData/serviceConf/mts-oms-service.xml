@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+    <service service_code="M0000045" service_title="查询订单管理信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryOMSInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000046" service_title="新增订单管理信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addOMSInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000047" service_title="修改订单管理信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modOMSInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000048" service_title="删除订单管理信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delOMSInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000049" service_title="查询订单成交信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryOMSMatchInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000050" service_title="新增订单成交信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addOMSMatchInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000051" service_title="查询订单的历史信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryOmsHisInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000066" service_title="新增订单的历史信息" arrange_type="1" service_type="2" service_cate="1"
+        attr1="mts">
+        <businesses>
+            <service_business business_code="addOmsHisInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000067" service_title="查询成交的历史信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryMatchHisInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000068" service_title="新增成交的历史信息" arrange_type="1" service_type="2" service_cate="1"
+             attr1="mts">
+        <businesses>
+            <service_business business_code="addMatchHisInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000069" service_title="查询客户费用设置信息" arrange_type="1" service_type="2" service_cate="1">
+        <businesses>
+            <service_business business_code="queryOutlaySetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000070" service_title="新增客户费用设置信息" arrange_type="1" service_type="1" service_cate="1" >
+        <businesses>
+            <service_business business_code="addOutlaySetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000071" service_title="修改客户费用设置信息" arrange_type="1" service_type="1" service_cate="1" >
+        <businesses>
+            <service_business business_code="modOutlaySetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000072" service_title="删除客户费用设置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delOutlaySetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000078" service_title="手动新增股票建仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addStockBuildPosHandAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000079" service_title="查询股票建仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryStockBuildPosAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000109" service_title="更新手工信号的审核状态" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="updateHandSignalAuditStaAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+    <service service_code="M0000110" service_title="删除订单成交信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delOMSMatchInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000113" service_title="校验买委托时额度限制" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="validOrderlimitByBuyEntractAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+</services>

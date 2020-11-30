@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<!-- 布局管理 start -->
+	<service service_code="P0004101" service_name="布局查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getLayout" business_method="" serial_no="1" business_name="布局查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="getAllBoard" business_method="" serial_no="1" business_name="板块查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004105" service_name="布局查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getLayout" business_method="" serial_no="1" business_name="布局查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004102" service_name="布局新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="addLayout" business_method="" serial_no="1" business_name="布局新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004103" service_name="布局更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="updateLayout" business_method="" serial_no="1" business_name="布局更新" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004104" service_name="布局删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="deleteLayout" business_method="" serial_no="1" business_name="布局删除" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="deleteAllBoard" business_method="" serial_no="1" business_name="板块删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0004111" service_name="板块查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getBoard" business_method="" serial_no="1" business_name="板块查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004112" service_name="板块新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="addBoard" business_method="" serial_no="1" business_name="板块新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004113" service_name="板块更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="updateBoard" business_method="" serial_no="1" business_name="板块更新" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004114" service_name="板块删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="deleteBoard" business_method="" serial_no="1" business_name="板块删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004115" service_name="删除所有板块" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="deleteAllBoard" business_method="" serial_no="1" business_name="删除所有板块" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<!-- 布局管理 end -->
+	
+	<!-- 容器管理 start -->
+	<service service_code="P0004121" service_name="容器查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getAllContainer" business_method="" serial_no="1" business_name="容器查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004125" service_name="容器查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getContainer" business_method="" serial_no="1" business_name="容器查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004122" service_name="容器新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="addContainer" business_method="" serial_no="1" business_name="容器新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004123" service_name="容器更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="updateContainer" business_method="" serial_no="1" business_name="容器更新" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004124" service_name="容器删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="deleteContainer" business_method="" serial_no="1" business_name="容器删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<!-- 容器管理 end -->
+	
+	<!-- 组件管理 start -->
+	<service service_code="P0004131" service_name="组件查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getAllComponents" business_method="" serial_no="1" business_name="组件查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="getAllCompParam" business_method="" serial_no="1" business_name="组件参数查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004135" service_name="组件查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getComponents" business_method="" serial_no="1" business_name="组件查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004132" service_name="组件新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+
+        <!--by  2016/04/20 添加组件序列-->
+		<service_business business_code="seqComponentsId" business_method="" serial_no="1" business_name="获取组件序列" business_type="3" business_cate="1" attr1="" />
+      <service_business business_code="addComponent" business_method="" serial_no="1" business_name="组件新增" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="addCascadeComponent" business_method="" serial_no="1" business_name="组件新增到权限表中" business_type="3" business_cate="1" attr1="" />
+    </businesses>
+	</service>
+	<service service_code="P0004133" service_name="组件更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="updateComponent" business_method="" serial_no="1" business_name="组件更新" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="updateCascadeComponent" business_method="" serial_no="1" business_name="在权限表中进行组件更新" business_type="3" business_cate="1" attr1="" />
+    </businesses>
+	</service>	
+	<service service_code="P0004134" service_name="组件删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="deleteComponent" business_method="" serial_no="1" business_name="组件删除" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="deleteAllCompParam" business_method="" serial_no="1" business_name="组件参数删除" business_type="1" business_cate="1" attr1="" />
+      		<service_business business_code="deleteCascadeComponent" business_method="" serial_no="1" business_name="在权限信息表中删除组件信息" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004136" service_name="组件级联更新名称" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="updateComponentName" business_method="" serial_no="1" business_name="组件更新" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="updateMenuContCompName" business_method="" serial_no="1" business_name="组件更新" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+	</service>		
+	
+	 <!-- 组件参数 -->
+	<service service_code="P0004141" service_name="组件参数查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getCompParam" business_method="" serial_no="1" business_name="组件参数查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004142" service_name="组件参数新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="addCompParam" business_method="" serial_no="1" business_name="组件参数新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004143" service_name="组件参数更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="updateCompParam" business_method="" serial_no="1" business_name="组件参数更新" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004144" service_name="组件参数删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="deleteCompParam" business_method="" serial_no="1" business_name="组件参数删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<service service_code="P0004145" service_name="组件参数删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="deleteAllCompParam" business_method="" serial_no="1" business_name="组件参数删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<!-- 组件管理 end -->
+	
+	<!-- 门户菜单查询 start -->
+	<service service_code="P0004151" service_name="门户菜单查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getUserPortalMenu" business_method="" serial_no="1" business_name="门户菜单查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004152" service_name="门户菜单组件查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="getUserMenuComp" business_method="" serial_no="1" business_name="门户菜单组件查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="getUserMenuContComp" business_method="" serial_no="1" business_name="门户菜单容器组件查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="getUserMenuCompParam" business_method="" serial_no="1" business_name="门户菜单组件参数查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="getUserMenuContTab" business_method="" serial_no="1" business_name="门户菜单容器TAB查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004153" service_name="门户菜单组件保存" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="menuCompCfgSave" business_method="" serial_no="1" business_name="门户菜单组件保存" business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	<!-- 门户菜单查询 end -->
+</services>

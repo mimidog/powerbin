@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" >
+	window.$ready = function() {
+		ajaxRequest({
+		async: false,
+		req: [{
+			service: 'atomTest',
+			BPM_OP: 'newModel',
+			MODEL_NAME:'林毅测试',
+			MODEL_KEY:'lytest',
+			USER_CODE:'1'
+		}],
+		func: function(data) {
+			if (data[0]['service']['flag'] == 0) {
+//				$alert(data[0].data[0]);
+				/* $.ajax({
+					url:'../../modeler?',
+					async: false,
+					type: 'POST',
+					contentType: 'text/xml; charset=utf-8',
+					dataType: 'json',
+					data: {
+						id: 'bea7693f-6840-4f70-af9b-760de7372cbd',
+						method:'getModelData'
+					},
+					success: function(data) {					
+						$alert(data);							
+					}
+				 });*/
+			}
+		}
+	});
+	/*$.post("../../modeler", { id: 'bea7693f-6840-4f70-af9b-760de7372cbd',method:'getModelData'},
+   function(data){
+     $alert("Data Loaded: " + data);
+   },"json");*/
+	/* $.post('../../modeler',{id: 'bea7693f-6840-4f70-af9b-760de7372cbd',method:'getModelData'},
+					function(data) {
+						$alert(data);							
+					}
+				 );*/
+				 /*
+		$.ajax({
+					url:'../../modeler',
+					type: 'POST',
+					dataType:'json',
+					data: {id: 'bea7693f-6840-4f70-af9b-760de7372cbd',method:'getModelData'},
+					success: function(data) {					
+						$alert(data);							
+					}
+				 });*/
+	}
+</script>
+<title>系统图标</title>
+<style type="text/css">
+.icon-content{
+	width: 400px;
+	height: 400px;
+	border:1px solid #f1f1f1;
+}
+
+.icon-content span{
+	margin:3px 3px;
+}
+
+
+.frame-icon{
+	width: 20px;
+	height: 20px;
+	background: transparent url('../images/frame/ui-frame-icons.png') no-repeat;
+	float: left;
+	cursor:pointer
+}
+
+.icon-red-flag{
+	background-position: 0px -60px;
+}
+.icon-smile-face{
+	background-position: -20px -60px;
+}
+.icon-sys-stat{
+	background-position: -40px -60px;
+}
+.icon-user-set{
+	background-position: -60px -60px;
+}
+.icon-post-set{
+	background-position: -80px -60px;
+}
+.icon-client-info{
+	background-position: -100px -60px;
+}
+.icon-honor-badge{
+	background-position: -120px -60px;
+}
+.icon-money-manage{
+	background-position: -140px -60px;
+}
+.icon-blue-flag{
+	background-position: -160px -60px;
+}
+.icon-money-box{
+	background-position: -180px -60px;
+}
+.icon-table-cell{
+	background-position: -200px -60px;
+}
+.icon-light-up{
+	background-position: -220px -60px;
+}
+.icon-buy-bag{
+	background-position: -240px -60px;
+}
+.icon-message-page{
+	background-position: -260px -60px;
+}
+.icon-target-set{
+	background-position: -280px -60px;
+}
+.icon-gift-list{
+	background-position: -300px -60px;
+}
+.icon-user-info{
+	background-position: -320px -60px;
+}
+
+.icon-user-detail{
+	background-position: 0 -80px;
+}
+.icon-menu-select{
+	background-position: -20px -80px;
+}
+.icon-protal-set{
+	background-position: -40px -80px;
+}
+.icon-data-stat{
+	background-position: -60px -80px;
+}
+.icon-gold-count{
+	background-position: -80px -80px;
+}
+.icon-notic{
+	background-position: -100px -80px;
+}
+.icon-metal-star{
+	background-position: -120px -80px;
+}
+.icon-gift{
+	background-position: -140px -80px;
+}
+.icon-money{
+	background-position: -180px -80px;
+}
+.icon-rmb{
+	background-position: -200px -80px;
+}
+.icon-user-stat{
+	background-position: -220px -80px;
+}
+.icon-metal-gold{
+	background-position: -240px -80px;
+}
+.icon-us-dollar{
+	background-position: -260px -80px;
+}
+.icon-gold-crown{
+	background-position: -280px -80px;
+}
+.icon-red-heart{
+	background-position: -300px -80px;
+}
+.icon-page-set{
+	background-position: -320px -80px;
+}
+
+.icon-flow-set{
+	background-position: 0 -100px;
+}
+.icon-earth{
+	background-position: -20px -100px;
+}
+.icon-buiness-bag{
+	background-position: -40px -100px;
+}
+.icon-title-pen{
+	background-position: -60px -100px;
+}
+.icon-page-detail{
+	background-position: -80px -100px;
+}
+.icon-yellow-flag{
+	background-position: -100px -100px;
+}
+.icon-gold-key{
+	background-position: -120px -100px;
+}
+.icon-tel-phone{
+	background-position: -140px -100px;
+}
+.icon-work-flow{
+	background-position: -160px -100px;
+}
+
+.icon-notic-bell{
+	background-position: 0 -120px;
+}
+.icon-hand-point{
+	background-position: -20px -120px;
+}
+.icon-link-url{
+	background-position: -40px -120px;
+}
+.icon-warning{
+	background-position: -60px -120px;
+}
+.icon-notic-small{
+	background-position: -80px -120px;
+}
+.icon-blue-pen{
+	background-position: -100px -120px;
+}
+.icon-yellow-pen{
+	background-position: -120px -120px;
+}
+.icon-yellow-add{
+	background-position: -140px -120px;
+}
+.icon-red-add{
+	background-position: -160px -120px;
+}
+.icon-copy{
+	background-position: -180px -120px;
+}
+.icon-green-block{
+	background-position: -200px -120px;
+}
+.icon-red-pen{
+	background-position: -220px -120px;
+}
+
+.icon-black-up{
+	background-position: 0px -20px;
+}
+.icon-black-down{
+	background-position: -20px -20px;
+}
+.icon-white-up{
+	background-position: -40px -20px; background-color:#dcdcdc;
+}
+.icon-white-down{
+	background-position: -60px -20px;background-color:#dcdcdc;
+}
+.icon-blue-right{
+	background-position: -80px -20px;
+}
+.icon-blue-down{
+	background-position: -100px -20px;
+}
+.icon-red-left{
+	background-position: -120px -20px;
+}
+.icon-red-right{
+	background-position: -140px -20px;
+}
+.icon-bluepoint-right{
+	background-position: -160px -20px;
+}
+.icon-bluepoint-down{
+	background-position: -180px -20px;
+}
+.icon-secmenu-normal{
+	background-position: -200px -20px;
+}
+.icon-secmenu-sel{
+	background-position: -220px -20px;
+}
+.icon-thirdmenu-normal{
+	background-position: -240px -20px;
+}
+.icon-red-point{
+	background-position: -260px -20px;
+}
+.icon-turn-left{
+	background-position: -280px -20px;
+}
+.icon-turn-right{
+	background-position: -300px -20px;
+}
+.icon-red-close{
+	background-position: -320px -20px;
+}
+</style>
+
+</head>
+
+<body>
+	<div class="icon-content">
+		<span class="frame-icon icon-red-flag" title="icon-red-flag"></span>
+		<span class="frame-icon icon-smile-face" title="icon-smile-face"></span>
+		<span class="frame-icon icon-sys-stat" title="icon-sys-stat"></span>
+        <span class="frame-icon icon-user-set" title="icon-user-set"></span>
+        <span class="frame-icon icon-post-set" title="icon-post-set"></span>
+        <span class="frame-icon icon-client-info" title="icon-client-info"></span>
+        <span class="frame-icon icon-honor-badge" title="icon-honor-badge"></span>
+        <span class="frame-icon icon-money-manage" title="icon-money-manage"></span>
+        <span class="frame-icon icon-money-box" title="icon-money-box"></span>
+        <span class="frame-icon icon-table-cell" title="icon-table-cell"></span>
+        <span class="frame-icon icon-light-up" title="icon-light-up"></span>
+        <span class="frame-icon icon-buy-bag" title="icon-buy-bag"></span>
+        <span class="frame-icon icon-message-page" title="icon-message-page"></span>
+        <span class="frame-icon icon-target-set" title="icon-target-set"></span>
+        <span class="frame-icon icon-gift-list" title="icon-gift-list"></span>
+        <span class="frame-icon icon-user-info" title="icon-user-info"></span>
+        
+        <span class="frame-icon icon-user-detail" title="icon-user-detail"></span>
+        <span class="frame-icon icon-menu-select" title="icon-menu-select"></span>
+		<span class="frame-icon icon-protal-set" title="icon-protal-set"></span>
+        <span class="frame-icon icon-data-stat" title="icon-data-stat"></span>
+        <span class="frame-icon icon-gold-count" title="icon-gold-count"></span>
+        <span class="frame-icon icon-notic" title="icon-notic"></span>
+        <span class="frame-icon icon-metal-star" title="icon-metal-star"></span>
+        <span class="frame-icon icon-gift" title="icon-gift"></span>
+        <span class="frame-icon icon-money" title="icon-money"></span>
+        <span class="frame-icon icon-rmb" title="icon-rmb"></span>
+        <span class="frame-icon icon-user-stat" title="icon-user-stat"></span>
+        <span class="frame-icon icon-metal-gold" title="icon-metal-gold"></span>
+        <span class="frame-icon icon-us-dollar" title="icon-us-dollar"></span>
+        <span class="frame-icon icon-gold-crown" title="icon-gold-crown"></span>
+        <span class="frame-icon icon-red-heart" title="icon-red-heart"></span>
+        <span class="frame-icon icon-page-set" title="icon-page-set"></span>
+        
+        <span class="frame-icon icon-flow-set" title="icon-flow-set"></span>
+        <span class="frame-icon icon-earth" title="icon-earth"></span>
+        <span class="frame-icon icon-buiness-bag" title="icon-buiness-bag"></span>
+        <span class="frame-icon icon-title-pen" title="icon-title-pen"></span>
+        <span class="frame-icon icon-page-detail" title="icon-page-detail"></span>
+        <span class="frame-icon icon-yellow-flag" title="icon-yellow-flagt"></span>
+        <span class="frame-icon icon-gold-key" title="icon-gold-key"></span>
+        <span class="frame-icon icon-tel-phone" title="icon-tel-phone"></span>
+        <span class="frame-icon icon-work-flow" title="icon-work-flow"></span>
+        
+        <span class="frame-icon icon-notic-bell" title="icon-notic-bell"></span>
+        <span class="frame-icon icon-hand-point" title="icon-hand-point"></span>
+        <span class="frame-icon icon-link-url" title="icon-link-url"></span>
+        <span class="frame-icon icon-warning" title="icon-warning"></span>
+        <span class="frame-icon icon-notic-small" title="icon-notic-small"></span>
+        <span class="frame-icon icon-blue-pen" title="icon-blue-pen"></span>
+        <span class="frame-icon icon-yellow-pen" title="icon-yellow-pen"></span>
+        <span class="frame-icon icon-yellow-add" title="icon-yellow-add"></span>
+        <span class="frame-icon icon-red-add" title="icon-red-add"></span>
+        <span class="frame-icon icon-copy" title="icon-copy"></span>
+        <span class="frame-icon icon-green-block" title="icon-green-block"></span>
+        <span class="frame-icon icon-red-pen" title="icon-red-pen"></span>
+        
+        <span class="frame-icon icon-black-up" title="icon-black-up"></span>
+        <span class="frame-icon icon-black-down" title="icon-black-down"></span>
+		<span class="frame-icon icon-white-up" title="icon-white-up"></span>
+        <span class="frame-icon icon-white-down" title="icon-white-down"></span>
+        <span class="frame-icon icon-blue-right" title="icon-blue-right"></span>
+        <span class="frame-icon icon-red-left" title="icon-red-left"></span>
+        <span class="frame-icon icon-red-right" title="icon-red-right"></span>
+        <span class="frame-icon icon-bluepoint-right" title="icon-bluepoint-right"></span>
+        <span class="frame-icon icon-bluepoint-down" title="icon-bluepoint-down"></span>
+        <span class="frame-icon icon-secmenu-normal" title="icon-secmenu-normal"></span>
+        <span class="frame-icon icon-secmenu-sel" title="icon-secmenu-sel"></span>
+        <span class="frame-icon icon-thirdmenu-normal" title="icon-thirdmenu-normal"></span>
+        <span class="frame-icon icon-red-point" title="icon-red-point"></span>
+        <span class="frame-icon icon-turn-left" title="icon-turn-left"></span>
+        <span class="frame-icon icon-turn-right" title="icon-turn-right"></span>
+        <span class="frame-icon icon-red-close" title=" icon-red-close"></span>
+        
+       
+	</div>
+</body>
+</html>

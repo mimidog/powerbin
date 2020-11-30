@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bexs>
+	<!-- Variable Bex -->
+	<bex bex_code="BpmVariableSelectByTaskId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmVariableSelectByTaskId">
+	</bex>
+	<bex bex_code="BpmVariableInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmVariableInsert">
+	</bex>
+	<bex bex_code="BpmVariableUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmVariableUpdate">
+	</bex>
+	<bex bex_code="BpmVariableDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmVariableDelete">
+	</bex>
+	<bex bex_code="BpmVariableSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmVariableSelect">
+	</bex>
+	<bex bex_code="BpmVariableSelectByExecutionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmVariableSelectByExecutionId">
+	</bex>
+	
+	<!-- Table Data Bex -->
+	<bex bex_code="BpmTableDataSelectCount" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTableDataSelectCount">
+	</bex>
+	<bex bex_code="BpmTableDataSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTableDataSelect">
+	</bex>
+	
+	<!-- Resource Bex -->
+	<bex bex_code="BpmResourceInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmResourceInsert">
+	</bex>
+	<bex bex_code="BpmResourceDeleteByDeploymentId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmResourceDeleteByDeploymentId">
+	</bex>
+	<bex bex_code="BpmResourceSelectNamesByDeploymentId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmResourceSelectNamesByDeploymentId">
+	</bex>
+	<bex bex_code="BpmResourceSelectByDeploymentIdAndResourceName" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmResourceSelectByDeploymentIdAndResourceName">
+	</bex>
+	<bex bex_code="BpmResourceSelectByDeploymentId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmResourceSelectByDeploymentId">
+	</bex>
+	
+	<!-- Property Bex -->
+	<bex bex_code="BpmPropertyInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmPropertyInsert">
+	</bex>
+	<bex bex_code="BpmPropertyUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmPropertyUpdate">
+	</bex>
+	<bex bex_code="BpmPropertyDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmPropertyDelete">
+	</bex>
+	<bex bex_code="BpmPropertySelectDbSchemaVersion" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmPropertySelectDbSchemaVersion">
+	</bex>
+	<bex bex_code="BpmPropertySelectByName" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmPropertySelectByName">
+	</bex>
+	<bex bex_code="BpmPropertySelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmPropertySelect">
+	</bex>
+	
+	<!-- Membership Bex -->
+	<bex bex_code="BpmMembershipInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmMembershipInsert">
+	</bex>
+	<bex bex_code="BpmMembershipDeleteByUserId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmMembershipDeleteByUserId">
+	</bex>
+	<bex bex_code="BpmMembershipDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmMembershipDelete">
+	</bex>
+	<bex bex_code="BpmMembershipDeleteByGroupId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmMembershipDeleteByGroupId">
+	</bex>
+	
+	<!-- User Bex -->
+	<bex bex_code="BpmUserInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserInsert">
+	</bex>
+	<bex bex_code="BpmUserUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserUpdate">
+	</bex>
+	<bex bex_code="BpmUserDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserDelete">
+	</bex>
+	<bex bex_code="BpmUserSelectById" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserSelectById">
+	</bex>
+	<bex bex_code="BpmUserSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmUserSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmUserSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmUserSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmUserSelectCountByNativeQuery">
+	</bex>
+	
+	<!-- Identity Link Bex -->
+	<bex bex_code="BpmIdentityLinkInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkInsert">
+	</bex>
+	<bex bex_code="BpmIdentityLinkDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkDelete">
+	</bex>
+	<bex bex_code="BpmIdentityLinkDeleteByProcDef" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkDeleteByProcDef">
+	</bex>
+	<bex bex_code="BpmIdentityLinkSelectById" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkSelectById">
+	</bex>
+	<bex bex_code="BpmIdentityLinkSelectByTask" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkSelectByTask">
+	</bex>
+	<bex bex_code="BpmIdentityLinkSelectByProcessInstance" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkSelectByProcessInstance">
+	</bex>
+	<bex bex_code="BpmIdentityLinkSelectByProcessDefinition" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkSelectByProcessDefinition">
+	</bex>
+	<bex bex_code="BpmIdentityLinkSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkSelect">
+	</bex>
+	<bex bex_code="BpmIdentityLinkSelectByTaskUserGroupAndType" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkSelectByTaskUserGroupAndType">
+	</bex>
+	<bex bex_code="BpmIdentityLinkSelectByProcessDefinitionUserAndGroup" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinkSelectByProcessDefinitionUserAndGroup">
+	</bex>
+	
+	<!-- Job Bex -->
+	<bex bex_code="BpmJobDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobDelete">
+	</bex>
+	<bex bex_code="BpmJobDeleteTimer" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobDeleteTimer">
+	</bex>
+	<bex bex_code="BpmJobDeleteMessage" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobDeleteMessage">
+	</bex>
+	<bex bex_code="BpmJobSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelect">
+	</bex>
+	<bex bex_code="BpmJobSelectNextToExecute" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectNextToExecute">
+	</bex>
+	<bex bex_code="BpmJobSelectExclusiveToExecute" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectExclusiveToExecute">
+	</bex>
+	<bex bex_code="BpmJobSelectExclusiveToExecute_integerBoolean" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectExclusiveToExecute_integerBoolean">
+	</bex>
+	<bex bex_code="BpmJobSelectByConfiguration" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectByConfiguration">
+	</bex>
+	<bex bex_code="BpmJobSelectByExecutionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectByExecutionId">
+	</bex>
+	<bex bex_code="BpmJobSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmJobSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmJobInsertTimer" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobInsertTimer">
+	</bex>
+	<bex bex_code="BpmJobUpdateTimer" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobUpdateTimer">
+	</bex>
+	<bex bex_code="BpmJobSelectUnlockedTimersByDuedate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectUnlockedTimersByDuedate">
+	</bex>
+	<bex bex_code="BpmJobSelectTimersByExecutionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobSelectTimersByExecutionId">
+	</bex>
+	<bex bex_code="BpmJobInsertMessage" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobInsertMessage">
+	</bex>
+	<bex bex_code="BpmJobUpdateMessage" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmJobUpdateMessage">
+	</bex>
+	
+	
+	<!-- Model Bex -->
+	<bex bex_code="BpmModelInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelInsert">
+	</bex>
+	<bex bex_code="BpmModelUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelUpdate">
+	</bex>
+	<bex bex_code="BpmModelDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelDelete">
+	</bex>
+	<bex bex_code="BpmModelSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmModelSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmModelSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelSelect">
+	</bex>
+	<bex bex_code="BpmModelSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmModelSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmModelSelectCountByNativeQuery">
+	</bex>
+	
+	
+	<!-- Process Definition Bex -->
+	<bex bex_code="BpmProcessDefinitionInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionInsert">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionUpdate">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionDeleteByDeploymentId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionDeleteByDeploymentId">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelect">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectById" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelectById">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectByDeploymentAndKey" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelectByDeploymentAndKey">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectLatestByKey" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelectLatestByKey">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessDefinitionSelectCountByNativeQuery">
+	</bex>
+	
+	<!-- Identity Info Bex -->
+	<bex bex_code="BpmIdentityInfoInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoInsert">
+	</bex>
+	<bex bex_code="BpmIdentityInfoUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoUpdate">
+	</bex>
+	<bex bex_code="BpmIdentityInfoDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoDelete">
+	</bex>
+	<bex bex_code="BpmIdentityInfoSelectById" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoSelectById">
+	</bex>
+	<bex bex_code="BpmIdentityInfoSelectByUserIdAndKey" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoSelectByUserIdAndKey">
+	</bex>
+	<bex bex_code="BpmIdentityInfoSelectKeysByUserIdAndType" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoSelectKeysByUserIdAndType">
+	</bex>
+	<bex bex_code="BpmIdentityInfoSelectByUserId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoSelectByUserId">
+	</bex>
+	<bex bex_code="BpmIdentityInfoSelectDetails" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityInfoSelectDetails">
+	</bex>
+
+	
+	<!-- Task Bex -->
+	<bex bex_code="BpmTaskInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskInsert">
+	</bex>
+	<bex bex_code="BpmTaskUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskUpdate">
+	</bex>
+	<bex bex_code="BpmTaskDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskDelete">
+	</bex>
+	<bex bex_code="BpmTaskSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelect">
+	</bex>
+	<bex bex_code="BpmTaskSelectByParentTaskId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectByParentTaskId">
+	</bex>
+	<bex bex_code="BpmTaskSelectByExecutionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectByExecutionId">
+	</bex>
+	<bex bex_code="BpmTaskSelectByProcessInstanceId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectByProcessInstanceId">
+	</bex>
+	<bex bex_code="BpmTaskSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmTaskSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmTaskSelectWithVariablesByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectWithVariablesByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmTaskSelectWithVariablesByQueryCriteria_mssql" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectWithVariablesByQueryCriteria_mssql">
+	</bex>
+	<bex bex_code="BpmTaskSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmTaskSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmTaskSelectCountByNativeQuery">
+	</bex>
+	
+	<!-- BPM Attachment -->
+	<bex bex_code="BpmAttachmentInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmAttachmentInsert">
+	</bex>
+	<bex bex_code="BpmAttachmentSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmAttachmentSelect">
+	</bex>
+	<bex bex_code="BpmSelectAttachmentsByTaskId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmSelectAttachmentsByTaskId">
+	</bex>	
+	<bex bex_code="BpmSelectAttachmentsByProcessInstanceId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmSelectAttachmentsByProcessInstanceId">
+	</bex>	
+	<bex bex_code="BpmAttachmentUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmAttachmentUpdate">
+	</bex>	
+	<bex bex_code="BpmAttachmentDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmAttachmentDelete">
+	</bex>
+	
+    <!-- BPM ByteArray -->
+	<bex bex_code="BpmByteArrayInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmByteArrayInsert">
+	</bex>
+		<bex bex_code="BpmByteArrayUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmByteArrayUpdate">
+	</bex>
+		<bex bex_code="BpmByteArraySelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmByteArraySelect">
+	</bex>
+		<bex bex_code="BpmByteArrayDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmByteArrayDelete">
+	</bex>
+    <bex bex_code="BPMByteArraySelectBytes" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BPMByteArraySelectBytes">
+	</bex>
+	<bex bex_code="BpmByteArrayDeleteForDeployment" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmByteArrayDeleteForDeployment">
+	</bex>
+	<bex bex_code="BpmByteArrayDeleteNoRevisionCheck" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmByteArrayDeleteNoRevisionCheck">
+	</bex>
+
+	<!-- BPM Comment -->
+	<bex bex_code="BpmCommentInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentInsert">
+	</bex>
+	<bex bex_code="BpmCommentDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentDelete">
+	</bex>
+	<bex bex_code="BpmCommentDeleteByTaskId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentDeleteByTaskId">
+	</bex>		
+	<bex bex_code="BpmCommentSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentSelect">
+	</bex>
+	<bex bex_code="BpmCommentsSelectByTaskId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentsSelectByTaskId">
+	</bex>
+	<bex bex_code="BpmCommentsSelectByTaskIdAndType" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentsSelectByTaskIdAndType">
+	</bex>		
+	<bex bex_code="BpmCommentsSelectByType" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentsSelectByType">
+	</bex>
+	<bex bex_code="BpmCommentSelectEventsByTaskId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentSelectEventsByTaskId">
+	</bex>
+	<bex bex_code="BpmCommentsSelectByProcessInstanceId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmCommentsSelectByProcessInstanceId">
+	</bex>	
+	
+	<!-- BpmDeployment -->
+	<bex bex_code="BpmDeploymentInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentInsert">
+	</bex>		
+	<bex bex_code="BpmDeploymentUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentUpdate">
+	</bex>
+	<bex bex_code="BpmDeploymentDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentDelete">
+	</bex>
+	<bex bex_code="BpmDeploymentsSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentsSelectByQueryCriteria">
+	</bex>		
+	<bex bex_code="BpmDeploymentSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmDeploymentsSelectByName" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentsSelectByName">
+	</bex>
+	<bex bex_code="BpmDeploymentSelectById" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentSelectById">
+	</bex>
+	<bex bex_code="BpmDeploymentSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentSelectByNativeQuery">
+	</bex>	
+	<bex bex_code="BpmDeploymentSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmDeploymentSelectCountByNativeQuery">
+	</bex>
+	
+	<!--Bpm EventSubscription -->
+	<bex bex_code="BpmEventSubscriptionDeleteSignal" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionDeleteSignal">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionDeleteCompensate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionDeleteCompensate">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionDeleteMessage" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionDeleteMessage">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionUpdateMessage" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionUpdateMessage">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionSelect">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionsSelectSignalByEventName" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionsSelectSignalByEventName">
+	</bex>
+	<bex bex_code="BpmSignalEventSubscriptionsSelectByProcessInstanceAndEventName" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmSignalEventSubscriptionsSelectByProcessInstanceAndEventName">
+	</bex>
+	<bex bex_code="BpmSignalEventSubscriptionsSelectByExecution" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmSignalEventSubscriptionsSelectByExecution">
+	</bex>
+	<bex bex_code="BpmSignalEventSubscriptionsSelectByNameAndExecution" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmSignalEventSubscriptionsSelectByNameAndExecution">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionsSelectByExecution" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionsSelectByExecution">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionsSelectByExecutionAndType" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionsSelectByExecutionAndType">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionsSelectByExecutionTypeAndActivity" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionsSelectByExecutionTypeAndActivity">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionsSelectByConfiguration" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionsSelectByConfiguration">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionsSelectByName" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionsSelectByName">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionsSelectByNameAndExecution" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionsSelectByNameAndExecution">
+	</bex>
+	<bex bex_code="BpmStartEventSubscriptionSelectMessageByName" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmStartEventSubscriptionSelectMessageByName">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionInsertMessage" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionInsertMessage">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionInsertSignal" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionInsertSignal">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionUpdateSignal" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionUpdateSignal">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionInsertCompensate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionInsertCompensate">
+	</bex>
+	<bex bex_code="BpmEventSubscriptionUpdateCompensate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmEventSubscriptionUpdateCompensate">
+	</bex>
+
+	<!-- BpmExecution -->
+	<bex bex_code="BpmExecutionInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionInsert">
+	</bex>
+	<bex bex_code="BpmExecutionUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionUpdate">
+	</bex>
+	<bex bex_code="BpmExecutionDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionDelete">
+	</bex>
+	<bex bex_code="BpmExecutionSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionSelect">
+	</bex>
+	<bex bex_code="BpmExecutionsSelectByParentExecutionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionsSelectByParentExecutionId">
+	</bex>
+	<bex bex_code="BpmExecutionsSelectByProcessInstanceId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionsSelectByProcessInstanceId">
+	</bex>
+	<bex bex_code="BpmExecutionProcessInstanceIdsSelectByProcessDefinitionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionProcessInstanceIdsSelectByProcessDefinitionId">
+	</bex>
+	<bex bex_code="BpmExecutionsSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionsSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmExecutionCountSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionCountSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmExecutionsSelectByQueryCriteriaSql" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionsSelectByQueryCriteriaSql">
+	</bex>
+	<bex bex_code="BpmProcessInstanceWithVariablesSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessInstanceWithVariablesSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmProcessInstanceWithVariablesSelectByQueryCriteria_mssql" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmProcessInstanceWithVariablesSelectByQueryCriteria_mssql">
+	</bex>
+	<bex bex_code="BpmExcutionSubProcessInstanceSelectBySuperExecutionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExcutionSubProcessInstanceSelectBySuperExecutionId">
+	</bex>
+	<bex bex_code="BpmExecutionSelectProcessInstanceByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionSelectProcessInstanceByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmExecutionSelectProcessInstanceCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionSelectProcessInstanceCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmExecutionSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmExecutionSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmExecutionSelectCountByNativeQuery">
+	</bex>
+
+	<!--"Bpm Group  -->
+	<bex bex_code="BpmGroupInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupInsert">
+	</bex>
+	<bex bex_code="BpmGroupUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupUpdate">
+	</bex>
+	<bex bex_code="BpmGroupDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupDelete">
+	</bex>
+	<bex bex_code="BpmGroupSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupSelect">
+	</bex>
+	<bex bex_code="BpmGroupSelectByUserId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupSelectByUserId">
+	</bex>
+	<bex bex_code="BpmGroupsSelectByUserIdAndGroupType" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupsSelectByUserIdAndGroupType">
+	</bex>
+	<bex bex_code="BpmGroupSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmGroupSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmGroupSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmGroupSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmGroupSelectCountByNativeQuery">
+	</bex>
+	
+	<!-- BpmHistoricActivityInstanceI -->
+	<bex bex_code="BpmHistoricActivityInstanceInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceInsert">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceUpdate">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceDeleteByProcessInstanceId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceDeleteByProcessInstanceId">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceDelete">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceSelect">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmHistoricActivityInstanceSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricActivityInstanceSelectCountByNativeQuery">
+	</bex>
+	
+	<!-- Bpm HistoricDetail -->
+	<bex bex_code="BpmHistoricFormPropertyInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricFormPropertyInsert">
+	</bex>
+	<bex bex_code="BpmHistoricDetailInsertVariableInstanceUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailInsertVariableInstanceUpdate">
+	</bex>
+	<bex bex_code="BpmHistoricDetailDeleteAssignment" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailDeleteAssignment">
+	</bex>
+	<bex bex_code="BpmHistoricDetailsSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailsSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricDetailSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricDetailSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmHistoricDetailSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailSelectCountByNativeQuery">
+	</bex>
+	<bex bex_code="BpmHistoricDetailDeleteTransitionInstance" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailDeleteTransitionInstance">
+	</bex>
+	<bex bex_code="BpmHistoricDetailVariableInstanceUpdateDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricDetailVariableInstanceUpdateDelete">
+	</bex>
+	<bex bex_code="BpmHistoricFormPropertyDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricFormPropertyDelete">
+	</bex>
+	
+	<!-- BpmHistoricIdentityLink -->
+	<bex bex_code="BpmHistoricIdentityLinkInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricIdentityLinkInsert">
+	</bex>
+	<bex bex_code="BpmHistoricIdentityLinkDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricIdentityLinkDelete">
+	</bex>
+	<bex bex_code="BpmHistoricIdentityLinkSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricIdentityLinkSelect">
+	</bex>
+	<bex bex_code="BpmHistoricIdentityLinksSelectByTask" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricIdentityLinksSelectByTask">
+	</bex>
+	<bex bex_code="BpmHistoricIdentityLinksSelectByProcessInstance" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricIdentityLinksSelectByProcessInstance">
+	</bex>
+	<bex bex_code="BpmIdentityLinksSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmIdentityLinksSelect">
+	</bex>
+	<bex bex_code="BpmHistoricIdentityLinkSelectByTaskUserGroupAndType" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricIdentityLinkSelectByTaskUserGroupAndType">
+	</bex>
+	
+	<!--BpmHistoricProcessInstance  -->
+	<bex bex_code="BpmHistoricProcessInstanceInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceInsert">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceUpdate">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceDelete">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceSelect">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceIdsSelectByProcessDefinitionId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceIdsSelectByProcessDefinitionId">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstancesSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstancesSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstancesSelectWithVariablesByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstancesSelectWithVariablesByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstancesSelectWithVariablesByQueryCriteria_mssql" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstancesSelectWithVariablesByQueryCriteria_mssql">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricProcessInstanceSelectCountByNativeQuery">
+	</bex>
+	
+	<!--BpmHistoricTaskInstance  -->
+	<bex bex_code="BpmHistoricTaskInstanceInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceInsert">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstanceUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceUpdate">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstanceDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceDelete">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstanceSelect" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceSelect">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstanceIdsSelectByProcessInstanceId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceIdsSelectByProcessInstanceId">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstancesSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstancesSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstanceSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceSelectCountByQueryCriteria">
+	</bex>
+
+	<bex bex_code="BpmHistoricTaskInstancesSelectWithVariablesByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstancesSelectWithVariablesByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstancesSelectWithVariablesByQueryCriteria_mssql" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstancesSelectWithVariablesByQueryCriteria_mssql">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstanceSelectByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceSelectByNativeQuery">
+	</bex>
+	<bex bex_code="BpmHistoricTaskInstanceSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricTaskInstanceSelectCountByNativeQuery">
+	</bex>
+	
+	<!--  BpmHistoricVariableInstance-->
+	<bex bex_code="BpmHistoricVariableInstanceInsert" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceInsert">
+	</bex>
+	<bex bex_code="BpmHistoricVariableInstanceUpdateTaskId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceUpdateTaskId">
+	</bex>
+	<bex bex_code="BpmHistoricVariableInstanceUpdate" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceUpdate">
+	</bex>
+	<bex bex_code="BpmHistoricVariableInstanceDelete" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceDelete">
+	</bex>
+	<bex bex_code="BpmHistoricVariableInstanceSelectByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceSelectByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricVariableInstanceSelectCountByQueryCriteria" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceSelectCountByQueryCriteria">
+	</bex>
+	<bex bex_code="BpmHistoricVariableInstanceSelectByVariableInstanceId" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceSelectByVariableInstanceId">
+	</bex>
+	<bex bex_code="BpmHistoricVariableInstanceSelectCountByNativeQuery" bex_type="4" page_mode="2" bex_cate="1"
+		attr1="BpmHistoricVariableInstanceSelectCountByNativeQuery">
+	</bex>
+	
+	<!--  BpmHistoricProcessInstanceDetail-->
+	<bex bex_code="BpmHistoricProcessInstanceDetailInsert" bex_type="4"
+		page_mode="2" bex_cate="1" attr1="BpmHistoricProcessInstanceDetailInsert">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceDetailUpdate" bex_type="4"
+		page_mode="2" bex_cate="1" attr1="BpmHistoricProcessInstanceDetailUpdate">
+	</bex>
+	<bex bex_code="HistoricProcessInstanceDetailDelete" bex_type="4"
+		page_mode="2" bex_cate="1" attr1="HistoricProcessInstanceDetailDelete">
+	</bex>
+	<bex bex_code="BpmHistoricProcessInstanceDetailSelect" bex_type="4"
+		page_mode="2" bex_cate="1" attr1="BpmHistoricProcessInstanceDetailSelect">
+	</bex>
+	
+	<bex bex_code="BpmJobSelectNextToExecute_mysql" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmJobSelectNextToExecute_mysql">
+	</bex>
+	<bex bex_code="BpmJobSelectExclusiveToExecute_mysql" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmJobSelectExclusiveToExecute_mysql">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectByQueryCriteria_mysql" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmProcessDefinitionSelectByQueryCriteria_mysql">
+	</bex>
+	<bex bex_code="BpmProcessDefinitionSelectCountByQueryCriteria_mysql" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmProcessDefinitionSelectCountByQueryCriteria_mysql">
+	</bex>
+	<bex bex_code="BpmDeploymentsSelectByQueryCriteria_mysql" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmDeploymentsSelectByQueryCriteria_mysql">
+	</bex>
+	<bex bex_code="BpmDeploymentSelectCountByQueryCriteria_mysql" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmDeploymentSelectCountByQueryCriteria_mysql">
+	</bex>
+	<bex bex_code="BpmModelSelectCountByQueryCriteria_mysql" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmModelSelectCountByQueryCriteria_mysql">
+	</bex>
+	
+	<bex bex_code="BpmHistoricTaskDetailInsert" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmHistoricTaskDetailInsert">
+	</bex>
+	<bex bex_code="BpmHistoricTaskDetailUpdate" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmHistoricTaskDetailUpdate">
+	</bex>
+	<bex bex_code="HistoricTaskDetailDelete" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="HistoricTaskDetailDelete">
+	</bex>
+	<bex bex_code="BpmHistoricTaskDetailSelect" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmHistoricTaskDetailSelect">
+	</bex>
+	<bex bex_code="BpmTaskDetailDeleteByProcessInstanceId" bex_type="4" page_mode="2" bex_cate="1" 
+		attr1="BpmTaskDetailDeleteByProcessInstanceId">
+	</bex>
+</bexs>
+ 

@@ -1,0 +1,590 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;" charset="UTF-8" />
+<meta http-equiv="Content-Language" content="zh-CN" />
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<title>客户识别</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js?ver=1"></script>
+<style type="text/css">
+.table-body td {
+    text-indent: 0;
+}
+body {
+    background-repeat: repeat-x;
+}
+.device-status {
+    font: 13px "微软雅黑", arial, sans-serif !important;
+    position: absolute;
+    top: 0;
+    right: 20px;
+    z-index: 2;
+    color: #58BCFB;
+}
+.device-status a {
+    font: 13px "微软雅黑", arial, sans-serif !important;
+    text-decoration: none;
+}
+.device-status a:hover {
+    color:#FF6600;
+}
+.large-text {
+    font: 16px "微软雅黑", arial, sans-serif;
+}
+/*.uas-text-color {
+    color: #1e739a;
+    margin-top: 10px;
+}*/
+.cust-reco-text {
+    width: 400px !important;
+    line-height: 20px !important;
+    height: 34px !important;
+    font: 16px "微软雅黑", arial, sans-serif;
+    text-align: left;
+    text-indent: 54px;
+    box-shadow: 1px 1px 5px #c5e3f9;
+    background: url(./css/images/icon-user-credit.png) no-repeat 8px 8px;
+    background-size: auto auto;
+    border: 1px solid #c5e3f9 !important;
+}
+/*.uas-bus-title-bg {
+    width: 85px;
+    height: 85px;
+}*/
+a.button-red-big {
+    font-size: 18px;
+    cursor: pointer;
+    color: #ffffff;
+}
+a.button-red-big span.btn-left {
+    height: 36px;
+    width: 114px;
+    text-align: center;
+    line-height: 36px;
+    background: url(./css/images/btn-user-credit-bg.png) 0px 0px no-repeat;
+    display: inline-block;
+}
+a:hover.button-red-big span.btn-left {
+    background-position: 0 -36px;
+}
+.i-1 {
+    font-size: 13px;
+    width: 150px;
+    height: 80px;
+    margin-top: 5px;
+    padding: 5px;
+    z-index: 100;
+    opacity: 0.8;
+    filter: alpha(opacity = 80); /* 针对 IE8 以及更早的版本 */
+    box-shadow: 1px 1px 5px #c5e3f9;
+    border: 1px solid #c5e3f9 !important;
+}
+.ac_results {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    /*left:30% !important;*/
+}
+.datagrid-a {
+    width: 100%;
+    border-collapse: collapse;
+    color: #444;
+    text-align: left;
+    border: 1px #C4D5E4 solid;
+    cursor: default;
+}
+.datagrid-a th {
+    line-height: 26px;
+    font-size: 12px;
+    color: #323232;
+    text-align: left;
+    padding-left: 5px;
+    border-bottom: 1px #C4D5E4 solid;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#edf6ff, endColorstr=#daecfe, GradientType=0);
+    background: -webkit-linear-gradient(top, #F2F9FD 0, #DAEDFA 100%);
+    background: -moz-linear-gradient(top, #F2F9FD 0, #DAEDFA 100%);
+    background: -o-linear-gradient(top, #F2F9FD 0, #DAEDFA 100%);
+    background: linear-gradient(to top, #F2F9FD 0, #DAEDFA 100%);
+    font-weight: bold;
+}
+.datagrid-a td {
+    padding-left: 5px;
+    line-height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #E5E5E5;
+}
+.datagrid-even td {
+    background-color: #F3F3F3;
+}
+.datagrid-a-over td {
+    background-color: #F0552B;
+    color: #ffffff;
+}
+.h1Left {
+    background: url("../../frame/images/360/360-step-bg.png") no-repeat scroll -6px -18px rgba(0, 0, 0, 0);
+    /*background-position: -6px -18px;*/
+    width: 3px;
+    height: 27px;
+    float: left;
+    margin-right: 20px;
+    margin-left: 15px;
+    margin-top: 16px;
+}
+.title1 {
+    color: #6eb7dd;
+    font-size: 24px;
+    font-family: '微软雅黑';
+    padding-top: 11px;
+}
+.emboss{
+    display: inline-block;
+    font-size: 20px;
+    margin: 10px;
+    background: linear-gradient(left, #f71605, #e0f513);
+    background: -webkit-linear-gradient(left, #f71605, #e0f513);
+    background: -o-linear-gradient(right, #f71605, #e0f513);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation:scratchy 0.253s linear forwards infinite;
+    /* 其它浏览器兼容性前缀 */
+    -webkit-animation:scratchy 0.253s linear forwards infinite;
+    -moz-animation: scratchy 0.253s linear forwards infinite;
+    -ms-animation: scratchy 0.253s linear forwards infinite;
+    -o-animation: scratchy 0.253s linear forwards infinite;
+}
+@keyframes  scratchy {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 0 0;
+    }
+    26% {
+        background-position: 20px -20px;
+    }
+    50% {
+        background-position: 20px -20px;
+    }
+    51% {
+        background-position: 40px -40px;
+    }
+    75% {
+        background-position: 40px -40px;
+    }
+    76% {
+        background-position: 60px -60px;
+    }
+    99% {
+        background-position: 60px -60px;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+/* 添加兼容性前缀 */
+@-webkit-keyframes scratchy {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 0 0;
+    }
+    26% {
+        background-position: 20px -20px;
+    }
+    50% {
+        background-position: 20px -20px;
+    }
+    51% {
+        background-position: 40px -40px;
+    }
+    75% {
+        background-position: 40px -40px;
+    }
+    76% {
+        background-position: 60px -60px;
+    }
+    99% {
+        background-position: 60px -60px;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+@-moz-keyframes scratchy {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 0 0;
+    }
+    26% {
+        background-position: 20px -20px;
+    }
+    50% {
+        background-position: 20px -20px;
+    }
+    51% {
+        background-position: 40px -40px;
+    }
+    75% {
+        background-position: 40px -40px;
+    }
+    76% {
+        background-position: 60px -60px;
+    }
+    99% {
+        background-position: 60px -60px;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+@-ms-keyframes scratchy {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 0 0;
+    }
+    26% {
+        background-position: 20px -20px;
+    }
+    50% {
+        background-position: 20px -20px;
+    }
+    51% {
+        background-position: 40px -40px;
+    }
+    75% {
+        background-position: 40px -40px;
+    }
+    76% {
+        background-position: 60px -60px;
+    }
+    99% {
+        background-position: 60px -60px;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+@-o-keyframes scratchy {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 0 0;
+    }
+    26% {
+        background-position: 20px -20px;
+    }
+    50% {
+        background-position: 20px -20px;
+    }
+    51% {
+        background-position: 40px -40px;
+    }
+    75% {
+        background-position: 40px -40px;
+    }
+    76% {
+        background-position: 60px -60px;
+    }
+    99% {
+        background-position: 60px -60px;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+</style>
+<script type="text/javascript">
+var isParentCallback = false;
+kuiloader.onReady = function () {
+    isParentCallback = URLtool().getValueByUrlKey("isParentCallback");
+
+    if(g_user.USER_CODE !='' && getSysParamValuebyCode('TRADER_POST_ID')==g_user.USER_POST){
+        $("#USER_CODE").val(g_user.USER_CODE).attr('disabled',true);
+    }
+
+    //客户下拉列表处理
+    var results = $('#ac_results_div');
+    results.find('tr:gt(0)').live({
+        mouseover: function () {
+            if ($(this).find("td").length > 2) {
+                $(this).addClass('datagrid-a-over');
+            }
+        },
+        mouseout: function () {
+            $(this).removeClass('datagrid-a-over');
+        },
+        click: function () {
+            selCust($(this));
+        }
+    });
+
+    //输入框绑定回车事件，检测键盘必须用keyup，否则存在浏览器兼容问题
+    var inputErrorFlag; // 客户识别输入长度提示定时器
+    $('#USER_CODE').keyup(function (event) {
+        if (event.keyCode == 13) { // 按下回车键
+            //动态设定客户下拉列表定位
+            resetPos();
+            subCust2();
+            $(this).blur();
+            $("#ac_results_div").attr("tabindex", 0).focus();
+        }
+        //特殊字符判断
+        var reg = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);
+        if (reg.test($('#USER_CODE').val())) {
+            $('#USER_CODE').val($('#USER_CODE').val().replace(/[^a-zA-Z0-9\u4E00-\u9FA5\.\@|\s]/g, ""));
+        }
+        var curInputVal = $("#USER_CODE").val();
+        if (getStrLength(curInputVal) > 34) {
+            if (curInputVal.length < getStrLength(curInputVal)) {
+                $("#USER_CODE").val(curInputVal.substr(0, 17));
+            }
+            var $inputError = $("#inputError");
+            $inputError.fadeIn();
+            clearTimeout(inputErrorFlag); // 避免重复执行，先清定时器
+            inputErrorFlag = window.setTimeout(function () {
+                $inputError.fadeOut();
+            }, 2000);
+        }
+    }).click(function () {
+        $('#ac_results_div').hide();
+    });
+
+    //输入框绑定回车事件，检测键盘必须用keyup，否则存在浏览器兼容问题
+    $("#ac_results_div").keyup(function (event) {
+        if (event.keyCode == 13) { // 按下回车键
+            var objSelTr = results.find("tr.datagrid-a-over");
+            if (objSelTr.length < 1) {
+                return;
+            }
+            selCust(objSelTr);
+            return;
+        } else if (event.keyCode == 27) { // 按下ESC键
+            results.hide();
+            $("#USER_CODE").focus();
+        } else if (event.keyCode == 38 || event.keyCode == 40) { // 按下的是↑和↓键
+
+            var custListLen = results.find("tr").length,  // 列表总行数
+                    objSelected = results.find("tr.datagrid-a-over"), // 当前选择tr行
+                    curIndex = objSelected.length < 1 ? 0 : objSelected.index(),	// 当前选中tr行索引号
+                    nextIndex = 1;  // 下一个将要选中tr行索引
+
+            if (event.keyCode == 38) { // 按下↑键
+                nextIndex = objSelected.length < 1 ? custListLen - 1 : (curIndex > 1 ? curIndex - 1 : 1);
+            } else {	// 按下↓键
+                nextIndex = objSelected.length < 1 ? 1 : (curIndex < custListLen - 1 ? curIndex + 1 : curIndex);
+            }
+            results.find("tr").removeClass("datagrid-a-over");
+            results.find("tr").eq(nextIndex).addClass("datagrid-a-over");
+        }
+    });
+
+    $("#btnCustIdentify").bind("click", function(e) {
+        //动态设定客户下拉列表定位
+        resetPos();
+        subCust2();
+        $(this).blur();
+        $("#ac_results_div").attr("tabindex", 0).focus();
+    });
+
+    $(document).bind('click',function (e) {
+        if (e.target.id == '') {
+            $('#ac_results_div').hide();
+        }
+    });
+};
+// 屏幕重设定位
+function resetPos() {
+    $("#ac_results_div").css({
+        top:getTop($("#USER_CODE")[0]) + $('#USER_CODE').outerHeight(),
+        left: getLeft($("#USER_CODE")[0])
+
+    });
+}
+
+/*
+ *选择存量客户处理
+ * */
+function selCust(obj) {
+    if (obj.attr('USER_CODE') == undefined) {
+        return;
+    }
+    // 隐藏识别出来的客户列表
+    $('.ac_results').hide();
+
+    submitData(obj);
+}
+//获取元素的纵坐标
+function getTop(e){
+    var offset=e.offsetTop;
+    if(e.offsetParent!=null) {
+        //针对在对话框里的客户识别标签的位置设置
+        if (e.offsetParent.className.indexOf("panel") == -1) {
+            offset+=getTop(e.offsetParent);
+        } else {
+            //减去对话框页眉高度的影响
+            offset -= $(e.offsetParent).children().first().outerHeight();
+        }
+    }
+    return offset;
+}
+//获取元素的横坐标
+function getLeft(e){
+    var offset=e.offsetLeft;
+    if(e.offsetParent!=null && e.offsetParent.className.indexOf("panel") == -1) offset+=getLeft(e.offsetParent);
+    return offset;
+}
+
+//提交信息
+function submitData(obj) {
+    var identifyInfo = getAllAttrs(obj);
+    window.parent.identifyInfo = identifyInfo;
+    if (isParentCallback == "true") {
+        window.parent.parentCallback();
+    }
+}
+
+function getStrLength(str) {
+    var cArr = str.match(/[^\x00-\xff]/ig);
+    return str.length + (cArr == null ? 0 : cArr.length);
+}
+
+function subCust2() {
+    if(typeof window.parent.resetPage == "function") {
+        window.parent.resetPage();
+    }
+    var idVal = $.trim($('#USER_CODE').val().replace(/\'*/g,""));
+    $('#USER_CODE').val(idVal);
+    if (idVal.length < 2) {
+        alert("消息提示", "识别标识必须必须大于3位", "warning", function () {
+            setTimeout(function () {
+                $('#USER_CODE').focus();
+            }, 300);
+        })
+        return false;
+    }
+
+    var results = $('.ac_results').hide();
+    var idVal = $.trim($('#USER_CODE').val());
+    if (idVal == '') {
+        if (!$('.window-body').length) {
+            top.alert('请输入识别标识！');
+            setTimeout(function () {
+                $('#USER_CODE').focus();
+            }, 300);
+        }
+        return;
+    } else {
+        var recong_flag=$('#USER_CODE').attr('recong_flag')
+
+        var recRea={service: 'P0001008',POST_ID:getSysParamValuebyCode('TRADER_POST_ID')}
+
+        switch (recong_flag){
+            case '1':
+                $.extend(recRea,{USER_CODE_RIGHT_like:idVal});
+                break;
+            case '2':
+                $.extend(recRea,{USER_NAME:idVal});
+                break;
+            case '3':
+                $.extend(recRea,{MOBILE:idVal});
+                break;
+        }
+        var maxCharLen = 0;
+        commonRequest(recRea, function (operterInfos) {
+            var len = operterInfos.length;
+            if (len == 0) {
+
+                top.alert("未识别到人员信息");
+            } else {
+                window.parent.$("#custInfoDiv,#businessDiv").hide();
+                window.parent.$("#custIdfDiv").height(300);
+                results.find('tr:gt(0)').remove();
+                len=len>10?10:len;
+                for (var i = 0; i < len; i++) {
+                    var operterStatus = '';
+                    if (operterInfos[i].USER_STA) {
+                        operterStatus = getSysDict("USER_STA", operterInfos[i].USER_STA);
+                    }
+                    var trHtml = $("<tr " + contactJson4Str(operterInfos[i], "=", " ") + " >"
+                        + "<td>" + operterInfos[i].USER_CODE + "</td>"
+                        + "<td>" + operterInfos[i].USER_NAME + "</td>"
+                        + "<td>" + getSysDict("USER_TYPE", operterInfos[i].USER_TYPE) + "</td>"
+                        + "<td>" + operterStatus + "</td>"
+                        + "<td>" + operterInfos[i].MAIN_POST_NAME + "</td>"
+                        + "<td>" + getOrgName(operterInfos[i].ORG_CODE) + "</td>"
+                        + "</tr>");
+                    trHtml.addClass(i % 2 == 0 ? 'datagrid-odd' : 'datagrid-even');
+                    $('.datagrid-a').append(trHtml);
+                    // 获取最长的字符长度
+                    maxCharLen = getStrLength(operterInfos[i].USER_NAME) > maxCharLen ? getStrLength(operterInfos[i].USER_NAME) : maxCharLen;
+                }
+                // 动态设置列表宽度
+                if (maxCharLen > 20) {
+                    $(".ac_results").width("auto")
+                } else {
+                    $(".ac_results").width("400px");
+                }
+                results.show();
+            }
+
+        }, function () {
+            //该功能里面加了OEM校验，检验失败时跳转的页面
+            window.parent.location.href = '/frame/page/503.html';
+
+        });
+    }
+}
+window.onkeydown=function(e){
+    if(e.key=='F2'){
+        if($('#USER_CODE').attr('recong_flag')==='1'){
+            $('#USER_CODE').attr('recong_flag','2');
+            $('#userTip').text('请录入交易员姓名');
+        }else if($('#USER_CODE').attr('recong_flag')==='2'){
+            $('#USER_CODE').attr('recong_flag','3');
+            $('#userTip').text('请录入交易员手机号');
+        }else if($('#USER_CODE').attr('recong_flag')==='3'){
+            $('#USER_CODE').attr('recong_flag','1');
+            $('#userTip').text('请录入交易员编号');
+        }
+
+    }
+}
+
+</script>
+</head>
+<body style="overflow:hidden;">
+<form id="recogniteForm" class="kui-form">
+    <div class="large-text">
+      <span id="USER_CODE_Span">
+        <input id="USER_CODE" name="USER_CODE" class="cust-reco-text" size="20" spellcheck="false" autocomplete="off"
+           recong_flag="1" />
+          <!-- 可输入只能输入中文、英文、数字、小数点和@ -->
+      </span> <a id="btnCustIdentify" href='javascript:void(0);' class='button-red-big'> <span class='btn-left' id="custIdentify_span">人员识别</span> </a>
+        &nbsp;&nbsp;<span style="font-weight: bold" id="userTip">请录入交易员编号!</span>
+    </div>
+</form>
+<div id="ac_results_div" style="display: none; position: absolute; top:40px; left:0px; max-height: 300px; overflow: auto;" class="ac_results">
+    <table class="datagrid-a" id="custList">
+        <tr>
+            <th>人员ID</th>
+            <th>人员名称</th>
+            <th>人员类型</th>
+            <th>人员状态</th>
+            <th>主岗位</th>
+            <th>机构名称</th>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--门户引擎布局管理bex设置   start-->
+    <bex bex_code="Run_getAllLayout" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getAllLayout"></bex>
+    <bex bex_code="Run_getAllBoard" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getAllBoard"></bex>
+   
+    <bex bex_code="Run_getAllContainer" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getAllContainer"></bex>
+  
+   
+    <bex bex_code="Run_getUserPortalMenu" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getUserPortalMenu">
+    </bex>
+	<bex bex_code="Run_getUserMenuComp" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getUserMenuComp">
+    </bex>
+	<bex bex_code="Run_getUserMenuContComp" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getUserMenuContComp">
+    </bex>
+	<bex bex_code="Run_getUserMenuCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getUserMenuCompParam">
+    </bex>
+	<bex bex_code="Run_getUserMenuContTab" bex_type="4" page_mode="2" bex_cate="1" attr1="Run_getUserMenuContTab">
+    </bex>
+
+    <!--门户菜单查询bex设置   end-->
+</bexs>
+ 

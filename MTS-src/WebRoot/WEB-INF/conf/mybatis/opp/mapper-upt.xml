@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+	<!-- 布局管理 start -->
+    <select id="getAllLayout" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT LAYOUT_ID,LAYOUT_NAME,ICON FROM KPT_LAYOUT ORDER BY LAYOUT_ID ASC		
+	</select>
+    <select id="getAllBoard" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT BOARD_ID,LAYOUT_ID,BOARD_CLASS,BOARD_ORD FROM KPT_BOARD ORDER BY LAYOUT_ID ASC,BOARD_ORD ASC	
+	</select>
+		
+    <select id="getLayout" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT LAYOUT_ID,LAYOUT_NAME,ICON
+		FROM KPT_LAYOUT
+		WHERE (LAYOUT_ID='${LAYOUT_ID}' OR ${LAYOUT_ID}=-1) AND LAYOUT_NAME like '%${LAYOUT_NAME}%'  
+		ORDER BY LAYOUT_ID ASC
+	</select>
+	<insert id="addLayout" parameterType="hashmap">
+		INSERT INTO KPT_LAYOUT
+		  (LAYOUT_ID,
+		   LAYOUT_NAME,
+		   ICON)
+		VALUES
+		  (NEXT VALUE FOR SEQ_LAYOUT,
+		   '${LAYOUT_NAME}',
+		   '${ICON}')
+	</insert>
+	
+	<insert id="addLayout_MSSQL" parameterType="hashmap">
+		INSERT INTO KPT_LAYOUT
+		  (LAYOUT_ID,
+		   LAYOUT_NAME,
+		   ICON)
+		VALUES
+		  ('${ID}',
+		   '${LAYOUT_NAME}',
+		   '${ICON}')
+	</insert>
+	
+	<update id="updateLayout" parameterType="hashmap">
+		UPDATE KPT_LAYOUT
+		   SET LAYOUT_NAME   = '${LAYOUT_NAME}',
+			   ICON          = '${ICON}'
+		WHERE LAYOUT_ID = ${LAYOUT_ID}
+	</update>
+	<delete id="deleteLayout" parameterType="int">
+        DELETE FROM KPT_LAYOUT WHERE LAYOUT_ID = ${LAYOUT_ID}
+    </delete>
+    
+    <select id="getBoard" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT BOARD_ID,
+			   LAYOUT_ID,
+			   BOARD_CLASS,
+			   BOARD_ORD
+		FROM KPT_BOARD
+		WHERE (BOARD_ID='${BOARD_ID}' OR ${BOARD_ID}=-1) AND LAYOUT_ID=#{LAYOUT_ID,jdbcType=INTEGER}
+		ORDER BY BOARD_ORD ASC
+	</select>
+	<insert id="addBoard" parameterType="hashmap">
+		INSERT INTO KPT_BOARD
+		  (BOARD_ID,
+		   LAYOUT_ID,
+		   BOARD_CLASS,
+		   BOARD_ORD)
+		VALUES
+		  (NEXT VALUE FOR SEQ_BOARD,
+		   ${LAYOUT_ID},
+		   '${BOARD_CLASS}',
+		   ${BOARD_ORD})
+	</insert>
+	
+	<insert id="addBoard_MSSQL" parameterType="hashmap">
+		INSERT INTO KPT_BOARD
+		  (BOARD_ID,
+		   LAYOUT_ID,
+		   BOARD_CLASS,
+		   BOARD_ORD)
+		VALUES
+		  ('${ID}',
+		   ${LAYOUT_ID},
+		   '${BOARD_CLASS}',
+		   ${BOARD_ORD})
+	</insert>
+	
+	<update id="updateBoard" parameterType="hashmap">
+		UPDATE KPT_BOARD
+		   SET LAYOUT_ID   = ${LAYOUT_ID},
+			   BOARD_CLASS = '${BOARD_CLASS}',
+			   BOARD_ORD = '${BOARD_ORD}'
+		WHERE BOARD_ID = ${BOARD_ID}
+	</update>
+	<delete id="deleteBoard" parameterType="int">
+        DELETE FROM KPT_BOARD WHERE BOARD_ID = ${BOARD_ID}
+    </delete>
+	<delete id="deleteAllBoard" parameterType="int">
+        DELETE FROM KPT_BOARD WHERE LAYOUT_ID = ${LAYOUT_ID}
+    </delete>
+    <!-- 布局管理 end -->
+    
+    <!-- 容器管理 start -->
+    <select id="getAllContainer" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT CONT_ID,CONT_TYPE,CONT_NAME,DEF_WIDTH,DEF_HEIGHT FROM KPT_CONTAINER ORDER BY CONT_ID ASC		
+	</select>
+  
+    <select id="getContainer" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT CONT_ID,CONT_TYPE,CONT_NAME,DEF_WIDTH,DEF_HEIGHT
+		  FROM KPT_CONTAINER
+		 WHERE (CONT_ID = '${CONT_ID}' OR ${CONT_ID} = -1)
+		   AND CONT_NAME LIKE '%${CONT_NAME}%'  
+		 ORDER BY CONT_ID
+	</select>
+	<insert id="addContainer" parameterType="hashmap">
+		INSERT INTO KPT_CONTAINER
+		  (CONT_ID,
+		   CONT_TYPE,
+		   CONT_NAME,
+		   DEF_WIDTH,
+		   DEF_HEIGHT)
+		VALUES
+		  (NEXT VALUE FOR SEQ_CONTAINER,
+		   '${CONT_TYPE}',
+		   '${CONT_NAME}',
+		   ${DEF_WIDTH},
+		   ${DEF_HEIGHT})
+	</insert>
+	
+	<insert id="addContainer_MSSQL" parameterType="hashmap">
+		INSERT INTO KPT_CONTAINER
+		  (CONT_ID,
+		   CONT_TYPE,
+		   CONT_NAME,
+		   DEF_WIDTH,
+		   DEF_HEIGHT)
+		VALUES
+		  ('${ID}',
+		   '${CONT_TYPE}',
+		   '${CONT_NAME}',
+		   ${DEF_WIDTH},
+		   ${DEF_HEIGHT})
+	</insert>	
+	<update id="updateContainer" parameterType="hashmap">
+		UPDATE KPT_CONTAINER
+		SET CONT_NAME   = '${CONT_NAME}',
+			DEF_WIDTH  = ${DEF_WIDTH},
+			DEF_HEIGHT = ${DEF_HEIGHT}
+		WHERE CONT_ID = ${CONT_ID}
+	</update>	
+	<delete id="deleteContainer" parameterType="int">
+        DELETE FROM KPT_CONTAINER WHERE CONT_ID = ${CONT_ID}
+    </delete>
+    <!-- 容器管理 end -->
+    
+    <!-- 组件管理 start -->
+    <select id="getAllComponents" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT COMP_ID,
+			   COMP_TYPE,
+			   COMP_NAME,
+			   ICON,
+			   DEF_WIDTH,
+			   DEF_HEIGHT,
+			   LINK_PAGE
+		FROM KPT_COMPONENTS ORDER BY COMP_ID ASC		
+	</select>
+    <select id="getComponents" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT COMP_ID,
+			   COMP_TYPE,
+			   COMP_NAME,
+			   (convert(varchar,COMP_ID)+' '+COMP_NAME) as ID_NAME,
+			   ICON,
+			   DEF_WIDTH,
+			   DEF_HEIGHT,
+			   LINK_PAGE			   
+		  FROM KPT_COMPONENTS
+		 WHERE (COMP_ID IN (${COMP_ID}) OR -1 IN (${COMP_ID}))
+		   AND (COMP_TYPE = '${COMP_TYPE}' OR ${COMP_TYPE} = -1)
+		   AND COMP_NAME LIKE '%${COMP_NAME}%'  
+	     ORDER BY COMP_ID
+	</select>
+		<select id="queryComponent" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT COMP_ID,
+			   COMP_TYPE,
+			   COMP_NAME,
+			   DEF_WIDTH,
+			   DEF_HEIGHT		   
+		  FROM KPT_COMPONENTS
+		 WHERE COMP_TYPE = '${COMP_TYPE}'
+		   AND COMP_NAME = '${COMP_NAME}'  
+	</select>
+
+	<insert id="addComponent" parameterType="hashmap">
+		INSERT INTO KPT_COMPONENTS
+		  (COMP_ID,
+		   COMP_TYPE,
+		   COMP_NAME,
+		   ICON,
+		   LINK_PAGE)
+		VALUES
+		  (SEQ_COMPONENTS.NEXTVAL,
+		   ${COMP_TYPE},
+		   '${COMP_NAME}',
+		   '${ICON}',
+		   '${LINK_PAGE}')
+	</insert>
+
+	<insert id="addComponent_MSSQL" parameterType="hashmap">
+		INSERT INTO KPT_COMPONENTS
+		  (COMP_ID,
+		   COMP_TYPE,
+		   COMP_NAME,
+		   ICON,
+		   LINK_PAGE)
+		VALUES
+		  ('${ID}',
+		   ${COMP_TYPE},
+		   '${COMP_NAME}',
+		   '${ICON}',
+		   '${LINK_PAGE}')
+	</insert>
+  <insert id="addCascadeComponent" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES (NEXT VALUE FOR SEQ_PERMISSION,
+				'${COMP_NAME}',
+				'3',
+				(SELECT PERM_ID FROM UUM_PERMISSION WHERE PAR_PERM=3 AND PERM_VAL = (
+					SELECT ITEM_ID FROM UPM_DICT_ITEMS WHERE DICT_CODE='COMP_TYPE' AND DICT_ITEM='${COMP_TYPE}' )),
+				'1',
+				SEQ_COMPONENTS.CURRVAL,
+		KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL','3',4))
+	</insert>
+	
+  <insert id="addCascadeComponent_MSSQL" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES ('${ID}',
+				'${COMP_NAME}',
+				'3',
+				(SELECT PERM_ID FROM UUM_PERMISSION WHERE PAR_PERM=3 AND PERM_VAL = (
+					SELECT ITEM_ID FROM UPM_DICT_ITEMS WHERE DICT_CODE='COMP_TYPE' AND DICT_ITEM='${COMP_TYPE}' )),
+				'1',
+				SEQ_COMPONENTS.CURRVAL,
+		KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL','3',4))
+	</insert>
+  <update id="updateComponent" parameterType="hashmap">
+		UPDATE KPT_COMPONENTS
+		   SET COMP_TYPE   = ${COMP_TYPE},
+			   COMP_NAME   = '${COMP_NAME}',
+			   ICON   	   = '${ICON}',
+			   LINK_PAGE   = '${LINK_PAGE}'
+		WHERE COMP_ID = ${COMP_ID}
+	</update>
+  <update id="updateComponentName" parameterType="hashmap">
+		UPDATE KPT_MENU_COMP
+		   SET TITLE   = '${COMP_NAME}'
+		WHERE COMP_ID = ${COMP_ID}
+  </update>
+  <update id="updateMenuContCompName" parameterType="hashmap">
+		UPDATE KPT_MENU_CONT_COMP
+		   SET TITLE   = '${COMP_NAME}'
+		WHERE COMP_ID = ${COMP_ID}
+  </update>
+  <update id="updateCascadeComponent" parameterType="hashmap">
+		 UPDATE UUM_PERMISSION SET
+			PERM_NAME='${COMP_NAME}'
+		<if test="PAR_PERM != null and PAR_PERM != ''">
+			,PAR_PERM='${PAR_PERM}'
+  		</if>
+		WHERE PERM_VAL ='${COMP_ID}' AND PERM_TYPE = '3'
+	</update>
+  <delete id="deleteComponent" parameterType="int">
+        DELETE FROM KPT_COMPONENTS WHERE COMP_ID = ${COMP_ID}
+  </delete>
+  <delete id="deleteCascadeComponent" parameterType="int">
+        DELETE FROM UUM_PERMISSION WHERE PERM_VAL = '${COMP_ID}' AND PERM_TYPE = '3'
+  </delete> 
+
+    <select id="getAllCompParam" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT PARAM_CODE,PARAM_NAME,COMP_ID,INPUT_TYPE,VAL_TYPE,VAL_PARAM,VAL_FIELD,TEXT_FIELD FROM KPT_COMP_PARAM	
+	</select>
+    <select id="getCompParam" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT PARAM_CODE,
+			   PARAM_NAME,
+			   COMP_ID,
+			   INPUT_TYPE,
+			   VAL_TYPE,
+			   VAL_PARAM,
+			   VAL_FIELD,
+			   TEXT_FIELD
+		FROM KPT_COMP_PARAM
+		WHERE (PARAM_CODE='${PARAM_CODE}' OR ${PARAM_CODE}=-1) AND COMP_ID=#{COMP_ID,jdbcType=INTEGER}
+	</select>
+	<insert id="addCompParam" parameterType="hashmap">
+		INSERT INTO KPT_COMP_PARAM
+		  (PARAM_CODE,
+		   PARAM_NAME,
+		   COMP_ID,
+		   INPUT_TYPE,
+		   VAL_TYPE,
+		   VAL_PARAM,
+		   VAL_FIELD,
+		   TEXT_FIELD)
+		VALUES
+		  ('${PARAM_CODE}',
+		   '${PARAM_NAME}',
+		   ${COMP_ID},
+		   ${INPUT_TYPE},
+		   '${VAL_TYPE}',
+		   '${VAL_PARAM}',
+		   '${VAL_FIELD}',
+		   '${TEXT_FIELD}')
+	</insert>	
+	<update id="updateCompParam" parameterType="hashmap">
+		UPDATE KPT_COMP_PARAM
+		   SET PARAM_NAME  = '${PARAM_NAME}',
+			   INPUT_TYPE  = '${INPUT_TYPE}',
+			   VAL_TYPE    = '${VAL_TYPE}',
+			   VAL_PARAM   = '${VAL_PARAM}',
+			   VAL_FIELD  = '${VAL_FIELD}',
+			   TEXT_FIELD  = '${TEXT_FIELD}'
+		WHERE PARAM_CODE = '${PARAM_CODE}'
+	</update>	
+	<delete id="deleteCompParam" parameterType="int">
+        DELETE FROM KPT_COMP_PARAM WHERE PARAM_CODE = '${PARAM_CODE}'
+    </delete>    
+	<delete id="deleteAllCompParam" parameterType="int">
+        DELETE FROM KPT_COMP_PARAM WHERE COMP_ID = '${COMP_ID}'
+    </delete>    
+    <!-- 组件管理 end -->
+
+	<!-- 门户菜单查询 -->
+	<select id="getUserPortalMenu" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="OP_POST == 1">
+			SELECT DISTINCT M.MENU_ID, M.MENU_NAME, M.PAR_MENU, M.MENU_LVL, M.MENU_PUR, M.MENU_ICO, M.MENU_PLAT
+			FROM UUM_PERMISSION P,UPM_MENU M
+			WHERE PERM_VAL = MENU_ID
+			AND M.MENU_PUR &lt;&gt; '1'
+			AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+			AND M.MENU_STA = '1'
+			<if test="USER_CODE != '' and USER_CODE != null">
+			AND EXISTS (SELECT 1 FROM UUM_USER WHERE USER_CODE = '${USER_CODE}')
+			</if>
+			ORDER BY M.MENU_LVL
+		</if>
+		<if test="OP_POST != 1">
+			SELECT DISTINCT M.MENU_ID, M.MENU_NAME, M.PAR_MENU, M.MENU_LVL, M.MENU_PUR, M.MENU_ICO, M.MENU_PLAT
+			FROM UUM_PERMISSION P
+			LEFT JOIN UPM_MENU M
+			ON PERM_VAL = MENU_ID, UUM_USER_PERM UP
+			WHERE UP.AUTH_TYPE = '1'
+			AND M.MENU_STA = '1'
+			AND M.MENU_PUR &lt;&gt; '1'
+			AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+			AND UP.ASS_TYPE = '1'
+			AND UP.PERM_ID = P.PERM_ID
+			<if test="USER_CODE != '' and USER_CODE != null">
+			AND (( UP.OBJ_ID = '${USER_CODE}' AND UP.OBJ_TYPE = '2'))
+			</if>
+			<if test="USER_ROLE != '' and USER_ROLE != null">
+			AND UP.OBJ_ID = '${USER_ROLE}'
+			AND UP.OBJ_TYPE = '3'
+			AND (SELECT POST_STA FROM UUM_POST WHERE POST_ID = UP.OBJ_ID) = '1'
+			</if> 
+			ORDER BY M.MENU_LVL
+		</if>
+	</select>
+	<select id="getUserMenuComp" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MC.MENU_COMP_ID,
+			   MC.USER_CODE,
+			   MC.USER_ROLE,
+			   MC.MENU_ID,
+			   MC.LAYOUT_ID,
+			   MC.BOARD_INDEX,
+			   MC.COMP_CONT_INDEX,
+			   MC.COMP_ID,
+			   MC.CONT_ID,
+			   MC.TAB_DIRECTION,
+			   MC.DISP_TITLE,
+			   MC.TITLE,
+			   MC.COMP_WIDTH,
+			   MC.COMP_HEIGHT,
+			   MC.COMP_LEFT,
+			   MC.COMP_TOP,
+			   MC.FIXED_DIRECTION,
+			   MC.FIXED_WIDTH,
+			   MC.FIXED_HEIGHT,			   
+			   C.COMP_TYPE,
+			   C.COMP_NAME,
+			   C.ICON,
+			   C.DEF_WIDTH,
+			   C.DEF_HEIGHT,
+			   C.WIN_WIDTH,
+			   C.WIN_HEIGHT,
+			   C.LINK_PAGE,
+			   KC.CONT_TYPE
+		FROM KPT_MENU_COMP MC LEFT JOIN KPT_COMPONENTS C ON MC.COMP_ID = C.COMP_ID LEFT JOIN KPT_CONTAINER KC ON MC.CONT_ID = KC.CONT_ID
+		WHERE MC.MENU_ID =${MENU_ID}
+		AND EXISTS(SELECT 1 FROM UPM_MENU WHERE MENU_ID = ${MENU_ID} AND MENU_STA = '1')
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND MC.USER_CODE = '${USER_CODE}'
+		</if>
+		<if test="USER_ROLE != '' and USER_ROLE != null">
+		AND MC.USER_ROLE = '${USER_ROLE}'
+		</if>
+		ORDER BY MENU_ID,COMP_CONT_INDEX
+	</select>
+
+	<select id="getUserMenuContComp" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MCC.MENU_CONT_COMP_ID,
+			   MCC.MENU_COMP_ID,
+			   MCC.TAB_INDEX,
+			   MCC.COMP_INDEX,
+			   MCC.COMP_ID,
+			   MCC.DIR_NAME,
+			   MCC.DISP_TITLE,
+			   MCC.TITLE,
+			   MCC.COMP_WIDTH,
+			   MCC.COMP_HEIGHT,
+			   MCC.COMP_LEFT,
+			   MCC.COMP_TOP,
+			   MCC.FIXED_DIRECTION,
+			   MCC.FIXED_WIDTH,
+			   MCC.FIXED_HEIGHT,			   
+			   C.COMP_TYPE,
+			   C.COMP_NAME,
+			   C.ICON,
+			   C.DEF_WIDTH,
+			   C.DEF_HEIGHT,
+			   C.WIN_WIDTH,
+			   C.WIN_HEIGHT,
+			   C.LINK_PAGE			   
+		  FROM KPT_MENU_CONT_COMP MCC LEFT JOIN KPT_COMPONENTS C ON MCC.COMP_ID = C.COMP_ID,KPT_MENU_COMP MC
+		  WHERE MCC.MENU_COMP_ID = MC.MENU_COMP_ID
+		AND MC.MENU_ID = ${MENU_ID}
+		AND EXISTS(SELECT 1 FROM UPM_MENU WHERE MENU_ID = ${MENU_ID} AND MENU_STA = '1')
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND MC.USER_CODE = '${USER_CODE}'
+		</if>
+		<if test="USER_ROLE != '' and USER_ROLE != null">
+		AND MC.USER_ROLE = '${USER_ROLE}'
+		</if> 
+		ORDER BY MENU_COMP_ID,COMP_INDEX
+	</select>
+	
+	<select id="getUserMenuCompParam" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MCP.MENU_COMP_PARAM_ID,
+			   MCP.MENU_COMP_ID,
+			   MCP.MENU_CONT_COMP_ID,
+			   MCP.PARAM_CODE,
+			   MCP.PARAM_VAL
+		  FROM KPT_MENU_COMP_PARAM MCP,KPT_MENU_COMP MC
+		  WHERE MCP.MENU_COMP_ID = MC.MENU_COMP_ID
+		AND MENU_ID =${MENU_ID}
+		AND EXISTS(SELECT 1 FROM UPM_MENU WHERE MENU_ID = ${MENU_ID} AND MENU_STA = '1')
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND MC.USER_CODE = '${USER_CODE}'
+		</if>
+		<if test="USER_ROLE != '' and USER_ROLE != null">
+		AND MC.USER_ROLE = ${USER_ROLE}
+		</if> 
+		ORDER BY MENU_COMP_ID
+	</select>
+	
+	<select id="getUserMenuContTab" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MCT.MENU_CONT_TAB_ID,
+			   MCT.MENU_COMP_ID,
+			   MCT.TAB_INDEX,
+			   MCT.TAB_TITLE,
+			   MCT.DISP_TYPE
+		  FROM KPT_MENU_COMP MC,KPT_MENU_CONT_TAB MCT
+		  WHERE MC.MENU_COMP_ID = MCT.MENU_COMP_ID
+		AND MC.MENU_ID = ${MENU_ID}
+		AND EXISTS(SELECT 1 FROM UPM_MENU WHERE MENU_ID = ${MENU_ID} AND MENU_STA = '1')
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND MC.USER_CODE = '${USER_CODE}'
+		</if>
+		<if test="USER_ROLE != '' and USER_ROLE != null">
+		AND MC.USER_ROLE = ${USER_ROLE}
+		</if> 
+		ORDER BY MENU_COMP_ID,TAB_INDEX
+	</select>
+		
+	<update id="menuCompCfgSave" statementType="CALLABLE"
+		parameterType="hashmap">
+		 <![CDATA[ 
+          call KUI_KPT_MENU_COMP_SAVE(
+          	#{F_FUNCTION,mode=IN,jdbcType=VARCHAR},
+          	#{F_OP_USER,mode=IN,jdbcType=VARCHAR},
+          	#{F_OP_ROLE,mode=IN,jdbcType=VARCHAR},
+          	#{F_OP_SITE,mode=IN,jdbcType=VARCHAR},
+          	#{F_CHANNEL,mode=IN,jdbcType=VARCHAR},
+          	#{F_SESSION,mode=IN,jdbcType=VARCHAR},
+			#{F_RUNTIME,mode=IN,jdbcType=VARCHAR},
+			#{P_USER_CODE,mode=IN,jdbcType=VARCHAR},
+			#{P_USER_ROLE,mode=IN,jdbcType=INTEGER},
+			#{P_MENU_ID,mode=IN,jdbcType=INTEGER},
+			#{P_LAYOUT_ID,mode=IN,jdbcType=INTEGER},
+			#{P_COMP_CFG,mode=IN,jdbcType=VARCHAR},
+            #{RC1,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=ProcResultMap},
+            #{RC2,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=ProcResultMap}) 
+        ]]>
+	</update>
+	<!-- 门户菜单查询 -->
+	<!-- 门户设计保存 start -->
+	<insert id="insertKPT_HI_MENU_COMP" parameterType="hashmap">
+		INSERT INTO KPT_HI_MENU_COMP
+    (MENU_COMP_ID,
+     HI_DATE,
+     USER_CODE,
+     USER_ROLE,
+     MENU_ID,
+     LAYOUT_ID,
+     BOARD_INDEX,
+     COMP_CONT_INDEX,
+     COMP_ID,
+     CONT_ID,
+     DISP_TITLE,
+     TITLE,
+     COMP_WIDTH,
+     COMP_HEIGHT,
+     COMP_LEFT,
+     COMP_TOP)
+    SELECT MENU_COMP_ID,
+           GETDATE(),
+           USER_CODE,
+           USER_ROLE,
+           MENU_ID,
+           LAYOUT_ID,
+           BOARD_INDEX,
+           COMP_CONT_INDEX,
+           COMP_ID,
+           CONT_ID,
+           DISP_TITLE,
+           TITLE,
+           COMP_WIDTH,
+           COMP_HEIGHT,
+           COMP_LEFT,
+           COMP_TOP
+      FROM KPT_MENU_COMP
+     WHERE MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+       <if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+                AND USER_ROLE = ${P_USER_ROLE}
+            </if>
+            <if test="P_USER_CODE != null and P_USER_CODE != ''">
+                AND USER_CODE = ${P_USER_CODE}
+            </if>
+	</insert>
+	<insert id="insertKPT_HI_MENU_CONT_COMP" parameterType="hashmap">
+		INSERT INTO KPT_HI_MENU_CONT_COMP
+    (MENU_CONT_COMP_ID,
+     HI_DATE,
+     MENU_COMP_ID,
+     TAB_INDEX,
+     COMP_INDEX,
+     COMP_ID,
+     DIR_NAME,
+     DISP_TITLE,
+     TITLE,
+     COMP_WIDTH,
+     COMP_HEIGHT,
+     COMP_LEFT,
+     COMP_TOP)
+    SELECT MENU_CONT_COMP_ID,
+           GETDATE(),
+           MENU_COMP_ID,
+           TAB_INDEX,
+           COMP_INDEX,
+           COMP_ID,
+           DIR_NAME,
+           DISP_TITLE,
+           TITLE,
+           COMP_WIDTH,
+           COMP_HEIGHT,
+           COMP_LEFT,
+           COMP_TOP
+      FROM KPT_MENU_CONT_COMP P
+     WHERE EXISTS (SELECT 1
+              FROM KPT_MENU_COMP C
+             WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+               <if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+                AND USER_ROLE = ${P_USER_ROLE}
+            </if>
+            <if test="P_USER_CODE != null and P_USER_CODE != ''">
+                AND USER_CODE = ${P_USER_CODE}
+            </if>
+               AND C.MENU_COMP_ID = P.MENU_COMP_ID)
+	</insert>
+	<insert id="insertKPT_HI_MENU_COMP_PARAM" parameterType="hashmap">
+		INSERT INTO KPT_HI_MENU_COMP_PARAM
+    (MENU_COMP_PARAM_ID,
+     HI_DATE,
+     MENU_COMP_ID,
+     MENU_CONT_COMP_ID,
+     PARAM_CODE,
+     PARAM_VAL)
+    SELECT MENU_COMP_PARAM_ID,
+           GETDATE(),
+           MENU_COMP_ID,
+           MENU_CONT_COMP_ID,
+           PARAM_CODE,
+           PARAM_VAL
+      FROM KPT_MENU_COMP_PARAM P
+     WHERE EXISTS (SELECT 1
+              FROM KPT_MENU_COMP C
+             WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+               <if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+                AND USER_ROLE = ${P_USER_ROLE}
+            </if>
+            <if test="P_USER_CODE != null and P_USER_CODE != ''">
+                AND USER_CODE = ${P_USER_CODE}
+            </if>
+               AND C.MENU_COMP_ID = P.MENU_COMP_ID)
+	</insert>
+	<insert id="insertKPT_HI_MENU_CONT_TAB" parameterType="hashmap">
+		INSERT INTO KPT_HI_MENU_CONT_TAB
+    (MENU_CONT_TAB_ID,
+     HI_DATE,
+     MENU_COMP_ID,
+     TAB_INDEX,
+     TAB_TITLE,
+     DISP_TYPE)
+    SELECT MENU_CONT_TAB_ID,
+           GETDATE(),
+           MENU_COMP_ID,
+           TAB_INDEX,
+           TAB_TITLE,
+           DISP_TYPE
+      FROM KPT_MENU_CONT_TAB T
+     WHERE EXISTS (SELECT 1
+              FROM KPT_MENU_COMP C
+             WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+                <if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+                AND USER_ROLE = ${P_USER_ROLE}
+            </if>
+            <if test="P_USER_CODE != null and P_USER_CODE != ''">
+                AND USER_CODE = ${P_USER_CODE}
+            </if>
+               AND C.MENU_COMP_ID = T.MENU_COMP_ID)
+	</insert>
+	<delete id="deleteKPT_MENU_COMP_PARAM" parameterType="int">
+        DELETE FROM KPT_MENU_COMP_PARAM P
+   WHERE EXISTS (SELECT 1
+            FROM KPT_MENU_COMP C
+           WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+             AND (USER_CODE = #{P_USER_CODE,jdbcType=INTEGER} OR #{P_USER_CODE,jdbcType=INTEGER} IS NULL)
+             AND (USER_ROLE = #{P_USER_ROLE,jdbcType=INTEGER} OR #{P_USER_ROLE,jdbcType=INTEGER} IS NULL)
+             AND C.MENU_COMP_ID = P.MENU_COMP_ID)
+    </delete> 
+	<delete id="deleteKPT_MENU_COMP_PARAM_MSSQL" parameterType="int">
+        DELETE FROM KPT_MENU_COMP_PARAM 
+   WHERE EXISTS (SELECT 1
+            FROM KPT_MENU_COMP C
+           WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+             <if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+                AND USER_ROLE = ${P_USER_ROLE}
+            </if>
+            <if test="P_USER_CODE != null and P_USER_CODE != ''">
+                AND USER_CODE = ${P_USER_CODE}
+            </if>
+             AND C.MENU_COMP_ID = KPT_MENU_COMP_PARAM.MENU_COMP_ID)
+    </delete> 
+    <delete id="deleteKPT_MENU_CONT_COMP" parameterType="int">
+         DELETE FROM KPT_MENU_CONT_COMP P
+   WHERE EXISTS (SELECT 1
+            FROM KPT_MENU_COMP C
+           WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+             AND (USER_CODE = #{P_USER_CODE,jdbcType=INTEGER} OR #{P_USER_CODE,jdbcType=INTEGER} IS NULL)
+             AND (USER_ROLE = #{P_USER_ROLE,jdbcType=INTEGER} OR #{P_USER_ROLE,jdbcType=INTEGER} IS NULL)
+             AND C.MENU_COMP_ID = P.MENU_COMP_ID)
+    </delete>
+	<delete id="deleteKPT_MENU_CONT_COMP_MSSQL" parameterType="int">
+		DELETE FROM KPT_MENU_CONT_COMP
+		WHERE EXISTS (SELECT 1
+		FROM KPT_MENU_COMP C
+		WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+		<if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+            AND USER_ROLE = ${P_USER_ROLE}
+        </if>
+        <if test="P_USER_CODE != null and P_USER_CODE != ''">
+            AND USER_CODE = ${P_USER_CODE}
+        </if>
+		AND C.MENU_COMP_ID = KPT_MENU_CONT_COMP.MENU_COMP_ID)
+	</delete>
+	<delete id="deleteKPT_MENU_CONT_TAB" parameterType="int">
+         DELETE FROM KPT_MENU_CONT_TAB P
+   WHERE EXISTS (SELECT 1
+            FROM KPT_MENU_COMP C
+           WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+             AND (USER_CODE = #{P_USER_CODE,jdbcType=INTEGER} OR #{P_USER_CODE,jdbcType=INTEGER} IS NULL)
+             AND (USER_ROLE = #{P_USER_ROLE,jdbcType=INTEGER} OR #{P_USER_ROLE,jdbcType=INTEGER} IS NULL)
+             AND C.MENU_COMP_ID = P.MENU_COMP_ID)
+    </delete>
+	<delete id="deleteKPT_MENU_CONT_TAB_MSSQL" parameterType="int">
+    DELETE FROM KPT_MENU_CONT_TAB 
+    WHERE EXISTS (SELECT 1
+            FROM KPT_MENU_COMP C
+           WHERE C.MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+             <if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+                AND USER_ROLE = ${P_USER_ROLE}
+            </if>
+            <if test="P_USER_CODE != null and P_USER_CODE != ''">
+                AND USER_CODE = ${P_USER_CODE}
+            </if>
+             AND C.MENU_COMP_ID = KPT_MENU_CONT_TAB.MENU_COMP_ID)
+    </delete>
+    <delete id="deleteKPT_MENU_COMP" parameterType="int">
+           DELETE FROM KPT_MENU_COMP
+   WHERE MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+     <if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+         AND USER_ROLE = ${P_USER_ROLE}
+     </if>
+     <if test="P_USER_CODE != null and P_USER_CODE != ''">
+         AND USER_CODE = ${P_USER_CODE}
+     </if>
+    </delete>
+    <select id="getV_MENU_COMPS" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT KUI_GET_SUBSTR('${P_COMP_CFG}', ';', '${NUM}') AS V_MENU_COMPS
+	</select> 
+	<insert id="insertKPT_MENU_COMPBatch" parameterType="hashmap">
+		 INSERT INTO KPT_MENU_COMP
+	      (MENU_COMP_ID,
+	       USER_CODE,
+	       USER_ROLE,
+	       MENU_ID,
+	       LAYOUT_ID,
+	       BOARD_INDEX,
+	       COMP_CONT_INDEX,
+	       COMP_ID,
+	       CONT_ID,
+	       TAB_DIRECTION,
+	       DISP_TITLE,
+	       TITLE,
+	       COMP_WIDTH,
+	       COMP_HEIGHT,
+	       COMP_LEFT,
+	       COMP_TOP,
+	       FIXED_DIRECTION,
+	       FIXED_WIDTH,
+	       FIXED_HEIGHT)
+	    SELECT NEXT VALUE FOR SEQ_MENU_COMP,T.* from
+	    (
+    	 <foreach collection="MENU_COMPS" item="item" index="index" separator="union all" >  
+		 (SELECT '${P_USER_CODE}' AS USER_CODE, '${P_USER_ROLE}' AS USER_ROLE, '${P_MENU_ID}' AS MENU_ID, '${P_LAYOUT_ID}' AS LAYOUT_ID,
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 1) AS BOARD_INDEX),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 2) AS COMP_CONT_INDEX),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 3) AS COMP_ID),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 4) AS CONT_ID),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 5) AS TAB_DIRECTION),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 6) AS DISP_TITLE),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 7) AS TITLE),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 8) AS COMP_WIDTH),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 9) AS COMP_HEIGHT),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 10) AS COMP_LEFT),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 11) AS COMP_TOP),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 12) AS FIXED_DIRECTION),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 13) AS FIXED_WIDTH),
+		  (SELECT KUI_GET_SUBSTR(#{item}, ',', 14) AS FIXED_HEIGHT)
+		   )
+		</foreach> 
+    	) T
+    </insert>
+    <insert id="insertKPT_MENU_COMPBatch_MSSQL" parameterType="hashmap">
+		 INSERT INTO KPT_MENU_COMP
+	      (MENU_COMP_ID,
+	       USER_CODE,
+	       USER_ROLE,
+	       MENU_ID,
+	       LAYOUT_ID,
+	       BOARD_INDEX,
+	       COMP_CONT_INDEX,
+	       COMP_ID,
+	       CONT_ID,
+	       TAB_DIRECTION,
+	       DISP_TITLE,
+	       TITLE,
+	       COMP_WIDTH,
+	       COMP_HEIGHT,
+	       COMP_LEFT,
+	       COMP_TOP,
+	       FIXED_DIRECTION,
+	       FIXED_WIDTH,
+	       FIXED_HEIGHT)
+	    SELECT '${ID}',T.* from
+	    (
+    	 <foreach collection="MENU_COMPS" item="item" index="index" separator="union all" >  
+		 (SELECT CASE WHEN '${P_USER_CODE}' = '' THEN NULL ELSE '${P_USER_CODE}' END AS USER_CODE, '${P_USER_ROLE}' AS USER_ROLE, '${P_MENU_ID}' AS MENU_ID, '${P_LAYOUT_ID}' AS LAYOUT_ID,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 1) AS BOARD_INDEX) AS BOARD_INDEX,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 2) AS COMP_CONT_INDEX) AS COMP_CONT_INDEX,
+		  (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 3)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 3)) END)  AS COMP_ID,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 4) AS CONT_ID)  AS CONT_ID,
+		  (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 5)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 5)) END)  AS TAB_DIRECTION,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 6) AS DISP_TITLE) AS DISP_TITLE,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 7) AS TITLE) AS TITLE,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 8) AS COMP_WIDTH)  AS COMP_WIDTH,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 9) AS COMP_HEIGHT)  AS COMP_HEIGHT,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 10) AS COMP_LEFT)  AS COMP_LEFT,
+		  (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 11) AS COMP_TOP)  AS COMP_TOP,
+		  (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 12)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 12)) END)  AS FIXED_DIRECTION,
+		  (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 13)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 13)) END)  AS FIXED_WIDTH,
+		  (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 14)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR(#{item}, ',', 14)) END)  AS FIXED_HEIGHT
+		   )
+		</foreach> 
+    	) T
+    </insert>
+    <select id="getV_MENU_COMP_ID" parameterType="hashmap" resultType="java.util.HashMap">
+		 SELECT MENU_COMP_ID
+	  		AS V_MENU_COMP_ID
+	  		FROM KPT_MENU_COMP
+	 		WHERE MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+	   		AND BOARD_INDEX = (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 1))
+	   		AND COMP_CONT_INDEX = (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 2))
+		    AND (#{P_USER_ROLE,jdbcType=INTEGER} IS NULL OR USER_ROLE = #{P_USER_ROLE,jdbcType=INTEGER})
+		    AND (#{P_USER_CODE,jdbcType=INTEGER} IS NULL OR USER_CODE = #{P_USER_CODE,jdbcType=INTEGER})
+	</select>
+	<select id="getV_MENU_COMP_ID_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		 SELECT MENU_COMP_ID
+	  		AS V_MENU_COMP_ID
+	  		FROM KPT_MENU_COMP
+	 		WHERE MENU_ID = #{P_MENU_ID,jdbcType=INTEGER}
+	   		AND BOARD_INDEX = (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 1))
+	   		AND COMP_CONT_INDEX = (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 2))
+	   		<if test="P_USER_ROLE != null and P_USER_ROLE != ''">
+	            AND USER_ROLE = ${P_USER_ROLE}
+	        </if>
+            <if test="P_USER_CODE != null and P_USER_CODE != ''">
+                AND USER_CODE = ${P_USER_CODE}
+            </if>
+	</select>
+	<insert id="insertKPT_MENU_CONT_COMP" parameterType="hashmap">
+		INSERT INTO KPT_MENU_CONT_COMP
+      (MENU_CONT_COMP_ID,
+       MENU_COMP_ID,
+       TAB_INDEX,
+       COMP_INDEX,
+       COMP_ID,
+       DIR_NAME,
+       DISP_TITLE,
+       TITLE,
+       COMP_WIDTH,
+       COMP_HEIGHT,
+       COMP_LEFT,
+       COMP_TOP,
+       FIXED_DIRECTION,
+       FIXED_WIDTH,
+       FIXED_HEIGHT)
+       VALUES
+		(NEXT VALUE FOR SEQ_MENU_CONT_COMP,#{V_MENU_COMP_ID,jdbcType=INTEGER},
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 3)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 4)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 5)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 6)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 7)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 8)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 9)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 10)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 11)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 12)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 13)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 14)),
+		  (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 15))
+		 )
+    </insert>
+    <insert id="insertKPT_MENU_CONT_COMP_MSSQL" parameterType="hashmap">
+        INSERT INTO KPT_MENU_CONT_COMP
+      (MENU_CONT_COMP_ID,
+       MENU_COMP_ID,
+       TAB_INDEX,
+       COMP_INDEX,
+       COMP_ID,
+       DIR_NAME,
+       DISP_TITLE,
+       TITLE,
+       COMP_WIDTH,
+       COMP_HEIGHT,
+       COMP_LEFT,
+       COMP_TOP,
+       FIXED_DIRECTION,
+       FIXED_WIDTH,
+       FIXED_HEIGHT)
+       VALUES
+        (${ID},${V_MENU_COMP_ID},
+          (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 3)),
+          (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 4)),
+          (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 5)),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 6)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 6)) END),           
+          (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 7)),
+          (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 8)),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 9)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 9)) END),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 10)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 10)) END),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 11)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 11)) END),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 12)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 12)) END),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 13)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 13)) END),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 14)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 14)) END),
+          (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 15)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 15)) END)
+         )
+    </insert>
+    <select id="getV_MENU_COMP_CONT_ID" parameterType="hashmap" resultType="java.util.HashMap">     
+       SELECT ISNULL(MAX(MENU_CONT_COMP_ID),'')
+      AS V_MENU_COMP_CONT_ID
+      FROM KPT_MENU_CONT_COMP
+     WHERE MENU_COMP_ID = #{V_MENU_COMP_ID,jdbcType=INTEGER} 
+       AND TAB_INDEX = (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 3))
+       AND COMP_INDEX = (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 4))
+	</select>
+	<select id="getV_MENU_COMP_CONT_ID_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">     
+       SELECT ISNULL(MAX(MENU_CONT_COMP_ID),'')
+      AS V_MENU_COMP_CONT_ID
+      FROM KPT_MENU_CONT_COMP
+     WHERE MENU_COMP_ID = #{V_MENU_COMP_ID,jdbcType=INTEGER} 
+       AND TAB_INDEX = (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 3))
+       AND COMP_INDEX = (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 4))
+    </select>
+	<insert id="insertKPT_MENU_COMP_PARAM" parameterType="hashmap">
+    	INSERT INTO KPT_MENU_COMP_PARAM
+      (MENU_COMP_PARAM_ID,
+       MENU_COMP_ID,
+       MENU_CONT_COMP_ID,
+       PARAM_CODE,
+       PARAM_VAL)
+       	VALUES
+       	(NEXT VALUE FOR SEQ_MENU_COMP_PARAM,#{V_MENU_COMP_ID,jdbcType=INTEGER}, #{V_MENU_COMP_CONT_ID,jdbcType=INTEGER},
+		(SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 5)),
+		(SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 6))			  	 
+		)
+    </insert>
+	<!--by  2016/04/21 添加-->
+	<insert id="insertKPT_MENU_COMP_PARAM_MSSQL" parameterType="hashmap">
+		INSERT INTO KPT_MENU_COMP_PARAM
+		(MENU_COMP_PARAM_ID,
+		MENU_COMP_ID,
+		MENU_CONT_COMP_ID,
+		PARAM_CODE,
+		PARAM_VAL)
+		VALUES
+		(${ID},#{V_MENU_COMP_ID,jdbcType=INTEGER}, #{V_MENU_COMP_CONT_ID,jdbcType=INTEGER},
+		(SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 5)),
+		(SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 6))
+		)
+	</insert>
+
+
+    <insert id="insertKPT_MENU_COMP_PARAM_MYSQL" parameterType="hashmap">
+        INSERT INTO KPT_MENU_COMP_PARAM
+      (MENU_COMP_PARAM_ID,
+       MENU_COMP_ID,
+       MENU_CONT_COMP_ID,
+       PARAM_CODE,
+       PARAM_VAL)
+        VALUES
+        (${ID},#{V_MENU_COMP_ID,jdbcType=INTEGER}, #{V_MENU_COMP_CONT_ID,jdbcType=INTEGER},
+        (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 5)),
+        (SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 6))                 
+        )
+    </insert>
+    <insert id="insertKPT_MENU_CONT_TAB" parameterType="hashmap">
+	    INSERT INTO KPT_MENU_CONT_TAB
+      	(MENU_CONT_TAB_ID, MENU_COMP_ID, TAB_INDEX, TAB_TITLE, DISP_TYPE) VALUES
+   		(SEQ_MENU_CONT_TAB.NEXTVAL,#{V_MENU_COMP_ID,jdbcType=INTEGER},
+		    		(SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 3)),
+			  		(SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 4)),
+			  		(SELECT KUI_GET_SUBSTR('${MENU_CONTS}', ',', 5))
+		)
+    </insert>
+	<insert id="insertKPT_MENU_CONT_TAB_MSSQL" parameterType="hashmap">
+	    INSERT INTO KPT_MENU_CONT_TAB
+      	(MENU_CONT_TAB_ID, MENU_COMP_ID, TAB_INDEX, TAB_TITLE, DISP_TYPE) VALUES
+   		('${ID}',${V_MENU_COMP_ID},
+		    		(SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 3)),
+                    (CASE WHEN (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 4)) = '' THEN NULL ELSE (SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 4)) END),           
+			  		(SELECT dbo.KUI_GET_SUBSTR('${MENU_CONTS}', ',', 5))
+		)
+    </insert>
+	<!-- 门户设计保存 start -->
+</mapper>

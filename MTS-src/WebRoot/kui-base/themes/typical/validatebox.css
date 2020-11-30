@@ -1,0 +1,107 @@
+.validatebox-tip {
+	position: absolute;
+	display: none;
+	opacity: .9;
+	filter: Alpha(Opacity=90);
+	z-index: 9999;
+}
+.validatebox-tip-content {
+	color: #333;
+	background: #FFF1CE url('images/tip_warn_red.png') 4px 1px no-repeat;
+	border: 1px solid #F98F00;
+	padding: 2px 4px 2px 4px;
+	text-indent: 20px;
+	font-size: 12px;
+}
+.validatebox-tip-pointer {
+	background: url('images/validate_pointer.png') no-repeat;
+	width: 4px;
+	height: 5px;
+	position: relative;
+	left: 20px;
+	top: -1px;
+	white-space: nowrap;
+}
+.validatebox-tip-pointer-down {
+	background: url('images/validate_pointer_down.png') no-repeat;
+	width: 4px;
+	height: 5px;
+	position: relative;
+	left: 20px;
+	top: 1px;
+	white-space: nowrap;
+}
+.validatebox-invalid {
+	background-image: url('images/validatebox_warning.png');
+	background-repeat: no-repeat;
+	background-position: right center;
+	border-color: #ffa8a8;
+	background-color: #fff3f3;
+	color: #000;
+}
+.kui-form .kui-validatebox{
+	width:120px;
+}
+
+.validatebox-text{
+	border:1px solid #555555;
+	-moz-border-radius: 2px 2px 2px 2px;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;	
+	background:url(images/form-input-bg1.png) top left repeat-x #ffffff;
+	height:22px;
+	color:#000000;	
+	
+}
+
+
+.varlidataTextarea-invalid{
+  background-image: url('images/validatebox_warning.png');
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-position: 90% bottom;
+  border-color: #ffa8a8;
+  background-color: #fff3f3;
+  color: #000;
+}
+.form-tip {
+	position: absolute;
+	display: none;
+	opacity: .9;
+	filter: Alpha(Opacity=90);
+	z-index: 9999;
+}
+.form-tip-content {
+	color: #333;
+	height: 50px;
+	background: #FFFAE9 url('images/tip_warn_orange.png') 4px 1px no-repeat;
+	border: 1px solid #F9BB00;
+	padding: 2px 4px 2px 4px;
+	text-indent: 20px;
+	font-size: 12px;
+}
+.validatebox-grp-invalid {
+  background-image: url('images/validatebox_grp_warning.png');
+  background-repeat: no-repeat;
+  background-position: right center;
+  border-color: #95b8e7;
+  background-color: #FCF5E4;
+  color: #000;
+}
+.validatebox-must{
+/*	border-bottom-color:#edbb85 !important;*/
+	background:url(images/form-input-bg3.png) top left repeat-x #fff9f4;
+	border:red 1px solid;
+}
+.validatebox-grp-must{
+	color:#FFAE00;
+}
+textarea.validatebox-text{
+  font-size:12px;
+}
+.validatebox-text:focus{
+   outline:none;
+   border:#87C6F9 1px solid ;
+   border-color:#87C6F9 !important;
+   box-shadow: 0 0 8px rgba(103, 166, 217, 1);
+}

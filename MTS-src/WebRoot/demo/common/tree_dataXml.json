@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><requests><![CDATA[
+[
+{"service":{"flag":"1","serialNo":""},
+"message":[{"flag":"1","prompt":"成功","rows":"2","times":"100ms"},{"flag":"1","prompt":"成功","rows":"2","times":"100ms"}],
+"config":{},
+"data":[[{"id":1,"text":"Folder1","iconCls":"icon-ok","pid":""}
+,{"id":2,"text":"File1-1","checked":false,"pid":"1"}
+,{"id":3,"text":"File1-2","checked":true,"pid":"1"}
+,{"id":21,"text":"File1-1-1","pid":"2"}
+,{"id":4,"text":"File2","checked":true,"pid":"","state": "closed"}]
+,[{"khxm":"heyz","khbh":"123"},{"khxm":"heyz","khbh":"123"}]]
+},
+{"service":{"flag":"1","serialNo":""},
+"message":[{"flag":"1","prompt":"成功","rows":"2","times":"100ms"},{"flag":"1","prompt":"成功","rows":"2","times":"100ms"}],
+"config":{},
+"data":[[{"khxm":"heyz","khbh":"123"},{"khxm":"heyz","khbh":"123"}],[{"khxm":"heyz","khbh":"123"},{"khxm":"heyz","khbh":"123"}]]
+}
+]
+]]></requests>

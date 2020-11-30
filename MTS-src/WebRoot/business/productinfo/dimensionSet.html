@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>维度信息设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+
+<script type="text/javascript">
+
+function loadDimensionInfo(data) {
+    $("#dimension_tabs").tabs("select", 0);
+    clearAllForm();
+    if(!data) return;
+    var dimenData = getDimensionInfo(data['id']);
+    using(['form'],function () {
+        $('#dimension_info').form('load', dimenData);
+        $('#dimension_info').parent().find('a.l-btn').linkbutton('enable');
+    });
+
+    $('#dimension_info a.l-btn').linkbutton('enable');
+    $('#dimension_add a.l-btn').linkbutton('enable');
+    $('#dimension_add_child a.l-btn').linkbutton('enable');
+}
+function clearAllForm(){
+    using(['form'],function () {
+        $('#dimension_info').form('reset');
+        $('#dimension_add').form('reset');
+        $('#dimension_add_child').form('reset');
+    });
+
+}
+
+function getDimensionInfo(tradeId){
+    var dimensionData = null;
+    ajaxRequest({
+        async:false,
+        req:[
+            {service:'M0000020',TRADE_ID:tradeId}
+        ],
+        func:function(data,head){
+            dimensionData = data[0][0];
+        },
+        error:function(){
+            dimensionData = null;
+        }
+    });
+    return dimensionData;
+}
+function dimension_mod() {
+
+    var node = $('#dimension_tree').tree('getSelected');
+    if(node == null)
+        return false;
+
+
+    $('#dimension_info').form('submit',{
+        req:[
+            {
+                service:'M0000022',
+                OP_ID:g_user.userId
+            }
+        ],
+        success:function(){
+            alert('维度修改成功！');
+            $('#dimension_tree').tree('reload');
+            clearAllForm();
+            $('#dimension_info').parent().find('a.l-btn').linkbutton('disable');
+            $('#dimension_add').parent().find('a.l-btn').linkbutton('disable');
+            $('#dimension_add_child').parent().find('a.l-btn').linkbutton('disable');
+        }
+    });
+
+}
+function dimension_del() {
+    var node = $('#dimension_tree').tree('getSelected');
+    if(node==null) return false;
+
+    if(node.id == 0){
+        alert('提示信息','顶级节点不允许删除','warning');
+        return ;
+    }
+
+    var msg = '确定要删除吗?';
+    if (node.children) {
+        msg = "维度包含【" + node.children.length + "】个子维度,确认要删除该维度及子维度吗？";
+    }
+    confirm('删除纬度信息',msg,function(n){
+        if(n){
+            ajaxRequest({
+                async:false,
+                req:[{
+                    service:'M0000023',
+                    TRADE_ID:node['id']
+                }],
+                func:function(data){
+
+                    alert('维度删除成功！');
+                    clearAllForm();
+                    $('#dimension_info').parent().find('a.l-btn').linkbutton('disable');
+                    $('#dimension_add').parent().find('a.l-btn').linkbutton('disable');
+                    $('#dimension_add_child').parent().find('a.l-btn').linkbutton('disable');
+
+                    $('#dimension_tree').tree('reload');
+                }
+
+            });
+        }
+    });
+}
+
+function addSameLvlDimension() {
+    var node = $('#dimension_tree').tree('getSelected');
+    if(node == null){
+        return false;
+    }
+
+    if(node['pid']=='0'){
+        alert('提示信息','顶级节点不允许添加同级节点','warning');
+        return ;
+    }
+
+
+    $('#dimension_add').form('load',{PAR_SUP_ID:node['pid']});
+    $('#dimension_add').form('submit',{
+        req:[{
+            service:'M0000021',
+            OP_ID:g_user.userId
+        }],
+        success:function(){
+            alert('新增同级维度成功！');
+            clearAllForm();
+            $('#dimension_info a.l-btn').linkbutton('disable');
+            $('#dimension_add a.l-btn').linkbutton('disable');
+            $('#dimension_add_child a.l-btn').linkbutton('disable');
+            $('#dimension_tree').tree('reload');
+        }
+    });
+}
+function addSameChildDimension() {
+    var node = $('#dimension_tree').tree('getSelected');
+    if(node == null){
+        return;
+    }
+
+
+    $('#dimension_add_child').form('load',{PAR_SUP_ID:node['id']});
+    $('#dimension_add_child').form('submit',{
+        req:[{
+            service:'M0000021',
+            OP_ID:g_user.userId
+        }],
+        success:function(){
+            alert('新增子维度成功！');
+            clearAllForm();
+            $('#dimension_info a.l-btn').linkbutton('disable');
+            $('#dimension_add a.l-btn').linkbutton('disable');
+            $('#dimension_add_child a.l-btn').linkbutton('disable');
+            $('#dimension_tree').tree('reload');
+        }
+    });
+}
+window.$ready=function () {
+    using(['form'],function () {
+        var conf=$.builder.format.form($.parser.getConfigs(['dimension_info']));
+        var infBtn = {
+            modify: true,
+            toolbar: [{
+                text: "修改",
+                handler: "dimension_mod",
+                iconCls: "icon-save",
+                disabled: true
+            },
+                {
+                    text: "删除",
+                    handler: "dimension_del",
+                    iconCls: "icon-remove",
+                    disabled: true
+                }]
+        };
+        var samBtn = {
+            modify: true,
+            toolbar: [{
+                text: "保存",
+                handler: "addSameLvlDimension",
+                iconCls: "icon-save",
+                disabled: true
+            }]
+        };
+        var chdBtn = {
+            modify: true,
+            toolbar: [{
+                text: "保存",
+                handler: "addSameChildDimension",
+                iconCls: "icon-save",
+                disabled: true
+            }]
+        };
+
+        $("#dimension_info").form($.extend({},	conf, infBtn));
+        $("#dimension_add").form($.extend({},	conf, samBtn));
+        $("#dimension_add_child").form($.extend({}, conf, chdBtn));
+    })
+
+}
+
+
+</script>
+</head>
+<body>
+<div id="main_layout" class="kui-layout" kui-options="fit:true">
+  <div kui-options="region:'west'" style="width:200px;" title="维度结构">
+    <ul id="dimension_tree" class="kui-tree" kui-options="animate:true,req:[{service:'M0000020'}],
+        conf:{
+        nodeId:'TRADE_ID',
+        nodeName:'TRADE_ID,TRADE_NAME',
+        treeType:'1',
+        parNode:'PAR_SUP_ID'
+        },
+        onClick:loadDimensionInfo,
+        onLoadSuccess:function(node, data){
+        	$('#dimension_tree').tree('collapseAll');
+        	$('#dimension_tree').find('.tree-title').each(function(){
+        		var txt = $(this).text() ;
+        		if(txt.length > 12){
+        			$(this).text(txt.substring(0,20)+'...');
+        		}
+        	});
+        }"></ul>
+  </div>
+  <div kui-options="region:'center'">
+    <div id="dimension_tabs" class="kui-tabs" kui-options="fit:true">
+      <div title="维度信息">
+        <form id="dimension_info" >
+        </form>
+      </div>
+      <div title="增加同级维度">
+        <form id="dimension_add" >
+
+        </form>
+      </div>
+      <div title="增加子级维度">
+        <form id="dimension_add_child" >
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+	<title>jQuery kui Api Documentation</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<script type="text/javascript" src="../js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../js/core/kui.loader.js"></script>
+	<style>
+	a
+	{
+		text-decoration:none;
+		outline: medium none;
+	}
+	a:link {color: #000000} /* 未访问的链接 */
+	a:visited {color: #000000} /* 已访问的链接 */
+	a:hover {color: #000000} /* 鼠标移动到链接上 */
+	a:active {color: #000000} /* 选定的链接 */
+	.header{
+		font-size:25px;
+		line-height:60px;
+		padding-left:20px;
+		padding-top:5px;
+		font-weight:bold;
+		color:#333;
+	}
+	</style>
+	<script>
+		function open1(plugin){
+				if ($('#tt').tabs('exists',plugin)){
+					$('#tt').tabs('select', plugin);
+				} else {
+					$('#tt').tabs('add',{
+						title:plugin,
+						href: ''+plugin+'.html',
+						closable:true,
+						extractor:function(data){
+							var tmp = $('<div></div>').html(data);
+							data = tmp.find('#content').html();
+							tmp.remove();
+							return data;
+						}
+					});
+				}
+			}
+	</script>
+</head>
+<body class="kui-layout">
+	<div kui-options="region:'north',border:false" style="height:70px;background:url('images/bg.png') repeat-x;overflow:hidden;"><div class="header">KUI Api Documentation</div></div>
+	<div kui-options="region:'west',split:true,title:'Api Documentation'" style="width:230px;padding:10px;">
+	<ul class="kui-tree" kui-options="animate:true,dnd:false,lines:true,
+		onClick: function(node){
+				$(this).tree('toggle', node.target);
+			}">
+		<li kui-options="state:'open'">
+			<span>基本</span>
+			<ul>
+				<li>
+					<span><a  href="#" onclick="open1('draggable')">一般拖动</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('droppable')">拖动至容器</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('resizable')">缩放</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('pagination')">分页</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('searchbox')">搜索框</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('progressbar')">进度条</a></span>
+				</li>
+			</ul>
+		</li>
+		<li kui-options="state:'open'">
+			<span>布局管理器</span>
+			<ul>
+				<li>
+					<span><a  href="#" onclick="open1('panel')">控制面板</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('tabs')">选项卡</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('accordion')">可伸缩面板</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('layout')">布局面板</a></span>
+				</li>
+			</ul>
+		</li>
+		<li kui-options="state:'open'">
+			<span>菜单和按钮</span>
+			<ul>
+				<li>
+					<span><a  href="#" onclick="open1('menu')">菜单</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('linkbutton')">链接按钮</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('menubutton')">菜单按钮</a></span>
+				</li>
+				<li>
+					<span><a href="#" onclick="open1('splitbutton')">分隔按钮</a></span>
+				</li>
+			</ul>			
+		</li>
+		<li kui-options="state:'open'">
+			<span>表单</span>
+			<ul>
+				<li>
+					<span><a  href="#" onclick="open1('form')">表单</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('ajaxFileUpload')">文件上传</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('textbox')">表单验证</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('moneybox')">金额表单</a></span>
+				</li>
+				<li>
+					<span><a href="#" onclick="open1('combo')">自定义组合框</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('combobox')">可装载组合框</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('combotree')">组合树</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('combogrid')">组合表格</a></span>
+				</li>
+			</ul>
+		</li>
+
+		<li kui-options="state:'open'">
+			<span>窗口</span>
+			<ul>
+				<li>
+					<span><a href="#" onclick="open1('window')">窗口</a></span>
+				</li>
+				<li>
+					<span><a href="#" onclick="open1('dialog')">对话窗口</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('messager')">消息窗口</a></span>
+				</li>
+			</ul>
+		</li>
+		<li kui-options="state:'open'">
+			<span>数据表格和树形菜单</span>
+			<ul>
+				<li>
+					<span><a href="#" onclick="open1('datagrid')">数据表格</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('tree')">树形菜单</a></span>
+				</li>
+				<li>
+					<span><a  href="#" onclick="open1('treegrid')">树形表格</a></span>
+				</li>
+			</ul>
+		</li>
+	</ul>	
+	</div>
+	<!--<div kui-options="region:'south',border:false" style="overflow:hidden;height:25px;padding:10px;"></div>-->
+	<div kui-options="region:'center'" style="overflow:hidden" >
+		<div id="tt" class="kui-tabs" fit="true"  plain="true" border=false style="overflow:hidden">
+				<div title="Welcome" href="welcome.html" style="overflow:hidden"></div>
+			</div>
+
+	</div>
+</body>
+</html>

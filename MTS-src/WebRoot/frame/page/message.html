@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Message</title>
+<link rel="stylesheet" type="text/css" href="../css/message.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../js/ajax-pushlet-client.js"></script>
+<script type="text/javascript" src="../js/message.js"></script>
+ <!--
+<script type="text/javascript" src="../../js/local.storage.js"></script>
+ -->
+<script type="text/javascript">
+$(function(){
+	initUI();
+	bindListener();
+	bindTitleListener();
+})
+</script>
+</head>
+<body>
+<div id="header">
+	<img src="../images/icon_generator_message.gif"></img>
+	<span><a id="header_generator_title" href="#"></a></span>
+	<img src="../images/icon_special_message.gif"></img>
+	<span><a id="header_special_title" href="#"></a></span>
+	<img src="../images/icon_warning_message.gif"></img>
+	<span><a id="header_warning_title" href="#"></a></span>
+	<img src="../images/icon_immediately_message.gif"></img>
+	<span><a id="header_immediately_title" href="#"></a></span>
+</div>
+<div id="body">
+	<div id="recent" class="category">
+		<div class="category_title"><span class="name"></span><img src="../images/drop_up_black.png"/></div>
+		<ul class="category_list">
+		</ul>
+	</div>
+	<div id="generator" class="category">
+		<div class="category_title"><span class="name"></span><img src="../images/drop_down_black.png"/></div>
+		<ul class="category_list" style="display:none"></ul>
+	</div>
+	<div id="special" class="category">
+	<div class="category_title"><span class="name"></span><img src="../images/drop_down_black.png"/></div>
+		<ul class="category_list" style="display:none"></ul>
+	</div>
+	<div id="warning" class="category">
+		<div class="category_title"><span class="name"></span><img src="../images/drop_down_black.png"/></div>
+		<ul class="category_list" style="display:none"></ul>
+	</div>
+	<div id="immediately" class="category">
+		<div class="category_title"><span class="name"></span><img src="../images/drop_down_black.png"/></div>
+		<ul class="category_list" style="display:none"></ul>
+	</div>
+</div>
+</body>
+</html>

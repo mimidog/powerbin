@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <!-- Overlap Print Of Open Account Configuration -->
+    <print id="OPEN_ACCOUNT" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <field id="BSN_TITLE" label="业务标题" value="您已开通OTC账户，您开通的账户信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+        <!--<field id="CUST_ID" label="客户编号" value="" font-color="#000000" font-size="1em" label-print="1" location="{x:255,y:165}" />-->
+        <!--<field id="FUND_CODE" label="理财帐号" value="" font-color="#000000" font-size="1em" label-print="1" location="{x:402,y:165}" />-->
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:390}" />
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:390}" />
+        <field id="FTN_CODE" label="理财账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:430}" />
+        <field id="TRD_CODE" label="交易帐号" value="" font-color="#000000" label-print="1"  font-size="16px" location="{x:450,y:430}" />
+        <field id="CCY_CODE" label="币种" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:470}" />
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:470}" />
+        <field id="TRD_CODE_TILE" label="交易帐号及风险测评信息" value="交易帐号及风险测评信息:" font-color="#000000" font-size="16px" location="{x:110,y:510}" />
+
+        <!--<field id="CUST_ORG_NAME" label="所属营业部" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:85,y:294}" />-->
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:85,y:665}" />
+        <field id="OPEN_DATE" label="开户日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:665}" />
+    </print>
+    <!--认购/申购-->
+    <print id="OTC_SUBSCRIBE" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <!--<field id="BSN_NAME" label="业务名称" value="认购/申购业务凭证" font-color="#000000" font-size="1.4em" location="{x:310,y:233}" />-->
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <field id="BSN_TITLE" label="业务标题" value="您的 认购/申购 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:110,y:390}" />
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:450,y:390}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:430}" />
+        <field id="INST_ID" label="产品代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:430}" />
+        <field id="INST_DESC" label="产品简称" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:470}" />
+        <field id="ISS_CODE" label="发行人" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:470}" />
+        <field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:510}" />
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:510}" />
+        <field id="TRANS_ACCT" label="交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:550}" />
+        <field id="TRD_ID" label="交易类别" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:550}" />
+        <field id="TRD_AMT" label="交易金额" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:590}" />
+        <field id="PAY_WAY" label="支付方式" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:590}" />
+        <field id="PAY_ORG" label="支付机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:630}" />
+        <field id="BANK_CODE" label="银行代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:630}" />
+        <field id="RISK_MATCH_FLAG" label="风险级别是否匹配" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:670}" />
+        <field id="RISK_REVEAL_METHOD" label="如不匹配是否已提示风险" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:670}" />
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:710}" />
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:95,y:860}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:250,y:136}" />-->
+        <field id="PRINT_DATE" label="打印日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:860}" />
+    </print>
+    <!--赎回-->
+    <print id="OTC_REDEEM" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <!--<field id="BSN_NAME" label="业务名称" value="赎回业务凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />-->
+        <field id="BSN_TITLE" label="业务标题" value="您的 赎回 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:390}" />
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:390}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:430}" />
+        <field id="INST_CODE" label="产品代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:430}" />
+        <field id="INST_DESC" label="产品简称" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:470}" />
+        <field id="ISS_CODE" label="发行人" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:470}" />
+        <field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:510}" />
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:510}" />
+        <field id="TRANS_ACCT" label="交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:550}" />
+        <field id="BIG_REG_FLAG" label="巨额赎回标志" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:550}" />
+        <field id="TRD_QTY" label="赎回份额" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:590}" />
+        <field id="CNTR_NO" label="合约编号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:590}" />
+        <field id="CNTR_REG_DATE" label="合约注册日期" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:630}" />
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:630}" />
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:95,y:785}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:250,y:136}" />-->
+        <field id="PRINT_DATE" label="打印日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:785}" />
+
+    </print>
+    <!--确定价格申报：单边报价-->
+    <print id="OTC_QUOTEAPP1" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <!--<field id="BSN_NAME" label="业务名称" value="确定价格申报业务凭证" font-color="#000000" font-size="1.4em" location="{x:288,y:233}" />-->
+        <field id="BSN_TITLE" label="业务标题" value="您的 确定价格申报 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:390}" />
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:390}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:430}" />
+        <field id="INST_CODE" label="产品代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:430}" />
+        <field id="INST_NAME" label="产品简称" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:470}" />
+        <field id="ISS_CODE" label="发行人" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:470}" />
+        <field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:510}" />
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:510}" />
+        <field id="TRANS_ACCT" label="交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:550}" />
+        <field id="TRD_IDS" label="交易类别" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:550}" />
+        <field id="QUE_TYPE" label="报价类型" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:590}" />
+        <field id="PRICE" label="价格" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:590}" />
+        <field id="QUANITY" label="数量" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:630}" />
+        <field id="USE_DATE" label="有效日期" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:630}" />
+        <!--<field id="EXT_ORG_D" label="所属营业部" value="" font-color="#000000" font-size="14px" label-print="1" dict="instOrgDict" location="{x:95,y:194}" />-->
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="14px" label-print="1" location="{x:110,y:670}" />
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:95,y:825}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:250,y:136}" />-->
+        <field id="PRINT_DATE" label="打印日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:825}" />
+    </print>
+    <!--确定价格申报:双边报价、做市报价-->
+    <print id="OTC_QUOTEAPP2" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <!--<field id="BSN_NAME" label="业务名称" value="确定价格申报业务凭证" font-color="#000000" font-size="1.4em" location="{x:288,y:233}" />-->
+        <field id="BSN_TITLE" label="业务标题" value="您的 确定价格申报 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:390}" />
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:390}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:430}" />
+        <field id="INST_CODE" label="产品代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:430}" />
+        <field id="INST_NAME" label="产品简称" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:470}" />
+        <field id="ISS_CODE" label="发行人" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:470}" />
+        <field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:510}" />
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:510}" />
+        <field id="TRANS_ACCT" label="交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:550}" />
+        <field id="TRD_IDS" label="交易类别" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:550}" />
+        <field id="QUE_TYPE" label="报价类型" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:590}" />
+        <field id="USE_DATE" label="有效日期" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:590}" />
+        <field id="PRICE" label="申买价格" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:630}" />
+        <field id="QUANITY" label="申买数量" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:630}" />
+        <field id="SELL_PRICE" label="申卖价格" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:670}" />
+        <field id="SELL_QTY" label="申卖数量" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:670}" />
+        <!--<field id="EXT_ORG_D" label="所属营业部" value="" font-color="#000000" font-size="16px" label-print="1" dict="instOrgDict" location="{x:110,y:194}" />-->
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:710}" />
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:95,y:865}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:250,y:136}" />-->
+        <field id="PRINT_DATE" label="打印日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:865}" />
+    </print>
+    <!--点击成交申报-->
+    <print id="OTC_MATCHAPP" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <!--<field id="BSN_NAME" label="业务名称" value="点击成交申报业务凭证" font-color="#000000" font-size="1.4em" location="{x:288,y:233}" />-->
+        <field id="BSN_TITLE" label="业务标题" value="您的 点击成交申报 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:390}" />
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:390}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:430}" />
+        <field id="INST_CODE" label="产品代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:430}" />
+        <field id="INST_NAME" label="产品简称" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:470}" />
+        <field id="ISS_CODE" label="发行人" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:470}" />
+        <field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:510}" />
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:510}" />
+        <field id="TRANS_ACCT" label="交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:550}" />
+        <field id="TRD_IDS" label="交易类别" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:550}" />
+        <field id="QUE_TYPE" label="报价类型" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:590}" />
+        <field id="PRICE" label="价格" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:590}" />
+        <field id="QUANITY" label="数量" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:630}" />
+        <field id="TARGET_MBR_CODE" label="对手会员代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:630}" />
+        <field id="TARGET_TA_ACCT" label="对手登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:670}" />
+        <field id="TARGET_TRANS_ACCT" label="对手交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:670}" />
+        <field id="QUOT_APP_NO" label="报价申请编号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:710}" />
+        <field id="QUOT_APP_DATE" label="报价申请日期" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:710}" />
+        <field id="PAY_WAY" label="支付方式" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:750}" />
+        <!--<field id="EXT_ORG_D" label="所属营业部" value="" font-color="#000000" font-size="14px" label-print="1" dict="instOrgDict" location="{x:95,y:194}" />-->
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:750}" />
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:95,y:905}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:250,y:136}" />-->
+        <field id="PRINT_DATE" label="日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:905}" />
+    </print>
+    <!--协议成交申报-->
+    <print id="OTC_AGREEMENTMATCHAPP" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <!--<field id="BSN_NAME" label="业务名称" value="点击成交申报业务凭证" font-color="#000000" font-size="1.4em" location="{x:288,y:233}" />-->
+        <field id="BSN_TITLE" label="业务标题" value="您的 协议成交申报 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:390}" />
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:450,y:390}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:353}" />
+        <field id="INST_CODE" label="产品代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:353}" />
+        <field id="INST_NAME" label="产品简称" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:381}" />
+        <field id="ISS_CODE" label="发行人" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:381}" />
+        <field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:409}" />
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:409}" />
+        <field id="TRANS_ACCT" label="交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:437}" />
+        <field id="TRD_IDS" label="交易类别" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:437}" />
+        <field id="QUE_TYPE" label="报价类型" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:465}" />
+        <field id="PRICE" label="价格" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:465}" />
+        <field id="QUANITY" label="数量" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:493}" />
+        <field id="TARGET_MBR_CODE" label="对手会员代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:493}" />
+        <field id="TARGET_TA_ACCT" label="对手登记账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:521}" />
+        <field id="TARGET_TRANS_ACCT" label="对手交易账号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:521}" />
+        <field id="AGREEMENT_ID" label="约定编号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:549}" />
+        <field id="QUOT_APP_NO" label="报价申请编号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:549}" />
+        <field id="QUOT_APP_DATE" label="报价申请日期" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:577}" />
+        <field id="PAY_WAY" label="支付方式" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:577}" />
+        <!--<field id="EXT_ORG_D" label="所属营业部" value="" font-color="#000000" font-size="14px" label-print="1" dict="instOrgDict" location="{x:110,y:194}" />-->
+        <field id="OP_ORG_NAME" label="受理营业部" value="" font-color="#000000" font-size="16px" label-print="1" location="{x:110,y:194}" />
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:95,y:136}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:250,y:136}" />-->
+        <field id="PRINT_DATE" label="日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:136}" />
+    </print>
+    <!--保单打印 -->
+    <print id="OTC_INSURANCE" ticket="handForm_blank.jpg" width="21" height="29.7">
+        <field id="SEC_NAME" label="券商名称" value="华融证券股份有限公司" font-color="#000000" font-size="1.6em" location="{x:270,y:150}" />
+        <field id="BSN_NAME" label="业务名称" value="业务受理凭证" font-color="#000000" font-size="1.4em" location="{x:334,y:233}" />
+        <!--<field id="BSN_NAME" label="业务名称" value="点击成交申报业务凭证" font-color="#000000" font-size="1.4em" location="{x:288,y:233}" />-->
+        <field id="BSN_TITLE" label="业务标题" value="您的 投保单 信息如下：" font-size="1.2em" font-color="#000000" location="{x:85,y:328}" />
+
+        <field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:110,y:390}" />
+        <field id="APLCNT_NAME" label="投保人名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:450,y:390}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:110,y:430}" />
+        <field id="ISS_CODE" label="发行人代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:430}" />
+        <field id="INST_CODE" label="产品代码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:470}" />
+        <field id="INST_ID" label="产品编码" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:470}" />
+        <field id="INST_SNAME" label="产品简称" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:510}" />
+        <field id="INST_TYPE" label="产品大类" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:510}" />
+        <field id="INST_CLS" label="产品子类" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:550}" />
+        <field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:550}" />
+        <field id="INSURE_ID" label="投保单号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:590}" />
+        <field id="POLICY_ID" label="保险单号" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:590}" />
+        <field id="MAIN_RISK_BUY_QTY" label="主险购买份数" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:630}" />
+        <field id="MAIN_RISK_UNIT_PREM" label="主险单位保费" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:630}" />
+        <field id="MAIN_RISK_BASE_PREM" label="主险基本保费" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:670}" />
+        <field id="MAIN_RISK_EXT_PREM" label="主险额外保费" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:670}" />
+        <field id="MAIN_RISK_BASE_COV_AMT" label="主险基本保额" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:710}" />
+        <field id="MAIN_RISK_EXT_COV_AMT" label="主险额外保额" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:710}" />
+        <field id="MAIN_RISK_PAY_DUR_TYPE" label="主险缴费年期类型" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:750}" />
+        <field id="MAIN_RISK_PAY_DUR" label="主险缴费年期" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:750}" />
+        <field id="MAIN_RISK_INSR_DUR_TYPE" label="主险保险年期类型" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:790}" />
+        <field id="MAIN_RISK_INSR_DUR" label="主险保险年期" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:790}" />
+        <field id="ADD_RISK_FLAG" label="附加险标志" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:110,y:830}" />
+        <field id="ADD_RISK_CNT" label="附加险数量" value="" font-color="#000000" label-print="1" font-size="16px" location="{x:450,y:830}" />
+        <field id="ORG_CODE" label="所属营业部" value="" font-color="#000000" font-size="14px" label-print="1" dict="DataCache.getData('instOrgDict')" location="{x:110,y:870}" />
+        <field id="CORP_ORG" label="法人机构" value="" font-color="#000000" font-size="14px" label-print="1" dict="DataCache.getData('instOrgDict')" location="{x:450,y:870}" />
+
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:95,y:1025}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:250,y:136}" />-->
+        <field id="PRINT_DATE" label="日期" value="" font-color="#000000" font-size="14px" label-print="1" location="{x:402,y:1025}" />
+    </print>
+</config>

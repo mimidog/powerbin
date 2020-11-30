@@ -1,0 +1,107 @@
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+<style>
+p{
+	font-size:13px;
+}
+</style>
+</head>
+<body>
+<div id="mainwrap">
+<div id="content">
+<div style="padding:10px">
+
+<h3>文档说明</h3>
+<p>每个kui组件都有属性，方法，事件。</p>
+
+<h4>属性</h4>
+
+<h4>事件</h4>
+<p>绑定事件语法：$('selector').{comp组件名称}({event:function(){···}});</p>
+
+<h4>方法</h4>
+<p>
+调用方法语法: $('selector').{comp组件名称}('method', parameter);
+</p>
+<p>Where:<p>
+<ul>
+	<li><span style="font-style:italic">selector</span> jQuery对象选择器。</li>
+	<li><span style="font-style:italic">comp</span> 组件名。</li>
+	<li><span style="font-style:italic">method</span> 该组件存在的方法。</li>
+	<li><span style="font-style:italic">parameter</span> 参数，可以为对象，字符串···</li>
+</ul>
+<p>
+方法都定义在jQuery.fn.{comp}.methods. 
+每个方法都有两个参数：jq 和 param. 
+jq参数是必须的，指jQuery对象. 
+第二个参数param指真正传给方法的参数. 
+例如，为对话框插件拓展一个名为mymove的方法，代码如下：
+</p>
+<pre  class="code">
+$.extend($.fn.dialog.methods, {
+    mymove: <span style="color:blue">function</span>(jq, newposition){
+        <span style="color:blue">return</span> jq.each(<span style="color:blue">function</span>(){
+            $(this).dialog(<span style="color:blue">'move'</span>, newposition);
+        });
+    }
+});
+</pre>
+<p>现在你可以调用mymove方法去移动对话框到特定的位置：</p>
+<pre class="code">
+$(<span style="color:blue">'#dd'</span>).dialog(<span style="color:blue">'mymove'</span>, {
+    left: 200,
+    top: 100
+});
+</pre>
+
+<h3>开始应用 kui</h3>
+<p style="color:black">
+下载kui库并添加kui CSS和JavaScript文件到你的页面上.
+</p>
+<pre  class="code">
+<span style="color:blue">&lt;link</span><span style="color:red"> rel</span>=<span style="color:blue">"stylesheet"</span><span style="color:red"> typ</span>=<span style="color:blue">"text/css"</span><span style="color:red"> href<span>=<span style="color:blue">"../../kui-base/themes/icon.css"&gt;</span>
+<span style="color:blue">&lt;script</span><span style="color:red"> type</span>=<span style="color:blue">"text/javascript"</span><span style="color:red"> src</span>=<span style="color:blue">"../../kui-base/js/core/jquery-1.8.3.min.js"&gt;</span><span style="color:blue">&lt;/script&gt;</span>
+<span style="color:blue">&lt;script</span><span style="color:red"> type</span>=<span style="color:blue">"text/javascript"</span><span style="color:red"> src</span>=<span style="color:blue">"../../kui-base/js/core/kui.loader.js">&gt;</span><span style="color:blue">&lt;/script&gt;</span>
+</pre>
+<p style="color:black">
+只要将kui必须的文件都添加到你的页面，你就可以通过标签或JS来定义一个kui组件。
+例如： 定义一个可以折叠的面板，HTML代码如下：
+</p>
+<pre  class="code">
+<span style="color:blue">&lt;div</span><span style="color:red"> id</span>=<span style="color:blue">"p"</span><span style="color:red"> class</span>=<span style="color:blue">"kui-panel"</span><span style="color:red"> style<span>=<span style="color:blue">"width:500px;height:200px;padding:10px;"</span>
+	 <span style="color:red">title</span>=<span style="color:blue">"My Panel"</span><span style="color:red"> iconCls</span>=<span style="color:blue">"icon-save"</span><span style="color:red"> collapsible<span>=<span style="color:blue">"true"&gt;</span>
+	<span style="color:black">The panel content</span>
+<span style="color:blue">&lt/div&gt;</span>
+</pre>
+<p style="color:black">
+当用标签创建组件时，kui-options属性可以用来支持HTML5兼容的属性名。
+因此你可以从写上面的代码：
+</p>
+<pre  class="code">
+<span style="color:blue">&lt;div</span><span style="color:red"> id</span>=<span style="color:blue">"p"</span><span style="color:red"> class</span>=<span style="color:blue">"kui-panel"</span><span style="color:red"> style<span>=<span style="color:blue">"width:500px;height:200px;padding:10px;"</span>
+	 <span style="color:red">title</span>=<span style="color:blue">"My Panel"</span><span style="color:black"> kui-options=</span><span style="color:blue"> "iconCls:'icon-save',collapsible:true&gt;</span>
+	<span style="color:black">The panel content</span>
+<span style="color:blue">&lt/div&gt;</span>
+</pre>
+<p style="color:black">
+下面的代码展示如何创建一个combobox组件并且绑定onSelect事件。
+</p>
+<pre name="code-welcome" class="code">
+<span style="color:blue">&lt;input</span><span style="color:red"> class</span>=<span style="color:blue">"kui-combobox"</span><span style="color:red"> name</span>=<span style="color:blue">"language"</span>
+		kui-options="
+			url:<span style="color:blue">'combobox_data.json'</span>,
+			valueField:<span style="color:blue">'id'</span>,
+			textField:<span style="color:blue">'text'</span>,
+			panelHeight:<span style="color:blue">'auto'</span>,
+			onSelect:<span style="color:blue">function</span>(record){
+				alert(record.text)
+			}" />
+</pre>
+
+</div>
+</div>
+</div>
+</body>
+</html>

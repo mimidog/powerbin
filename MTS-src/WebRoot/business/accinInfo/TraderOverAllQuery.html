@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>交易员综合查询</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/validatebox.ext.js"></script>
+<style type="text/css">
+.menuDiv div{color:#333333;background:#EEEEEE;padding:5px 5px 5px 15px;font-size:12px;margin:1px 0 0 0;list-style-type: none;}
+.menuDiv div a{color:#333333;background:#F4F4F4;display:block;padding:5px 5px 5px 15px;font-size:14px;margin:-5px -5px -5px -15px;text-decoration:none;height:16px;}
+.menuDiv div a:hover{color:#006699;background:#ffffff;font-weight: bold}
+.menuDiv-sel{background:#0099FF;font-weight: bold}
+</style>
+<script type="text/javascript">
+
+var aliasArr=['op_id','mobile_id'];
+window.onkeydown=function(e){
+    if(e.key=='F2'){
+        var  aliasCurIdx=aliasArr.indexOf($("#OP_ID").searchbox("getName"));
+        if(aliasCurIdx+1>=aliasArr.length){
+            aliasCurIdx=-1;
+        }
+        $("#OP_ID").searchbox("selectName", aliasArr[aliasCurIdx+1]);
+        $('.searchbox-menu').css({'color':'blue','font-weight':'bold'});
+    }
+}
+function chgSearchMenuColor() {
+    $('.searchbox-menu').css({'color':'blue','font-weight':'bold'});
+}
+
+
+//得到系统日期
+function getSysDate(){
+    var sysControlInfo = commonRequest({
+        service:'M0001001'
+    });
+    return sysControlInfo[0].SYSTEM_DATE;
+}
+//格式化订单状态
+function  fmtOmsStauts_new(value) {
+    return '<span style="color:red;font-weight: bold;">'+getSysDictOpt('OMS_STATUS',value)+'</span>'
+}
+
+var opId= null;
+
+window.$ready = function () {
+
+
+    setTimeout(function () {
+        $('.searchbox-menu').css({'color':'blue','font-weight':'bold'});
+    },100);
+
+    $("#tree_div").css("display","none");
+    $("#west_div").css('border-top',"none");
+    $("#center_div").css('border-top',"none");
+    $("#center_div").css('border-left',"none");
+    $("#back_div").css("display","none");
+    $("#tabs_div").css("display","none");
+
+
+    if(g_user.USER_POST ==$.trim(getSysParamValuebyCode('TRADER_POST_ID'))){
+        $('#custForm').find('input.searchbox-text').attr('disabled',true);
+        $('#OP_ID').searchbox('setValue',g_user.USER_CODE);
+        $('#mm').remove();
+    }
+    if(decodeURI(URLtool().getValueByUrlKey("OP_ID")) !=''){
+        $("#OP_ID").searchbox("setValue", decodeURI(URLtool().getValueByUrlKey("OP_ID")));
+        $('.searchbox-button').click();
+        $('#back_div').hide();
+    }
+
+
+}
+//查询交易员编号
+//查询客户信息
+function queryOpId(name,value) {
+    var rs=[]
+    var req={service:'P0001008',USER_STA:'1',POST_ID:getSysParamValuebyCode('TRADER_POST_ID')};
+    switch (name){
+        case 'op_id':
+             $.extend(req,{USER_CODE:value});
+            break;
+        case 'mobile_id':
+            $.extend(req,{MOBILE:value});
+            break;
+
+    }
+    rs=commonRequest(req)
+
+    return rs;
+}
+//查询按钮触发条件
+function searchCust(value,name) {
+
+    if($.trim(value) ==''){
+        alert('搜索条件值不为空！');
+        return;
+    }
+
+    //查询客户号信息
+    var rs=queryOpId(name,value);
+    if(rs.length < 1){
+        $.message.alert("交易员不存在");
+        $("#tree_div").css("display","none");
+        $("#OP_ID").validatebox("setValue", "");
+    }else{
+        opId = rs[0].USER_CODE;
+        $("#tree_div").css("display","block");
+        $("#north_div").height(0);
+        $("#west_div").parent().height($(document).height());
+        $("#west_div").height($(document).height()-5);
+        $('#west_div').parent().css("top","0");
+        $("#west_div").css('border-top',"1px solid #3bbcf0");
+
+        $("#back_div").css("display","block");
+
+        $("#center_div").parent().height($(document).height());
+        $("#center_div").height($(document).height()-5);
+        $('#center_div').parent().css("top","0");
+        $("#center_div").css('border-top',"1px solid #3bbcf0");
+        $("#center_div").css('border-top',"1px solid #3bbcf0");
+        $("#center_div").css('border-left',"1px solid #3bbcf0");
+
+        $("#tabs_div").css("display","block");
+
+        $('#tree_div').find('a').click(function () {
+
+            $(this).css({'background':'#0099FF'});
+            $(this).parent().siblings().find('a').css({'background':'#F4F4F4'});
+        });
+        $('#tree_div').find('a:eq(0)').click();
+
+    }
+
+}
+//菜单tab单击事件
+function loadTabs(viewId){
+    $('#center_div').html('<table id="tradeCuacctAndSock_table"></table>');
+    using('datagrid',function () {
+        var conf = $.builder.format.datagrid($.parser.getConfigs([viewId]));
+        conf.req[0]=$.extend(conf.req[0],{OP_ID:opId});
+        $('#tradeCuacctAndSock_table').datagrid(conf);
+
+    });
+
+}
+//返回事件
+function back() {
+    location.reload();
+}
+</script>
+</head>
+<body>
+<div class="kui-layout" kui-options="fit:true">
+    <div id="north_div" kui-options="region:'north'" style="height:80px;border-top:1px solid #3bbcf0; border-right:1px solid #3bbcf0;border-left:1px solid #3bbcf0;">
+        <form id="custForm" class="kui-form" >
+            <table style="width:300px;margin-top: 15px">
+                <tr>
+                    <td align='right' >
+                        <input id="OP_ID" class="kui-searchbox" kui-options="prompt:'Please Input Value',menu:'#mm',searcher:searchCust" style="width:300px"></input>
+                        <div id="mm" style="width:120px" onclick="chgSearchMenuColor()">
+                            <div  kui-options="name:'op_id'">交易员编号</div>
+                            <div  kui-options="name:'mobile_id'">手机号码</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="west_div" kui-options="region:'west'" style="width: 200px;border-top:1px solid #3bbcf0;border-left: 1px solid #3bbcf0;border-bottom: 1px solid #3bbcf0;">
+        <div id="tree_div">
+            <div class="menuDiv">
+                <div><a href="javascript:void(0)"  onclick="loadTabs('custSecondCuacctLevelQuery_1_table')" >交易员资金查询</a></div>
+                <div><a href="javascript:void(0)" onclick="loadTabs('custSecondLevelHoldingQuery_1_table')">交易员股份查询</a></div>
+                <div><a href="javascript:void(0)" onclick="loadTabs('mts_today_oms_table')">当日信号查询</a></div>
+                <div><a href="javascript:void(0)" onclick="loadTabs('mts_today_depos_table')">当日委托查询</a></div>
+                <div><a href="javascript:void(0)" onclick="loadTabs('mts_today_match_table')">当日成交查询</a></div>
+                <div><a href="javascript:void(0)" onclick="loadTabs('mts_his_oms_table')">历史信号查询</a></div>
+                <div><a href="javascript:void(0)" onclick="loadTabs('mts_his_depos_table')">历史委托查询</a></div>
+                <div><a href="javascript:void(0)" onclick="loadTabs('mts_his_match_table')">历史成交查询</a></div>
+            </div>
+        </div>
+        <div id="back_div" style="position: absolute;bottom: 10px;right: 10px;" align='right'>
+            <a class="kui-linkbutton" align='left' kui-options="iconCls:'icon-back'" onclick="back()">返回</a>
+        </div>
+    </div>
+    <div id="center_div" kui-options="region:'center'" style="border-top:1px solid #3bbcf0; border-left: 1px solid #3bbcf0;border-bottom: 1px solid #3bbcf0; border-right: 1px solid #3bbcf0;">
+
+    </div>
+</div>
+</body>
+</html>

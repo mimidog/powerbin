@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+     <!--查询风控类型信息-->
+    <select id="query_T_RISK_TYPE_CFG" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT TYPE_ID, TYPE_NAME, PAR_TYPE_ID, RISK_TYPE_STATUS, CTRL_TYPE, CTRL_SUB_TYPE,
+               TYPE_LVL, UP_DATE, OP_ID, REMARK
+        FROM T_RISK_TYPE_CFG
+        <where>
+            <if test="TYPE_ID !='' and TYPE_ID != null">
+                and TYPE_ID ='${TYPE_ID}'
+            </if>
+            <if test="TYPE_NAME !='' and TYPE_NAME != null">
+                and TYPE_NAME LIKE  '${TYPE_NAME}%'
+            </if>
+            <if test="CTRL_TYPE !='' and CTRL_TYPE != null">
+                and CTRL_TYPE = '${CTRL_TYPE}'
+            </if>
+            <if test="CTRL_SUB_TYPE !='' and CTRL_SUB_TYPE != null">
+                and CTRL_SUB_TYPE = '${CTRL_SUB_TYPE}'
+            </if>
+            <if test="TYPE_LVL !='' and TYPE_LVL != null">
+                and TYPE_LVL LIKE  '${TYPE_LVL}%'
+            </if>
+            <if test="RISK_TYPE_STATUS !='' and RISK_TYPE_STATUS != null">
+                and RISK_TYPE_STATUS ='${RISK_TYPE_STATUS}'
+            </if>
+
+        </where>
+    </select>
+    <!--插入风控类型信息-->
+    <insert id="insert_T_RISK_TYPE_CFG" parameterType="hashmap">
+       INSERT INTO T_RISK_TYPE_CFG (TYPE_ID, TYPE_NAME, PAR_TYPE_ID, RISK_TYPE_STATUS, CTRL_TYPE, CTRL_SUB_TYPE,
+                                    TYPE_LVL, UP_DATE, OP_ID, REMARK)
+                            VALUES ('${TYPE_ID}', '${TYPE_NAME}', '${PAR_TYPE_ID}', '${RISK_TYPE_STATUS}',
+                                 '${CTRL_TYPE}', '${CTRL_SUB_TYPE}', '${TYPE_LVL}', '${UP_DATE}', '${OP_ID}', '${REMARK}')
+    </insert>
+    <!--修改风控类型信息-->
+    <update id="update_T_RISK_TYPE_CFG" parameterType="hashmap">
+        UPDATE T_RISK_TYPE_CFG  SET TYPE_NAME = '${TYPE_NAME}',PAR_TYPE_ID = '${PAR_TYPE_ID}',RISK_TYPE_STATUS = '${RISK_TYPE_STATUS}',
+                                    CTRL_TYPE = '${CTRL_TYPE}',CTRL_SUB_TYPE = '${CTRL_SUB_TYPE}', TYPE_LVL = '${TYPE_LVL}',
+                                    OP_ID = '${OP_ID}',UP_DATE = '${UP_DATE}',REMARK = '${REMARK}'
+
+        <where>
+            <if test="TYPE_ID !='' and TYPE_ID != null">
+                and TYPE_ID ='${TYPE_ID}'
+            </if>
+        </where>
+    </update>
+    <!--修改风控类型状态信息-->
+    <update id="update_T_RISK_TYPE_CFG_STA" parameterType="HashMap">
+        update T_RISK_TYPE_CFG set RISK_TYPE_STATUS = '${RISK_TYPE_STATUS}'
+        where TYPE_LVL LIKE (select TYPE_LVL from T_RISK_TYPE_CFG where TYPE_ID ='${TYPE_ID}')+'%'
+    </update>
+    <!--删除风控类型信息-->
+    <delete id="delete_T_RISK_TYPE_CFG" parameterType="hashmap">
+        DELETE FROM T_RISK_TYPE_CFG
+        <where>
+            <if test="TYPE_ID !='' and TYPE_ID != null">
+                and TYPE_ID ='${TYPE_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询风控配置信息-->
+    <select id="query_T_RISK_CFG" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT RISK_ID, TYPE_ID, CUACCT_ID, CONTROL_TYPE,CONTROL_TYPE_VAL,RISK_LVL, EFFECT_RANGE, DIRECTION, POINT1, POINT1_DO, POINT2,
+               POINT2_DO, POINT3, POINT3_DO, IS_USE, RISK_DESC, BEGIN_DATE, END_DATE, MSG_HINT, UP_DATE, OP_ID, REMARK
+        FROM T_RISK_CFG
+        <where>
+         <if test="RISK_ID !='' and RISK_ID != null">
+             and RISK_ID ='${RISK_ID}'
+         </if>
+         <if test="TYPE_ID !='' and TYPE_ID != null">
+             and TYPE_ID ='${TYPE_ID}'
+         </if>
+         <if test="CUACCT_ID !='' and CUACCT_ID != null">
+             and CUACCT_ID ='${CUACCT_ID}'
+         </if>
+     </where>
+    </select>
+    <!--插入风控配置信息-->
+    <insert id="insert_T_RISK_CFG" parameterType="hashmap">
+       INSERT INTO T_RISK_CFG (RISK_ID, TYPE_ID, CUACCT_ID, CONTROL_TYPE,CONTROL_TYPE_VAL, RISK_LVL, EFFECT_RANGE, DIRECTION, POINT1,
+                               POINT1_DO, POINT2, POINT2_DO, POINT3, POINT3_DO, IS_USE, RISK_DESC, BEGIN_DATE, END_DATE,
+                                MSG_HINT, UP_DATE, OP_ID, REMARK)
+                       VALUES ('${RISK_ID}', '${TYPE_ID}', '${CUACCT_ID}', '${CONTROL_TYPE}','${CONTROL_TYPE_VAL}', '${RISK_LVL}',
+                             '${EFFECT_RANGE}', '${DIRECTION}', CAST('${POINT1}' AS numeric(19, 4)), '${POINT1_DO}',
+                               CAST('${POINT2}' AS numeric(19, 4)), '${POINT2_DO}',CAST('${POINT3}' AS numeric(19, 4)),
+                               '${POINT3_DO}', '${IS_USE}', '${RISK_DESC}', '${BEGIN_DATE}', '${END_DATE}',
+                              '${MSG_HINT}', '${UP_DATE}', '${OP_ID}', '${REMARK}')
+
+    </insert>
+    <!--更新风控配置信息-->
+    <update id="update_T_RISK_CFG" parameterType="hashmap">
+        UPDATE T_RISK_CFG  SET RISK_ID = '${RISK_ID}',TYPE_ID = '${TYPE_ID}',CUACCT_ID = '${CUACCT_ID}',
+                               CONTROL_TYPE = '${CONTROL_TYPE}', CONTROL_TYPE_VAL='${CONTROL_TYPE_VAL}',RISK_LVL = '${RISK_LVL}',EFFECT_RANGE = '${EFFECT_RANGE}',
+                                DIRECTION = '${DIRECTION}',POINT1 = '${POINT1}',POINT1_DO = '${POINT1_DO}',POINT2 = '${POINT2}',
+                               POINT2_DO = '${POINT2_DO}',POINT3 = '${POINT3}',POINT3_DO = '${POINT3_DO}',IS_USE = '${IS_USE}',
+                               RISK_DESC = '${RISK_DESC}',BEGIN_DATE = '${BEGIN_DATE}',END_DATE = '${END_DATE}',MSG_HINT = '${MSG_HINT}',
+                               UP_DATE = '${UP_DATE}',OP_ID = '${OP_ID}',REMARK = '${REMARK}'
+        <where>
+          <if test="RISK_ID !='' and RISK_ID != null">
+              and RISK_ID ='${RISK_ID}'
+          </if>
+      </where>
+    </update>
+    <!--删除风控配置信息-->
+    <delete id="delete_T_RISK_CFG" parameterType="hashmap">
+        delete from  T_RISK_CFG
+        <where>
+            <if test="RISK_ID !='' and RISK_ID != null">
+                and RISK_ID ='${RISK_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询操作员交易行为控制信息-->
+    <select id="query_T_TRADE_ACT_CTRL" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT K.POST_ID,(SELECT POST_NAME FROM kdbase..UUM_POST T WHERE T.POST_ID=K.POST_ID) AS POST_NAME,
+        K.OP_ID,(SELECT USER_NAME FROM kdbase..UUM_USER T1 WHERE T1.USER_CODE=K.OP_ID) AS OP_NAME,
+        TRADE_DIRECT, TRADE_STA, UP_DATE, UP_TIME
+        FROM T_TRADE_ACT_CTRL K
+        <where>
+            <if test="POST_ID !='' and POST_ID != null">
+                and POST_ID ='${POST_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID ='${OP_ID}'
+            </if>
+            <if test="TRADE_DIRECT !='' and TRADE_DIRECT != null">
+                and TRADE_DIRECT ='${TRADE_DIRECT}'
+            </if>
+            <if test="TRADE_STA !='' and TRADE_STA != null">
+                and TRADE_STA ='${TRADE_STA}'
+            </if>
+        </where>
+    </select>
+    <!--新增操作员交易行为控制信息-->
+    <insert id="insert_T_TRADE_ACT_CTRL" parameterType="hashmap">
+        INSERT INTO T_TRADE_ACT_CTRL (OP_ID,POST_ID, TRADE_DIRECT, TRADE_STA, UP_DATE, UP_TIME)
+        SELECT U.USER_CODE AS OP_ID,UP.POST_ID,'1' AS TRADE_DIRECT, '0' AS TRADE_STA,U.OPEN_DATE AS UP_DATE,
+               REPLACE(CONVERT(varchar(100), GETDATE(), 108),':','') AS UP_TIME
+         FROM kdbase..UUM_USER U,kdbase..UUM_OPER_POST P,kdbase..UUM_POST UP
+          WHERE P.USER_CODE = U.USER_CODE AND UP.POST_ID = P.POST_ID
+          AND P.MAIN_FLAG = '1' AND UP.POST_STA='1' AND UP.POST_ID=(select PAR_VAL from kdbase..UPM_SYSPARAM where PAR_CODE='TRADER_POST_ID')
+          AND U.USER_STA='1'
+          AND U.USER_CODE NOT IN (SELECT T.OP_ID FROM T_TRADE_ACT_CTRL T WHERE T.TRADE_DIRECT='1')
+        UNION all
+        SELECT U.USER_CODE AS OP_ID,UP.POST_ID,'2' AS TRADE_DIRECT,'0' AS TRADE_STA,U.OPEN_DATE AS UP_DATE,
+              REPLACE(CONVERT(varchar(100), GETDATE(), 108),':','') AS UP_TIME
+         FROM kdbase..UUM_USER U,kdbase..UUM_OPER_POST P,kdbase..UUM_POST UP
+          WHERE P.USER_CODE = U.USER_CODE AND UP.POST_ID = P.POST_ID
+          AND P.MAIN_FLAG = '1' AND UP.POST_STA='1' AND UP.POST_ID=(select PAR_VAL from kdbase..UPM_SYSPARAM where PAR_CODE='TRADER_POST_ID')
+          AND U.USER_STA='1'
+          AND U.USER_CODE NOT IN (SELECT T.OP_ID FROM T_TRADE_ACT_CTRL T WHERE T.TRADE_DIRECT='2')
+    </insert>
+    <!--更新操作员交易行为控制信息-->
+    <update id="update_T_TRADE_ACT_CTRL" parameterType="hashmap">
+        UPDATE T_TRADE_ACT_CTRL SET TRADE_STA = '${TRADE_STA}',UP_DATE = '${UP_DATE}',UP_TIME = '${UP_TIME}'
+        <where>
+            <if test="POST_ID !='' and POST_ID != null">
+                and POST_ID ='${POST_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID ='${OP_ID}'
+            </if>
+            <if test="TRADE_DIRECT !='' and TRADE_DIRECT != null">
+                and TRADE_DIRECT ='${TRADE_DIRECT}'
+            </if>
+        </where>
+    </update>
+</mapper>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+	<bexs>
+		<!-- 用户登录 -->
+		<!--bex bex_code="UserLogin" bex_name="" bex_type="3" page_mode="2"
+			bex_cate="1" attr1="unifiedAuthPojo" attr2="doUserLoginLoc">
+		</bex-->
+		<bex bex_code="UserLogin" bex_name="" bex_type="4" page_mode="2"
+			bex_cate="1" attr1="frameUserLogin" >
+		</bex>
+		<bex bex_code="UserLoginUpdate" bex_name="" bex_type="4" page_mode="2"
+			bex_cate="1" attr1="frameUserLoginUpdate" >
+		</bex>		
+		<bex bex_code="CheckUserTicket" bex_name="" bex_type="3" page_mode="2"
+			bex_cate="1" attr1="unifiedAuthPojo" attr2="doCheckUserTicket">
+		</bex>
+
+		<!-- 执行BEX的通用类 -->
+		<bex bex_code="GeneralPojoBex" bex_name="GeneralPojoBex" bex_type="3" bex_cate="2" attr1="generalPojoBex" attr2="doGeneralServ"></bex>
+
+		<!-- 框架功能查询 -->	  	
+		<bex bex_code="frameSysMenuQuery" bex_name="系统菜单查询" bex_type="4" page_mode="2" bex_cate="1"  attr1="frameSysMenuQuery">
+			<param para_code="MENU_PUR" para_name="菜单类型"  data_type="12" para_type="0" def_val="-1"/>
+		</bex>
+		<bex bex_code="frameDictItemQuery" bex_name="数据字典项查询" bex_type="4" page_mode="2" bex_cate="1"  attr1="frameDictItemQuery"></bex>
+
+		<!--附件相关-->
+		
+		<bex bex_code="fileQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysParamQuery"/>
+        <bex bex_code="P0004013" bex_type="4" page_mode="2" bex_cate="1" attr1="sysParamQuery"/>
+        <bex bex_code="fileDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysParamQuery"/>
+		
+		<!-- 修改用户信息 -->
+		<bex bex_code="frameUserUpdate" bex_name="修改用户信息" bex_type="4" page_mode="2" bex_cate="1"  attr1="frameUserUpdate"></bex>
+		
+		<bex bex_code="frameUserUpdateIcon" bex_name="修改用户头像" bex_type="4" page_mode="2" bex_cate="1"  attr1="frameUserUpdateIcon"></bex>
+	
+		<bex bex_code="P0004017" bex_name="更换头像" bex_type="4" page_mode="2" bex_cate="1"  attr1="frameIconUpload"></bex>
+			
+		<bex bex_code="generatorManage" bex_name="generatorManage" bex_type="3" page_mode="2" bex_cate="1" attr1="generatorManage" attr2="doAtomGenerator"/>
+
+		<bex bex_code="frameParMaxLvlQuery" bex_name="父节点下最大级别查询" bex_type="4" page_mode="2" bex_cate="1"  attr1="frameParMaxLvlQuery">
+			<param para_code="LVL_FLD" para_name="级别字段"  data_type="12" para_type="0" nullable="false"/>
+			<param para_code="TB_NAME" para_name="表名"  data_type="12" para_type="0" nullable="false"/>
+			<param para_code="PID_FLD" para_name="父标识字段"  data_type="12" para_type="0" nullable="false"/>
+			<param para_code="PID" para_name="父标识"  data_type="12" para_type="0" nullable="false"/>
+		</bex>
+		<bex bex_code="FRAMESEQ_ORA" bex_name="获取序列ORA" bex_type="4" page_mode="2" bex_cate="1"  attr1="FRAMESEQ_ORA"></bex>
+		<bex bex_code="FRAMESEQ_MSSQL" bex_name="获取序列MSSQL" bex_type="4" page_mode="2" bex_cate="1"  attr1="FRAMESEQ_MSSQL"></bex>
+		<bex bex_code="FRAMESEQDELETE_MSSQL" bex_name="清理序列MSSQL" bex_type="4" page_mode="2" bex_cate="1"  attr1="FRAMESEQDELETE_MSSQL"></bex>
+		<bex bex_code="TESTKCXP" bex_type="8" page_mode="2" bex_cate="1" attr1="L2100408" attr2=""/>
+	    <!-- 刷新所有缓存 -->
+		<bex bex_code="AllCacheRefreshBex" bex_name="AllCacheRefresh" bex_type="3" bex_cate="1" attr1="allCacheRefreshPojo" attr2="doGeneralServ">
+		</bex>
+
+	</bexs>
+ 

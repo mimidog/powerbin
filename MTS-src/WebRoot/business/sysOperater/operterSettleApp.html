@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>交易员结算申请</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<link type="text/css" rel="stylesheet" href="../../kui-base/themes/trans/form.css">
+<link rel="stylesheet" type="text/css" href="../../business/common/css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../business/common/css/common.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script src="../../common/js/mts.flowlite.js"></script>
+<style type="text/css">
+.form-table {
+
+}
+.form-table tr {
+    height: 28px;
+    line-height: 28px;
+}
+.form-label {
+    width: 100px;
+    text-align: right;
+    font-size: 13px;
+    background-color: #F5F6FF;
+    font-weight: bold;
+    text-align: right;
+}
+
+.north-div{
+    background-image: url('../../common/image/north-back-img.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50px;
+}
+
+.con-mot-t{
+    height: 40px;
+    overflow: hidden;
+    margin: 0px 0 6px 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+.con-mot-t td {
+    border: 1px solid #DDE7D4;
+    display: table-cell;
+    vertical-align: inherit;
+    font-family: 'Roboto Condensed', Avenir, sans-serif;
+    color: #5141d6;
+    -webkit-font-smoothing: antialiased;
+
+}
+
+a.blue-btn-1 {
+    background-position: right -33px;
+    outline: none;
+    text-decoration: none;
+    background: linear-gradient(to bottom, #52a8e7 0, #4899e1 100%) !important;
+    display: inline-block;
+    zoom: 1;
+    height: 24px;
+    width: 50px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font: 13px '微软雅黑' arial sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+}
+
+a.blue-btn-1:hover {
+    background: -webkit-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+    background: -moz-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+    background: -o-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+    background: linear-gradient(to bottom, #52a8e7 0, #4899e1 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#52a8e7, endColorstr=#4899e1, GradientType=0) !important;
+    background-repeat: repeat-x !important;
+}
+
+a.blue-btn-1 span.blue-btn-left {
+    background: none !important;
+    height: 24px;
+    display: block;
+    line-height: 24px;
+}
+
+.btn-box {
+    height: 30px;
+    margin: 0 auto;
+    text-align: center;
+    background: -webkit-linear-gradient(bottom, #FFFFFF 0, #E5F5FF 100%);
+    background: -moz-linear-gradient(bottom, #FFFFFF 0, #E5F5FF 100%);
+    background: -o-linear-gradient(bottom, #FFFFFF 0, #E5F5FF 100%);
+    background: linear-gradient(to bottom, #FFFFFF 0, #E5F5FF 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#E5F5FF, GradientType=0);
+}
+
+.btn-box .btn-box a {
+    margin: 3px 20px 0;
+}
+
+.btn-box a.l-btn {
+    font-family: "微软雅黑";
+    border-radius: 3px;
+    color: #FFFFFF !important;
+    background: -webkit-linear-gradient(top, #52a8e7 0, #3680d5 100%) !important;
+    background: -moz-linear-gradient(top, #52a8e7 0, #3680d5 100%) !important;
+    background: -o-linear-gradient(top, #52a8e7 0, #3680d5 100%) !important;
+    background: linear-gradient(to bottom, #52a8e7 0, #3680d5 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#52a8e7, endColorstr=#3680d5, GradientType=0) !important;
+    background-repeat: repeat-x !important;
+}
+
+.btn-box a.l-btn:hover {
+    background: -webkit-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+    background: -moz-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+    background: -o-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+    background: linear-gradient(to bottom, #52a8e7 0, #4899e1 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#52a8e7, endColorstr=#4899e1, GradientType=0) !important;
+    background-repeat: repeat-x !important;
+}
+
+.btn-box a.l-btn span.l-btn-left {
+    background: none !important;
+}
+.form-table-1{
+    margin: auto auto 5px auto;
+    width: 98%;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #D5D5D5;
+    overflow: hidden;
+}
+.form-label-1{
+    background-color: #F5F6FF;
+    font-weight: bold;
+    text-align: right;
+    width: 100px;
+    font-size:14px;
+}
+
+</style>
+<script>
+
+window.$ready=function () {
+    $('#trdDateScope_tr').hide();
+
+}
+/**
+ * @desc 客户识别回调函数
+ * @param identifyInfo
+ */
+function parentCallback(){
+    $("#custIdfDiv").height(50);
+    //展现客户识别出的基本信息
+    $("#custInfoDiv iframe")[0].src="../common/operaterBaseInfo.html?isParentCallback=true";
+}
+/**
+ * @desc 基本信息展示回调函数
+ */
+function businessCallback(){
+
+    //显示客户基本信息
+    $("#custInfoDiv").show();
+    //显示业务操作
+    $("#businessDiv").show();
+}
+
+//得到系统日期
+function getSysDate(){
+    var sysControlInfo = commonRequest({
+        service:'M0001001'
+    });
+    return sysControlInfo[0].SYSTEM_DATE;
+}
+
+//交易柜员结算选中事件
+function chkTraderSettle_sel(chkObj) {
+    $('#trdDateScope_tr').hide();
+    if (chkObj.checked == true){
+
+        var minTrdDateRs=commonRequest({
+            service:'M0000096',
+            OP_ID:window.identifyInfo.USER_CODE
+        })
+        if($.trim(minTrdDateRs[0].TRD_BGN_DATE)==''){
+            alert('该交易员无资金股份流水的记录,无须发起申请！');
+            return;
+        }
+        $('#trdBgnDate').text(minTrdDateRs[0].TRD_BGN_DATE);
+        $('#trdEndDate').text(getSysDate());
+        $('#trdDateScope_tr').show();
+    }
+}
+//结算业务第一个页，单击下一步
+function settleAppFirst(){
+
+    $('#custIdfDiv').hide();
+    $('#custInfoDiv').hide();
+    $('#businessDiv').hide();
+    $('#businessDiv_sec').show();
+
+    //渲染简单的个人基本信息
+    drawSampleCustBaseInfo();
+
+    drawtraderSettleDetail();
+
+
+
+    using(['flowlite'],function(){
+        var flowData = [{text:"交易员交易流水", isCurrent:true, relateNode:$('#traderSettleDetail_Div'),
+            checkForNext:function(nodeData){
+               setTimeout(function () {
+                   $('#tab_main_div').tabs('resize');
+                   $('#tab_main_div_1').tabs('resize');
+                   $('#tab_main_div_2').tabs('resize');
+                   drawFundSub();
+                   drawtraderSettleSum();
+                   drawTraderAssetDetail();
+               },200);
+                return true;
+            },
+            submitData:function(){
+
+            }
+        },{text: "数据核算", relateNode: $('#traderSettleSum_Div'), isEnd: true,
+            checkForNext:function(nodeData){
+
+            },
+            submitData:function(){
+            }
+        }];
+        //组件初始化
+        window.flowlite.init($("#flowlite"), flowData, $("#btn_prev"), $("#btn_next"));
+
+    });
+
+}
+//渲染简单的个人基本信息
+function drawSampleCustBaseInfo() {
+    $('#simpleCustBaseInfo_table').find("td[name]").each(function(){
+        var name = $(this).attr("name"),
+            dict = $(this).attr("dict"),
+            formatter = $(this).attr("formatter");
+
+        if(formatter) {
+            $(this).empty().append(window.parent[formatter](identifyInfo[name]));//子页面，减少外部文件引用
+        } else if(dict) {
+            $(this).empty().append(window.parent.getSysDict(dict, identifyInfo[name]));//子页面，减少外部文件引用
+        } else {
+            $(this).empty().append(identifyInfo[name]);
+        }
+    })
+}
+//绘制交易员流水表格
+function  drawtraderSettleDetail() {
+
+    $('#traderSettleDetail_Div').html('<table id="traderSettle_table"></table>');
+
+    var equset_Info = { service: 'M0000097' }; //查询请求串
+
+    equset_Info['OP_ID'] =window.identifyInfo.USER_CODE;
+
+
+    var columns = [];
+    columns.push({ field: 'LOG_ID', title: '流水号'});
+    columns.push({
+        field: 'FLOW_TYPE', title: '流水类型',  editor: {
+            type: 'combobox',
+            options: {
+                data: [{'dict_des': '资金流水','dict_val': '1' },
+                    {'dict_des': '股份流水','dict_val': '2' }]
+            }
+        }
+    });
+    columns.push({
+        field: 'CALLOT_DIRECT', title: '调拨方向',  editor: {
+            type: 'combobox',
+            options: {
+                data: kui.getSysDict('CALLOT_DIRECT'), textField: 'dict_des', valueField: 'dict_val'
+            }
+        }
+    });
+    columns.push({ field: 'USE_AMOUNT', title: '分配额度'});
+    columns.push({ field: 'OP_ID', title: '交易员编号'});
+    columns.push({ field: 'BEGIN_DATE', title: '起始日期'});
+    columns.push({ field: 'END_DATE', title: '截至日期'});
+    columns.push({ field: 'UP_DATE', title: '更新日期'});
+    columns.push({ field: 'UP_TIME', title: '更新时间'});
+
+
+    var table = $('#traderSettle_table');
+    using('datagrid', function () {
+        table.datagrid({
+            fitColumns: true,
+            singleSelect: true,
+            pageSize: "20",
+            colNumbers: "5",
+            height:$(document).height()-120,
+            nowrap: false,
+            isShowDetail: false,
+            showRowDetail: false,
+            req: [equset_Info],
+            columns: [columns]
+        });
+    });
+}
+
+//绘制交易员总持仓数据
+function drawFundSub() {
+
+    var totalFundBal=0;
+    var totalFundAvl=0;
+    var totalFundTrdFrz=0;
+
+    //转出资金
+    var callotOutFund=0;
+
+    var opFundSub=commonRequest({
+        service:'M0000055',
+        OP_ID:window.identifyInfo.USER_CODE
+    });
+    if(opFundSub.length>0){
+        for(var i=0; i<opFundSub.length;i++){
+            totalFundBal+= parseFloat(opFundSub[i].FUND_BAL);
+            totalFundAvl+=parseFloat(opFundSub[i].FUND_AVL);
+            totalFundTrdFrz+= parseFloat(opFundSub[i].FUND_TRD_FRZ);
+            callotOutFund+=parseFloat(opFundSub[i].CALLOT_OUT_FUND);
+        }
+
+    }
+    //期初总资产
+    $('#OmsPageHeader_fundSub').find('td').eq(0).text(toThousands(callotOutFund.toFixed(2)));
+
+    $('#OmsPageHeader_fundSub').find('td').eq(5).text(toThousands(totalFundBal.toFixed(2)));
+    $('#OmsPageHeader_fundSub').find('td').eq(6).text(toThousands(totalFundAvl.toFixed(2)));
+    $('#OmsPageHeader_fundSub').find('td').eq(7).text(toThousands(totalFundTrdFrz.toFixed(2)));
+    //总市值
+    var totalMaketVal=0;
+    //总持仓成本
+    var totalHoldCost=0;
+    //总持仓盈亏
+    var totalHoldProfit=0;
+
+
+    var opToatalFundSub=commonRequest({
+        service:'M0000063',
+        OP_ID:window.identifyInfo.USER_CODE
+    });
+    if(opToatalFundSub.length>0){
+
+        totalMaketVal=Math.round(opToatalFundSub[0].TOTAL_MAKET_VAL);
+        totalHoldCost=Math.round(opToatalFundSub[0].TOTAL_HOLD_COST);
+        totalHoldProfit=Math.round(opToatalFundSub[0].TOTAL_HOLD_PROFIT);
+    }
+
+
+
+    //设置总市值
+    $('#OmsPageHeader_fundSub').find('td').eq(2).text(toThousands(totalMaketVal.toFixed(2)));
+
+    var totalOpAsset=totalFundBal+totalMaketVal;
+    //设置总资产
+    $('#OmsPageHeader_fundSub').find('td').eq(1).text(toThousands(totalOpAsset.toFixed(2)));
+    if(totalMaketVal ==0 || totalOpAsset==0){
+        $('#OmsPageHeader_fundSub').find('td').eq(3).text('0%');
+    }else{
+        $('#OmsPageHeader_fundSub').find('td').eq(3).text(Math.round((totalMaketVal/totalOpAsset)*100)+'%');
+    }
+
+    //持仓盈亏
+    if(totalHoldProfit>0){
+        //大于0是绿色
+        $('#OmsPageHeader_fundSub').find('td').eq(4).css({'color':'green'}).text(toThousands(totalHoldProfit.toFixed(2)));
+    }else{
+        $('#OmsPageHeader_fundSub').find('td').eq(4).css({'color':'red'}).text(toThousands(totalHoldProfit.toFixed(2)));
+    }
+
+    var traderTCost=0;
+    var traderCostRs=commonRequest({
+        service:'M0000094',
+        OP_ID:window.identifyInfo.USER_CODE
+    });
+    if(traderCostRs.length>0 && $.trim(traderCostRs[0].TOTAL_COST) !=''){
+        traderTCost=parseFloat(traderCostRs[0].TOTAL_COST).toFixed(2)
+    }
+
+    //设置费用汇总
+    $('#OmsPageHeader_fundSub').find('td').eq(8).text(toThousands(traderTCost));
+}
+//绘制交易员数据核对表格
+function drawtraderSettleSum() {
+    var fundSumRs=commonRequest({
+        service:'M0000098',
+        OP_ID:window.identifyInfo.USER_CODE,
+        FLOW_TYPE:'1'
+    });
+    if(fundSumRs.length>0){
+        $('#fundAsset_sum_td').find('td:eq(0)').text(fundSumRs[0].FUND_BUY_AMOUNT||0);
+        $('#fundAsset_sum_td').find('td:eq(1)').text(fundSumRs[0].FUND_SELL_AMOUNT||0);
+        var fundNetAmount=parseFloat(fundSumRs[0].FUND_BUY_AMOUNT||0)-parseFloat(fundSumRs[0].FUND_SELL_AMOUNT||0)
+        $('#fundAsset_sum_td').find('td:eq(2)').text(fundNetAmount);
+
+        $('#fundAsset_sum_td').find('td:eq(3)').text($('#OmsPageHeader_fundSub').find('td').eq(5).text());
+        $('#fundAsset_sum_td').find('td:eq(4)').text(parseFloat($('#OmsPageHeader_fundSub').find('td').eq(5).text())-
+            fundNetAmount);
+    }
+    $('#traderSettleSum_Div').height($(document).height()-$('#btn_box').height()-85);
+}
+//绘制交易员的股份额度明细
+function drawTraderAssetDetail() {
+
+    $('#traderAssetDetail_div').html('<table id="traderAssetDetail_table"></table>');
+
+    var equset_Info = { service: 'M0000099' }; //查询请求串
+
+    equset_Info['OP_ID'] =window.identifyInfo.USER_CODE;
+
+    var columns = [];
+
+    columns.push({ field: 'OP_ID', title: '交易员代码',hidden:true});
+    columns.push({ field: 'TRDACCT', title: '交易账号'});
+    columns.push({ field: 'STK_ID', title: '证券代码'});
+    columns.push({ field: 'BUY_AMOUNT', title: '买入'});
+    columns.push({ field: 'SELL_AMOUNT', title: '卖出'});
+    columns.push({ field: 'NET_AMOUNT', title: '净额'});
+    columns.push({ field: 'HOLD_AMOUNT', title: '余额'});
+    columns.push({ field: 'HOLD_PROFIT', title: '盈余'});
+
+    var tableHeight=$('#traderSettleSum_Div').outerHeight(true)-$('#north-div-1').outerHeight(true)
+                        -$('#north-div-2').outerHeight(true)-190;
+    var table = $('#traderAssetDetail_table');
+    using('datagrid', function () {
+        table.datagrid({
+            height: tableHeight,
+            fitColumns: true,
+            singleSelect: true,
+            pageSize: "20",
+            colNumbers: "5",
+            nowrap: false,
+            isShowDetail: false,
+            showRowDetail: false,
+            req: [equset_Info],
+            columns: [columns]
+        });
+    });
+}
+
+</script>
+
+</head>
+<body>
+<!-- 操作员识别div -->
+<div id="custIdfDiv">
+    <iframe src="../common/operaterRecognition.html?isParentCallback=true&ver=1" width="100%" height="100%" allowtransparency="true" frameborder="0"></iframe>
+</div>
+<!-- 识别的操作员基本信息div -->
+<div id="custInfoDiv" class="hide" style="height:150px;">
+    <iframe src="" width="100%" height="100%" allowtransparency="true" frameborder="0"></iframe>
+</div>
+<!--结算业务第一个页面-->
+<div id="businessDiv" class="datagrid-queryForm  f13 bgnone hide" style="width:100%;position: absolute;margin-top: 5px;">
+    <div class="pack-header"><b>交易员结算申请</b></div>
+    <form>
+        <input id="custCode" type="hidden" />
+        <table class="" style="width:100%;">
+            <tr>
+                <td  style="position: absolute;left:100px;top:50px;">
+                    <input id="chkTraderSettle" type="checkbox" onclick="chkTraderSettle_sel(this)"/>交易员结算
+                </td>
+            </tr>
+            <tr id="trdDateScope_tr" style="font-weight: bold">
+                <td style="position: absolute;left:100px;top:70px;">
+                  交易起止日期：<span id="trdBgnDate"></span>至<span id="trdEndDate"></span>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div  style="position: absolute;margin-top: 100px;left: 500px;">
+        <a  class="blue-btn-1"   href="javascript:settleAppFirst();">
+            <span class="blue-btn-left">
+                <span class="blue-btn-text">下一步</span>
+            </span>
+        </a>
+    </div>
+</div>
+<!--结算业务第二个页面-->
+<div id="businessDiv_sec" style="display: none">
+    <div id="flowlite"></div>
+    <div id="flowContent" >
+        <table id="simpleCustBaseInfo_table"  class="form-table-1">
+            <tr>
+                <td class="form-label-1">人员名称：</td>
+                <td name="USER_NAME" ></td>
+                <td class="form-label-1">人员类型：</td>
+                <td name="USER_TYPE" dict="USER_TYPE" ></td>
+                <td class="form-label-1">所属机构：</td>
+                <td name="ORG_CODE" formatter="getOrgName"></td>
+                <td class="form-label-1" >人员状态：</td>
+                <td name="USER_STA" dict="USER_STA" ></td>
+            </tr>
+        </table>
+        <div id="traderSettleDetail_Div" title="交易员交易流水"></div>
+        <div id="traderSettleSum_Div" title="数据核算" style="display: none">
+            <div id="tab_main_div" class="kui-tabs">
+                <div title="资产总览" style="border: #0099FF 1px solid;">
+                    <div id="north-div-1" class="north-div">
+                        <table border="0"  cellspacing="0" cellpadding="0" class="con-mot-t" style="width: 98%;font-weight:bold;
+                      font-size: 15px">
+                            <tr  id="OmsPageHeader">
+                                <td rowspan="2"></td>
+                                <td>期初总资产</td>
+                                <td>总资产</td>
+                                <td>总市值</td>
+                                <td>仓位</td>
+                                <td>盈亏汇总</td>
+                                <td>资金余额</td>
+                                <td>资金可用</td>
+                                <td>冻结金额</td>
+                                <td>费用汇总</td>
+                            </tr>
+                            <tr id="OmsPageHeader_fundSub">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-weight: bold;"></td>
+                                <td ></td>
+                                <td ></td>
+                                <td ></td>
+                                <td ></td>
+                            </tr>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="tab_main_div_1" class="kui-tabs">
+                <div title="资金总览" style="border: #0099FF 1px solid;">
+                    <table border="0"  cellspacing="0" cellpadding="0" class="con-mot-t" style="width: 98%;font-weight:bold;
+                      font-size: 15px">
+                        <tr>
+                            <td colspan="3">
+                                资金调拨
+                            </td>
+                            <td rowspan="2">余额</td>
+                            <td rowspan="2">盈余</td>
+                        </tr>
+                        <tr>
+                            <td>调入</td>
+                            <td>调出</td>
+                            <td>净额</td>
+                        </tr>
+                        <tr id="fundAsset_sum_td">
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="tab_main_div_2" class="kui-tabs">
+                <div id="traderAssetDetail_div" title="股份总览" style="border: #0099FF 1px solid;">
+                    <table id="traderAssetDetail_table" ></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="btn_box" class="btn-box">
+        <a id="btn_prev">上一步</a>
+        <a id="btn_next">下一步</a>
+    </div>
+</div>
+</body>
+</html>

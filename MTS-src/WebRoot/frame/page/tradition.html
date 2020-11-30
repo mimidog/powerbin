@@ -1,0 +1,29 @@
+﻿<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<div class="kui-layout" id="firstPage" style="width:100%;">
+    <div kui-options="region:'west',split:true" style="width:300px;overflow-y:hidden;">
+      <div style="height: 440px;overflow-y: auto">
+        <ul class="tree" id="menuTree"></ul>
+        <div id="menuContext" class="kui-menu" style="width:120px;">
+          <div id="addToShortcut" kui-options="iconCls:'icon-add'">添加到快捷方式</div>
+        </div>
+      </div>
+      <div id="shortcutMenu" style="height: 150px;overflow-y:auto;border-top-color: #e6eef8;border-top-width: 5px;border-top-style:solid">
+      </div>
+    </div>
+    <div kui-options="region:'center'" style="background:#eee;">
+      <div id="pageTabsBox" class="kui-tabs" fit="true" border="false" kui-options="onContextMenu:showPageTabsMenu">
+        <div id="pageTabsMenu" class="kui-menu" kui-options="onClick:onPageMenuEvent" style="width:150px;">
+          <div kui-options="name:'update'">刷新</div>
+          <div class="menu-sep"></div>
+          <div kui-options="name:'close'">关闭</div>
+          <div kui-options="name:'closeAll'">全部关闭</div>
+          <div kui-options="name:'closeOther'">关闭其他</div>
+          <div class="menu-sep"></div>
+          <div kui-options="name:'closeRight'">当前页右侧全部关闭</div>
+          <div kui-options="name:'closeLeft'">当前页左侧全部关闭</div>
+          <div class="menu-sep"></div>
+          <div kui-options="name:'exit'">退出</div>
+        </div>
+      </div>
+    </div>
+  </div>

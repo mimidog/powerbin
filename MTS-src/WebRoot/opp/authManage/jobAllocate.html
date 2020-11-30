@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>岗位分配</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    var allExcluData;
+    function jobAllocate(){
+      var row = $('#UUM_jobAllocate').datagrid('getSelected');
+      if (row == null) {
+        alert('请选择一个人员！');
+        return;
+      }else{
+        var USER_CODE = row['USER_CODE'];
+        var opt = $('#UUM_job').data().datagrid.options;
+        opt.req = [$.extend(opt.req[0], {USER_CODE:USER_CODE})];
+        $('#UUM_job').datagrid('reload');
+        $('#operJobManage').dialog('open');
+      }
+    }
+    function checkExcluJob(index,row){
+        var POST_ID = row['POST_ID'];
+        var grid=$('#UUM_POST_IDS');
+        var excluDatas = [], selected =grid.datagrid("getSelections");//选项中已选择的项
+        $.each(allExcluData,function(){
+            if(this.POST_ID==POST_ID){
+                excluDatas.push(this);
+            }
+        });
+        $.each(selected, function() {
+            for(var i=0;i<excluDatas.length;i++){
+                if(this.POST_ID==excluDatas[i].POST_EXCLU_ID){
+                    var index2=grid.datagrid("getRowIndex",this);
+                    $.message.alert("提示信息","当前选择的岗位与已选中的岗位【"+this.POST_ID+"-"+this.POST_NAME+"】互斥！","info",function(){
+                        	grid.datagrid("unselectRow",index);
+                        }
+                    );
+                    
+                }
+            }
+        });
+    }
+    
+    function operAddJob(){
+        var row = $('#UUM_jobAllocate').datagrid('getSelected');
+        var rows = $('#UUM_job').datagrid('getRows');
+        var USER_CODE = row['USER_CODE'];
+        $('#UUM_POST_IDS').datagrid("clearSelections");
+        var opt = $('#UUM_POST_IDS').data().datagrid.options;
+        opt.req = [$.extend(opt.req[0], {USER_CODE:USER_CODE})];
+        $('#UUM_POST_IDS').datagrid('reload');
+        using('dialog', function () {
+            var d= $('#operJobSetDialog');
+            d.dialog({
+              title:'人员分配岗位',
+              width:500,
+              modal:true,
+              buttons:[
+                {
+                  text:'确定',
+                  iconCls:'icon-ok',
+                  handler:function () {
+                    var USER_CODE = row['USER_CODE'];
+                    var POST_IDS = $('#UUM_POST_IDS').datagrid('getSelections');
+                    if (POST_IDS[0] == null || POST_IDS[0] == '') {
+                      alert("请选择要添加的岗位！");
+                      return;
+                    } else {
+                      if (POST_IDS.length > 0) {
+                        //var req=[];
+                        var postIds = [] ;
+                        for (var i = 0; i < POST_IDS.length; i++) {
+                          /* req[i] = {
+                            service:'P0001063',
+                            USER_CODE:USER_CODE,
+                            POST_ID:POST_IDS[i]
+                          }; */
+                            postIds[i] = POST_IDS[i].POST_ID ;
+                        }
+                          d.find(".l-btn").linkbutton("disable");
+                        ajaxRequest({
+                          req:[{
+                              service:'P0001063',
+                              USER_CODE:USER_CODE,
+                              POST_ID:postIds.toString()
+                            }],
+                          error:function () {
+                            alert('人员岗位设置失败！');
+                              d.find(".l-btn").linkbutton("enable");
+                          },
+                          func:function(data){
+                              alert('人员岗位设置成功！');
+                              d.find(".l-btn").linkbutton("enable");
+                              $('#UUM_POST_IDS').datagrid("clearSelections");
+                              $('#operJobSetDialog').dialog('close');
+                              $('#UUM_job').datagrid('reload');
+                          }
+                        });
+                      } else {
+                        alert('请选择要添加的岗位');
+                        return;
+                      }
+                    }
+                  }
+                },
+                {
+                  text:'取消',
+                  iconCls:'icon-cancel',
+                  handler:function () {
+                    $('#operJobSetDialog').dialog('close');
+                  }
+                }
+              ]
+            });
+          });
+         $('#operJobSetDialog').dialog("move",{left:290,top:120});
+    }
+    /*
+    function close(){
+    	var flag = true;
+    	 var row = $('#UUM_jobAllocate').datagrid('getSelected');
+         var USER_CODE = row['USER_CODE'];
+    	ajaxRequest({
+    		async:false,
+            req:[{ service:'P0001061',USER_CODE:USER_CODE}],
+            func:function(data){
+          	  if(data[0].length == 0){
+          		  flag = false ;
+          	  }
+            }
+        });
+    	if(!flag){
+    		alert("请设置主岗位！");
+    		return false ;
+    	}
+    	
+    }*/
+    function operDelJob(){
+      var row = $('#UUM_job').datagrid('getSelections');
+      var d= $('#operJobSetDialog');
+      if(row.length==0){
+        alert('请选择要删除的数据！');
+      }else{
+        //var req = [];
+        var postIds = [] ;
+        var userCode = [] ;
+        for(var i=0;i<row.length;i++){
+          var POST_ID = row[i]['POST_ID'];
+          //var USER_CODE = row[i]['USER_CODE'];
+          /* req[i] = {
+            service:'P0001054',
+            POST_ID:POST_ID,
+            USER_CODE:USER_CODE
+          }; */
+          postIds[i] = POST_ID ;
+          //userCode[i] = USER_CODE ;
+        }
+        confirm('提示信息','是否确认删除?',function(isOK){
+          if(isOK){
+              d.find(".l-btn").linkbutton("disable");
+            ajaxRequest({
+              req:[{
+                  service:'P0001054',
+                  POST_ID:postIds.toString(),
+                  USER_CODE:row[0]['USER_CODE']
+              }],
+              error:function(){
+                alert('岗位删除失败！');
+                  d.find(".l-btn").linkbutton("enable");
+              },
+              func:function(data){
+                //if(data[0]["service"]["flag"]=='0'){
+                  alert('岗位删除成功！');
+                  d.find(".l-btn").linkbutton("enable");
+                  $('#UUM_job').datagrid('reload');
+                //}
+              }
+            });
+          }
+        });
+      }
+    }
+    
+    function setPrimaryJob(){
+    	var row = $('#UUM_job').datagrid('getSelections');
+        if(row.length==0 || row.length > 1){
+          alert('请选择一条数据进行操作！');
+          $('#UUM_job').datagrid('unselectAll');
+          return false ;
+        }
+        var d=$("#operJobManage");
+        d.find(".l-btn").linkbutton("disable");
+         ajaxRequest({
+           req:[{
+               service:'P0001059',
+               USER_CODE:row[0].USER_CODE,
+               POST_ID:row[0].POST_ID
+           }],
+           func:function(data){
+        	   alert('主岗位设置成功！');
+               d.find(".l-btn").linkbutton("enable");
+        	   $('#UUM_job').datagrid('reload');
+           },
+             error:function(e){
+                 alert('主岗位设置失败！');
+                 d.find(".l-btn").linkbutton("enable");
+             }
+         }); 
+    }
+    window.$ready = function(){
+    	$("#UUM_jobAllocate").datagrid("resize",{height:$(window).height()})
+        ajaxRequest({
+            req: [{service: 'P0001067'} ],
+            func:function(data){
+                allExcluData=data[0];
+            }
+        });
+    }
+  </script>
+</head>
+<body>
+<table id="UUM_jobAllocate" title="人员岗位分配" class="kui-datagrid"></table>
+
+<div id="operJobManage" class="kui-dialog" style="width:650px;height:300px"
+     kui-options="title:'人员岗位管理',closed:true,iconCls:'icon-regist',modal:true,onClose:function(){$('#UUM_jobAllocate').datagrid('reload');}">
+  <table id="UUM_job" class="kui-datagrid" style="height: 275px"></table>
+</div>
+
+<div id="operJobSetDialog" style="display: none;width: 550px;height: 350px;"  >
+    <table name="POST_IDS" id="UUM_POST_IDS" class="kui-datagrid" kui-options="fit:true"> </table>
+</div>
+</body>
+</html>

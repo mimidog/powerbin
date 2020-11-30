@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ByteArrayEntity">
+
+	<!-- BYTE ARRAY INSERT -->
+
+	<insert id="BpmByteArrayInsert" parameterType="map">
+		insert into UWK_RU_BYTEARRAY(BYTEARRAY_ID, DEPLOYMENT_ID, REV, BNAME, BYTES)
+		values (
+		  #{byteArray.id ,jdbcType=VARCHAR},
+		  #{byteArray.deploymentId,jdbcType=VARCHAR},
+		  1,
+		  #{byteArray.name ,jdbcType=VARCHAR},
+		  #{byteArray.bytes ,jdbcType=BLOB}
+		)
+	   
+	 </insert>
+
+	<!-- BYTE ARRAY UPDATE -->
+
+	<update id="BpmByteArrayUpdate" parameterType="map">
+		update UWK_RU_BYTEARRAY
+		set
+		  REV = #{byteArray.revisionNext, jdbcType=INTEGER},
+		  BYTES = #{byteArray.bytes, jdbcType=BLOB}
+		where BYTEARRAY_ID = #{byteArray.id} 
+		  and REV = #{byteArray.revision,jdbcType=INTEGER}
+	</update>
+
+	<!-- BYTE ARRAY DELETE -->
+	
+	<select id="BPMByteArraySelectBytes" parameterType="hashmap" resultType="hashmap">
+	  select BYTES from UWK_RU_BYTEARRAY where BYTEARRAY_ID = #{id} and REV = #{revision}
+	</select>
+	
+	<delete id="BpmByteArrayDeleteForDeployment" parameterType="map">
+	  delete from UWK_RU_BYTEARRAY where DEPLOYMENT_ID = #{byteArray.deploymentId} and REV = #{byteArray.revision}
+	</delete>
+	  
+	<delete id="BpmByteArrayDelete" parameterType="map">
+	  delete from UWK_RU_BYTEARRAY where BYTEARRAY_ID = #{byteArray.id} and REV = #{byteArray.revision}
+	</delete>
+	  
+	<delete id="BpmByteArrayDeleteNoRevisionCheck" parameterType="map">
+	  delete from UWK_RU_BYTEARRAY where BYTEARRAY_ID = #{id}
+	</delete>
+	
+	  <resultMap id="byteArrayResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ByteArrayEntity">
+	    <id property="id" column="BYTEARRAY_ID" jdbcType="VARCHAR" />
+	    <result property="revision" column="REV" jdbcType="INTEGER"/>
+	    <result property="name" column="BNAME" jdbcType="VARCHAR"/>
+	    <result property="bytes" column="BYTES" jdbcType="BLOB"/>  
+	  </resultMap>
+  
+	<!-- BYTE ARRAY SELECT -->
+	<select id="BpmByteArraySelect" parameterType="hashmap" resultMap="byteArrayResultMap" >
+		select * from UWK_RU_BYTEARRAY where BYTEARRAY_ID = #{id,jdbcType=VARCHAR}
+	</select>
+  
+</mapper>

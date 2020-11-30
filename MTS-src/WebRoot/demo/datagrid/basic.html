@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Basic DataGrid - KINGDOM UI Demo</title>
+  <meta charset="UTF-8">
+  <title>Basic TreeGrid - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    function getValue(){
+      return $("#cc").datagrid("getSelected");
+    }
+  </script>
+</head>
+<body>
+<h2>Basic DataGrid</h2>
+<div class="demo-info">
+  <div class="demo-tip icon-tip"></div>
+  <div>The DataGrid is created from markup, no JavaScript code needed.</div>
+</div>
+<div style="margin:10px 0;"></div>
+<table id="cc" class="kui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
+       kui-options="singleSelect:false,collapsible:true,
+			req:[],
+			url:'../datagrid/datagrid_data2.json',
+			remoteSort:false,sortName:'listprice',sortOrder:'asc'
+			,
+			toolbar:[
+			{
+     text:'toolbar1',
+     right:'right',
+     iconCls:'icon-add',
+     handler:function(e){
+       }
+    },
+    {
+     text:'toolbar2',
+     iconCls:'icon-add',
+     handler:function(e){
+         alert(123);
+       }
+    }
+    ]
+
+  ">
+  <thead>
+    <tr>
+      <th kui-options="field:'productid',width:80,sortable:true,checkbox:true,resizable:true">productid</th>
+      <th kui-options="field:'itemid',width:100,sortable:true">itemid</th>
+      <th kui-options="field:'listprice',width:80,align:'right',sortable:true">listprice</th>
+      <th kui-options="field:'unitcost',width:80,align:'right',sortable:true">Unit Cost</th>
+      <th kui-options="field:'attr1',width:250,sortable:true">Attribute</th>
+      <th kui-options="field:'status',width:60,align:'center',sortable:true">Status</th>
+    </tr>
+  </thead>
+</table>
+<!--div style="margin:10px 0;">
+    <a href="#" class="kui-linkbutton" onclick="getValue()">返回当前进度值</a>
+    <a href="#" class="kui-linkbutton" onclick="setValue()">改变当前进度值</a>
+  </div-->
+</body>
+</html>

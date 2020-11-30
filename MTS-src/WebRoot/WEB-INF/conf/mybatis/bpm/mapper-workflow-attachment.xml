@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DynamicMapper.AttachmentEntity">
+
+  <!-- ATTACHMENT INSERT -->
+
+  <insert id="BpmAttachmentInsert" parameterType="hashmap">
+     insert into UWK_HI_ATTACHMENT (HI_ATTACHMENT_ID, REV, ATNAME, DESCRIPTION, ATTYPE, TASK_ID, PROC_INST_ID, URL, CONTENT_ID,CREATE_TIME)
+    values (
+      #{attachment.id ,jdbcType=VARCHAR},
+      1,
+      #{attachment.name ,jdbcType=VARCHAR},
+      #{attachment.description ,jdbcType=VARCHAR},
+      #{attachment.type ,jdbcType=VARCHAR},
+      #{attachment.taskId ,jdbcType=VARCHAR},
+      #{attachment.processInstanceId ,jdbcType=VARCHAR},
+      #{attachment.url ,jdbcType=VARCHAR},
+      #{attachment.contentId ,jdbcType=VARCHAR},
+      #{attachment.createTime ,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <!-- ATTACHMENT UPDATE -->
+
+  <update id="BpmAttachmentUpdate" parameterType="hashmap">
+    update UWK_HI_ATTACHMENT 
+    set
+      REV = #{attachment.revisionNext, jdbcType=INTEGER},
+      ATNAME = #{attachment.name, jdbcType=VARCHAR},
+      DESCRIPTION = #{attachment.description, jdbcType=TIMESTAMP}
+    where HI_ATTACHMENT_ID = #{attachment.id}
+      and REV = #{attachment.revision, jdbcType=INTEGER}
+  </update>
+
+  <!-- ATTACHMENT RESULTMAP -->
+
+  <resultMap id="attachmentResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.AttachmentEntity">
+    <id property="id" column="HI_ATTACHMENT_ID" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+    <result property="name" column="ATNAME" jdbcType="VARCHAR" />
+    <result property="description" column="DESCRIPTION" jdbcType="VARCHAR" />
+    <result property="type" column="ATTYPE" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="url" column="URL" jdbcType="VARCHAR" />
+    <result property="contentId" column="CONTENT_ID" jdbcType="VARCHAR" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- ATTACHMENT DELETE -->
+
+  <delete id="BpmAttachmentDelete" parameterType="hashmap">
+    delete from UWK_HI_ATTACHMENT 
+    where HI_ATTACHMENT_ID = #{attachment.id} and REV = #{attachment.revision} 
+  </delete>
+  
+
+  <!-- ATTACHMENT SELECT -->
+
+  <select id="BpmAttachmentSelect" parameterType="hashmap" resultMap="attachmentResultMap">
+    select * from UWK_HI_ATTACHMENT where HI_ATTACHMENT_ID = #{attachment.id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="BpmSelectAttachmentsByTaskId" parameterType="hashmap" resultMap="attachmentResultMap">
+    select * from UWK_HI_ATTACHMENT where TASK_ID = #{attachment.taskId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="BpmSelectAttachmentsByProcessInstanceId" parameterType="hashmap" resultMap="attachmentResultMap">
+    select * from UWK_HI_ATTACHMENT where PROC_INST_ID = #{attachment.processInstanceId,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

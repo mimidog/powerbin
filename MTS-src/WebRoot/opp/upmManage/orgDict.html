@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta  http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>通用参数</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../js/orgDict.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+
+<script type="text/javascript">
+	function dataLoad(){
+		//var $second = $("#" + $.general().second);
+	    //$second.datagrid("loadData", {});
+	}
+	function onClickItemTableRow(index,row){
+		var $first = $("#" + $.general().main);
+		var $second = $("#" + $.general().second);
+		var secondTableOpts = $second.datagrid("options");
+		var secondColumns = secondTableOpts.columns[0];
+		
+		$first.datagrid("selectRecord", row[secondColumns[1].field]);
+	}
+	function onClickMainTableRow(index,row){
+		var reqParam = {};
+		var mainTableOpts = $(this).data().datagrid.options;
+		var mainColumns = mainTableOpts.columns[0];
+		for(var i=mainColumns.length-1; i>=0; i--){
+			if(mainColumns[i].primary_key=="1" && row[mainColumns[i].field] != ""){
+				reqParam[mainColumns[i].field] = row[mainColumns[i].field];
+			}
+		}
+		var $second = $("#"+$.general().second);
+		$second.datagrid("loadData",{});
+		if(!$.isEmptyObject(reqParam)){
+			var secondOpts = $second.data().datagrid.options;
+			var bex = typeof secondOpts.req == "string" ? eval("("+secondOpts.req+")") : secondOpts.req;
+	    	secondOpts.req = [$.extend(bex[0],reqParam)];
+	    	$second.datagrid("reload");
+		}
+		//判断是否系统数据字典table
+		if(mainTableOpts["id"]){
+			if(mainTableOpts["id"]=="GENP_100500010_SYS_DD"){
+				setButton(row);
+			}
+		}
+	}
+	function setButton(row){
+			var flags=row["DD_MAINT_FLAGS"];
+			if(flags){
+					if(flags.indexOf("1")<0){
+							$(".icon-add").parent().parent().hide();
+						}
+					if(flags.indexOf("2")<0){
+						$(".icon-edit").parent().parent().hide();
+					}
+					if(flags.indexOf("3")<0){
+						$(".icon-remove").parent().parent().hide();
+					}
+				}
+		}
+	function addRow(e) {
+		var mainId = $.general().main;
+		var selectRow = $("#"+mainId).datagrid("getSelected") || {};
+		var mainTitle = $("#"+mainId+"_panel").parent().find(".panel-title").text();
+		if(!$.isEmptyObject(selectRow)){
+			var opts = $.data($("#"+mainId)[0],"datagrid").options;
+			if(opts.rowedit){
+				var inserted = $.data(e.data.target[0],"datagrid").insertedRows;
+				if(inserted.length == 0)
+					$(e.data.target).datagrid('appendRow',selectRow);
+			} else {
+				$.builder.buildCommonDialog.add(e,selectRow);
+			}
+		} else {
+			alert("请选择"+mainTitle+"的一条记录!");
+		}
+	}
+
+	//有逗号
+	function returnDictMultTextComma(value,row,index,col){
+		var arr = new Array();
+		if(col.editor.options.multiple){
+			if(typeof value == "string"){
+				arr=value.split(',');
+				return getEdtMutlDictText(arr,col);
+			} else {
+				return getEdtMutlDictText(arr,col);
+			}
+		} else {
+			return value;
+		}
+	}
+
+	//无逗号
+	function returnDictMultText (value,row,index,col){
+		var arr = new Array();
+		if(col.editor.options.multiple){
+			if(typeof value == "string"){
+				for(var i =0; i<value.length;i++){
+					arr.push(value.substring(i,i+1));
+					if(i == value.length-1){
+						break;
+					}
+				}
+				return getEdtMutlDictText(arr,col);
+			} else {
+				return getEdtMutlDictText(arr,col);
+			}
+		} else {
+			return value;
+		}
+	}
+
+    //构建复选文本串
+    function getEdtMutlDictText(arr,col){
+        if(arr && arr.length==0){
+            return ""
+        }
+        if(!col.editor.options.data || (col.editor.options.data && col.editor.options.data.length==0)){
+            return ""
+        }
+        var dictData = col.editor.options.data,
+                valueField = col.editor.options.valueField || "dict_val",
+                textField = col.editor.options.textField || "dict_des",
+                dictText = "";
+        if(arr.length==1 && arr[0]=="@"){
+            return "全部";
+        }else{
+            for(var i=0;i<dictData.length;i++){
+                for(var j=0;j<arr.length;j++){
+                    if(dictData[i][valueField]==arr[j]){
+                        dictText += dictData[i][textField]+',';
+                    }
+                }
+            }
+            return dictText.substring(0, dictText.length-1);
+        }
+    }
+
+	function timeFormatter(value,row,index,col){
+        if(value && value.indexOf(":") == -1){
+            var sValue = "";
+            if(value && value.length==6){
+                sValue = value.substring(0,2) + ":" + value.substring(2,4)+":"+value.substring(4,6);
+                row[col.field] = sValue;
+                return sValue;
+            }else if(value && value.length==4){
+                sValue = value.substring(0,2) + ":" + value.substring(2,4);
+                row[col.field] = sValue;
+                return sValue;
+            }
+        }else {
+            return value;
+        }
+	}
+    function onSelectInstType(record){
+        var $cls = $(this).closest("td").siblings().find("input[comboname='INST_CLS']");
+        var opts = $cls.combobox("options");
+        var onData = [];
+        if(opts.data && opts.data.length > 0){
+            for(var i=0,len=opts.data.length; i<len; i++){
+                if(opts.data[i]["dict_val"].substring(0,1) == record["dict_val"])
+                    onData.push(opts.data[i]);
+            }
+        }
+        $cls.combobox("clear");
+        $cls.combobox("loadData",onData);
+    }
+
+    function dataSort(data){
+        if(data.length > 0){
+            data.sort(function(a,b){
+                return (Number(a.pid) > Number(b.pid) ? 1 : -1);
+            });
+        }
+        return data;
+    }
+
+    function onLoadSuccessFilter(data){
+        var opts = $(this).combobox("options");
+        opts.onLoadSuccess = function(){};
+        var dict =[];
+        for(var i=0;i<data.length;i++){
+            if(data[i].dict_val!=0&&data[i].dict_val!=9)
+             dict.push(data[i]);
+        }
+        $(this).combobox("loadData",dict);
+    }
+	function centerTimeTradeTypeOnloadSuccess(data){
+		 var opts = $(this).combobox("options");
+	        opts.onLoadSuccess = function(){};
+	        var dict =[];
+	        for(var i=0;i<data.length;i++){
+	         //  if(data[i].dict_val!=0&&data[i].dict_val!=9)
+	          	   dict.push(data[i]);
+	       	 }
+	        $(this).combobox("loadData",dict);
+		}
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

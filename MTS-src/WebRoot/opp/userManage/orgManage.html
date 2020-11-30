@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>组织机构管理</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    window.$ready = function() {
+      using(['form'],
+        function() {
+          var conf = $.builder.format.form($.parser.getConfigs(["orgInfoForm"]));
+          var infBtn = {
+            modify: true,
+            toolbar: [{
+              text: "修改",
+              handler: "orgSave",
+              iconCls: "icon-save",
+              disabled: true
+            },
+              {
+                text: "删除",
+                handler: "orgDelete",
+                iconCls: "icon-remove",
+                disabled: true
+              }]
+          };
+          var samBtn = {
+            modify: true,
+            toolbar: [{
+              text: "保存",
+              handler: "addSameLvlOrg",
+              iconCls: "icon-save",
+              disabled: true
+            }]
+          };
+          var chdBtn = {
+            modify: true,
+            toolbar: [{
+              text: "保存",
+              handler: "addChildOrg",
+              iconCls: "icon-save",
+              disabled: true
+            }]
+          };
+          $("#orgInfoForm").form($.extend({},	conf, infBtn));
+          $("#addSameOrgForm").form($.extend({},	conf, samBtn));
+          $("#addChildOrgForm").form($.extend({}, conf, chdBtn));
+    });
+      
+     /*  using("tree",function(){
+	      $("#orgTree").tree({loadFilter:function(data,parent){
+	      	if (data.length > 0 && data.length > 0) {
+				for ( var i = 0, len = data.length; i < len; i++) {
+					var txt = data[i].text || [];
+		        	if(txt.length > 3){
+		        		return txt.substring(0,3);
+		        	}
+		        	return txt ;
+				}
+			}
+		}});
+    }); */
+  }
+  //装载机构信息
+  function loadOrgInfo(data){
+    clearAllForm();
+    $("#menuTabs").tabs("select", 0);
+    if(!data) return;
+    using('form',function(){
+      var orgInfo = getOrgInfo(data['id']);
+      $('#orgInfoForm').form('load',orgInfo);
+	   $('#addSameOrgForm').form('load',orgInfo);
+	   $('input[name="ORG_CODE"]', '#orgInfoForm').textinput("disabled");
+    //$('input[name="ORG_CODE"]', '#orgInfoForm')[0].disabled=true;
+      $('input[name="ORG_CODE"]', '#addSameOrgForm,#addChildOrgForm').textinput("enable");
+      $('#orgInfoForm a.l-btn').linkbutton('enable');
+      $('#addSameOrgForm a.l-btn').linkbutton('enable');
+      $('#addChildOrgForm a.l-btn').linkbutton('enable');
+    });
+  }
+  function clearAllForm(){
+    using('form',function(){
+      $('#orgInfoForm').form('reset');
+      $('#addSameOrgForm').form('reset');
+      $('#addChildOrgForm').form('reset');
+    })
+  }
+  //获取机构信息
+  function getOrgInfo(orgCode){
+    var org = null;
+    ajaxRequest({
+      async:false,
+      req:[
+        {service:'P0001031',ORG_CODE:orgCode}
+      ],
+      func:function(data,head){
+        org = data[0][0];
+      },
+      error:function(){
+        org = null;
+      }
+    });
+    return org;
+  }
+  //修改机构信息
+  function orgSave(){
+    var node = $('#orgTree').tree('getSelected');
+    if(node == null)
+      return false;
+    else{
+      var ORG_CODE = node['id'];
+      $('#orgInfoForm').form('submit',{
+        req:[
+          {
+            service:'P0001033',
+            ORG_CODE:ORG_CODE
+          }
+        ],
+        success:function(){
+          alert('机构修改成功！');
+          $('#orgTree').tree('reload');
+          clearAllForm();
+          $('#orgInfoForm a.l-btn').linkbutton('disable');
+          $('#addSameOrgForm a.l-btn').linkbutton('disable');
+          $('#addChildOrgForm a.l-btn').linkbutton('disable');
+        }
+      });
+    }
+  }
+  //删除机构
+  function orgDelete(){
+    var node = $('#orgTree').tree('getSelected');
+    if(node==null) return false;
+    var msg = '确定要删除吗?';
+    if (node.children) {
+      msg = "机构包含【" + node.children.length + "】个子机构,确认要删除该机构及子机构吗？";
+    }
+    confirm('删除系统机构',msg,function(n){
+      if(n){
+        ajaxRequest({
+          async:false,
+          req:[{
+            service:'P0001034',
+            ORG_CODE:node['id'],
+            PAR_ORG:node['pid']
+          }],
+          func:function(data){
+           
+              alert('机构删除成功！');
+              clearAllForm();
+              using('form',function(){
+                $('#orgInfoForm a.l-btn').linkbutton('disable');
+                $('#addSameOrgForm a.l-btn').linkbutton('disable');
+                $('#addChildOrgForm a.l-btn').linkbutton('disable');
+              });
+              $('#orgTree').tree('reload');
+            }
+          
+        });
+      }
+    });
+  }
+  //添加同级机构
+  function addSameLvlOrg(){
+    var node = $('#orgTree').tree('getSelected');
+    if(node == null){
+      return false;
+    }
+    var PAR_ORG = node['pid'];
+    $('#addSameOrgForm').form('load',{PAR_ORG:node['pid']});
+    $('#addSameOrgForm').form('submit',{
+      req:[{
+        service:'P0001032',
+        PAR_ORG:PAR_ORG
+      }],
+      success:function(){
+        alert('新增同级机构成功！');
+        clearAllForm();
+        $('#orgInfoForm a.l-btn').linkbutton('disable');
+        $('#addSameOrgForm a.l-btn').linkbutton('disable');
+        $('#addChildOrgForm a.l-btn').linkbutton('disable');
+        $('#orgTree').tree('reload');
+      }
+    });
+  }
+  //添加子机构
+  function addChildOrg(){
+    var node = $('#orgTree').tree('getSelected');
+    if(node == null){
+      return;
+    }
+    var PAR_ORG = node['id'];
+    $('#addChildOrgForm').form('load',{PAR_ORG:node['id']});
+    $('#addChildOrgForm').form('submit',{
+      req:[{
+        service:'P0001032',
+        PAR_ORG:PAR_ORG
+      }],
+      success:function(){
+        alert('新增子机构成功！');
+        clearAllForm();
+        $('#orgInfoForm a.l-btn').linkbutton('disable');
+        $('#addSameOrgForm a.l-btn').linkbutton('disable');
+        $('#addChildOrgForm a.l-btn').linkbutton('disable');
+        $('#orgTree').tree('reload');
+      }
+    });
+  }
+</script>
+</head>
+<body style="font-family:'微软雅黑';font-size:12px">
+<div class="kui-layout" kui-options="fit:true" style="margin-top: 25px;">
+  <div kui-options="region:'west',title:''" style="width:200px;margin-top: 10px;" title="组织机构">
+    <ul id="orgTree" class="kui-tree" kui-options="animate:true,req:[{service:'P0001031'}],
+        conf:{
+        nodeId:'ORG_CODE',
+        nodeName:'ORG_CODE_NAME',
+        treeType:'1',
+        parNode:'PAR_ORG'
+        },
+        onClick:loadOrgInfo,
+        onLoadSuccess:function(node, data){
+        	$('#orgTree').tree('collapseAll');
+        	$('#orgTree').find('.tree-title').each(function(){
+        		var txt = $(this).text() ;
+        		if(txt.length > 12){
+        			$(this).text(txt.substring(0,20)+'...');
+        		}
+        	});
+        }
+  ">
+    </ul>
+  </div>
+  <div kui-options="region:'center',title:' '" style="margin-top: -30px;">
+    <div id="menuTabs" class="kui-tabs" kui-options="onSelect:function(title,index){$(this).tabs('getTab',index).show();if(index=='1'){$('#addSameOrgForm').form('clear');}},fit:true">
+      <div title="组织机构信息" style="padding:5px;display:none;" >
+        <form id="orgInfoForm">
+        </form>
+      </div>
+      <div title="添加同级机构" style="padding:5px;display:none;">
+        <form id="addSameOrgForm">
+        </form>
+      </div>
+      <div title="添加子机构" style="padding:5px;display:none;">
+        <form id="addChildOrgForm">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

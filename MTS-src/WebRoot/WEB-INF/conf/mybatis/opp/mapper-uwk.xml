@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+
+    <!--ID                   NVARCHAR2(64)                   not null,-->
+    <!--REV                  NUMBER,-->
+    <!--CATEGORY             NVARCHAR2(255),-->
+    <!--NAME                 NVARCHAR2(255),-->
+    <!--KEY                  NVARCHAR2(255)                  not null,-->
+    <!--VERSION              NUMBER                          not null,-->
+    <!--DEPLOYMENT_ID        NVARCHAR2(64),-->
+    <!--RESOURCE_NAME        NVARCHAR2(2000),-->
+    <!--DGRM_RESOURCE_NAME   VARCHAR2(4000),-->
+    <!--DESCRIPTION          NVARCHAR2(2000),-->
+    <!--HAS_START_FORM_KEY   NUMBER(1),-->
+    <!--SUSPENSION_STATE     NUMBER-->
+    <!--流程定义管理操作    start  -->
+    <insert id="reProcdefInsert" parameterType="hashmap">
+		INSERT INTO UWK_RE_PROCDEF (PROCDEF_ID,REV,CATEGORY,PROCDEF_NAME,KEY,VERSION,DEPLOYMENT_ID,RESOURCE_NAME,DGRM_RESOURCE_NAME,
+		DESCRIPTION,HAS_START_FORM_KEY,SUSPENSION_STATE)
+		VALUES (NEXT VALUE FOR SEQ_RE_PROCDEF_ID,${REV},'${CATEGORY}','${PROCDEF_NAME}','${KEY}',${VERSION},
+		'${DEPLOYMENT_ID}','${RESOURCE_NAME}','${DGRM_RESOURCE_NAME}','${DESCRIPTION}',${HAS_START_FORM_KEY},
+		${SUSPENSION_STATE})
+	</insert>
+
+    <delete id="reProcdefDelete" parameterType="int">
+        DELETE FROM UWK_RE_PROCDEF WHERE PROCDEF_ID=${PROCDEF_ID}
+    </delete>
+
+    <update id="reProcdefUpdate" parameterType="hashmap">
+        UPDATE UWK_RE_PROCDEF
+        <set>
+            <if test="REV != null">REV=${REV},</if>
+            <if test="CATEGORY != null">CATEGORY='${CATEGORY}',</if>
+            <if test="PROCDEF_NAME != null">PROCDEF_NAME='${PROCDEF_NAME}',</if>
+            <if test="KEY != null">KEY='${KEY}',</if>
+            <if test="VERSION != null">VERSION=${VERSION},</if>
+            <if test="DEPLOYMENT_ID != null">DEPLOYMENT_ID='${DEPLOYMENT_ID}',</if>
+            <if test="RESOURCE_NAME != null">RESOURCE_NAME='${RESOURCE_NAME}',</if>
+            <if test="DGRM_RESOURCE_NAME != null">DGRM_RESOURCE_NAME='${DGRM_RESOURCE_NAME}',</if>
+            <if test="DESCRIPTION != null">DESCRIPTION='${DESCRIPTION}',</if>
+            <if test="HAS_START_FORM_KEY != null">HAS_START_FORM_KEY=${HAS_START_FORM_KEY},</if>
+            <if test="SUSPENSION_STATE != null">SUSPENSION_STATE=${SUSPENSION_STATE}</if>
+        </set>
+        WHERE PROCDEF_ID=${PROCDEF_ID}
+    </update>
+
+    <select id="reProcdefQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT PROCDEF_ID,REV,CATEGORY,PROCDEF_NAME,KEY,VERSION,DEPLOYMENT_ID,RESOURCE_NAME,DGRM_RESOURCE_NAME,
+        DESCRIPTION,HAS_START_FORM_KEY,SUSPENSION_STATE,CONVERT(VARCHAR,CREATE_TIME,112) AS CREATE_TIME  FROM UWK_RE_PROCDEF WHERE 1=1
+        <choose>
+            <when test="PROCDEF_NAME != null and PROCDEF_NAME != ''">
+                AND NAME LIKE '${PROCDEF_NAME}%'  
+            </when>
+        </choose>
+    </select>
+    <!--流程定义管理操作    end  -->
+
+    <!--ID                   NVARCHAR2(64)                   not null,-->
+    <!--REV                  NUMBER,-->
+    <!--BUSINESS_KEY         NVARCHAR2(255),-->
+    <!--PROC_DEF_ID          NVARCHAR2(64),-->
+    <!--SUPER_EXEC           NVARCHAR2(64),-->
+    <!--ACT_ID               NVARCHAR2(255),-->
+    <!--IS_ACTIVE            NUMBER(1),-->
+    <!--IS_CONCURRENT        NUMBER(1),-->
+    <!--IS_SCOPE             NUMBER(1),-->
+    <!--IS_EVENT_SCOPE       NUMBER(1),-->
+    <!--SUSPENSION_STATE     NUMBER,-->
+    <!--CACHED_ENT_STATE     NUMBER-->
+    <!--流程实例管理操作    start  -->
+    <insert id="ruExecutionInsert" parameterType="hashmap">
+		INSERT INTO UWK_RU_EXECUTION (EXECUTION_ID,REV,BUSINESS_KEY,PROC_DEF_ID,SUPER_EXEC,ACT_ID,IS_ACTIVE,IS_CONCURRENT,IS_SCOPE,
+		IS_EVENT_SCOPE,SUSPENSION_STATE,CACHED_ENT_STATE)
+		VALUES (NEXT VALUE FOR SEQ_RU_EXECUTION_ID,${REV},'${BUSINESS_KEY}','${PROC_DEF_ID}','${SUPER_EXEC}','${ACT_ID}',
+		${IS_ACTIVE},${IS_CONCURRENT},${IS_SCOPE},${IS_EVENT_SCOPE},${SUSPENSION_STATE},${CACHED_ENT_STATE})
+	</insert>
+
+    <delete id="ruExecutionDelete" parameterType="int">
+        DELETE FROM UWK_RU_EXECUTION WHERE EXECUTION_ID=${EXECUTION_ID}
+    </delete>
+
+    <update id="ruExecutionUpdate" parameterType="hashmap">
+        UPDATE UWK_RU_EXECUTION
+        <set>
+            <if test="REV != null">REV=${REV},</if>
+            <if test="BUSINESS_KEY != null">BUSINESS_KEY='${BUSINESS_KEY}',</if>
+            <if test="PROC_DEF_ID != null">PROC_DEF_ID='${PROC_DEF_ID}',</if>
+            <if test="SUPER_EXEC != null">SUPER_EXEC='${SUPER_EXEC}',</if>
+            <if test="ACT_ID != null">ACT_ID='${ACT_ID}',</if>
+            <if test="IS_ACTIVE != null">IS_ACTIVE=${IS_ACTIVE},</if>
+            <if test="IS_CONCURRENT != null">IS_CONCURRENT=${IS_CONCURRENT},</if>
+            <if test="IS_SCOPE != null">IS_SCOPE=${IS_SCOPE},</if>
+            <if test="IS_EVENT_SCOPE != null">IS_EVENT_SCOPE=${IS_EVENT_SCOPE},</if>
+            <if test="SUSPENSION_STATE != null">SUSPENSION_STATE=${SUSPENSION_STATE},</if>
+            <if test="CACHED_ENT_STATE != null">CACHED_ENT_STATE=${CACHED_ENT_STATE}</if>
+        </set>
+        WHERE EXECUTION_ID=${EXECUTION_ID}
+    </update>
+
+    <select id="ruExecutionQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT EXECUTION_ID,REV,BUSINESS_KEY,PROC_DEF_ID,SUPER_EXEC,ACT_ID,IS_ACTIVE,IS_CONCURRENT,IS_SCOPE,
+        IS_EVENT_SCOPE,SUSPENSION_STATE,CACHED_ENT_STATE FROM UWK_RU_EXECUTION
+        <!--<choose>-->
+            <!--<when test="NAME != null and NAME != ''">-->
+                <!--AND NAME LIKE '${NAME}%'-->
+            <!--</when>-->
+        <!--</choose>-->
+    </select>
+    <!--流程实例管理操作    end  -->
+
+
+    <!--DEPLOYMENT_ID        VARCHAR2(64)                    not null,-->
+    <!--DNAME                VARCHAR2(255),-->
+    <!--CATEGORY             VARCHAR2(255),-->
+    <!--DEPLOY_TIME          DATE,-->
+    <!--流程部署管理操作    start  -->
+    <insert id="reDeploymentInsert" parameterType="hashmap">
+		INSERT INTO UWK_RE_DEPLOYMENT (DEPLOYMENT_ID,DNAME,CATEGORY)
+		VALUES (NEXT VALUE FOR SEQ_DEPLOYMENT_ID,'${DNAME}','${CATEGORY}')
+	</insert>
+
+    <delete id="reDeploymentDelete" parameterType="int">
+        DELETE FROM UWK_RE_DEPLOYMENT WHERE DEPLOYMENT_ID=${DEPLOYMENT_ID}
+    </delete>
+
+    <update id="reDeploymentUpdate" parameterType="hashmap">
+        UPDATE UWK_RE_DEPLOYMENT
+        <set>
+
+            <if test="DNAME != null">DNAME='${DNAME}',</if>
+            <if test="CATEGORY != null">CATEGORY='${CATEGORY}'</if>
+
+        </set>
+        WHERE DEPLOYMENT_ID=${DEPLOYMENT_ID}
+    </update>
+
+    <select id="reDeploymentQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT DEPLOYMENT_ID,DNAME,CATEGORY,CONVERT(VARCHAR,DEPLOY_TIME, 112) AS DEPLOY_TIME  FROM UWK_RE_DEPLOYMENT
+
+    </select>
+    <!--流程部署管理操作    end  -->
+
+
+    <!--TASK_ID              VARCHAR2(64)                    not null,-->
+    <!--REV                  NUMBER,-->
+    <!--PROC_INST_ID         VARCHAR2(64),-->
+    <!--PROC_DEF_ID          VARCHAR2(64),-->
+    <!--TNAME                VARCHAR2(255),-->
+    <!--PARENT_TASK_ID       VARCHAR2(64),-->
+    <!--DESCRIPTION          VARCHAR2(2000),-->
+    <!--TASK_DEF_KEY         VARCHAR2(255),-->
+    <!--TOWNER               VARCHAR2(255),-->
+    <!--TASSIGNEE            VARCHAR2(255),-->
+    <!--DELEGATION           VARCHAR2(64),-->
+    <!--TPRIORITY            NUMBER,-->
+    <!--DUE_DATE             DATE,-->
+    <!--SUSPENSION_STATE     NUMBER,-->
+    <!--CREATE_TIME          DATE,-->
+    <!--待办任务管理操作    start  -->
+    <select id="ruTaskQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT TASK_ID,REV,PROC_INST_ID,PROC_DEF_ID,TNAME,PARENT_TASK_ID,DESCRIPTION,TASK_DEF_KEY,TOWNER,
+                TASSIGNEE,DELEGATION,TPRIORITY,CONVERT(VARCHAR,DUE_DATE,112) AS DUE_DATE,SUSPENSION_STATE,CONVERT(VARCHAR,CREATE_TIME, 112) AS CREATE_TIME
+        FROM UWK_RU_TASK
+        WHERE 1=1
+        <choose>
+            <when test="TASSIGNEE != null and TASSIGNEE != ''">
+                AND TASSIGNEE = '${TASSIGNEE}'
+            </when>
+        </choose>
+
+    </select>
+    <!--待办任务管理操作    end  -->
+    <!--HI_TASKINST_ID       VARCHAR2(64)                    not null,-->
+    <!--PROC_DEF_ID          VARCHAR2(64),-->
+    <!--TASK_DEF_KEY         VARCHAR2(255),-->
+    <!--PROC_INST_ID         VARCHAR2(64),-->
+    <!--EXECUTION_ID         VARCHAR2(64),-->
+    <!--PARENT_TASK_ID       VARCHAR2(64),-->
+    <!--HTNAME               VARCHAR2(255),-->
+    <!--DESCRIPTION          VARCHAR2(2000),-->
+    <!--OWNER                VARCHAR2(255),-->
+    <!--ASSIGNEE             VARCHAR2(255),-->
+    <!--START_TIME           DATE                            not null,-->
+    <!--CLAIM_TIME           DATE,-->
+    <!--END_TIME             DATE,-->
+    <!--DURATION             NUMBER(19),-->
+    <!--DELETE_REASON        VARCHAR2(2000),-->
+    <!--PRIORITY             NUMBER,-->
+    <!--DUE_DATE             DATE,-->
+    <!--FORM_KEY             VARCHAR2(255),-->
+    <!--CREATE_TIME          DATE                            not null,-->
+    <!--已办任务管理操作    start  -->
+    <select id="hiTaskinstQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT
+        HI_TASKINST_ID,PROC_DEF_ID,TASK_DEF_KEY,PROC_INST_ID,EXECUTION_ID,PARENT_TASK_ID,
+        HTNAME,DESCRIPTION,OWNER,
+        ASSIGNEE,CONVERT(VARCHAR,START_TIME,112) AS START_TIME ,
+        CONVERT(VARCHAR,CLAIM_TIME,112) AS CLAIM_TIME,
+        CONVERT(VARCHAR,END_TIME,112) AS END_TIME,
+        DURATION,DELETE_REASON,PRIORITY,CONVERT(VARCHAR,DUE_DATE,112) AS DUE_DATE,
+        FORM_KEY,CONVERT(VARCHAR,CREATE_TIME,112) AS CREATE_TIME
+        FROM UWK_HI_TASKINST
+        WHERE 1=1
+        <choose>
+            <when test="ASSIGNEE != null and ASSIGNEE != ''">
+                AND ASSIGNEE = '${ASSIGNEE}'
+            </when>
+        </choose>
+
+    </select>
+    <!--已办任务管理操作    end  -->
+
+
+
+</mapper>

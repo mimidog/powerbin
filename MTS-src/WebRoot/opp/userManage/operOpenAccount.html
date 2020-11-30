@@ -1,0 +1,234 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+		<title>人员开户</title>
+		<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+		<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+		<script type="text/javascript">
+			window.$ready = function() {
+				using('form', function() {
+					OperInfoClear();
+				});
+
+			}
+
+			function operAdd() {
+				var USER_CODE = $('#USER_CODE').val();
+				var USER_PASS = $('#USER_PASS').val();
+				USER_PASS = encrypt(USER_PASS, USER_CODE);
+				var USER_NAME = $('#USER_NAME').val();
+				var USER_TYPE = $('#USER_TYPE').combobox('getValue');
+				var USER_STA = $('#USER_STA').combobox('getValue');
+				var ORG_CODE = $('#ORG_CODE').combobox('getValue');
+				var OFF_TEL = $('#OFF_TEL').val();
+				var MOBILE = $('#MOBILE').val();
+				var EMAIL = $('#EMAIL').val();
+				var POST_ID = $('#POST_ID').combobox('getValue');
+				
+				 
+				if(parseInt(USER_CODE) >=  9999999999){
+					alert('ID号已超过最大值,请扩大用户代码序号范围！');
+					return false;
+				}
+			 
+				$('#operOpenAccountForm').form('submit', {
+					req: [{
+						service: 'P0001002',
+						USER_CODE: USER_CODE,
+						USER_NAME: USER_NAME,
+						USER_PASS: USER_PASS,
+						ORG_CODE: ORG_CODE,
+						USER_TYPE: USER_TYPE,
+						USER_STA: USER_STA,
+						OFF_TEL: OFF_TEL,
+						MOBILE: MOBILE,
+						EMAIL: EMAIL,
+						POST_ID: POST_ID
+					}],
+					onSubmit: function() {
+						return $('#operOpenAccountForm').form('validate');
+					},
+					success: function() {
+						OperInfoClear();
+						clearTree();
+						alert('新增成功！');
+					},
+					fail: function(data) {}
+				})
+			}
+
+			function OperInfoClear() {
+				$('#operOpenAccountForm').form('reset');
+				clearTree();
+			}
+
+			function clearTree() {
+				$("#ORG_CODE").combotree('clear');
+			}
+
+			function createUserCode(e) {
+				var userCodeMax = "";
+				//把人员序号查询出来。
+				ajaxRequest({
+					async: false,
+					req: [{
+						service: 'P0000111'
+					}],
+					func: function(data) {
+						userCodeMax = data[0][0]["USER_CODE"];
+					}
+				});
+				if(parseInt(userCodeMax) >= 9999999999){
+					alert('ID号已超过最大值,请扩大用户代码序号范围！');
+					return false;
+				}else{ 
+					//判断如果生成的ID号不大于系统最大长度进行操作
+						ajaxRequest({
+							req: [{
+								service: 'P0000112'
+							}],
+							func: function(data) {
+								var userCode = data[0][0]["USER_CODE"];
+								$("#USER_CODE").val(userCode);
+							}
+						});
+				}
+	 
+			}
+		</script>
+	</head>
+
+	<body style="">
+		<div class="kui-panel" style="margin-top:20px;">
+			<form id="operOpenAccountForm" class="kui-form">
+				<table style="width:500px">
+					<tr>
+						<td align='right'>ID号:</td>
+						<td colspan="3">
+							<input id="USER_CODE" type="text" kui-options="required:true,validType:'numberex[10,10,0]',invalidMessage:'请输入10位以内数字'" class="kui-validatebox" />
+							<!--<a href="javascript:void(0)" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="createUserCode(event)">生成</a>-->
+						</td>
+					</tr>
+					<tr>
+						<td align='right' style="width:120px">人员名称:</td>
+						<td style="width:180px">
+							<input id="USER_NAME" type="text" kui-options="required:true,validType:'val[1,64]'" class="kui-validatebox" />
+						</td>
+						<td align='right' style="width:120px">登录密码:</td>
+						<td style="width:120px">
+							<input id="USER_PASS" type="password" kui-options="required:true,validType:'numchar[6,25]'" class="kui-validatebox" />
+						</td>
+					</tr>
+					<tr>
+						<td align='right'>机构名称:</td>
+						<td>
+							<select class="kui-combotree" name='ORG_CODE' id="ORG_CODE" kui-options="
+
+          required:true,
+
+		  singleSelect:true,
+
+          panelWidth:'250',
+
+          panelHeight:'250',
+
+          req:[{service:'P0001031',ORG_STA:'1'}],
+
+          conf:{nodeId:'ORG_CODE',nodeName:'ORG_CODE_NAME',parNode:'PAR_ORG',treeType:'1'},
+
+          treeExpand:'0',
+
+          onClear:clearTree
+
+          ">
+							</select>
+						</td>
+						<td align='right'>人员类型:</td>
+						<td>
+							<input id="USER_TYPE" type="text" kui-options="required:true,dict:'USER_TYPE'" class="kui-combobox" />
+						</td>
+					</tr>
+					<tr>
+						<td align='right'>人员状态:</td>
+						<td>
+							<input id="USER_STA" type="text" kui-options="required:true,dict:'USER_STA'" class="kui-combobox" />
+						</td>
+						<td align='right'>人员岗位:</td>
+						<td>
+							<!-- input class="kui-combogrid" name="POST_ID" id="POST_ID" kui-options="panelWidth: 330,panelHeight:310,
+                      idField: 'POST_ID',
+                      textField: 'POST_NAME',
+                      singleSelect:true,
+                      showRowDetail:false,
+                      fitColumns:true,
+                      autoFill:true,
+                      width:124,
+                      req:[{
+		            service:'P0001041',
+		            POST_STA:'1'
+		          }],
+                      columns: [[
+                        {field:'POST_ID',title:'岗位代码',width:100},
+						{field:'POST_NAME',title:'岗位名称',width:100}
+                      ]],
+                      fitColumns: true
+                  "/ -->
+
+							<input id="POST_ID" type="text" kui-options="
+
+            		required:true,
+
+                	editable:false,
+
+                	valueField:'POST_ID',
+
+                	textField:'POST_NAME',
+
+                	panelHeight:'250',
+
+                	req:[{
+
+		            service:'P0001045',
+
+		            POST_STA:'1'
+
+		          }]" class="kui-combobox" />
+						</td>
+					</tr>
+					<tr>
+						<td align='right'>办公电话:</td>
+						<td>
+							<input id="OFF_TEL" type="text" class="kui-validatebox" kui-options="validType:'tel'" />
+						</td>
+						<td align='right'>移动电话:</td>
+						<td>
+							<input id="MOBILE" type="text" class="kui-validatebox" kui-options="validType:'mobile'" />
+						</td>
+					</tr>
+					<tr>
+						<td align='right'>电子邮箱:</td>
+						<td>
+							<input id="EMAIL" type="text" class="kui-validatebox" kui-options="validType:'email;length[0,32]',invalidMessage:'请输入32位以内的有效的电子邮箱地址！'" />
+						</td>
+						<td align='right'>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td align='right' colspan="4">
+							<div style="margin-top: 10px;margin-bottom: 10px;" align='right'>
+								<a class="kui-linkbutton" align='left' kui-options="iconCls:'icon-save'" onclick="operAdd()">确定</a>
+								<a class="kui-linkbutton" align='left' kui-options="iconCls:'icon-remove'" onclick="OperInfoClear()">清空</a>
+							</div>
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</body>
+
+</html>

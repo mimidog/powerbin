@@ -1,0 +1,115 @@
+.combo {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border-width: 1px;
+  border-style: solid;
+  overflow: hidden;
+  vertical-align: middle;
+  position:relative;
+}
+.combo .combo-text {
+  font-size: 12px;
+  border: 0px; 
+  height: 21px;
+  border-bottom: 0px !important;
+  margin: 0;
+  padding: 0px;
+  *margin-top: -1px;
+  *height: 20px;
+  _height: 20px;
+  vertical-align: baseline;
+}
+
+.combo-arrow-disabled {
+  opacity: 0.3 !important;
+  filter: alpha(opacity=30) !important;	
+}
+
+.combo-arrow {
+  width: 19px;
+  height: 21px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+  float:right;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+.combo-arrow-hover {
+  opacity: 1.0;
+  filter: alpha(opacity=100);
+}
+.combo-panel {
+  overflow: auto;
+}
+.combo-arrow {
+  background: url('images/combo_arrow.png') no-repeat center center;
+}
+.combo,
+.combo-panel {
+  background-color: #ffffff;
+  border:1px solid #e4e4e4;
+}
+.combo-disabled{
+	border-bottom-color: #e4d4d4 !important;
+}
+.combo{
+  border:1px solid transparent;
+  border-bottom:1px solid #555555;
+  background-color:transparent;
+}
+.combo-validatebox-must {
+	border-bottom-color:red;
+}
+.combo-focus{
+  border:#87C6F9 1px solid !important;
+  box-shadow: 0 0 8px rgba(103, 166, 217, 1);
+}
+/* .combo-arrow {
+  background-color: #E0ECFF;
+} */
+.combo-arrow-hover {
+  background-color: #eaf2ff;
+}
+.combo-none-panel{
+	border: none;
+}
+
+input::-ms-clear{display:none;}
+
+.combo .clear{
+	width:15px;
+	height:100%;
+	display:inline-block;
+	background: url('images/clear-gray.png') no-repeat 3px 7px;
+	position:absolute;
+	right:19px;
+	cursor:pointer;
+	display:none;
+}
+
+.combo-selectAll{
+	white-space:nowrap;
+  	padding: 2px;
+  	font-size: 12px;
+  	padding: 3px;
+  	padding-right: 0px;
+	background-color: white;
+	border-bottom: 1px solid #f3f3f3;
+}
+
+.select-bg{
+	width:43px;
+	height:20px;
+	line-height:20px;
+	display:inline-block;
+	margin-left:3px;
+	text-align:center;
+	cursor:pointer;
+	background: url('images/select-bg.png') no-repeat;
+}
+.combo .validatebox-text:focus {
+	border:0px !important;
+}

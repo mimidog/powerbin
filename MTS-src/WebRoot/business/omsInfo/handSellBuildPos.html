@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>信号文件手工录入</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.form-label {
+    text-align: right;
+    vertical-align: text-bottom;
+    line-height: 20px;
+    vertical-align: bottom;
+}
+.form-table{
+    border: 0px;
+    line-height: 20px;
+}
+.form-table tr{
+    height: 28px;
+    vertical-align: bottom;
+}
+.footer{
+    height: 100px;
+    width: 100%;
+    background-color: #ddd;
+    position: fixed;
+    bottom: 0;
+}
+.stockSpdTab tr{
+    line-height: 20px;
+}
+.stockSpdTab tr{
+    height: 22px;
+    vertical-align: bottom;
+}
+</style>
+<script>
+$(function () {
+    $('#subCendiv_2').height($('#main_sell_layout').height()-$('#subCendiv_1').height()+50)
+})
+
+
+//得到系统日期
+function getSysDate(){
+    var sysControlInfo = commonRequest({
+        service:'M0001001'
+    });
+    return sysControlInfo[0].SYSTEM_DATE;
+}
+//清空form表单的数据行情信息
+function clearFormdate(fomObj,dlgObj) {
+    fomObj.find('input[name=BUILD_PRICE]').val('');
+    fomObj.find('td[name=stk_name]').text('');
+    dlgObj.find('span[name]').text('');
+
+}
+//卖出时股票选择事件
+function stkIdSelect_sell(stkId) {
+    //清算表单内容(股票代码除外)
+    clearFormdate($('#sellStockPost_form'),$('#stockFiveSpeed_dlg_sell'));
+
+    if($.trim(stkId) ==''){
+        return;
+    }
+
+    var rsStkInfo=commonRequest({
+        service:'M0000028',
+        STK_ID:stkId
+    })
+    if(rsStkInfo.length>0){
+        $('#sellStockPost_form').find('td[name=stk_name]').text(rsStkInfo[0].STK_NAME);
+        viewStockFiveSpeed($('#sellStockPost_form'),$('#stockFiveSpeed_dlg_sell'),stkId,'sell');
+    }
+}
+//查询股票五档行情
+function viewStockFiveSpeed(formId,divId,stockId,flag) {
+    var rsStockSpd=commonRequest({
+        service:'M0000052',
+        STK_ID:stockId
+    });
+  if(rsStockSpd.length>0){
+      divId.find('span[name]').each(function () {
+          $(this).text(rsStockSpd[0][$(this).attr('name')]);
+      });
+      if(flag=='buy')
+            formId.find(':input[name=BUILD_PRICE]').val(rsStockSpd[0].BUY_ONE);
+      else
+          formId.find(':input[name=BUILD_PRICE]').val(rsStockSpd[0].SELL_ONE);
+  }else{
+      alert('提示信息','该股票的行情信息不存在','error',function () {
+          formId.form('clear');
+          formId.find('td[name]').text('');
+          divId.find('td[name]').text('');
+      });
+  }
+}
+/***卖出建仓提交***/
+function sellStockPos_submit() {
+    $('#sellStockPost_form').form('submit',{
+        req:[{
+            service:'M0000078',
+            STK_NAME:$('#sellStockPost_form').find('td[name=stk_name]').text(),
+            OMS_STATUS:'0' ,
+            TRADE_DIRECT:'2',   //交易方向:1-买入,2-卖出
+            ORDER_TYPE:'1'  ,   //下单类型: 0-自动下单,1-手动下单
+            IS_OMS:'0',        //是否已经进入订单
+            OP_ID:g_user.USER_CODE,
+            AUDIT_OP_ID:'',   //审核人编号
+            AUDIT_SIGNAL_STATE:'0'
+        }],
+        success:function(){
+            alert('手工录入卖出方向的信号成功！');
+            $('#mts_SELL_STOCK_POS_table').datagrid('reload');
+            $('#sellStockPost_form').form('clear');
+            $('#sellStockPost_form').find('td[name=stk_name]').text('');
+        }
+    });
+}
+function  stkIdValidate(obj,value) {
+    if($(obj).attr('dontFocus2Next')==undefined){
+        $(obj).val('');
+    }
+}
+
+function holdStockMaketTotal_table_click(rowIndex, rowData) {
+    $('#stkId_sll').val(rowData.INST_ID)
+    stkIdSelect_sell(rowData.INST_ID);
+}
+
+</script>
+</head>
+<body>
+<div id="tab_main_div" class="kui-tabs" kui-options="plain:true,fit:true" >
+    <div title="卖出" iconCls="icon-money"  style="border: 1px #3BAAF0 solid;">
+        <div  id="main_sell_layout" class="kui-layout" kui-options="fit:true">
+            <div kui-options="region:'west'" style="width: 305px;padding-top: 50px;">
+                <form id="sellStockPost_form" style="top: 20px;" class="kui-form">
+                    <table width="100%" class="form-table">
+                        <tr >
+                            <td class="form-label"  width="90">证券代码：</td>
+                            <td >
+                                <input id="stkId_sll" name="STK_ID" class="kui-autocomplete"  kui-options="required:true,
+                                    minLength:3,max: 32,req:[{service:'M0000028'}], keyField:'STK_ID',params:'STK_ID_LIKE',
+                                    sourceField:'STK_ID', mustMatch:true,matchCase:false, matchContains:false,
+                                    scrollHeight:100,onSelect:stkIdSelect_sell" style="width: 150px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-label"  width="90">股票名称：</td>
+                            <td name="stk_name" >
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-label"  width="90">价格：</td>
+                            <td >
+                                <input  name="BUILD_PRICE" class="kui-validatebox" kui-options="required:true,validType:'money[15,4]'"
+                                        style="width: 150px;"  AUTOCOMPLETE="OFF"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-label"  width="90">信号类型：</td>
+                            <td >
+                                <input name="SIGNAL_TYPE" class="kui-combobox" kui-options="required:true,dict:'SIGNAL_TYPE',autoFill:true" style="width: 150px;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="margin-top: 20px; margin-left: 140px;">
+                        <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="sellStockPos_submit()">提交</a>
+                    </div>
+                </form>
+                <div id="stockFiveSpeed_dlg_sell" style="height: 310px;width: 305px; background: #b4cfff;margin-bottom: 0px;" class="footer">
+                    <table border="0" style="border-bottom: 1px dotted #666;border-collapse: separate;border-spacing: 1.5px;"
+                           width="100%" cellpadding="0" cellspacing="0" class="stockSpdTab">
+                        <tr>
+                            <td width="20" class="td-txt-center">卖⑤</td>
+                            <td width="20" class="td-txt-right" >
+                                <span name="SELL_FIVE"></span>
+                            </td>
+                            <td width="20" class="td-txt-center"></td>
+                            <td width="40" class="td-txt-right" >
+                                <span name="SELL_FIVE_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-txt-center">卖④</td>
+                            <td class="td-txt-right" >
+                                <span name="SELL_FOUR"></span>
+                            </td>
+                            <td width="10" class="td-txt-center"></td>
+                            <td  class="td-txt-right" >
+                                <span name="SELL_FOUR_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-txt-center">卖③</td>
+                            <td  class="td-txt-right" >
+                                <span name="SELL_THREE"></span>
+                            </td>
+                            <td ></td>
+                            <td  class="td-txt-right">
+                                <span name="SELL_THREE_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  class="td-txt-center">卖②</td>
+                            <td class="td-txt-right" >
+                                <span name="SELL_TWO"></span>
+                            </td>
+                            <td ></td>
+                            <td class="td-txt-right">
+                                <span name="SELL_TWO_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-txt-center">卖①</td>
+                            <td  class="td-txt-right" >
+                                <span name="SELL_ONE"></span>
+                            </td>
+                            <td ></td>
+                            <td  class="td-txt-right" >
+                                <span name="SELL_ONE_VOLUME"></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table border="0" style="border-bottom: 1px dotted #666;border-collapse: separate;border-spacing: 1.5px;"
+                           width="100%" cellpadding="0" cellspacing="0" class="stockSpdTab">
+                        <tr>
+                            <td class="td-txt-center">买①</td>
+                            <td  class="td-txt-right" >
+                                <span name="BUY_ONE"></span>
+                            </td>
+                            <td ></td>
+                            <td  class="td-txt-right" >
+                                <span name="BUY_ONE_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  class="td-txt-center">买②</td>
+                            <td class="td-txt-right">
+                                <span name="BUY_TWO"></span>
+                            </td>
+                            <td ></td>
+                            <td class="td-txt-right" >
+                                <span name="BUY_TWO_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-txt-center">买③</td>
+                            <td  class="td-txt-right" >
+                                <span name="BUY_THREE"></span>
+                            </td>
+                            <td ></td>
+                            <td  class="td-txt-right" >
+                                <span name="BUY_THREE_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-txt-center">买④</td>
+                            <td class="td-txt-right" >
+                                <span name="BUY_FOUR"></span>
+                            </td>
+                            <td width="10" class="td-txt-center"></td>
+                            <td  class="td-txt-right" >
+                                <span name="BUY_FOUR_VOLUME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20" class="td-txt-center">买⑤</td>
+                            <td width="30" class="td-txt-right" >
+                                <span name="BUY_FIVE"></span>
+                            </td>
+                            <td width="20" class="td-txt-center"></td>
+                            <td width="40" class="td-txt-right" >
+                                <span name="BUY_FIVE_VOLUME"></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table border="0" style="border-bottom: 1px dotted #666;border-collapse: separate;border-spacing: 1px;" width="100%"
+                           cellpadding="0" cellspacing="0" class="stockSpdTab">
+                        <tr>
+                            <td width="20" class="td-txt-center">今开</td>
+                            <td width="20" class="td-txt-right" >
+                                <span name="TODAY_PRICE"></span>
+                            </td>
+                            <td width="20" class="td-txt-right">昨收</td>
+                            <td width="30" class="td-txt-right" >
+                                <span name="YEST_PRICE"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20" class="td-txt-center">涨停</td>
+                            <td width="20" class="td-txt-right">
+                                <span name="LIMIT_UP"></span>
+                            </td>
+                            <td width="15" class="td-txt-right">最高</td>
+                            <td width="30" class="td-txt-right">
+                                <span name="HIGHEST"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20" class="td-txt-center">跌停</td>
+                            <td width="20" class="td-txt-right">
+                                <span name="LIMIT_DOWN"></span>
+                            </td>
+                            <td width="15" class="td-txt-right">最低</td>
+                            <td width="30" class="td-txt-right">
+                                <span name="LOWEST"></span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div id="centerDiv"  kui-options="region:'center'" >
+                <div id="subCendiv_1" style="height:300px">
+                    <table id="holdStockMaketTotal_table" class="kui-datagrid"></table>
+                </div>
+                <div id="subCendiv_2" >
+                   <table id="mts_SELL_STOCK_POS_table" class="kui-datagrid"></table>
+               </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

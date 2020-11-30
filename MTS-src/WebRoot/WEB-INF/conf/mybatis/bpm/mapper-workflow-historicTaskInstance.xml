@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricTaskInstanceEntity">
+  
+  <!-- HISTORIC TASK INSTANCE INSERT -->
+  
+  <insert id="BpmHistoricTaskInstanceInsert" parameterType="hashmap">
+      insert into UWK_HI_TASKINST (
+        HI_TASKINST_ID,
+        PROC_DEF_ID,
+        PROC_INST_ID,
+        EXECUTION_ID,
+        HTNAME,
+        PARENT_TASK_ID,
+        DESCRIPTION,
+        OWNER,
+        ASSIGNEE,
+        START_TIME,
+        CLAIM_TIME,
+        END_TIME,
+        DURATION,
+        DELETE_REASON,
+        TASK_DEF_KEY,
+        FORM_KEY,
+        PRIORITY,
+        DUE_DATE,
+        CREATE_TIME,
+        PRE_USER_TASK
+      ) values (
+        #{task.id ,jdbcType=VARCHAR},
+        #{task.processDefinitionId, jdbcType=VARCHAR},
+        #{task.processInstanceId, jdbcType=VARCHAR},
+        #{task.executionId, jdbcType=VARCHAR},
+        #{task.name ,jdbcType=VARCHAR},
+        #{task.parentTaskId ,jdbcType=VARCHAR},
+        #{task.description ,jdbcType=VARCHAR},
+        #{task.owner ,jdbcType=VARCHAR},
+        #{task.assignee ,jdbcType=VARCHAR},
+        #{task.startTime, jdbcType=TIMESTAMP},
+        #{task.claimTime, jdbcType=TIMESTAMP},
+        #{task.endTime, jdbcType=TIMESTAMP},
+        #{task.durationInMillis ,jdbcType=BIGINT},
+        #{task.deleteReason ,jdbcType=VARCHAR},
+        #{task.taskDefinitionKey ,jdbcType=VARCHAR},
+        #{task.formKey ,jdbcType=VARCHAR},
+        #{task.priority, jdbcType=INTEGER},
+        #{task.dueDate, jdbcType=TIMESTAMP},
+        #{task.createTime, jdbcType=TIMESTAMP},
+        #{task.preUserTask ,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!-- HISTORIC TASK INSTANCE UPDATE -->
+  
+  <update id="BpmHistoricTaskInstanceUpdate" parameterType="hashmap">
+    update UWK_HI_TASKINST set
+      EXECUTION_ID = #{task.executionId, jdbcType=VARCHAR},
+      HTNAME = #{task.name, jdbcType=VARCHAR},
+      PARENT_TASK_ID = #{task.parentTaskId, jdbcType=VARCHAR},
+      DESCRIPTION = #{task.description, jdbcType=VARCHAR},
+      OWNER = #{task.owner, jdbcType=VARCHAR},
+      ASSIGNEE = #{task.assignee, jdbcType=VARCHAR},
+      CLAIM_TIME = #{task.claimTime, jdbcType=TIMESTAMP},
+      END_TIME = #{task.endTime, jdbcType=TIMESTAMP},
+      DURATION = #{task.durationInMillis ,jdbcType=BIGINT},
+      DELETE_REASON = #{task.deleteReason ,jdbcType=VARCHAR},
+      TASK_DEF_KEY = #{task.taskDefinitionKey ,jdbcType=VARCHAR},
+      FORM_KEY = #{task.formKey ,jdbcType=VARCHAR},
+      PRIORITY = #{task.priority, jdbcType=INTEGER},
+      DUE_DATE = #{task.dueDate, jdbcType=TIMESTAMP},
+      PRE_USER_TASK = #{task.preUserTask, jdbcType=VARCHAR}
+    where HI_TASKINST_ID = #{task.id}
+  </update>
+
+  <!-- HISTORIC TASK INSTANCE DELETE -->
+  
+  <delete id="BpmHistoricTaskInstanceDelete" parameterType="hashmap">
+    delete from UWK_HI_TASKINST where HI_TASKINST_ID = #{task.id}
+  </delete>
+
+  <!-- HISTORIC TASK INSTANCE RESULT MAP -->
+
+  <resultMap id="historicTaskInstanceResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricTaskInstanceEntity">
+    <id property="id" column="HI_TASKINST_ID" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="name" column="HTNAME" jdbcType="VARCHAR" />
+    <result property="parentTaskId" column="PARENT_TASK_ID" jdbcType="VARCHAR" />
+    <result property="description" column="DESCRIPTION" jdbcType="VARCHAR" />
+    <result property="owner" column="OWNER" jdbcType="VARCHAR" />
+    <result property="assignee" column="ASSIGNEE" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME" jdbcType="TIMESTAMP" />
+    <result property="claimTime" column="CLAIM_TIME" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION" jdbcType="BIGINT" />
+    <result property="deleteReason" column="DELETE_REASON" jdbcType="VARCHAR" />
+    <result property="taskDefinitionKey" column="TASK_DEF_KEY" jdbcType="VARCHAR" />
+    <result property="formKey" column="FORM_KEY" jdbcType="VARCHAR" />
+    <result property="priority" column="PRIORITY" jdbcType="INTEGER" />
+    <result property="dueDate" column="DUE_DATE" jdbcType="TIMESTAMP" />
+    <result property="preUserTask" column="PRE_USER_TASK" jdbcType="VARCHAR"/>
+    <association property="processDefinition" column="PROCDEF_ID" javaType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity">
+    	<result property="name" column="DEF_NAME"  jdbcType="VARCHAR" />
+    	<result property="key" column="DEF_KEY"  jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  
+  <resultMap id="historicTaskInstanceAndVariablesResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricTaskInstanceEntity">
+    <id property="id" column="HI_TASKINST_ID" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="name" column="HTNAME" jdbcType="VARCHAR" />
+    <result property="parentTaskId" column="PARENT_TASK_ID" jdbcType="VARCHAR" />
+    <result property="description" column="DESCRIPTION" jdbcType="VARCHAR" />
+    <result property="owner" column="OWNER" jdbcType="VARCHAR" />
+    <result property="assignee" column="ASSIGNEE" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME" jdbcType="TIMESTAMP" />
+    <result property="claimTime" column="CLAIM_TIME" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION" jdbcType="BIGINT" />
+    <result property="deleteReason" column="DELETE_REASON" jdbcType="VARCHAR" />
+    <result property="taskDefinitionKey" column="TASK_DEF_KEY" jdbcType="VARCHAR" />
+    <result property="formKey" column="FORM_KEY" jdbcType="VARCHAR" />
+    <result property="priority" column="PRIORITY" jdbcType="INTEGER" />
+    <result property="dueDate" column="DUE_DATE" jdbcType="TIMESTAMP" />
+    <result property="preUserTask" column="PRE_USER_TASK" jdbcType="VARCHAR"/>
+    <association property="taskDetail" column="TASK_DETAIL_ID" javaType="com.szkingdom.frame.bpm.kworkflow.entity.HistoricTaskDetailEntity">
+    	<id property="taskId" column="TASK_DETAIL_ID" jdbcType="VARCHAR"/>
+    	<result property="processInstanceId" column="TASK_DETAIL_PROC_INST_ID" jdbcType="VARCHAR"/>
+    	<result property="attribute1" column="TASK_DETAIL_ATTRI1"  jdbcType="VARCHAR" />
+    	<result property="attribute2" column="TASK_DETAIL_ATTRI2"  jdbcType="VARCHAR" />
+    	<result property="attribute3" column="TASK_DETAIL_ATTRI3"  jdbcType="VARCHAR" />
+    	<result property="attribute4" column="TASK_DETAIL_ATTRI4"  jdbcType="VARCHAR" />
+    	<result property="attribute5" column="TASK_DETAIL_ATTRI5"  jdbcType="VARCHAR" />
+    	<result property="attribute6" column="TASK_DETAIL_ATTRI6"  jdbcType="VARCHAR" />
+    	<result property="attribute7" column="TASK_DETAIL_ATTRI7"  jdbcType="VARCHAR" />
+    	<result property="attribute8" column="TASK_DETAIL_ATTRI8"  jdbcType="VARCHAR" />
+    	<result property="attribute9" column="TASK_DETAIL_ATTRI9"  jdbcType="VARCHAR" />
+    	<result property="attribute10" column="TASK_DETAIL_ATTRI10"  jdbcType="VARCHAR" />
+    </association>
+    <collection property="queryVariables" column="VAR.HI_VARINST_ID" javaType="ArrayList" ofType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricVariableInstanceEntity">
+      <id property="id" column="VAR_ID" jdbcType="VARCHAR"/>
+      <result property="name" column="VAR_NAME" javaType="String" jdbcType="VARCHAR" />
+      <result property="variableType" column="VAR_TYPE" typeHandler="VariableTypeTypeHandler"/>
+      <result property="revision" column="VAR_REV" jdbcType="INTEGER" />
+      <result property="processInstanceId" column="VAR_PROC_INST_ID" jdbcType="VARCHAR" />
+      <result property="executionId" column="VAR_EXECUTION_ID" jdbcType="VARCHAR" />
+      <result property="taskId" column="VAR_TASK_ID" jdbcType="VARCHAR" />
+      <result property="byteArrayRef" column="VAR_BYTEARRAY_ID" typeHandler="ByteArrayRefTypeHandler"/>
+      <result property="doubleValue" column="VAR_DOUBLE" jdbcType="DOUBLE" />
+      <result property="textValue" column="VAR_TEXT" jdbcType="VARCHAR" />
+      <result property="textValue2" column="VAR_TEXT2" jdbcType="VARCHAR" />
+      <result property="longValue" column="VAR_LONG" jdbcType="BIGINT" />
+    </collection>
+    <collection property="preHistoricTasks" column="HISTORICTASK.TASK_DEF_KEY" javaType="ArrayList" ofType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricTaskInstanceEntity">
+    	<id property="id" column="PRE_HI_TASKINST_ID" jdbcType="VARCHAR" />
+    	<result property="assignee" column="PRE_HISTORIC_ASSIGNEE" jdbcType="VARCHAR" />
+	    <result property="taskDefinitionKey" column="PRE_HISTORIC_TASK_DEF_KEY" jdbcType="VARCHAR" />
+	    <result property="name" column="PRE_HISTORIC_HTNAME" jdbcType="VARCHAR" />
+	    <result property="owner" column="PRE_HISTORIC_OWNER" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
+  <!-- HISTORIC TASK INSTANCE SELECT -->
+  
+  <select id="BpmHistoricTaskInstanceSelect" parameterType="string" resultMap="historicTaskInstanceResultMap">
+    select * from UWK_HI_TASKINST where HI_TASKINST_ID = #{id}
+  </select>
+  
+  <select id="BpmHistoricTaskInstanceIdsSelectByProcessInstanceId" resultType="string" parameterType="hashmap" >
+    select HI_TASKINST_ID 
+    from UWK_HI_TASKINST 
+    where PROC_INST_ID = #{processInstanceId}
+  </select>
+
+  <select id="BpmHistoricTaskInstancesSelectByQueryCriteria" parameterType="hashmap" resultMap="historicTaskInstanceResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select distinct RES.* <include refid="bpm.limitBetween"/>,
+    D.PROCDEF_NAME  as DEF_NAME,D.PROCDEF_KEY as DEF_KEY
+   	<include refid="selectHistoricTaskInstancesByQueryCriteriaSql"/>
+  		<include refid="bpm.orderBy"/>
+   	<include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmHistoricTaskInstanceSelectCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select count(RES.HI_TASKINST_ID)
+    <if test="!criteria.registBusiness">
+    	<include refid="selectHistoricTaskInstancesByQueryCriteriaSql"/>
+    </if>
+    <if test="criteria.registBusiness">
+    	<include refid="selectHistoricTaskInstancesWithVariablesByQueryCriteriaSql"/>
+    </if>
+  </select>
+  
+  <sql id="selectHistoricTaskInstancesByQueryCriteriaSql">
+    from UWK_HI_TASKINST RES
+    <include refid="commonSelectHistoricTaskInstancesByQueryCriteriaSql"/>
+  </sql>
+  
+  <select id="BpmHistoricTaskInstancesSelectWithVariablesByQueryCriteria" parameterType="hashmap" resultMap="historicTaskInstanceAndVariablesResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select distinct RES.*,
+    VAR.HI_VARINST_ID as VAR_ID, VAR.HVNAME as VAR_NAME, VAR.VAR_TYPE as VAR_TYPE, VAR.REV as VAR_REV,
+    VAR.PROC_INST_ID as VAR_PROC_INST_ID, VAR.EXECUTION_ID as VAR_EXECUTION_ID, VAR.TASK_ID as VAR_TASK_ID,
+    VAR.BYTEARRAY_ID as VAR_BYTEARRAY_ID, VAR.DOUBLETYPE as VAR_DOUBLE, 
+    VAR.TEXTTYPE as VAR_TEXT, VAR.TEXT2TYPE as VAR_TEXT2, VAR.LONGTYPE as VAR_LONG
+    <if test="criteria.includeTaskLocalVariables and criteria.registBusiness">
+   	,TASK_DETAIL.TASK_ID TASK_DETAIL_ID,TASK_DETAIL.ATTR_1 AS TASK_DETAIL_ATTRI1,TASK_DETAIL.ATTR_2 AS TASK_DETAIL_ATTRI2,
+   	TASK_DETAIL.ATTR_3 AS TASK_DETAIL_ATTRI3,TASK_DETAIL.ATTR_4 AS TASK_DETAIL_ATTRI4,TASK_DETAIL.ATTR_5 AS TASK_DETAIL_ATTRI5,
+   	TASK_DETAIL.ATTR_6 AS TASK_DETAIL_ATTRI6,TASK_DETAIL.ATTR_7 AS TASK_DETAIL_ATTRI7,TASK_DETAIL.ATTR_8 AS TASK_DETAIL_ATTRI8,
+   	TASK_DETAIL.ATTR_9 AS TASK_DETAIL_ATTRI9,TASK_DETAIL.ATTR_10 AS TASK_DETAIL_ATTRI10, TASK_DETAIL.PROC_INST_ID TASK_DETAIL_PROC_INST_ID
+   	</if>
+    <include refid="bpm.limitBetween"/>
+    <include refid="selectHistoricTaskInstancesWithVariablesByQueryCriteriaSql"/> 
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+    <select id="BpmHistoricTaskInstancesSelectWithVariablesByQueryCriteria_MSSQL" parameterType="hashmap" resultMap="historicTaskInstanceAndVariablesResultMap">
+    <include refid="bpm.limitBefore"/>
+    select distinct TEMPRES_ID as HI_TASKINST_ID,
+    TEMPRES_PROC_DEF_ID as PROC_DEF_ID, TEMPRES_PROC_INST_ID as PROC_INST_ID, TEMPRES_EXECUTION_ID as EXECUTION_ID,
+    TEMPRES_NAME as NAME, TEMPRES_PARENT_TASK_ID as PARENT_TASK_ID,
+    TEMPRES_DESCRIPTION as DESCRIPTION, TEMPRES_OWNER as OWNER, TEMPRES_ASSIGNEE as ASSIGNEE,
+    TEMPRES_START_TIME as START_TIME, TEMPRES_CLAIM_TIME as CLAIM_TIME, TEMPRES_END_TIME as END_TIME,
+    TEMPRES_DURATION as DURATION, TEMPRES_TASK_DEF_KEY as TASK_DEF_KEY, TEMPRES_FORM_KEY as FORM_KEY,
+    TEMPRES_PRIORITY as PRIORITY, TEMPRES_DUE_DATE as DUE_DATE,
+    TEMPRES_DELETE_REASON as DELETE_REASON,
+    TEMPVAR_ID as VAR_ID, TEMPVAR_NAME as VAR_NAME, TEMPVAR_TYPE as VAR_TYPE, TEMPVAR_REV as VAR_REV,
+    TEMPVAR_PROC_INST_ID as VAR_PROC_INST_ID, TEMPVAR_EXECUTION_ID as VAR_EXECUTION_ID, TEMPVAR_TASK_ID as VAR_TASK_ID,
+    TEMPVAR_BYTEARRAY_ID as VAR_BYTEARRAY_ID, TEMPVAR_DOUBLE as VAR_DOUBLE, 
+    TEMPVAR_TEXT as VAR_TEXT, TEMPVAR_TEXT2 as VAR_TEXT2, TEMPVAR_LONG as VAR_LONG
+    <include refid="bpm.limitOuterJoinBetween"/>
+    RES.HI_TASKINST_ID as TEMPRES_ID, RES.PROC_DEF_ID as TEMPRES_PROC_DEF_ID, RES.PROC_INST_ID as TEMPRES_PROC_INST_ID, 
+    RES.EXECUTION_ID as TEMPRES_EXECUTION_ID, RES.HTNAME as TEMPRES_NAME , RES.PARENT_TASK_ID as TEMPRES_PARENT_TASK_ID,
+    RES.DESCRIPTION as TEMPRES_DESCRIPTION, RES.OWNER as TEMPRES_OWNER, RES.ASSIGNEE as TEMPRES_ASSIGNEE,
+    RES.START_TIME as TEMPRES_START_TIME, RES.END_TIME as TEMPRES_END_TIME, RES.CLAIM_TIME as TEMPRES_CLAIM_TIME,
+    RES.DURATION as TEMPRES_DURATION, RES.TASK_DEF_KEY as TEMPRES_TASK_DEF_KEY,
+    RES.FORM_KEY as TEMPRES_FORM_KEY, RES.PRIORITY as TEMPRES_PRIORITY,
+    RES.DUE_DATE as TEMPRES_DUE_DATE, RES.DELETE_REASON as TEMPRES_DELETE_REASON,
+    VAR.HI_VARINST_ID as TEMPVAR_ID, VAR.HVNAME as TEMPVAR_NAME, VAR.VAR_TYPE as TEMPVAR_TYPE, VAR.REV as TEMPVAR_REV,
+    VAR.PROC_INST_ID as TEMPVAR_PROC_INST_ID, VAR.EXECUTION_ID as TEMPVAR_EXECUTION_ID, VAR.TASK_ID as TEMPVAR_TASK_ID,
+    VAR.BYTEARRAY_ID as TEMPVAR_BYTEARRAY_ID, VAR.DOUBLETYPE as TEMPVAR_DOUBLE, 
+    VAR.TEXTTYPE as TEMPVAR_TEXT, VAR.TEXT2TYPE as TEMPVAR_TEXT2, VAR.LONGTYPE as TEMPVAR_LONG
+    <include refid="selectHistoricTaskInstancesWithVariablesByQueryCriteriaSql"/> 
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <sql id="selectHistoricTaskInstancesWithVariablesByQueryCriteriaSql">  
+    <if test="!criteria.registBusiness">
+    from UWK_HI_TASKINST RES
+    </if>
+    <if test="criteria.registBusiness">
+    from (SELECT * FROM (SELECT DISTINCT RES.*, ROW_NUMBER() OVER (PARTITION BY RES.PRIORITY,TASK_DETAIL.ATTR_1 ORDER BY RES.CREATE_TIME) 
+    	TEMP_PRIORITY FROM UWK_HI_TASKINST RES LEFT JOIN UWK_HI_TASKDETAIL TASK_DETAIL ON RES.HI_TASKINST_ID  = TASK_DETAIL.TASK_ID) 
+    	where TEMP_PRIORITY = 1 ) RES
+    </if> 
+    <if test="criteria.includeTaskLocalVariables &amp;&amp; criteria.registBusiness">
+      	 left join UWK_HI_TASKDETAIL TASK_DETAIL on RES.HI_TASKINST_ID = TASK_DETAIL.TASK_ID
+    </if>
+    <choose>
+      <when test="criteria.includeTaskLocalVariables &amp;&amp; criteria.includeProcessVariables">
+        left outer join UWK_HI_VARINST VAR ON RES.HI_TASKINST_ID = VAR.TASK_ID or RES.PROC_INST_ID = VAR.EXECUTION_ID
+      </when>
+      <otherwise>
+        <if test="criteria.includeTaskLocalVariables">
+          left outer join UWK_HI_VARINST VAR ON RES.HI_TASKINST_ID = VAR.TASK_ID
+        </if>
+        <if test="criteria.includeProcessVariables">
+          left outer join UWK_HI_VARINST VAR ON RES.PROC_INST_ID = VAR.EXECUTION_ID and VAR.TASK_ID is null
+        </if>
+      </otherwise>
+    </choose>
+    <include refid="commonSelectHistoricTaskInstancesByQueryCriteriaSql"/>
+    <if test="criteria.registBusiness">
+    <include refid="registBusinessByHistoricTaskQueryCriteriaSql"/>
+    </if>
+  </sql>
+  
+  <sql id="commonSelectHistoricTaskInstancesByQueryCriteriaSql">
+    <if test="criteria.candidateUser != null || criteria.candidateGroups != null">
+      inner join UWK_HI_IDENTITYLINK HI on HI.TASK_ID = RES.HI_TASKINST_ID
+    </if>
+    <if test="criteria.processFinished || criteria.processUnfinished || criteria.processInstanceBusinessKey != null || criteria.processInstanceBusinessKeyLike != null">
+      inner join UWK_HI_PROCINST HPI ON RES.PROC_INST_ID = HPI.HI_PROCINST_ID
+    </if>
+    <!-- <if test="criteria.processDefinitionKey != null || criteria.processDefinitionKeyLike != null || criteria.processDefinitionName != null || criteria.processDefinitionNameLike != null"> -->
+      inner join UWK_RE_PROCDEF D on RES.PROC_DEF_ID = D.PROCDEF_ID
+    <!-- </if> -->
+    <foreach collection="criteria.queryVariableValues" index="index" item="var">
+      <choose>
+        <when test="var.local">
+          inner join UWK_HI_VARINST A${index} on RES.HI_TASKINST_ID = A${index}.TASK_ID 
+        </when>
+        <otherwise>
+          inner join UWK_HI_VARINST A${index} on RES.PROC_INST_ID = A${index}.PROC_INST_ID 
+        </otherwise>
+      </choose>       
+    </foreach>
+    <where>
+      <if test="criteria.taskId != null">
+        RES.HI_TASKINST_ID = #{criteria.taskId}
+      </if>
+      <if test="criteria.processDefinitionId != null">
+        and RES.PROC_DEF_ID = #{criteria.processDefinitionId}
+      </if>
+      <if test="criteria.processDefinitionKey != null">
+        and D.PROCDEF_KEY = #{criteria.processDefinitionKey}
+      </if>
+      <if test="criteria.processDefinitionKeyLike != null">
+        and D.PROCDEF_KEY like '%${criteria.processDefinitionKeyLike}%'
+      </if>
+      <if test="criteria.processInstanceId != null">
+        and RES.PROC_INST_ID = #{criteria.processInstanceId}
+      </if>
+      <if test="criteria.processInstanceBusinessKey != null">
+        and HPI.BUSINESS_KEY = #{criteria.processInstanceBusinessKey}
+      </if>
+      <if test="criteria.processInstanceBusinessKeyLike != null">
+        and HPI.BUSINESS_KEY like '%${criteria.processInstanceBusinessKeyLike}%'
+      </if>
+      <if test="criteria.taskDefinitionKey != null">
+        and RES.TASK_DEF_KEY = #{criteria.taskDefinitionKey}
+      </if>
+      <if test="criteria.taskDefinitionKeyLike != null">
+        and RES.TASK_DEF_KEY like '%${criteria.taskDefinitionKeyLike}%'
+      </if>
+      <if test="criteria.executionId != null">
+        and RES.EXECUTION_ID = #{criteria.executionId}
+      </if>
+      <choose>
+      	<when test="criteria.ignoredCase">
+	      	  <if test="criteria.taskName != null">
+		        and LOWER(RES.HTNAME) = LOWER(#{criteria.taskName})
+		      </if>
+		      <if test="criteria.taskNameLike != null">
+		        and LOWER(RES.HTNAME) like LOWER('%${criteria.taskNameLike}%')
+		      </if>
+		      <if test="criteria.processDefinitionName != null">
+		        and LOWER(D.PROCDEF_NAME) = LOWER(#{criteria.processDefinitionName})
+		      </if>
+		      <if test="criteria.processDefinitionNameLike != null">
+		        and LOWER(D.PROCDEF_NAME) like LOWER('%${criteria.processDefinitionNameLike}%')
+		      </if>
+	     </when>
+	     <otherwise>
+	     	  <if test="criteria.taskName != null">
+		        and RES.HTNAME = #{criteria.taskName}
+		      </if>
+		      <if test="criteria.taskNameLike != null">
+		        and RES.HTNAME like '%${criteria.taskNameLike}%'
+		      </if>
+		      <if test="criteria.processDefinitionName != null">
+		        and D.PROCDEF_NAME = #{criteria.processDefinitionName}
+		      </if>
+		      <if test="criteria.processDefinitionNameLike != null">
+		        and D.PROCDEF_NAME like '%${criteria.processDefinitionNameLike}%'
+		      </if>
+	     </otherwise>
+	  </choose>
+      <if test="criteria.taskParentTaskId != null">
+        and RES.PARENT_TASK_ID = #{criteria.taskParentTaskId}
+      </if>
+      <if test="criteria.taskDescription != null">
+        and RES.DESCRIPTION = #{criteria.taskDescription}
+      </if>
+      <if test="criteria.taskDescriptionLike != null">
+        and RES.DESCRIPTION like '%${criteria.taskDescriptionLike}%'
+      </if>
+      <if test="criteria.taskDeleteReason != null">
+        and RES.DELETE_REASON = #{criteria.taskDeleteReason}
+      </if>
+      <if test="criteria.taskDeleteReasonLike != null">
+        and RES.DELETE_REASON like '%${criteria.taskDeleteReasonLike}%'
+      </if>
+      <if test="criteria.taskOwner != null">
+        and RES.OWNER = #{criteria.taskOwner}
+      </if>
+      <if test="criteria.taskOwnerLike != null">
+        and RES.OWNER like '%${criteria.taskOwnerLike}%'
+      </if>
+      <if test="criteria.taskAssigneeLike != null">
+        and RES.ASSIGNEE like '%${criteria.taskAssigneeLike}%'
+      </if>
+      <if test="criteria.taskPriority != null">
+        and RES.PRIORITY = #{criteria.taskPriority}
+      </if>
+      <if test="criteria.taskMinPriority != null">
+        and RES.PRIORITY &gt;= #{criteria.taskMinPriority}
+      </if>
+      <if test="criteria.taskMaxPriority != null">
+        and RES.PRIORITY &lt;= #{criteria.taskMaxPriority}
+      </if>
+      <if test="criteria.unfinished">
+        and RES.END_TIME is null
+      </if>
+      <if test="criteria.finished">
+        and RES.END_TIME is not null
+      </if>
+      <if test="criteria.processFinished">
+        and HPI.END_TIME is not null
+      </if>
+      <if test="criteria.processUnfinished">
+        and HPI.END_TIME is null
+      </if>
+      <if test="criteria.dueDate != null">
+        and RES.DUE_DATE = #{criteria.dueDate}
+      </if>
+      <if test="criteria.dueBefore != null">
+        and RES.DUE_DATE &lt; #{criteria.dueBefore}
+      </if>
+      <if test="criteria.dueAfter != null">
+        and RES.DUE_DATE &gt; #{criteria.dueAfter}
+      </if>
+      <if test="criteria.withoutDueDate">
+        and RES.DUE_DATE is null
+      </if>
+      <if test="criteria.creationDate != null">
+        and RES.START_TIME = #{criteria.creationDate}
+      </if>
+      <if test="criteria.creationBeforeDate != null">
+        and RES.START_TIME &lt; #{criteria.creationBeforeDate}
+      </if>
+      <if test="criteria.creationAfterDate != null">
+        and RES.START_TIME &gt; #{criteria.creationAfterDate}
+      </if>
+      <if test="criteria.completedDate != null">
+        and RES.END_TIME = #{criteria.completedDate}
+      </if>
+      <if test="criteria.completedBeforeDate != null">
+        and RES.END_TIME &lt; #{criteria.completedBeforeDate}
+      </if>
+      <if test="criteria.completedAfterDate != null">
+        and RES.END_TIME &gt; #{criteria.completedAfterDate}
+      </if>
+	  <choose>
+	  	<when test="'ReadyForSomeone'.equals(criteria.readyListType) ">
+	  		<include refid="AllUnAssigneeAndAssigneeSql"/>
+	  	</when>
+	  	<when test="'ReadyForSomeone_CandidateAndUnOwner'.equals(criteria.readyListType) ">
+	  		<include refid="AllCandidateAndUnOwnerSql"/>
+	  	</when>
+	  	<otherwise>
+	  		<include refid="AllUnAssigneeAndInvolverSql"/>
+	  	</otherwise>
+	  </choose>
+      <foreach item="queryVar" collection="criteria.queryVariableValues" index="index">
+        <if test="!queryVar.local">
+          <!-- When process instance variable is queried for, taskId should be null -->
+          and A${index}.TASK_ID is null
+        </if>
+        <if test="queryVar.name != null">
+          <!-- Match-all variable-names when name is null -->
+          and A${index}.HVNAME= #{queryVar.name}
+        </if>
+        <if test="!queryVar.type.equals('null')">
+          and A${index}.VAR_TYPE = #{queryVar.type}
+        </if>
+        <!-- Variable value -->
+        <if test="queryVar.textValue != null &amp;&amp; queryVar.longValue == null &amp;&amp; queryVar.doubleValue == null">
+          <choose>
+            <when test="queryVar.operator.equals('EQUALS_IGNORE_CASE') || queryVar.operator.equals('NOT_EQUALS_IGNORE_CASE')">
+              and lower(A${index}.TEXTTYPE)
+            </when>
+            <otherwise>
+              and A${index}.TEXTTYPE
+            </otherwise>
+          </choose> 
+          <choose>
+               <when test="queryVar.operator.equals('LIKE')">
+          	  		LIKE '%${queryVar.textValue}%'
+          	  </when>
+          	  <when test="queryVar.operator.equals('IN')">
+          	  		IN (${queryVar.textValue})
+          	  </when>
+              <otherwise><include refid="executionVariableOperator" /> #{queryVar.textValue}</otherwise>
+          </choose>          
+        </if>
+        <if test="queryVar.textValue2 != null">
+          and A${index}.TEXT2TYPE 
+          <choose>
+              <when test="queryVar.operator.equals('LIKE')">
+          	  		LIKE '%${queryVar.textValue2}%'
+          	  </when>
+          	  <when test="queryVar.operator.equals('IN')">
+          	  		IN (${queryVar.textValue2})
+          	  </when>
+              <otherwise><include refid="executionVariableOperator" /> #{queryVar.textValue2}</otherwise>
+          </choose>          
+        </if>
+        <if test="queryVar.longValue != null">
+          and A${index}.LONGTYPE
+          <include refid="executionVariableOperator" />
+          #{queryVar.longValue}
+        </if>
+        <if test="queryVar.doubleValue != null">
+          and A${index}.DOUBLETYPE 
+          <include refid="executionVariableOperator" />
+          #{queryVar.doubleValue}
+        </if>
+        <!-- Null variable type -->
+        <if test="queryVar.textValue == null &amp;&amp; queryVar.textValue2 == null &amp;&amp; queryVar.longValue == null &amp;&amp; queryVar.doubleValue == null">
+          <choose>
+            <when test="queryVar.operator.equals('NOT_EQUALS')">
+              and (A${index}.TEXTTYPE is not null or A${index}.TEXTVALUE2 is not null or A${index}.LONGTYPE is not null or A${index}.DOUBLETYPE is not null or A${index}.BYTEARRAY_ID is not null)
+            </when>
+            <otherwise>
+              and A${index}.TEXTTYPE is null and A${index}.TEXTVALUE2 is null and A${index}.LONGTYPE is null and A${index}.DOUBLETYPE is null and A${index}.BYTEARRAY_ID is null
+            </otherwise>
+          </choose>          
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="registBusinessByHistoricTaskQueryCriteriaSql">
+      <if test="criteria.taskVariableValues != null and criteria.taskVariableValues.size > 0">
+      		<foreach collection="criteria.taskVariableValues" index="index" item="queryVar">
+	        <if test="queryVar.name != null and queryVar.textValue != null">
+	          <choose>
+	            <when test="queryVar.operator.equals('EQUALS_IGNORE_CASE') || queryVar.operator.equals('NOT_EQUALS_IGNORE_CASE')">
+	              and lower(TASK_DETAIL.${queryVar.name})
+	            </when>
+	            <otherwise>
+	              and TASK_DETAIL.${queryVar.name}
+	            </otherwise>
+	          </choose>
+	          <choose>
+	            <when test="queryVar.operator.equals('LIKE')">LIKE '%${queryVar.textValue}%'</when>
+	            <when test="queryVar.operator.equals('IN')">IN (${queryVar.textValue})</when>
+	            <otherwise><include refid="executionVariableOperator" />
+	           	 #{queryVar.textValue}
+	            </otherwise>
+	          </choose>
+	        </if>
+	        <if test="queryVar.textValue2 != null">
+	        and TASK_DETAIL.${queryVar.name}
+	        <choose>
+	          <when test="queryVar.operator.equals('LIKE')">LIKE '%${queryVar.textValue2}%'</when>
+	          <when test="queryVar.operator.equals('IN')">IN (${queryVar.textValue2})</when>
+	          <otherwise><include refid="executionVariableOperator" />
+	          	#{queryVar.textValue2}
+	          </otherwise>
+	        </choose>
+	        </if>
+	      </foreach>
+      </if>
+  </sql>
+  
+  <sql id="executionVariableOperator">
+    <choose>
+      <when test="queryVar.operator.equals('EQUALS')">=</when>
+      <when test="queryVar.operator.equals('EQUALS_IGNORE_CASE')">=</when>
+      <when test="queryVar.operator.equals('NOT_EQUALS')">&lt;&gt;</when>
+      <when test="queryVar.operator.equals('NOT_EQUALS_IGNORE_CASE')">&lt;&gt;</when>
+      <when test="queryVar.operator.equals('GREATER_THAN')">&gt;</when>
+      <when test="queryVar.operator.equals('GREATER_THAN_OR_EQUAL')">&gt;=</when>
+      <when test="queryVar.operator.equals('LESS_THAN')">&lt;</when>
+      <when test="queryVar.operator.equals('LESS_THAN_OR_EQUAL')">&lt;=</when>
+   </choose>
+  </sql>
+
+  <select id="BpmHistoricTaskInstanceSelectByNativeQuery" parameterType="java.util.Map" resultMap="historicTaskInstanceResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+    <include refid="bpm.limitBefore"/>
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+     <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmHistoricTaskInstanceSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+  
+  <!--BPM HistoricTaskInstance Ready Task List Add By Houwen-->
+  
+  <sql id="AllUnAssigneeAndInvolverSql">
+	  <if test="criteria.taskAssignee != null">
+        and RES.ASSIGNEE = #{criteria.taskAssignee}
+      </if>
+      <if test="criteria.candidateUser != null || criteria.candidateGroups != null">
+        and RES.ASSIGNEE is null
+        and HI.HI_IDENTITY_TYPE = 'candidate'
+        and
+        (
+          <if test="criteria.candidateUser != null">
+            HI.USER_ID = #{criteria.candidateUser}
+          </if>
+          <if test="criteria.candidateUser != null &amp;&amp; criteria.candidateGroups != null &amp;&amp; criteria.candidateGroups.size() &gt; 0">
+            or
+          </if>
+          <if test="criteria.candidateGroups != null &amp;&amp; criteria.candidateGroups.size() &gt; 0">
+            HI.GROUP_ID IN
+            <foreach item="group" index="index" collection="criteria.candidateGroups"
+                     open="(" separator="," close=")">
+              #{group}
+            </foreach>
+          </if>
+        )
+      <include refid="BpmCircularizeTask"/>
+      </if>
+      <if test="criteria.involvedUser != null">
+        and (
+          exists(select LINK.USER_ID from UWK_HI_IDENTITYLINK LINK where USER_ID = #{criteria.involvedUser} and LINK.TASK_ID = RES.HI_TASKINST_ID)
+          or RES.ASSIGNEE = #{criteria.involvedUser}
+          or RES.OWNER = #{criteria.involvedUser}
+          )
+      </if>
+  </sql>
+  
+  <sql id="AllUnAssigneeAndAssigneeSql">
+    <if test="criteria.candidateUser != null || criteria.candidateGroups != null">
+    <if test="criteria.involvedUser != null">
+      and (RES.ASSIGNEE is null or RES.ASSIGNEE = #{criteria.involvedUser} or RES.OWNER = #{criteria.involvedUser})
+    </if>
+    <if test="criteria.involvedUser == null">
+      and RES.ASSIGNEE is null 
+    </if>
+      and HI.HI_IDENTITY_TYPE = 'candidate'
+      and
+      (
+        <if test="criteria.candidateUser != null">
+          HI.USER_ID = #{criteria.candidateUser}
+        </if>
+        <if test="criteria.candidateUser != null &amp;&amp; criteria.candidateGroups != null &amp;&amp; criteria.candidateGroups.size() &gt; 0">
+          or
+        </if>
+        <if test="criteria.candidateGroups != null &amp;&amp; criteria.candidateGroups.size() &gt; 0">
+          HI.GROUP_ID IN
+          <foreach item="group" index="index" collection="criteria.candidateGroups"
+                   open="(" separator="," close=")">
+            #{group}
+          </foreach>
+        </if>
+      )
+    </if>
+  </sql>
+  
+    <sql id="AllCandidateAndUnOwnerSql">
+	  <if test="criteria.taskAssignee != null">
+        and (RES.ASSIGNEE = #{criteria.taskAssignee}
+      </if>
+      <if test="criteria.candidateUser != null || criteria.candidateGroups != null">
+        or (RES.ASSIGNEE is null
+        and HI.HI_IDENTITY_TYPE = 'candidate'
+        and
+        (
+          <if test="criteria.candidateUser != null">
+            HI.USER_ID = #{criteria.candidateUser}
+          </if>
+          <if test="criteria.candidateUser != null &amp;&amp; criteria.candidateGroups != null &amp;&amp; criteria.candidateGroups.size() &gt; 0">
+            or
+          </if>
+          <if test="criteria.candidateGroups != null &amp;&amp; criteria.candidateGroups.size() &gt; 0">
+            HI.GROUP_ID IN
+            <foreach item="group" index="index" collection="criteria.candidateGroups"
+                     open="(" separator="," close=")">
+              #{group}
+            </foreach>
+          </if>
+        )
+        )
+      </if>
+      )
+      <include refid="BpmCircularizeTask"/>
+  </sql>
+  <sql id="BpmCircularizeTask">
+ 	     or (
+            HI.HI_IDENTITY_TYPE = 'viewer'
+            AND (HI.USER_ID = #{criteria.candidateUser})
+          )
+  </sql>
+</mapper>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>pregressbar - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+<h3>进度条</h3>
+<p>使用$.fn.progressbar.defaults重载默认值。</p>
+<img src="images/progressbar.png"/>
+
+<h4>依赖关系</h4>
+<ul>
+	<li>无</li>
+</ul>
+
+<h4>使用方法</h4>
+<h5>创建进度条 </h5>
+<p>
+进度条组件可以通过html标签或脚本两种方法创建。使用html标签创建更容易，只需要对&lt;div&gt;标签引用'kjaxui-progressbar'类。
+</p>
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="p"</span> <span style="color:red">class</span><span style="color:blue">="kjaxui-progressbar"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">400px;</span><span style="color:blue">">&lt;/div</span><span style="color:blue">&gt</span>
+</pre>
+<br/>
+<h5>获取/设置进度值</h5>
+<p>为进度条获取当前进度值并且设置一个新的进度值。</p>
+<pre class="code">
+	<span style="color:blue">var</span> value = $(<span style="color:blue">'#p'</span>).progressbar(<span style="color:blue">'getValue'</span>);
+	if (value < 100){
+		value += Math.floor(Math.random() * 10);
+		$(<span style="color:blue">'#p'</span>).progressbar(<span style="color:blue">'setValue'</span>, value);
+	}
+</pre>
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+</tr>
+<tr>
+<td>width（宽度）</td>
+<td>string（字符串）</td>
+<td>设置进度条的宽度。</td>
+<td>auto</td>
+</tr>
+<tr>
+<td>value（值）</td>
+<td>number（数字）</td>
+<td>当前进度，百分比数值。</td>
+<td>0</td>
+</tr>
+<tr>
+<td>text（文本）</td>
+<td>string（字符串）</td>
+<td>显示在组件中的文本模板。</td>
+<td>{value}%</td>
+</tr>
+</table>
+
+<h4>事件</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+<tr>
+<td>onChange</td>
+<td>newValue,oldValue</td>
+<td>当进度发生改变时触发。</td>
+</tr>
+</table>
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+<tr>
+<td>options</td>
+<td>none</td>
+<td>返回进度条属性对象。</td>
+</tr>
+<tr>
+<td>resize</td>
+<td>width</td>
+<td>重置进度条。</td>
+</tr>
+<tr>
+<td>getValue</td>
+<td>none</td>
+<td>返回当前进度值。</td>
+</tr>
+<tr>
+<td>setValue</td>
+<td>value</td>
+<td>设置一个新的进度值。</td>
+</tr>
+</table>
+
+</div>
+
+		</div>
+		</div>
+
+	</body>
+</html>

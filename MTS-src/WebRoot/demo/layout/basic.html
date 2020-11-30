@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Layout - jQuery kui Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Basic Layout</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>The layout contains north,south,west,east and center regions.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<div class="kui-layout" style="width:700px;height:350px;">
+		<div kui-options="region:'north'" style="height:50px"></div>
+		<div kui-options="region:'south',split:true" style="height:50px;"></div>
+		<div kui-options="region:'east',split:true" title="East" style="width:180px;"></div>
+		<div kui-options="region:'west',split:true" title="West" style="width:100px;"></div>
+		<div kui-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
+			<table class="kui-datagrid"
+					kui-options="url:'datagrid_data1.json',dataType:'json',border:false,singleSelect:true,fit:true,fitColumns:true">
+				<thead>
+					<tr>
+						<th kui-options="field:'itemid'" width="80">Item ID</th>
+						<th kui-options="field:'productid'" width="100">Product ID</th>
+						<th kui-options="field:'listprice',align:'right'" width="80">List Price</th>
+						<th kui-options="field:'unitcost',align:'right'" width="80">Unit Cost</th>
+						<th kui-options="field:'attr'" width="150">Attribute</th>
+						<th kui-options="field:'status',align:'center'" width="50">Status</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+
+</body>
+</html>

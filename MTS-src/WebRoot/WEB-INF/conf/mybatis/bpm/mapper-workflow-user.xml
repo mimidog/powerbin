@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.UserEntity">
+
+  <!-- USER INSERT -->
+
+  <insert id="BpmUserInsert" parameterType="map">
+    insert into UUM_USER (USER_CODE, USER_NAME, USER_TYPE, USER_PASS, USER_STA, INT_ORG, OPEN_DATE, LOG_IP, LOG_DATE, EMP_ID, ECIF_CODE)
+    values (
+      seq_user_id.nextval,
+      #{user.name ,jdbcType=VARCHAR},
+      #{user.type ,jdbcType=VARCHAR},
+      #{user.password ,jdbcType=VARCHAR},
+      #{user.userSta ,jdbcType=VARCHAR},
+      #{user.intOrg ,jdbcType=VARCHAR},
+      #{user.openDate ,jdbcType=NUMERIC},
+      #{user.logIp ,jdbcType=VARCHAR},
+      #{user.logDate ,jdbcType=TIMESTAMP},
+      #{user.empId ,jdbcType=NUMERIC},
+      #{user.ecifCode ,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!-- USER UPDATE -->
+
+  <update id="BpmUserUpdate" parameterType="map">
+    update UUM_USER set
+      USER_NAME = #{user.name ,jdbcType=VARCHAR},
+      USER_TYPE = #{user.type ,jdbcType=VARCHAR},
+      USER_PASS = #{user.password ,jdbcType=VARCHAR},
+      USER_STA = #{user.userSta ,jdbcType=VARCHAR},
+      INT_ORG = #{user.intOrg ,jdbcType=VARCHAR},
+      OPEN_DATE = #{user.openDate ,jdbcType=NUMERIC},
+      LOG_IP = #{user.logIp ,jdbcType=VARCHAR},
+      LOG_DATE = #{user.logDate ,jdbcType=TIMESTAMP},
+      EMP_ID = #{user.empId ,jdbcType=NUMERIC},
+      ECIF_CODE = #{user.ecifCode ,jdbcType=VARCHAR}
+    where USER_CODE = #{user.id ,jdbcType=NUMERIC}
+  </update>
+  
+  <!-- USER DELETE -->
+
+  <delete id="BpmUserDelete" parameterType="map">
+    DELETE FROM UUM_USER WHERE USER_CODE = #{user.id}
+  </delete>
+
+  <resultMap id="userResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.UserEntity">
+    <id property="id" column="USER_CODE" jdbcType="NUMERIC" />
+    <result property="name" column="USER_NAME" jdbcType="VARCHAR" />
+    <result property="type" column="USER_TYPE" jdbcType="VARCHAR" />
+    <result property="password" column="USER_PASS" jdbcType="VARCHAR" />
+    <result property="userSta" column="USER_STA" jdbcType="VARCHAR" />
+    <result property="intOrg" column="INT_ORG" jdbcType="VARCHAR" />
+    <result property="openDate" column="OPEN_DATE" jdbcType="NUMERIC" />
+    <result property="logIp" column="LOG_IP" jdbcType="VARCHAR" />
+    <result property="logDate" column="LOG_DATE" jdbcType="TIMESTAMP" />
+    <result property="empId" column="EMP_ID" jdbcType="VARCHAR" />
+    <result property="ecifCode" column="ECIF_CODE" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!-- USER SELECT -->
+
+  <select id="BpmUserSelectById" parameterType="map" resultMap="userResultMap" >
+    SELECT * FROM UUM_USER WHERE USER_CODE = #{id,jdbcType=VARCHAR}
+  </select>
+    
+  <select id="BpmUserSelectByQueryCriteria" parameterType="map" resultMap="userResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectUserByQueryCriteriaSql" />
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+   <select id="BpmUserSelectCountByQueryCriteria" parameterType="map" resultType="long">
+    select count(RES.USER_CODE)
+    <include refid="selectUserByQueryCriteriaSql" />
+  </select>
+  
+  <sql id="selectUserByQueryCriteriaSql">
+    FROM UUM_USER RES 
+    <if test="criteria != null and criteria.groupId != null">
+      INNER JOIN UUM_OPER_POST M ON RES.USER_CODE = M.USER_CODE
+      INNER JOIN UUM_POST R ON M.POST_ID = R.POST_ID
+    </if>
+    <where>
+      <if test="criteria != null and criteria.id != null">
+        RES.USER_CODE = #{criteria.id}
+      </if>
+      <if test="criteria != null and criteria.name != null">
+        AND RES.USER_NAME = #{criteria.name}
+      </if>
+      <if test="criteria != null and criteria.nameLike != null">
+        AND RES.USER_NAME like '%'||#{criteria.nameLike}||'%'
+      </if>
+      <if test="criteria != null and criteria.type != null">
+        AND RES.USER_TYPE = #{criteria.type}
+      </if>
+      <if test="criteria != null and criteria.userSta != null">
+        AND RES.USER_STA = #{criteria.userSta}
+      </if>
+      <if test="criteria != null and criteria.intOrg != null">
+        AND RES.INT_ORG = #{criteria.intOrg}
+      </if>
+      <if test="intOrgLike != null">
+        AND RES.INT_ORG like '%'||#{criteria.intOrgLike}||'%'
+      </if>
+      <if test="criteria != null and criteria.openDate != 0">
+        AND RES.OPEN_DATE = #{criteria.openDate}
+      </if>
+      <if test="criteria != null and criteria.logIp != null">
+        AND RES.LOG_IP = #{criteria.logIp}
+      </if>
+      <if test="criteria != null and criteria.logIpLike != null">
+        AND RES.LOG_IP like '%'||#{criteria.logIpLike}||'%'
+      </if>
+       <if test="criteria != null and criteria.logDate != null">
+        AND RES.LOG_DATE = #{criteria.logDate}
+      </if>
+      <if test="criteria != null and criteria.empId != null">
+        AND RES.EMP_ID = #{criteria.empId}
+      </if>
+      <if test="criteria != null and criteria.ecifCode != null">
+        AND RES.ECIFCODE = #{criteria.ecifCode}
+      </if>
+      <if test="criteria != null and criteria.ecifCodeLike != null">
+        AND RES.ECIFCODE like '%'||#{criteria.ecifCodeLike}||'%'
+      </if>
+      <if test="criteria != null and criteria.groupId != null">
+        AND R.POST_ID = #{criteria.groupId}
+      </if>
+      <if test="criteria != null and criteria.procDefId != null">
+        AND EXISTS (SELECT IDENTITY_ID FROM UWK_RU_IDENTITYLINK WHERE PROC_DEF_ID = #{criteria.procDefId} AND USER_CODE = RES.USER_CODE )
+      </if>
+      
+    </where>
+  </sql>
+  
+  <select id="BpmUserSelectByNativeQuery" parameterType="java.util.Map" resultMap="userResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+    <include refid="bpm.limitBefore"/>
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+    <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmUserSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+  
+</mapper>

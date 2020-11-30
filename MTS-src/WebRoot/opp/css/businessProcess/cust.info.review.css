@@ -1,0 +1,25 @@
+.txt{
+	width:700px;
+	height:30px;
+}
+.review-panel{
+	margin:0 auto;
+	width:970px;
+}
+.uas-btn{
+	text-align:center;
+	color:#FFFFFF;
+	cursor: pointer;
+	width:100px;
+	height:23px;
+	font-size:12px;
+	line-height:23px;
+	margin: 0 auto auto 0;
+	background-color:#65C4E3;	
+	border:1px solid #3e96b2;
+}
+.panel-font {
+    color:#2E2E2E;
+    font-size:12px;
+    height: 30px;
+}

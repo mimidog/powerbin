@@ -1,0 +1,655 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--系统参数bex设置   start-->
+	<bex bex_code="sysParamQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysParamQuery"/>
+    <bex bex_code="sysParamInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="sysParamInsert">
+		<param para_code="PAR_CODE" para_name="参数代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_NAME" para_name="参数名称"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_CLS" para_name="参数类型"  data_type="12" para_type="0" nullable="false"/>	
+	</bex> 
+    <bex bex_code="sysParamUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysParamUpdate">
+		<param para_code="PAR_CODE" para_name="参数代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_NAME" para_name="参数名称"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_CLS" para_name="参数类型"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="sysParamDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysParamDelete">
+		<param para_code="PAR_CODE" para_name="参数代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--系统参数bex设置   end-->
+
+	<!--数据字典bex设置   start-->
+	<bex bex_code="dictionaryQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="dictionaryQuery">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="DICT_NAME" para_name="字典名称"  data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="MAINTAIN_FLAG" para_name="可操作性"  data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="BLONG_TYPE" para_name="参数类型"  data_type="12" para_type="0" def_val="-1"/>
+	</bex>
+    <bex bex_code="dictionaryInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="dictionaryInsert">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="DICT_NAME" para_name="字典名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex> 
+    <bex bex_code="dictionaryUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="dictionaryUpdate">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="DICT_NAME" para_name="字典名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="dictionaryDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="dictionaryDelete">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+	<bex bex_code="dictionaryCascadeDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="dictionaryCascadeDelete">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+	
+    <!--数据字典bex设置   end-->
+
+	<!--字典项bex设置   start-->
+	<bex bex_code="dicItemsQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="dicItemsQuery">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="DICT_ITEM_NAME" para_name="排除字典项"  data_type="12" para_type="0" def_val="-1"/>
+	</bex>
+    <bex bex_code="dicItemsInsert" bex_type="4" page_mode="2" bex_cate="1" bex_desc="【字典项】不能重复！" attr1="dicItemsInsert">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="DICT_ITEM" para_name="字典项"  data_type="12" para_type="0" nullable="false" def_val="0"/>
+		<param para_code="DICT_ITEM_NAME" para_name="字典项名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex> 
+    <bex bex_code="dicItemsUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="dicItemsUpdate">
+		<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="DICT_ITEM" para_name="字典项"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="DICT_ITEM_NAME" para_name="字典项名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="dicItemsDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="dicItemsDelete">
+		<param para_code="ITEM_ID" para_name="字典项编号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--字典项bex设置   end-->
+    <!--机构数据字典bex设置   start-->
+    <bex bex_code="orgDictionaryQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDictionaryQuery">
+    	<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="DICT_NAME" para_name="字典名称"  data_type="12" para_type="0" def_val="-1"/>
+    </bex>	
+    <bex bex_code="orgDictionaryInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDictionaryInsert">
+        <param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DICT_NAME" para_name="字典名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="orgDictionaryUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDictionaryUpdate">
+        <param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DICT_NAME" para_name="字典名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="orgDictionaryDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDictionaryDelete">
+        <param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="orgDictionaryCascadeDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDictionaryCascadeDelete">
+        <param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+
+    <!--机构数据字典bex设置   end-->
+
+    <!--机构字典项bex设置   start-->
+    <bex bex_code="orgDicItemsQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDicItemsQuery">
+    	<param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="orgDicItemsInsert" bex_type="4" page_mode="2" bex_cate="1" bex_desc="【字典项】不能重复！" attr1="orgDicItemsInsert">
+        <param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DICT_ITEM" para_name="字典项"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DICT_ITEM_NAME" para_name="字典项名称"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ORG_CODE" para_name="机构代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="orgDicItemsUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDicItemsUpdate">
+        <param para_code="DICT_CODE" para_name="字典代码"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DICT_ITEM" para_name="字典项"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DICT_ITEM_NAME" para_name="字典项名称"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ORG_CODE" para_name="机构代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="orgDicItemsDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDicItemsDelete">
+        <param para_code="ITEM_ID" para_name="字典项编号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--机构字典项bex设置   end-->
+
+	<!--系统菜单bex设置   start-->
+	<bex bex_code="sysMenuQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysMenuQuery">
+		<param para_code="MENU_ID" para_name="菜单编号"  data_type="12" para_type="0" def_val="-1"/>
+		<param para_code="MENU_NAME" para_name="菜单名称"  data_type="12" para_type="0" def_val="-1" />
+		<param para_code="MENU_STA" para_name="菜单状态"  data_type="12" para_type="0" def_val="-1" />
+		<param para_code="MENU_PLAT" para_name="关联平台"  data_type="12" para_type="0" def_val="-1" />
+	</bex>
+  <bex bex_code="sysMenuInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="sysMenuInsert">
+		<param para_code="MENU_NAME" para_name="菜单名称"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_MENU" para_name="父菜单"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="MENU_PUR" para_name="菜单用途"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="MENU_STA" para_name="菜单状态"  data_type="12" para_type="0" nullable="false"/>
+  </bex>
+  <bex bex_code="sysMenuUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysMenuUpdate">
+		<param para_code="MENU_BPM_FORM" para_name="表单模板"  data_type="12" para_type="0" nullable="true"/>
+  </bex>
+  <bex bex_code="sysMenuStaUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysMenuStaUpdate">
+		<param para_code="MENU_ID" para_name="菜单编号"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="MENU_STA" para_name="菜单状态"  data_type="12" para_type="0" nullable="false"/>
+  </bex>
+  <bex bex_code="permMenuUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="permMenuUpdate">
+    <param para_code="MENU_ID" para_name="菜单编号"  data_type="12" para_type="0" nullable="false"/>
+    <param para_code="MENU_NAME" para_name="菜单名称"  data_type="12" para_type="0" nullable="false"/>
+    <param para_code="PAR_MENU" para_name="父菜单"  data_type="12" para_type="0" nullable="false"/>
+    <param para_code="MENU_PUR" para_name="菜单用途"  data_type="12" para_type="0" nullable="false"/>
+    <param para_code="MENU_STA" para_name="菜单状态"  data_type="12" para_type="0" nullable="false"/>
+  </bex>
+  <bex bex_code="permMenuStaUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="permMenuStaUpdate">
+    <param para_code="MENU_ID" para_name="菜单编号"  data_type="12" para_type="0" nullable="false"/>
+    <param para_code="MENU_PUR" para_name="菜单用途"  data_type="12" para_type="0" nullable="false"/>
+    <param para_code="MENU_STA" para_name="菜单状态"  data_type="12" para_type="0" nullable="false"/>
+  </bex>
+
+	<bex bex_code="sysMenuLvlUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysMenuLvlUpdate">
+		<param para_code="P_MENU" para_name="菜单编号"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="P_TARGET" para_name="目标菜单"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="P_POINT" para_name="拖动位置"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+
+	<bex bex_code="frontMenuSearch" bex_type="4" page_mode="2" bex_cate="1" attr1="frontMenuSearch"></bex>
+	<bex bex_code="sysMenubatchSync" bex_type="4" page_mode="2" bex_cate="1" attr1="sysMenubatchSync"/>
+    <!--系统菜单bex设置   end-->
+
+	<!--系统国际化bex设置   start-->
+	<bex bex_code="sysLocaleQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocaleQuery"></bex>
+    <bex bex_code="sysLocaleInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocaleInsert">
+		<param para_code="LOC_CODE" para_name="国际化代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LOC_NAME" para_name="国际化名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex> 
+    <bex bex_code="sysLocaleUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocaleUpdate">
+		<param para_code="LOC_CODE" para_name="国际化代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LOC_NAME" para_name="国际化名称"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="sysLocaleDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocaleDelete">
+		<param para_code="LOC_CODE" para_name="国际化代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+	<bex bex_code="sysLocaleCascadeDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocaleCascadeDelete">
+		<param para_code="LOC_CODE" para_name="国际化代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>	
+
+	<bex bex_code="sysLocLangQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocLangQuery"></bex>
+    <bex bex_code="sysLocLangInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocLangInsert">
+		<param para_code="LANG_TYPE" para_name="语言类型"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="LOC_VAL" para_name="语言"  data_type="12" para_type="0" nullable="false"/>
+
+    </bex> 
+    <bex bex_code="sysLocLangUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocLangUpdate">
+		<param para_code="LOC_CODE" para_name="国际化代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LANG_TYPE" para_name="语言类型"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LOC_VAL" para_name="语言"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="sysLocLangDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysLocLangDelete">
+		<param para_code="LOC_CODE" para_name="国际化代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LANG_TYPE" para_name="语言类型"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--系统国际化bex设置   end-->
+
+	<!--系统服务bex设置   start-->
+	<bex bex_code="sysServiceQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysServiceQuery"></bex>
+    <bex bex_code="sysServiceInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="sysServiceInsert">
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="SERVICE_NAME" para_name="服务名称"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="SERVICE_TYPE" para_name="服务类型"  data_type="12" para_type="0" nullable="false"/>
+    </bex> 
+    <bex bex_code="sysServiceUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysServiceUpdate">
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="SERVICE_NAME" para_name="服务名称"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="SERVICE_TYPE" para_name="服务类型"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="sysServiceDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysServiceDelete">
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+	<!--系统服务bex设置   end-->
+	
+	<!--服务参数bex设置   start-->
+	<bex bex_code="sysSerParQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSerParQuery">
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="true"/>
+    <param para_code="DATA_TYPE" para_name="数据类型"  data_type="12" para_type="0" nullable="true"/>
+	</bex>
+    <bex bex_code="sysSerParInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSerParInsert">
+		<param para_code="PAR_CODE" para_name="参数代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_NAME" para_name="参数名称"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_TYPE" para_name="参数类型"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="DATA_TYPE" para_name="数据类型"  data_type="12" para_type="0" nullable="false"/>
+    </bex> 
+    <bex bex_code="sysSerParUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSerParUpdate">
+		<param para_code="PAR_CODE" para_name="参数代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>		
+		<param para_code="PAR_NAME" para_name="参数名称"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_TYPE" para_name="参数类型"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="DATA_TYPE" para_name="数据类型"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="sysSerParDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSerParDelete">
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="PAR_CODE" para_name="参数代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    	<!--    -系统服务管理删除 把对应的服务参数也删除掉 tangsy    -->
+    <bex bex_code="sysSerParDeleteNew" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSerParDeleteNew">
+		    <param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+	<!--服务参数bex设置   end-->
+	
+	<!--系统错误bex设置   start-->
+	<bex bex_code="sysErrorQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysErrorQuery"></bex>
+	<!--系统错误bex设置   end-->
+
+	<!--系统服务流水bex设置   start-->
+	<bex bex_code="sysSerRecQuery" bex_type="4" page_mode="1" bex_cate="1" attr1="sysSerRecQuery">
+		<param para_code="REC_NO" para_name="流水号"  data_type="12" para_type="0" def_val="-1"/>
+		<param para_code="OP_USER" para_name="操作用户"  data_type="12" para_type="0" def_val="-1"/>
+		<param para_code="BEGIN_DATE" para_name="开始日期"  data_type="12" para_type="0" def_val="-1"/>
+		<param para_code="END_DATE" para_name="结束日期"  data_type="12" para_type="0" def_val="-1"/>
+	</bex>
+    <!--by  2016/04/21 把attr1属性值由sysSerRecInsert改为sysSerRecInsert_MSSQL-->
+	<bex bex_code="sysSerRecInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSerRecInsert_MSSQL">
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="OP_USER" para_name="操作用户"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="OP_SITE" para_name="操作站点"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="OPT_PAR" para_name="操作参数"  data_type="12" para_type="0" nullable="true"/>
+	</bex>
+    <!--by  2016/04/21 把attr1属性值由recDetailBatchInsert改为recDetailBatchInsert_MSSQL-->
+	<bex bex_code="recDetailBatchInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="recDetailBatchInsert_MSSQL"></bex>
+	
+	<!--系统服务流水bex设置   end-->
+
+	<!--服务流水参数查询bex设置   start-->
+	<bex bex_code="serRecParQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="serRecParQuery">
+		<param para_code="SER_REC_NO" para_name="服务流水号"  data_type="12" para_type="0" def_val="-1"/>
+	</bex>
+	<!--服务流水参数查询bex设置   end-->
+
+	<!--系统序号管理bex设置   start-->
+	<bex bex_code="sysSeqQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSeqQuery"></bex>
+	<bex bex_code="sysSeqGet" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSeqGet"></bex>
+	<bex bex_code="sysSeqUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="sysSeqUpdate">
+		<param para_code="USER_CODE" para_name="用户代码"  data_type="12" para_type="0" nullable="false"/>
+	</bex>
+	<!--系统序号管理bex设置   end-->
+	
+ 
+
+    <!--系统利率bex设置   start-->
+    <bex bex_code="rateQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="rateQuery"/>
+    <bex bex_code="rateInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="rateInsert">
+        <!--<param para_code="INT_RATE_SN" para_name="利率编码"  data_type="12" para_type="0" nullable="false"/>-->
+        <param para_code="INT_RATE_NAME" para_name="利率名称"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="INT_RATE_CLS" para_name="利息类别"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="CURRENCY" para_name="货币代码"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DEPOSIT_RATE" para_name="存款利率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DEPOSIT_TAX_RATE" para_name="存款利息税率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="LIABILITY_RATE" para_name="负债利率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ID_RATE_TYPE" para_name="存款负债利率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ORG" para_name="机构"  data_type="12" para_type="0" nullable="true"/>
+    </bex>
+    <bex bex_code="rateUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="rateUpdate">
+        <!--<param para_code="INT_RATE_SN" para_name="利率编码"  data_type="12" para_type="0" nullable="false"/>-->
+        <param para_code="INT_RATE_NAME" para_name="利率名称"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="INT_RATE_CLS" para_name="利息类别"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="CURRENCY" para_name="货币代码"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DEPOSIT_RATE" para_name="存款利率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DEPOSIT_TAX_RATE" para_name="存款利息税率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="LIABILITY_RATE" para_name="负债利率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ID_RATE_TYPE" para_name="存款负债利率"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ORG" para_name="机构"  data_type="12" para_type="0" nullable="true"/>
+    </bex>
+    <bex bex_code="rateDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="rateDelete">
+        <param para_code="INT_RATE_SN" para_name="利率编码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--系统利率bex设置   end-->
+
+    <!--机构查询   start-->
+    <bex bex_code="instOrgQuery" bex_type="4" page_mode="2" bex_cate="1"  attr1="instOrgQuery">
+        <param para_code="ORG_CODE" para_name="机构代码"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_TYPE" para_name="机构类型"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_NAME" para_name="机构名称"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_STA" para_name="机构状态"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="PAR_ORG" para_name="上级机构"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_LVL" para_name="机构级别"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ZIP_CODE" para_name="邮编"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_ADDR" para_name="机构地址"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_CON" para_name="联系人"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="EMAIL" para_name="电子邮箱"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_TEL" para_name="联系电话"  data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_FAX" para_name="传真"  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!--机构查询   end-->
+    
+    <!--佣金名称设置-->
+    <bex bex_code="commissionQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionQuery">
+    	<param para_code="COMMISSION_CODE" para_name="佣金编码"  data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="COMMISSION_TYPE" para_name="佣金类型"  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="commissionNCQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionNCQuery">
+      <param para_code="COMMISSION_CODE" para_name="佣金编码"  data_type="12" para_type="0" def_val="-1"/>
+      <param para_code="COMMISSION_TYPE" para_name="佣金类型"  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="commissionInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionInsert">
+    	<param para_code="COMMISSION_CODE" para_name="佣金编码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_NAME" para_name="佣金名称"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_TYPE" para_name="佣金类型"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="RANGE" para_name="使用范围"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="commissionUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionUpdate">
+    	<param para_code="COMMISSION_CODE" para_name="佣金编码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_NAME" para_name="佣金名称"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_TYPE" para_name="佣金类型"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="RANGE" para_name="使用范围"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="commissionDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionDelete">
+    	<param para_code="COMMISSION_CODE" para_name="佣金编码"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--佣金名称设置-->
+    
+    <!--标准佣金设置-->
+    <bex bex_code="commissionStaQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionStaQuery">
+		<!--<param para_code="COMMISSION_CODE" para_name="佣金编码"  data_type="12" para_type="0" def_val=""/>-->
+    </bex>
+    <bex bex_code="commissionStaInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionStaInsert">
+    	<param para_code="COMMISSION_CODE" para_name="佣金名称,系统编码,分支机构,货币代码,市场板块,渠道,交易行为,证券类别,证券代码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="SYS_CODE" para_name="系统编码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="BRANCH_ORG" para_name="分支机构"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="CURRENCY_CODE" para_name="货币代码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="MARKET" para_name="市场板块"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="TRENCH" para_name="渠道"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="TRAN_BEHAVIOR" para_name="交易行为"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STOCK_TYPE" para_name="证券类别"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STOCK_CODE" para_name="证券代码"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="MONEY_LOWER" para_name="金额下限"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_RATE" para_name="佣金比例"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_UPPER" para_name="佣金上限"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_LOWER" para_name="佣金下限"  data_type="12" para_type="0" nullable="false"/> 
+    </bex>
+    <bex bex_code="commissionStaUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionStaUpdate">
+    	<param para_code="ID" para_name="流水号"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_CODE" para_name="佣金名称"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="SYS_CODE" para_name="系统编码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="BRANCH_ORG" para_name="分支机构"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="CURRENCY_CODE" para_name="货币代码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="MARKET" para_name="市场板块"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="TRENCH" para_name="渠道"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="TRAN_BEHAVIOR" para_name="交易行为"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STOCK_TYPE" para_name="证券类别"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STOCK_CODE" para_name="证券代码"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="MONEY_LOWER" para_name="金额下限"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_RATE" para_name="佣金比例"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_UPPER" para_name="佣金上限"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_LOWER" para_name="佣金下限"  data_type="12" para_type="0" nullable="false"/> 
+    </bex>
+    <bex bex_code="commissionStaDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionStaDelete">
+    	<param para_code="ID" para_name="流水号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--标准佣金设置-->
+    
+    <!--特殊佣金设置-->
+    <bex bex_code="commissionSpeQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionSpeQuery">
+    	<param para_code="COMMISSION_CODE" para_name="佣金编码"  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="commissionSpeInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionSpeInsert">
+    	<param para_code="COMMISSION_CODE" para_name="佣金名称,系统编码,分支机构,佣金品种,周期类型,周期范围,市场板块,渠道,交易行为,证券类别,证券代码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="SYS_CODE" para_name="系统编码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="BRANCH_ORG" para_name="分支机构"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_VARIETIES" para_name="佣金品种"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="PERIOD_TYPE" para_name="周期类型"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="PERIOD_RANGE" para_name="周期范围"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="MARKET" para_name="市场板块"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="TRENCH" para_name="渠道"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="TRAN_BEHAVIOR" para_name="交易行为"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="STOCK_TYPE" para_name="证券类别"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STOCK_CODE" para_name="证券代码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="ASSET_LIMIT" para_name="资产额度"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="MONEY_LOWER" para_name="金额下限"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_RATE" para_name="佣金比例"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_UPPER" para_name="佣金上限"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_LOWER" para_name="佣金下限"  data_type="12" para_type="0" nullable="false"/> 
+    </bex>
+    <bex bex_code="commissionSpeUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionSpeUpdate">
+    	<param para_code="ID" para_name="流水号"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_CODE" para_name="佣金名称"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="SYS_CODE" para_name="系统编码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="BRANCH_ORG" para_name="分支机构"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_VARIETIES" para_name="佣金品种"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="PERIOD_TYPE" para_name="周期类型"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="PERIOD_RANGE" para_name="周期范围"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="MARKET" para_name="市场板块"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="TRENCH" para_name="渠道"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="TRAN_BEHAVIOR" para_name="交易行为"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="STOCK_TYPE" para_name="证券类别"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STOCK_CODE" para_name="证券代码"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="ASSET_LIMIT" para_name="资产额度"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="MONEY_LOWER" para_name="金额下限"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_RATE" para_name="佣金比例"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMMISSION_UPPER" para_name="佣金上限"  data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_LOWER" para_name="佣金下限"  data_type="12" para_type="0" nullable="false"/> 
+    </bex>
+    <bex bex_code="commissionSpeDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionSpeDelete">
+    	<param para_code="ID" para_name="流水号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--特殊佣金设置-->
+    
+    <!--默认佣金表设置-->
+    <bex bex_code="commissionDefQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionDefQuery">
+		<param para_code="TRENCH" para_name="操作渠道" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="BUSINESS_TYPE" para_name="业务类型" data_type="12" para_type="0" def_val="-1"/> 
+    	<param para_code="COMMISSION_CODE" para_name="佣金编码" data_type="12" para_type="0" def_val="-1"/> 
+    </bex>
+    <bex bex_code="commissionDefInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionDefInsert">
+		<param para_code="TRENCH" para_name="操作渠道,业务类型,佣金名称" data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="BUSINESS_TYPE" para_name="业务类型" data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="COMMISSION_CODE" para_name="佣金名称" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="commissionDefUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionDefUpdate">
+    	<param para_code="ID" para_name="流水号" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="commissionDefDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="commissionDefDelete">
+		<param para_code="ID" para_name="流水号" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--默认佣金表设置-->
+    
+    <bex bex_code="uumuserconfigQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="uumuserconfigQuery">
+		<param para_code="USER_CODE" para_name="用户编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="uumuserconfigInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="uumuserconfigInsert">
+    </bex>
+    <bex bex_code="uumuserconfigUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="uumuserconfigUpdate">
+		<param para_code="CONFIGURE" para_name="配置" data_type="12" para_type="0" def_val="-1"/>
+		<param para_code="PLAT_CONFIG" para_name="自定义平台配置" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="uumuserconfigDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="uumuserconfigDelete">
+    	<param para_code="USER_CODE" para_name="用户编号" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    
+    <!--平台管理设置-->
+    <bex bex_code="platQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="platQuery">
+		<param para_code="PLAT_NAME" para_name="平台名称" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="STATUS" para_name="状态" data_type="12" para_type="0" def_val="-1"/> 
+    </bex>
+    <bex bex_code="platInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="platInsert" attr3="">
+		<param para_code="PLAT_NAME" para_name="平台名称" data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STATUS" para_name="状态" data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="SEQ" para_name="顺序" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="platUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="platUpdate">
+    	<param para_code="PLAT_NAME" para_name="平台名称" data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="STATUS" para_name="状态" data_type="12" para_type="0" nullable="false"/> 
+    	<param para_code="SEQ" para_name="顺序" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="platMenuQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="platMenuQuery">
+    </bex>
+    <bex bex_code="platMenuUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="platMenuUpdate">
+    </bex>
+    <bex bex_code="platMenuStaUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="platMenuStaUpdate">
+    </bex>
+    <bex bex_code="platPermissionUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="platPermissionUpdate">
+    </bex>
+    <bex bex_code="platPermissionStaUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="platPermissionStaUpdate">
+    </bex>
+    <bex bex_code="platDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="platDelete">
+		<param para_code="ID" para_name="流水号" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="platMenuDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="platMenuDelete">
+		<param para_code="ID" para_name="流水号" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="platPermissionDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="platPermissionDelete">
+    </bex>
+    <!--平台管理设置-->
+	<!--系统菜单start-->
+	<bex bex_code="frameParMaxLvlQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="frameParMaxLvlQuery">
+    </bex>
+    <bex bex_code="FRAMESEQ_ORA" bex_type="4" page_mode="2" bex_cate="1" attr1="FRAMESEQ_ORA">
+    </bex>
+    <bex bex_code="permInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="permInsert">
+    </bex>
+    <bex bex_code="permIdQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="permIdQuery">
+    </bex>
+    <bex bex_code="sysMenuDel" bex_type="4" page_mode="2" bex_cate="1" attr1="sysMenuDel">
+    	<param para_code="MENU_ID" para_name="菜单ID"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="purQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="purQuery">
+    	<param para_code="MENU_ID" para_name="菜单ID"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="permLvlQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="permLvlQuery">
+    	<param para_code="MENU_ID" para_name="菜单ID"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="sysPermDel" bex_type="4" page_mode="2" bex_cate="1" attr1="sysPermDel">
+   		<param para_code="PERM_LVL" para_name="权限级别"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="PUR" para_name="权限类型"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--系统菜单end-->
+    <!--系统菜单拖动start-->
+    <bex bex_code="getMenulvl" bex_type="4" page_mode="2" bex_cate="1" attr1="getMenulvl">
+    	<param para_code="P_MENU" para_name="原节点ID"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getTargetlvl" bex_type="4" page_mode="2" bex_cate="1" attr1="getTargetlvl">
+    	<param para_code="P_TARGET" para_name="target的id"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getTargetChildNum" bex_type="4" page_mode="2" bex_cate="1" attr1="getTargetChildNum">
+    	<param para_code="P_TARGET" para_name="目标ID"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="upadteMenuPar" bex_type="4" page_mode="2" bex_cate="1" attr1="upadteMenuPar">
+    	<param para_code="P_TARGET" para_name="目标ID"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="P_MENU" para_name="原节点ID"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getOneMenulvl" bex_type="4" page_mode="2" bex_cate="1" attr1="getOneMenulvl">
+    	<param para_code="P_TARGET" para_name="目标ID"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateMenuLvl" bex_type="4" page_mode="2" bex_cate="1" attr1="updateMenuLvl">
+    	<param para_code="OLD_MENU_LVL" para_name="旧menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="NEW_MENU_LVL" para_name="新menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_MENU_LVL_LENGTH" para_name="旧menu_lvl的长度"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateMenuParToTargetPar" bex_type="4" page_mode="2" bex_cate="1" attr1="updateMenuParToTargetPar">
+    	<param para_code="P_MENU" para_name="原节点ID"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="P_TARGET" para_name="target的id"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getTargetSamelvl" bex_type="4" page_mode="2" bex_cate="1" attr1="getTargetSamelvl">
+    	<param para_code="P_MENU" para_name="原节点ID"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_TARGET_LVL" para_name="target的menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="P_TARGET" para_name="target的id"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getTargetPlusOne" bex_type="4" page_mode="2" bex_cate="1" attr1="getTargetPlusOne">
+    	<param para_code="NOW_TARGET_LVL" para_name="遍历到的节点lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="NOW_TARGET_ID" para_name="遍历到的节点的id"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateTargetLvl" bex_type="4" page_mode="2" bex_cate="1" attr1="updateTargetLvl">
+    	<param para_code="NOW_TARGET_LVL" para_name="旧target_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="NEW_TARGET_LVL" para_name="新target_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_TARGET_LVL_LENGTH" para_name="旧target_lvl的长度"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateMenu" bex_type="4" page_mode="2" bex_cate="1" attr1="updateMenu">
+    	<param para_code="P_MENU" para_name="旧menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="NEW_MENU_LVL" para_name="新menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getMenuChildLvl" bex_type="4" page_mode="2" bex_cate="1" attr1="getMenuChildLvl">
+    	<param para_code="P_MENU" para_name="旧menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateMenuOneLvl" bex_type="4" page_mode="2" bex_cate="1" attr1="updateMenuOneLvl">
+    	<param para_code="NOW_MENU_ID" para_name="遍历到的menu_id"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="NEW_MENU_LVL" para_name="新menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_MENU_LVL" para_name="旧menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_MENU_LVL_LENGTH" para_name="旧menu_lvl的长度"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getTargetLaterlvl" bex_type="4" page_mode="2" bex_cate="1" attr1="getTargetLaterlvl">
+    	<param para_code="P_MENU" para_name="原节点ID"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_TARGET_LVL" para_name="target的menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="P_TARGET" para_name="target的id"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateBotMenu" bex_type="4" page_mode="2" bex_cate="1" attr1="updateBotMenu">
+    	<param para_code="P_MENU" para_name="旧menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="NEW_MENU_LVL" para_name="新menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateBotMenuOneLvl" bex_type="4" page_mode="2" bex_cate="1" attr1="updateBotMenuOneLvl">
+    	<param para_code="NOW_MENU_ID" para_name="遍历到的menu_id"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="NEW_MENU_LVL" para_name="新menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_MENU_LVL" para_name="旧menu_lvl"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="OLD_MENU_LVL_LENGTH" para_name="旧menu_lvl的长度"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="getPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="getPerm">
+    </bex>
+     <bex bex_code="getParMenu" bex_type="4" page_mode="2" bex_cate="1" attr1="getParMenu">
+     	<param para_code="PERM_VAL" para_name="遍历到的PERM_VAL"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+   	<bex bex_code="updateGPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="updateGPerm">
+   		<param para_code="PERM_VAL" para_name="遍历到的PERM_VAL"  data_type="12" para_type="0" nullable="false"/>
+    </bex> 
+    <bex bex_code="updateYPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="updateYPerm">
+   		<param para_code="PERM_VAL" para_name="遍历到的PERM_VAL"  data_type="12" para_type="0" nullable="false"/>
+    </bex> 
+    <bex bex_code="updateParPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="updateParPerm">
+    </bex>
+    <bex bex_code="updateBut" bex_type="4" page_mode="2" bex_cate="1" attr1="updateBut">
+    </bex>
+	<!--系统菜单拖动end-->
+	
+	<!-- 帮助 -->
+	<bex bex_code="helpQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="helpQuery">
+		<param para_code="HELP_ID" para_name="帮助编号" data_type="12" para_type="0" def_val="-1"/>
+   		<param para_code="TITLE" para_name="帮助标题" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="MENU_ID" para_name="菜单ID" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="COMP_ID" para_name="组件ID" data_type="12" para_type="0" def_val="-1"/> 
+    	<param para_code="P_ID" para_name="ID" data_type="12" para_type="0" def_val="-1"/> 
+    </bex>
+    <bex bex_code="helpInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="helpInsert">
+    	<param para_code="MENU_ID" para_name="关联菜单"  data_type="12" para_type="0" nullable="true"/>
+    	<param para_code="COMP_ID" para_name="关联组件"  data_type="12" para_type="0" nullable="true"/>
+   	</bex>
+   	<bex bex_code="helpUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="helpUpdate">
+   		<param para_code="MENU_ID" para_name="关联菜单"  data_type="12" para_type="0" nullable="true"/>
+    	<param para_code="COMP_ID" para_name="关联组件"  data_type="12" para_type="0" nullable="true"/>
+   	</bex>
+   	<bex bex_code="helpDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="helpDelete">
+   	</bex>
+   	<bex bex_code="helpDetailDeleteByHelpId" bex_type="4" page_mode="2" bex_cate="1" attr1="helpDetailDeleteByHelpId">
+   	</bex>
+   	<bex bex_code="helpMenuQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="helpMenuQuery">
+   	</bex>
+   	<bex bex_code="helpCompQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="helpCompQuery">
+   	</bex>
+   	
+   	<bex bex_code="helpDetailQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="helpDetailQuery">
+   		<param para_code="COL_ID" para_name="字段编号" data_type="12" para_type="0" def_val="-1"/>
+   		<param para_code="COL_CODE" para_name="字段标识" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="COL_TITLE" para_name="字段名称" data_type="12" para_type="0" def_val="-1"/> 
+    </bex>
+    
+    <bex bex_code="helpDetailByMenuQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="helpDetailByMenuQuery">
+   		<param para_code="P_ID" para_name="字段编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    
+    <bex bex_code="helpDetailInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="helpDetailInsert">
+   	</bex>
+   	<bex bex_code="helpDetailUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="helpDetailUpdate">
+   	</bex>
+   	<bex bex_code="helpDetailDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="helpDetailDelete">
+   	</bex>
+	<!-- 帮助 -->
+	
+	<!-- 用户操作站点 -->
+	<bex bex_code="opChannelQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="opChannelQuery">
+   		<param para_code="USER_CODE" para_name="用户代码" data_type="12" para_type="0" def_val="-1"/>
+   	</bex>
+   	<bex bex_code="opChannelInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="opChannelInsert">
+   	</bex>
+   	<bex bex_code="opChannelUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="opChannelUpdate">
+   	</bex>
+   	<bex bex_code="opChannelDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="opChannelDelete">
+   	</bex>
+	<!-- 用户操作站点 -->
+</bexs>
+ 

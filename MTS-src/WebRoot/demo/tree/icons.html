@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Tree Node Icons - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+	<script type="text/javascript">
+			$(function(){
+		kuiloader.load('tree',function(){	
+			//如果themes/icon.css后加载的话，tree-file会覆盖icon-add等icon.css中的样式
+			//所以可以以后不用easyloader加载js和css 防止css的覆盖
+			kuiloader.load('themes/icon.css',function(){
+
+			});	
+			
+		});
+		
+		});
+	</script>
+</head>
+<body>
+	<h2>Tree Node Icons</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>This sample illustrates how to add icons to tree node.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<ul class="kui-tree" kui-options="url:'tree_data2Xml.json',animate:true"></ul>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+body{
+  font-family:"微软雅黑", arial, sans-serif;
+}
+.combo {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border-width: 1px;
+  border-style: solid;
+  overflow: hidden;
+  vertical-align: middle;
+  position:relative;
+}
+.combo-validatebox-must .combo-text {
+	 background:url(images/form-input-bg3.png) top left repeat-x #ffffff;
+}
+.combo .combo-text {
+  font-size: 12px;
+  border: 0px !important;
+/*  height: 24px;*/
+  margin: 0;
+  padding: 0px;
+  *margin-top: -1px;
+  *height: 20px;
+  _height: 20px;
+  vertical-align: baseline;
+}
+.combo-arrow-disabled {
+  opacity: 0.3 !important;
+  filter: alpha(opacity=30) !important;	
+}
+.combo-arrow {
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+  float:right;
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+}
+.combo-arrow-hover {
+  opacity: 1.0;
+  filter: alpha(opacity=100);
+}
+.combo-panel {
+  overflow: auto;
+}
+.combo-arrow {
+  background: url('images/combo_arrow.png') no-repeat center 2px;
+}
+.combo,
+.combo-panel {
+  background-color: #ffffff;
+  border:1px solid #e4e4e4;
+}
+.combo-disabled{
+	border-color: #e4d4d4 !important;
+	background:none !important;
+}
+.combo{
+  	border:1px solid #555555;
+/*	-moz-border-radius: 2px 2px 2px 2px;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;	*/
+	background:url(images/form-input-bg1.png) top left repeat-x #ffffff;
+}
+.combo-validatebox-must {
+	border-color:red;
+	background:url(images/form-input-bg3.png) top left repeat-x #fff9f4;
+}
+.combo-focus{
+  border:#87C6F9 1px solid !important;
+  box-shadow: 0 0 8px rgba(103, 166, 217, 1);
+}
+.combo-arrow {
+/*  background-color: #E0ECFF;*/
+}
+.combo-arrow-hover {
+/*  background-color: #eaf2ff;*/
+}
+.combo-none-panel{
+	border: none;
+}
+.combo .clear{
+	width:15px;
+	height:100%;
+	display:inline-block;
+	background: url('images/clear-gray.png') no-repeat 3px 4px;
+	position:absolute;
+	right:19px;
+	cursor:pointer;
+	display:none;
+}
+.combo-selectAll{
+	white-space:nowrap;
+  	padding: 2px;
+  	font-size: 12px;
+  	padding: 3px;
+  	padding-right: 0px;
+	background-color: white;
+	border-bottom: 1px solid #f3f3f3;
+}
+
+.select-bg{
+	width:43px;
+	height:20px;
+	line-height:20px;
+	display:inline-block;
+	margin-left:3px;
+	text-align:center;
+	cursor:pointer;
+	background: url('images/select-bg.png') no-repeat;
+}
+.combo .validatebox-text:focus {
+	border:0px !important;
+}

@@ -1,0 +1,335 @@
+
+
+
+body {
+	font-size: 13px;
+	font-family: '微软雅黑', '宋体';
+	background-color: #FFFFFF;
+}
+
+/**
+ * 外层div
+ */
+.div-transaction {
+	margin: 10px;
+	background-color: #FFFFFF;
+}
+.task-error {
+	color: #F12526;
+}
+.state-task-doing {
+	width: 120px;
+	height: 16px;
+	overflow: hidden;
+}
+
+/**
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * 覆盖框架的表格样式
+ */
+.datagrid-header td,.datagrid-body td,.datagrid-footer td {
+	border-width: 0 !important;
+}
+.panel-body-noheader {
+  border-top-width: 0px !important;
+}
+
+.panel-header, .panel-body {
+    border-width: 0px !important;
+}
+
+.datagrid-row-selected {
+	background: none repeat scroll 0 0 #C7E5FF !important;
+	color: #000000;
+}
+
+.tree-folder {
+	background: none repeat scroll -208px 0 rgba(0, 0, 0, 0) !important;
+}
+
+.tree-folder-open {
+	background: none repeat scroll -208px 0 rgba(0, 0, 0, 0) !important;
+}
+
+.tree-file {
+	background: none repeat scroll -208px 0 rgba(0, 0, 0, 0) !important;
+}
+.datagrid-header,.datagrid-toolbar,.datagrid-footer-inner
+	{
+	display: none !important;
+}
+
+.datagrid-row-over,.datagrid-header td.datagrid-header-over {
+	background: none repeat scroll 0 0 #C7E5FF !important;
+}
+
+.datagrid-row-error {
+	background: none repeat scroll 0 0 #FFDDDD !important;
+	color: #000000;
+}
+
+.datagrid-row-wait {
+	color: #A3A3A3 !important;
+}
+
+/**
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * 覆盖框架的表格样式end
+ */ /**
+ * 表格样式
+ */
+.tree-task-text {
+	float: left;
+	font-size: 13px;
+}
+
+.tree-task-img {
+	float: left;
+	height: 28px;
+	margin-left: 4px;
+	position: relative;
+	width: 26px;
+}
+
+.tree-task-succ {
+	background: url("../../images/task-state-node.png") no-repeat scroll 0
+		3px rgba(0, 0, 0, 0);
+}
+
+.tree-task-doing {
+	background: url("../../images/task-state-node.png") no-repeat scroll
+		-25px 3px rgba(0, 0, 0, 0);
+}
+
+.tree-task-error {
+	background: url("../../images/task-state-node.png") no-repeat scroll
+		-50px 6px rgba(0, 0, 0, 0);
+}
+
+.tree-task-wait {
+	background: url("../../images/task-state-node.png") no-repeat scroll
+		-75px 3px rgba(0, 0, 0, 0);
+}
+
+/**
+ * 头部进度样式
+ */
+.title-task-img {
+	float: left;
+	height: 28px;
+	position: relative;
+	width: 22px;
+}
+
+.title-task {
+	float: left;
+	padding-top: 10px;
+	height: 70px;
+	width: 90px;
+}
+
+.title-task-progress {
+	float: left;
+	height: 7px;
+	margin-top: 9px;
+	width: 35px;
+}
+
+.title-task-progress-succ {
+	background-color: #A1D3F7;
+}
+
+.title-task-progress-wait {
+	background-color: #CFCFCF;
+}
+
+.title-task-progress-left {
+	border-bottom-left-radius: 10px;
+	border-top-left-radius: 10px;
+}
+
+.title-task-progress-right {
+	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+.title-img-prog {
+	float: left;
+	width: 100px;
+}
+
+.title-text-prog {
+  float: left;
+  width: 100px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.title-task-succ {
+	background: url("../../images/task-state-title.png") no-repeat scroll
+		-3px -3px rgba(0, 0, 0, 0);
+}
+
+.title-task-doing {
+	background: url("../../images/task-state-title.png") no-repeat scroll
+		-33px -3px rgba(0, 0, 0, 0);
+}
+
+.title-task-error {
+	background: url("../../images/task-state-title.png") no-repeat scroll
+		-63px -6px rgba(0, 0, 0, 0);
+}
+
+.title-task-wait {
+	background: url("../../images/task-state-title.png") no-repeat scroll
+		-94px -3px rgba(0, 0, 0, 0);
+}
+
+.process-frame {
+	width: 950px;
+	height: 70px;
+	background-color: #F2FAFF;
+	border: 1px solid #E6F6FF;
+}
+
+.menu-proccess {
+	margin-left: 10px;
+}
+
+.menu-proccess-btn {
+	background-repeat: no-repeat;
+	cursor: pointer;
+	float: left;
+	height: 55px;
+	position: relative;
+	top: 8px;
+	width: 22px;
+}
+
+.menu-proccess-items {
+	width: 700px;
+	float: left;
+	height: 70px;
+	padding-left: 15px;
+}
+.menu-proccess-panel {
+	overflow: hidden;
+	float: left;
+}
+
+.items-state-succ {
+	height: 43px;
+}
+
+.items-state-error {
+	float: left;
+	height: 43px;
+}
+
+/**
+ * 办理按钮样式
+ */
+.deal-btn {
+	margin-bottom: 0;
+	margin-left: 10px;
+	margin-top: 2px;
+    width:350px;
+    float:right;
+    padding-top:15px;
+}
+
+.deal-task-btn {
+	cursor: pointer;
+	width: 80px;
+	line-height: 28px;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: 1px 1px 1px #333;
+	border-radius: 5px;
+	margin: 0 10px 0 0;
+	position: relative;
+	overflow: hidden;
+	float: left;
+}
+
+.deal-trans-btn {
+	border: 1px solid #1e7db9;
+	box-shadow: 0 1px 2px #8fcaee inset, 0 -1px 0 #497897 inset, 0 -2px 3px
+		#8fcaee inset;
+	background: -webkit-linear-gradient(top, #42a4e0, #2e88c0);
+	background: -moz-linear-gradient(top, #42a4e0, #2e88c0);
+	background: linear-gradient(top, #42a4e0, #2e88c0);
+	margin:2px;
+}
+
+.deal-stop-btn {
+	border: 1px solid #b42323;
+	box-shadow: 0 1px 2px #e99494 inset, 0 -1px 0 #954b4b inset, 0 -2px 3px
+		#e99494 inset;
+	background: -webkit-linear-gradient(top, #d53939, #b92929);
+	background: -moz-linear-gradient(top, #d53939, #b92929);
+	background: linear-gradient(top, #d53939, #b92929);
+	cursor: auto;
+	margin:2px;
+}
+
+.deal-trans-btn:hover {
+	background: -webkit-linear-gradient(top, #70bfef, #4097ce);
+	background: -moz-linear-gradient(top, #70bfef, #4097ce);
+	background: linear-gradient(top, #70bfef, #4097ce);
+}
+
+.deal-stop-btn:hover {
+	background: -webkit-linear-gradient(top, #eb6f6f, #c83c3c);
+	background: -moz-linear-gradient(top, #eb6f6f, #c83c3c);
+	background: linear-gradient(top, #eb6f6f, #c83c3c);
+}
+
+.deal-detail-btn {
+	color: #2e4e7e;
+	text-shadow: 1px 1px 1px #fff;
+	border: 1px solid #dce1e6;
+	cursor: pointer;
+	width: 80px;
+	line-height: 28px;
+	text-align: center;
+	font-weight: bold;
+	border-radius: 5px;
+	margin: 0 10px 0 0;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0 1px 2px #fff inset, 0 -1px 0 #a8abae inset;
+	background: -webkit-linear-gradient(top, #f2f3f7, #e4e8ec);
+	background: -moz-linear-gradient(top, #f2f3f7, #e4e8ec);
+	background: linear-gradient(top, #f2f3f7, #e4e8ec);
+	float: left;
+	margin:2px;
+}
+/**
+ * 详情和忽略按钮
+ */
+.btn-details{
+	cursor: pointer;
+	float: left;
+	color: #000000;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+.btn-ignore{
+	cursor: pointer;
+	float: left;
+	color: #000000;
+}
+.btn-step{
+	cursor: pointer;
+	float: right;
+	color: #000000;
+}
+.btn-ignoredes{
+	float: left;
+	color: #CCCCCC;
+}
+

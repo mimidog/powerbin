@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DynamicMapper.HistoricIdentityLink">
+  
+   <!-- INSERT HISTORIC IDENTITY LINK --> 
+  <insert id="BpmHistoricIdentityLinkInsert" parameterType="hashmap">
+    insert into UWK_HI_IDENTITYLINK (HI_IDENTITY_ID, HI_IDENTITY_TYPE, USER_ID, GROUP_ID, TASK_ID, PROC_INST_ID, ASSIGNEE, CREATE_TIME)
+    values (#{historicIdentityLink.id, jdbcType=VARCHAR},
+            #{historicIdentityLink.type, jdbcType=VARCHAR},
+            #{historicIdentityLink.userId, jdbcType=VARCHAR},
+            #{historicIdentityLink.groupId, jdbcType=VARCHAR},
+            #{historicIdentityLink.taskId, jdbcType=VARCHAR},
+            #{historicIdentityLink.processInstanceId, jdbcType=VARCHAR},
+            #{historicIdentityLink.assignee, jdbcType=VARCHAR},
+            #{historicIdentityLink.createTime, jdbcType=TIMESTAMP}
+            )
+  </insert>
+  
+  <!-- HISTORIC IDENTITY LINK DELETE -->
+  <delete id="BpmHistoricIdentityLinkDelete" parameterType="hashmap">
+    delete from UWK_HI_IDENTITYLINK where HI_IDENTITY_ID = #{id}
+  </delete>
+
+  <!-- HISTORIC IDENTITY LINK RESULTMAP -->
+
+  <resultMap id="historicIdentityLinkResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricIdentityLinkEntity">
+    <id property="id" column="HI_IDENTITY_ID" jdbcType="VARCHAR" />
+    <result property="type" column="HI_IDENTITY_TYPE" jdbcType="VARCHAR" />
+    <result property="userId" column="USER_ID" jdbcType="VARCHAR" />
+    <result property="groupId" column="GROUP_ID" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />  
+    <result property="assignee" column="ASSIGNEE" jdbcType="VARCHAR" /> 
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />   
+  </resultMap>
+
+  <!-- HISTORIC IDENTITY LINK SELECT -->
+  <select id="BpmHistoricIdentityLinkSelect" parameterType="hashmap" resultMap="historicIdentityLinkResultMap">
+    select HI_IDENTITY_ID, HI_IDENTITY_TYPE, USER_ID, GROUP_ID, TASK_ID, PROC_INST_ID,CREATE_TIME from UWK_HI_IDENTITYLINK where HI_IDENTITY_ID = #{id}
+  </select>
+  
+  <select id="BpmHistoricIdentityLinksSelectByTask" parameterType="hashmap" resultMap="historicIdentityLinkResultMap">
+    select HI_IDENTITY_ID, HI_IDENTITY_TYPE, USER_ID, GROUP_ID, TASK_ID, PROC_INST_ID,CREATE_TIME from UWK_HI_IDENTITYLINK where TASK_ID = #{taskId}
+  </select>
+  
+  <select id="BpmHistoricIdentityLinksSelectByProcessInstance" parameterType="hashmap" resultMap="historicIdentityLinkResultMap">
+    select HI_IDENTITY_ID, HI_IDENTITY_TYPE, USER_ID, GROUP_ID, TASK_ID, PROC_INST_ID,CREATE_TIME from UWK_HI_IDENTITYLINK where PROC_INST_ID = #{processInstanceId}
+  </select>
+  
+ <select id="BpmIdentityLinksSelect" resultMap="historicIdentityLinkResultMap">
+    select HI_IDENTITY_ID, HI_IDENTITY_TYPE, USER_ID, GROUP_ID, TASK_ID, PROC_INST_ID,CREATE_TIME from UWK_HI_IDENTITYLINK
+  </select>
+  
+  <select id="BpmHistoricIdentityLinkSelectByTaskUserGroupAndType" parameterType="hashmap" resultMap="historicIdentityLinkResultMap">
+    select HI_IDENTITY_ID, HI_IDENTITY_TYPE, USER_ID, GROUP_ID, TASK_ID, PROC_INST_ID,CREATE_TIME 
+    from UWK_HI_IDENTITYLINK 
+    where TASK_ID = #{taskId}
+      <if test="userId != null">
+        and USER_ID = #{userId}
+      </if>
+      <if test="groupId != null">
+        and GROUP_ID = #{groupId}
+      </if>
+      <if test="type != null">
+        and HI_IDENTITY_TYPE = #{type}
+      </if>
+  </select>
+</mapper>

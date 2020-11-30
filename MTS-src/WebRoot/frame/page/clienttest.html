@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<title>图片编辑插件测试</title>
+<style type="text/css">
+body,td,th,div{
+	font-size: 9pt;word-break:break-all;
+	line-height: 150%;
+}
+table {
+	table-layout:fixed;
+}
+td{
+	padding-left:2px;
+}
+</style>
+<script language="javascript">
+function test()
+{
+	alert('插件调用页面的js函数成功');
+}
+function setSelectInit()
+{
+	var left = document.getElementById('selX').value;
+	var top = document.getElementById('selY').value;
+	var width = document.getElementById('selWidth').value;
+	var height = document.getElementById('selHeight').value;
+	var oPlugin = document.getElementById("myimage");
+	var r = oPlugin.setSelectInit(left,top,width,height);
+	alert(r);
+}
+function showImage(imgfile)
+{
+	if(imgfile.length == 0)
+	{
+		alert('未设置图片源');
+		return;
+	}
+	var oPlugin = document.getElementById("myimage");
+	var r = oPlugin.showImage(imgfile);
+	if(r==false) alert(r);
+}
+function saveAs(imgfile)
+{
+	if(imgfile.length == 0)
+	{
+		alert('未设置另存为图片地址');
+		return;
+	}
+	var oPlugin = document.getElementById("myimage");
+	var r = oPlugin.saveAs(imgfile);
+	alert(r);
+}
+function scaleImage()
+{
+	var oPlugin = document.getElementById("myimage");
+	var oTypes = document.getElementsByName('scaleType');
+	var sType = '';
+	for(var i=0;i<oTypes.length;i++)
+	{
+		if(oTypes[i].checked)
+		{
+			sType = oTypes[i].value;
+			break;
+		}
+	}
+	var size = document.getElementById('scaleSize').value;
+	var r = oPlugin.scaleImage(sType, size);
+	alert(r);
+}
+function cropImage()
+{
+	var oPlugin = document.getElementById("myimage");
+	var x = document.getElementById('imgX').value;
+	var y = document.getElementById('imgY').value;
+	var width = document.getElementById('imgWidth').value;
+	var height = document.getElementById('imgHeight').value;
+	var r = oPlugin.cropImage(x, y, width, height);
+	alert(r);
+}
+function setMouseSelect(bTrue)
+{
+	var oPlugin = document.getElementById("myimage");
+	var r = oPlugin.setMouseSelect(bTrue);
+	if(r==false) alert(r);
+}
+function cropImage2()
+{
+	var oPlugin = document.getElementById("myimage");
+	var r = oPlugin.cropImageByMouse();
+	alert(r);
+}
+function addTextWater()
+{
+	var oPlugin = document.getElementById("myimage");
+	var text = document.getElementById('imgWaterText').value;
+	var formatStr = '{"x":50,"y":"20","font":"宋体","font-size":15,"font-color":"#ffffa0","font-weight":"8","background-color":"#0050a0","opacity":0.6,"smooth":"1"}';
+	var r = oPlugin.addTextWater(formatStr, text);
+	if(r==false) alert(r);
+}
+function addImageWater()
+{
+	var oPlugin = document.getElementById("myimage");
+	var img = document.getElementById('imgWaterImage').value;
+	var formatStr = '{"x":10,"y":"10","opacity":0.6}';
+	var r = oPlugin.addImageWater(formatStr, img);
+	if(r==false) alert(r);
+}
+function getFileHash()
+{
+	var oPlugin = document.getElementById("myimage");
+	var img = document.getElementById('imgsrc').value;
+	var r = oPlugin.getFileHash(img);
+	if(r==false)
+	{
+		alert(r);
+	}
+	else
+	{
+		document.getElementById('imgHash').value = r;
+	}
+}
+function imgLoaded(sId,loadStatus,statusMsg)
+{
+	var oPlugin = document.getElementById(sId);
+	if(loadStatus==false)
+	{
+		alert('图片[\''+oPlugin.getImageSrc()+'\']加载失败，失败原因[\'' + statusMsg + '\']');
+	}
+}
+function grayScale()
+{
+	var oPlugin = document.getElementById("myimage");
+	var r = oPlugin.grayScale();
+	if(r==false) alert(r);
+}
+function rotateAngle()
+{
+	var vAngle = document.getElementById("imgAngle").value;
+	var oPlugin = document.getElementById("myimage");
+	oPlugin.rotateAngle(vAngle);
+	if(r==false) alert(r);
+}
+function save()
+{
+	var oPlugin = document.getElementById("myimage");
+	var r = oPlugin.save();
+	alert(r);
+}
+</script>
+</head>
+
+<body>
+<p>图片显示编辑插件</p>
+<br/>
+<embed id="myimage" type="application/x-kd-image" style="display:block;width:320px;height:240px;" img="E:\test.png" onload="javascript:imgLoaded();" />
+<br/>
+图片选择框设置：left<input type="text" id="selX" style="width:30px;" value="5"/>
+top<input type="text" id="selY" style="width:30px;" value="5"/>
+width<input type="text" id="selWidth" style="width:30px;" value="50"/>
+height<input type="text" id="selHeight" style="width:30px;" value="50"/>
+<input type="button" id="cmdSetSel" value="设置" onClick="javascript:setSelectInit();" />
+<br>
+<label>图片源地址：
+<input type="text" id="imgsrc" value="E:\1111.png"/>
+</label>
+<input type="button" id="cmdShowImage" value="显示图片" onClick="javascript:showImage(document.getElementById('imgsrc').value);" />
+<br>
+缩放：
+<label>
+<input type="radio" name="scaleType" value="x" checked="checked">
+定宽</label>
+<label><input type="radio" name="scaleType" value="y">
+定高</label>
+<label><input type="radio" name="scaleType" value="size">
+最大尺寸</label> <input type="text" id="scaleSize" style="width:50px;"/>
+<input type="button" id="cmdScale" value="缩放" onClick="javascript:scaleImage();" />
+<br>
+裁剪：left<input type="text" id="imgX" style="width:30px;" value="5"/>
+top<input type="text" id="imgY" style="width:30px;" value="5"/>
+width<input type="text" id="imgWidth" style="width:30px;" value="50"/>
+height<input type="text" id="imgHeight" style="width:30px;" value="50"/>
+<input type="button" id="cmdCut" value="裁剪" onClick="javascript:cropImage();" />
+<br>
+<input type="button" id="cmdCut1" value="启用鼠标框选" onClick="javascript:setMouseSelect(true);" />
+<input type="button" id="cmdCut1" value="禁用鼠标框选" onClick="javascript:setMouseSelect(false);" />
+<input type="button" id="cmdCut2" value="裁剪(鼠标框选)" onClick="javascript:cropImage2();" />
+<br>
+旋转：<input type="text" id="imgAngle" style="width:30px;" value="90"/>
+<input type="button" id="cmdRotateAngle" value="旋转" onClick="javascript:rotateAngle();" />
+<br>
+文字水印：<input type="text" id="imgWaterText" value="测试abc123"/>
+<input type="button" id="cmdTextW" value="添加水印" onClick="javascript:addTextWater();" />
+<!--br>
+图片水印：<input type="text" id="imgWaterImage" value=""/>
+<input type="button" id="cmdImageW" value="添加水印" onClick="javascript:addImageWater();" /-->
+<br>
+HASH(MD5)值：<input type="text" id="imgHash"/>
+<input type="button" id="cmdImageHash" value="计算Hash" onClick="javascript:getFileHash();" />
+<br>
+<input type="button" id="cmdGrayScale" value="转为灰度图" onClick="javascript:grayScale();" />
+<br>
+-----------------------------------
+
+<!----------下面为保存图片------------>
+<br>
+<input type="button" id="cmdSave" value="保存图片" onClick="javascript:save();" />
+<br/>
+<label>另存图片文件名：
+<input type="text" id="myimg" />
+</label>
+<input type="button" id="cmdSaveAs" value="另存为(格式转换)" onClick="javascript:saveAs(document.getElementById('myimg').value);" />
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>textbox - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+<h3>表单验证</h3>
+<p>继承$.fn.validatebox.defaults，使用$.fn.textbox.defaults重载默认值。</p>
+
+<h4>使用方法</h4>
+<p>使用HTML标签创建表单验证，只须要对&lt;div&gt;标签引用'kjaxui-textbox'类。</p> 
+<pre class="code">
+	<span style="color:blue">&lt;input</span> <span style="color:red">class</span><span style="color:blue">="kjaxui-textbox"</span> <span style="color:red">data-options</span><span style="color:blue">="required:</span><span style="color:red">true</span><span style="color:blue">,validType:'length[</span><span style="color:red">1,10</span><span style="color:blue">]'"/&gt;</span>
+</pre>
+<p>用javaScript来创建表单验证</p> 
+<pre class="code">
+	<span style="color:blue">&lt;input</span> <span style="color:red">id</span><span style="color:blue">="vv"</span> <span style="color:red">required</span><span style="color:blue">="true"</span> <span style="color:red">validType</span><span style="color:blue">="email"&gt;</span>
+</pre>
+<pre class="code">
+	$(<span style="color:blue">'#vv'</span>).textbox({
+		required:<span style="color:red">true</span>
+	});
+</pre>
+
+<h4>验证规则</h4>
+<p>验证规则使用required和validType属性来定义, 以下列出的是插件内置的验证规则。</p>
+<ul>
+	<li>email: 正则匹配电子邮件。</li>
+	<li>url: 正则匹配url。</li>
+	<li>length[0,100]: 验证长度范围。</li>
+	<li>remote['http://.../action.do','paramName']: 发送ajax请求来验证，验证有效时返回true。</li>
+	<li>mobile:正则匹配手机号码</li>
+	<li>tel:正则匹配普通电话，传真号码</li>
+	<li>numchar[0,100]:正则匹配只含有数字或者英文字母，长度是0到100个字符</li>
+	<li>val[0,100]:正则匹配验证只含有数字或者英文字母或者汉字，长度是0到100个字符，但是能输入.和-_</li>
+	<li>number[4,2]:正则匹配任意数字,4为小数点前位数,2为小数点后位数</li>
+	<li>int:正则匹配整数（含0）</li>
+	<li>zint:正则匹配正整数（不含0）</li>
+	<li>num[4]:正则匹配确切位数数字，4为多少位数字</li>
+	<li>unhan[100]:正则匹配非汉字，100为最大值。</li>
+	<li>postcode:正则匹配邮政编码。</li>
+	<li>cardno:正则匹配身份证号码。</li>
+</ul>
+<!--<p>要自定义规则，重载$.fn.validatebox.defaults。你所定义的验证规则必须定义一个验证函数和验证无效时的提示信息。 
+例如，定义一个验证最小长度的规则： </p>
+<pre class="code">
+	$.extend($.fn.validatebox.defaults.rules, {
+		minLength: {
+			validator: function(value, param){
+				return value.length >= param[0];
+			},
+			message: 'Please enter at least {0} characters.'
+		}
+	});
+</pre>
+
+<p>现在你可以使用最小长度验证规则来定义一个至少要输入5个字符的输入框。</p>
+<pre class="code">
+	<span style="color:blue">&lt;input</span> <span style="color:red">class</span><span style="color:blue">="kjaxui-textbox"</span> <span style="color:red">validType</span><span style="color:blue">="minLength[</span><span style="color:red">5</span><span style="color:blue">]"&gt;</span>
+</pre>
+-->
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+</tr>
+<tr>
+<td>required（必填）</td>
+<td>boolean（布尔型）</td>
+<td>定义表单域必须填写。</td>
+
+<td>false</td>
+</tr>
+<tr>
+<td>validType（验证类型）</td>
+<td>string（字符串）</td>
+<td>定义表单域的验证类型，比如：email, url等。</td>
+<td>null</td>
+</tr>
+<tr>
+<td>showMessage</td>
+<td>boolean</td>
+
+<td>设置为true时。显示提示信息。</td>
+<td>false.</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>boolean</td>
+
+<td>设置为true时。表单不可用。</td>
+<td>false.</td>
+</tr>
+<tr>
+<td>maxLength</td>
+<td>String</td>
+
+<td>设置的值，为表单输入的最大长度。</td>
+<td></td>
+</tr>
+
+</table>
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+<tr>
+
+<td>destroy</td>
+<td>none</td>
+<td>移除并注销组件。</td>
+</tr>
+<tr>
+<td>validate</td>
+<td>none</td>
+<td>验证表单域的内容是否有效。</td>
+</tr>
+<tr>
+<td>isValid</td>
+
+<td>none</td>
+<td>调用validate方法并且返回验证结果，true或者false。</td>
+</tr>
+<tr>
+<td>disable</td>
+
+<td>none</td>
+<td>设置表单不可用</td>
+</tr>
+<tr>
+<td>enable</td>
+
+<td>none</td>
+<td>设置表单可用</td>
+</tr>
+<td>clear</td>
+
+<td>none</td>
+<td>清除表单数据。</td>
+</tr>
+</table>
+
+</div>
+
+		</div>
+		</div>
+
+	</body>
+</html>

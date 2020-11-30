@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+	<bean id="checkingPojoBex" class="com.szkingdom.frame.dao.pojo.bean.CheckingPojoBex">
+		<property name="configLoader" ref="configLoader" />
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="poolMap">
+			<map>
+				<entry key="13" value="soKcxpPool" />
+				<entry key="14" value="soKcxpPool" />
+				<entry key="16" value="soKcxpPool" />
+			</map>
+		</property>
+	</bean>
+	<bean name="plLbmcenter" class="com.szkingdom.pushlet.PLLbmCenter" scope="prototype" >
+		<property name="genericParserHelper" ref="genericParserHelper" />
+		<property name="pushletThreadPool" ref="pushletThreadPool" />
+		<property name="missionService" ref="missionService" />
+		<property name="reqType" value="json" />
+	</bean>
+	<bean name="lbmTaskExecutor" class="com.szkingdom.pushlet.service.LbmTaskExecutor" scope="prototype" >
+		<property name="service" ref="genericService" />
+	</bean>
+	<bean name="missionService" class="com.szkingdom.pushlet.service.MissionServiceImpl">
+		<property name="batchService" ref="batchService" />
+		<property name="lbmTaskService" ref="lbmTaskService"></property>
+	</bean>
+	<bean name="batchService" class="com.szkingdom.pushlet.service.BatchServiceImpl"></bean>
+	<bean name="lbmTaskService" class="com.szkingdom.pushlet.service.LbmTaskServiceImpl"></bean>
+	
+	<bean name="pushletThreadPool" class="com.szkingdom.pushlet.PushletThreadPool" scope="prototype">
+		<property name="lbmTaskExecutor" ref="lbmTaskExecutor"></property>
+	</bean>
+	
+	<bean id="generalPojoWebService" class="com.szkingdom.frame.dao.pojo.bean.GeneralPojoWebService">
+		<property name="configLoader" ref="configLoader" />
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+	</bean>
+	<bean id="beanGetter" class="com.szkingdom.pushlet.service.BeanGetter"></bean>
+	
+	<bean id="exportPdfService" class="com.szkingdom.frame.export.service.ExportSericeImplByPDF">
+		<property name="orgCache" ref="orgCache"></property>
+	</bean>
+	
+	<bean id="exportCsvService" class="com.szkingdom.frame.export.service.ExportSericeImplByCSV">
+		<property name="orgCache" ref="orgCache"></property>
+	</bean>
+	<bean id="exportTxtService" class="com.szkingdom.frame.export.service.ExportSericeImplByTXT">
+		<property name="orgCache" ref="orgCache"></property>
+	</bean>
+	
+	<bean id="exportExcelService" class="com.szkingdom.frame.export.service.ExportSericeImplByEXCEL">
+		 <property name="orgCache" ref="orgCache"></property>
+	</bean>
+	
+	<bean id="exportDbfService" class="com.szkingdom.frame.export.service.ExportSericeImplByDBF">
+	</bean>
+	
+	<bean id="exportChain" class="com.szkingdom.frame.export.ExportChain">
+		<property name="commandList">
+			<list>
+				<ref bean="exportPdf"/>
+				<ref bean="exportCsv"/>
+				<ref bean="exportExcel"/>
+				<ref bean="exportDbf"/>
+				<ref bean="exportTxt"/>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

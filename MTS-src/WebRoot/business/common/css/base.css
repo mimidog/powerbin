@@ -1,0 +1,283 @@
+﻿@charset "utf-8";
+/**
+* UAS3.0 css base
+* 创建时间：2014-08-18
+********************************* 维护记录 **************************
+** 维护者：彭权才
+** 维护时间：2014-08-19
+*/
+*{
+	font-family:"微软雅黑";
+}
+html {
+	color: #000;
+	background: #FFF;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration:none;
+}
+table {/* 去除table边框距离 */
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+fieldset, img {
+	border: 0;
+}
+address, caption, cite, code, dfn, em, strong, th, var {
+	font-style: normal;
+	font-weight: normal;
+}
+ol, ul {
+	list-style: none;
+}
+caption, th {
+	text-align: left;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+	font-weight: normal;
+}
+q:before, q:after {
+	content: '';
+}
+abbr, acronym {
+	border: 0;
+	font-variant: normal;
+}
+sup {
+	vertical-align: text-top;
+}
+sub {
+	vertical-align: text-bottom;
+}
+input, textarea, select {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+}
+/*css hack for IE*/
+input, textarea, select {
+*font-size:100%;
+}
+legend {
+	color: #000;
+}
+/* 原子css定义开*/
+/* 文字 */
+.f12 {
+	font-size: 12px;
+}
+.f13 {
+	font-size: 13px;
+}
+.f14 {
+	font-size: 14px;
+}
+.t2 {
+	text-indent: 2em;
+}
+.t4 {
+	text-indent: 4em;
+}
+.fnormal {
+	font-weight:normal;
+	font-style:normal;
+}
+/*宽度类*/
+.w {
+	width: 100%;
+}
+.whalf {
+	width:50%;
+}
+.win {
+	width: inherit;
+}
+.w10 {
+	width: 10px;
+}
+/*高度类,与宽度相似*/
+.h {
+	height:100%;
+	overflow:hidden;
+}
+.hhalf {
+	height:50%;
+	overflow:hidden;
+}
+.h10 {
+	height: 10px;
+	overflow:hidden;
+}
+.hin {
+	height: inherit;
+}
+.h50 {
+	height:50px;
+	overflow:hidden;
+}
+.h100 {
+	height:100px;
+	overflow:hidden;
+}
+.h200 {
+	height:200px;
+	overflow:hidden;
+}
+.h300 {
+	height:300px;
+	overflow:hidden;
+}
+.h500 {
+	height:500px;
+	overflow:hidden;
+}
+/*定位类*/
+.left{
+    text-align:left;
+}
+.center {
+	text-align:center;
+}
+.right {
+    text-align:right;
+}
+.bc {
+	margin: 0px auto;
+}
+.fln {
+	float:none;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float:right;
+}
+.vm {
+	vertical-align: central;
+}
+.block {
+	display: block;
+}
+.none {
+	display: none;
+}
+.clear {
+	clear: both;
+}
+/*边距类*/
+.m0{
+	margin:0 !important;
+}
+.m10 {
+	margin: 10px !important;
+}
+.mt10 {
+	margin-top: 10px !important;
+}
+.ml10 {
+	margin-left: 10px !important;
+}
+.mr10 {
+	margin-right: 10px !important;
+}
+.mb10 {
+	margin-bottom: 10px !important;
+}
+.m6 {
+	margin:6px !important;
+}
+.mt6 {
+	margin-top: 6px !important;
+}
+.ml6 {
+	margin-left: 6px !important;
+}
+.mr6 {
+	margin-right: 6px !important;
+}
+.mb6 {
+	margin-bottom: 6px !important;
+}
+.m20 {
+	margin: 20px !important;
+}
+/*填充类,与边距相似*/
+.p0 {
+	padding:0 !important;
+}
+.p4 {
+	padding:4px !important;
+}
+.p10 {
+	padding: 10px !important;
+}
+.p20 {
+	padding: 20px !important;
+}
+/* 常用颜色类，禁止在此定义与主题有关的颜色 */
+.cred {
+	color: #F00;
+}
+.cblue {
+	color: blue;
+}
+.cblack {
+	color: black;
+}
+/*border边框类*/
+.bor1 {
+	border-width: 1px;
+}
+.bor2 {
+	border-width:2px;
+}
+.bortn {
+	border-top: none;
+}
+.borln {
+	border-left: none;
+}
+.borbn {
+	border-bottom: none;
+}
+.borrn {
+	border-right: none;
+}
+.brd3 {
+	border-radius: 3px;
+}
+/* 背景类 */
+.bgf1 {
+	background-color:#f1f1f1;
+}
+.bgf3{
+	background-color:#f3f3f3;
+}
+.bgf7{
+	background-color:#f7f7f7;
+}
+.bgnone {
+	background:none !important;
+}
+.bimgnone {
+	background-image:none;
+}
+.bcnone {
+	background-color:transparent !important;
+}
+/* 定位类 */
+.posr {
+	position:relative;
+}
+.posa {
+	position:absolute;
+}
+.posf {
+	position:fixed;
+}

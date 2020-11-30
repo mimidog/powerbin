@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bexs> 
+  <!--中登网关start-->  
+  <bex bex_code="gatewayInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="gatewayInsert"/>  
+  <bex bex_code="gatewayUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="gatewayUpdate"/> 
+  <bex bex_code="gatewaySelect" bex_type="4" page_mode="2" bex_cate="1" attr1="gatewaySelect"/>  
+  <bex bex_code="gatewayComplete" bex_type="4" page_mode="2" bex_cate="1" attr1="gatewayComplete"/>  
+  <!--中登网关end-->  
+</bexs>

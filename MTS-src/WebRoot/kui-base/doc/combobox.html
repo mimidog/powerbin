@@ -1,0 +1,314 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>combobox - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+		<link type="text/css" rel="stylesheet" href="styles/shCore.css"></link>
+		<link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"></link>
+		<script language="javascript" src="scripts/shCore.js"></script>
+		<script language="javascript" src="scripts/shBrushJScript.js"></script>
+		<script language="javascript" src="scripts/shBrushXml.js"></script>
+		<script type="text/javascript">
+			SyntaxHighlighter.all()
+		</script>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+<h3>可装载组合框</h3>
+<p>继承$.fn.combo.defaults，可以使用combo的属性和方法，具体参考combo.html
+. 使用$.fn.combobox.defaults重载默认值。</p>
+<img src="images/combobox.png"/>
+
+<h4>依赖关系</h4>
+<ul>
+	<li>自定义组合框</li>
+</ul>
+<h4>使用示例</h4>
+<a href="../../demo/combobox.html">combobox</a>&nbsp;&nbsp;<a href="../../demo/combobox-changedict.html">changedict</a><a></a><a></a><a></a><a></a>
+<h4>使用方法</h4>
+1.使用标签创建，对input或select标签引用"kjaxui-combobox"类。
+<pre name="code-combobox" class="code">
+	<span style="color:blue">&lt;select</span><span style="color:red"> class</span><span style="color:blue">="kjaxui-combobox" <span style="color:red">style</span><span style="color:blue">=width:200px</span>&gt;</span>
+		<span style="color:blue">&lt;option&gt;</span> item1 <span style="color:blue">&lt;option&gt;</span>
+		<span style="color:blue">&lt;option&gt;</span> item2 <span style="color:blue">&lt;option&gt;</span>
+		<span style="color:blue">&lt;option&gt;</span> item3 <span style="color:blue">&lt;option&gt;</span>
+		<span style="color:blue">&lt;option&gt;</span> item4 <span style="color:blue">&lt;option&gt;</span>
+		<span style="color:blue">&lt;option&gt;</span> item5 <span style="color:blue">&lt;option&gt;</span>
+	<span style="color:blue">&lt;/select&gt;</span>
+</pre>
+<pre name="code-combobox" class="code">
+	<span style="color:blue">&lt;input</span><span style="color:red"> id</span><span style="color:blue">="cc"</span><span style="color:red"> class</span><span style="color:blue">="kjaxui-combobox"&gt;</span>
+</pre>
+2.使用脚本创建。
+<pre name="code-combobox" class="code">
+	<span style="color:blue">&lt;input</span><span style="color:red"> id</span><span style="color:blue">="cc"&gt;</span>
+	$(<span style="color:blue">"#cc"</span>).combobox({
+		url:<span style="color:blue"> 'combobox_data.json'</span>,
+		valueField:<span style="color:blue"> 'id'</span>,
+		textField:<span style="color:blue"> 'text'</span>
+	});
+</pre>
+
+<p>json数据格式:</p>
+<pre name="code-combobox" class="code">
+	[{
+		"id":1,
+		"text":"text1"
+	},{
+		"id":2,
+		"text":"text2"
+	},{
+		"id":3,
+		"text":"text3",
+		"selected":true
+	},{
+		"id":4,
+		"text":"text4"
+	},{
+		"id":5,
+		"text":"text5"
+	}]
+</pre>
+
+<h4>属性</h4>
+<p>继承自定义组合框的属性, 以下是可装载组合框的独有属性。</p>
+<table class="doc-table">
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+</tr>
+<tr>
+
+<td>valueField（值域）</td>
+<td>string（字符串）</td>
+<td>绑定到组合框下的数据的值域的名称。</td>
+<td>value</td>
+</tr>
+<tr>
+<td>textField（文本域）</td>
+<td>string（字符串）</td>
+<td>绑定到组合框下数据的文本域的名称。</td>
+<td>text</td>
+
+</tr>
+
+<tr>
+<td>url（超链接地址）</td>
+<td>string（字符串）</td>
+<td>可供载入数据列表的远程地址。</td>
+<td>null</td>
+</tr>
+<tr>
+<td>method（方法）</td>
+<td>string（字符串）</td>
+<td>获取数据的HTTP方法。</td>
+<td>post</td>
+</tr>
+<tr>
+<td>data（数据）</td>
+<td>array（数组）</td>
+<td>将被载入的数据列表。<br>
+<xmp style="color:green">
+<input class="kjaxui-combobox" data-options="
+		valueField: 'label',
+		textField: 'value',
+		data: [{
+			label: 'java',
+			value: 'Java'
+		},{
+			label: 'perl',
+			value: 'Perl'
+		},{
+			label: 'ruby',
+			value: 'Ruby'
+		}]" />
+</xmp>
+</td>
+<td>null</td>
+</tr>
+<tr>
+<td>showCode（显示数据代码）</td>
+<td>boolean（布尔型）</td>
+<td>为true时显示数据前面的代码号，为false则不显示。</td>
+<td>false</td>
+</tr>
+<tr>
+<td>dict（数据字典）</td>
+<td>string（字符串）</td>
+<td>将被载入数据的数据字典。</td>
+<td></td>
+</tr>
+<tr>
+<td>kjaxdict（数据字典对象）</td>
+<td>string（字符串）</td>
+<td>数据字典所在的对象。</td>
+<td>kjaxdict</td>
+</tr>
+<tr>
+<td>valuelist（初始化数据）</td>
+<td>string（字符串）</td>
+<td>初始化时填充的数据。</td>
+<td></td>
+</tr>
+<tr>
+<td>value（默认选中数据）</td>
+<td>string（字符串）</td>
+<td>初始化时默认选中的数据。</td>
+<td></td>
+</tr>
+<tr>
+<td>sid（市下拉框的id）</td>
+<td>string（字符串）</td>
+<td>省市下拉框时，省下拉框配置的sid为市下拉框的id。</td>
+<td></td>
+</tr>
+<tr>
+<td>editable（是否可编辑）</td>
+<td>boolean（布尔型）</td>
+<td><p>定义用户是否可以直接向组合框输入内容。<br />
+<span style="color:red">(只有当此项值设置为true时，才能实现自动补全功能)</span>
+</p></td>
+<td>false</td>
+</tr>
+<!-- <tr>
+<td>filter（过滤器）</td>
+<td>function（函数）</td>
+<td>定义当模式设置为'local'时如何过滤本地数据，function有2个参数：<br />
+q: 用户输入的文本。<br />
+row: 数据列表<br />
+返回true将允许显示数据列表。</td>
+
+<td></td>
+</tr> -->
+<!-- <tr>
+<td>formatter(格式)</td>
+<td>function（函数）</td>
+<td>定义如何返回数据，function有一个参数：row。</td>
+<td></td>
+</tr> -->
+</table>
+
+<h4>事件</h4>
+<p>事件继承自定义组合框，以下是可装载组合框的独有事件。</p>
+<table class="doc-table">
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+<tr>
+<td>onBeforeLoad</td>
+
+<td>param</td>
+<td>在加载数据请求前触发，反回false将取消加载行为。</td>
+</tr>
+<tr>
+<td>onLoadSuccess</td>
+
+<td>none</td>
+<td>当远程数据载入成功时触发。</td>
+</tr>
+<tr>
+<td>onLoadError</td>
+<td>none</td>
+<td>当远程数据载入错误时触发。</td>
+</tr>
+<tr>
+<td>onSelect</td>
+<td>record</td>
+
+<td>当用户选择一个列表项时触发。</td>
+</tr>
+<tr>
+<td>onUnselect</td>
+<td>record</td>
+<td>当用户取消选择一个列表项时触发。</td>
+</tr>
+</table>
+
+<h4>方法</h4>
+<p>方法继承自定义组合框，以下是可装载组合框独有的或者重载自定义组合框的方法。</p>
+<table class="doc-table">
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+<tr>
+<td>options</td>
+
+<td>none</td>
+<td>返回属性对象。</td>
+</tr>
+<tr>
+<td>getData</td>
+<td>none</td>
+<td>返回已载入的数据。</td>
+</tr>
+<tr>
+<td>loadData</td>
+<td>data</td>
+
+<td>载入本地数据列表。</td>
+</tr>
+<tr>
+<td>reload</td>
+<td>url</td>
+<td>请求远程数据列表。</td>
+</tr>
+<tr>
+<td>setValues</td>
+<td>values</td>
+<td>设置组合框的值，参数values是一个数组。<br>
+<pre style="color:green">
+$('#cc').combobox('setValues', ['001','002']);
+</pre>
+</td>
+</tr>
+<tr>
+<td>setValue</td>
+<td>value</td>
+<td>设置组合框的值。<br/>
+<pre style="color:green">
+$('#cc').combobox('setValues', '001');
+</pre>
+</td>
+</tr>
+<tr>
+<td>clear</td>
+<td>none</td>
+<td>清除组合框的值。</td>
+</tr>
+
+<tr>
+<td>select</td>
+<td>value</td>
+<td>选择特定的项目。</td>
+</tr>
+<tr>
+<td>unselect</td>
+<td>value</td>
+<td>取消选择特定的项目。</td>
+</tr>
+<tr>
+<td>setDict</td>
+<td>value</td>
+<td>设置组合框的数据字典。</td>
+</tr>
+</table>
+</div>
+		</div>
+		</div>
+
+	</body>
+</html>

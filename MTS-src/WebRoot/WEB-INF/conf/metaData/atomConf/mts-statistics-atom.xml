@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+
+    <atom atom_code="queryOperationLogAtom" atom_name="操作日志查询"
+          atom_method="queryOperationLog"  atom_class="com.szkingdom.business.mts.OperationLog"
+          attr1="" attr2=""/>
+
+</atoms>

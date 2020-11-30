@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>系统清算</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../../business/sysmanager/css/business.transation.css" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+#taskExe_table tr{
+    font-size: 15px;
+    font-family: '微软雅黑', '宋体';
+    background-color: #FFFFFF;
+    font-weight: bold;
+}
+</style>
+<script type="text/javascript">
+
+var taskArr=[{EXE_NUM:'M0001004',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'mts数据库清算前备份',TASK_ERROR:'',TASK_STA:'等待'},
+             {EXE_NUM:'M0000086',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'数据准备',TASK_ERROR:'',TASK_STA:'等待'},
+             {EXE_NUM:'M0000064',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'资金清算',TASK_ERROR:'',TASK_STA:'等待'},
+             {EXE_NUM:'M0000065',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'股份清算',TASK_ERROR:'',TASK_STA:'等待'},
+             {EXE_NUM:'M0000090',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'交易费用清算',TASK_ERROR:'',TASK_STA:'等待'},
+             {EXE_NUM:'M0000080',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'交易员日结清算',TASK_ERROR:'',TASK_STA:'等待'}]
+//渲染任务表格
+function drawTaskTable(){
+
+    $.each(taskArr,function (idx,arrEle) {
+        $('#taskExe_table').append('<tr style="vertical-align: text-top;"></tr>');
+        var tabRows=$('#taskExe_table').find("tr");
+        //行数
+        var tabRowsLen=$('#taskExe_table').find("tr").length;
+        //当前行对象
+        var curTrObj=$(tabRows).eq(tabRowsLen-1);
+
+        var tabRowsLen=tabRows.length;
+        //第二层数且索引
+        var secArrIdx=0;
+         for(var key in arrEle){
+             $(curTrObj).append('<td></td>');
+             switch (key){
+                 case 'EXE_NUM':
+                     $(curTrObj).find('td:eq('+secArrIdx+')').attr(key,arrEle[key]).attr('width','5');
+                     break;
+                 case 'TASK_IMG':
+                     $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','20');
+                     $(curTrObj).find('td:eq('+secArrIdx+')').html(arrEle[key]);
+                     break;
+                 case 'TASK_CONT':
+                     $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','100');
+                     $(curTrObj).find('td:eq('+secArrIdx+')').html(arrEle[key]);
+                     break;
+                 case 'TASK_ERROR':
+                     $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','300');
+                     break;
+                 case 'TASK_STA':
+                     $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','30');
+                     $(curTrObj).find('td:eq('+secArrIdx+')').html(arrEle[key]);
+             }
+             secArrIdx++;
+         }
+
+    });
+}
+
+window.$ready=function () {
+    $('#task_main_div').height($(window).height()-$('#transactionInfo').height()-20);
+
+    drawTaskTable();
+}
+
+//日切任务处理
+function task_process() {
+
+   $('td[field=TASK_ERROR]').html('');
+    var tableRows=$('#taskExe_table').find("tr").length;
+    var curRowIdx=0
+    exeTask(curRowIdx);
+    function exeTask(curRowIdx) {
+      var domEle= $('#taskExe_table').find('tr:eq('+curRowIdx+')');
+
+        $(domEle).find('td[field=TASK_IMG]').find('div')
+                        .removeClass('tree-task-wait')
+                        .removeClass('tree-task-error')
+                        .removeClass('tree-task-succ')
+                        .addClass('tree-task-doing');
+        $(domEle).find('td[field=TASK_STA]').html('<img src="../images/indicator.medium.gif" height="24" width="24"/>');
+
+        ajaxRequest({
+            async: false,
+            noPrompt:true,
+            req: [{
+                service:  $(domEle).find('td[exe_num]').attr('exe_num')
+            }],
+            func: function(data) {
+                setTimeout(function () {
+                    $(domEle).find('td[field=TASK_IMG]').find('div').removeClass('tree-task-doing').addClass('tree-task-succ');
+                    $(domEle).find('td[field=TASK_STA]').html('<span style="color: #00ee00">完成</span>');
+                    curRowIdx++;
+                    if(curRowIdx<=tableRows-1){
+                        exeTask(curRowIdx);
+                    }
+                },1000);
+
+            },error:function (data) {
+
+                setTimeout(function () {
+                    $(domEle).find('td[field=TASK_IMG]').find('div').removeClass('tree-task-doing').addClass('tree-task-error');
+                    var retCode = data[0]["ANS_MSG_HDR"]["MSG_CODE"];
+                    var retMsg = data[0]["ANS_MSG_HDR"]["MSG_TEXT"];
+                    $(domEle).find('td[field=TASK_ERROR]').html(limitedWords({val:retMsg},48));
+                    $(domEle).find('td[field=TASK_STA]').html('<span style="color: red;">失败</span>');
+                },1000);
+            }
+        });
+
+    }
+}
+
+</script>
+
+</head>
+<body>
+
+<div class='div-transaction' id="transactionInfo">
+    <div id="process" class="process-frame" style="width: 100%;">
+
+        <div class="deal-btn" id="dealBtnControl">
+            <div class="deal-task-btn deal-trans-btn" id="transBtn"  style="float: right;
+               margin-right: 100px;" onclick="task_process()">
+                系统清算
+            </div>
+        </div>
+    </div>
+    <div id="task_main_div" style="border: #3bbcf0 1px solid;">
+        <table id="taskExe_table" style="width:85%; margin-left: 100px;" cellspacing="0" cellpadding="0">
+
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+    <service service_code="M0000085" service_title="生成资金账号" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="createCuacctSerialAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000092" service_title="生成客户代码" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="createCustIdSerialAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000093" service_title="生成人员ID号" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="createEmpIdAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+</services>

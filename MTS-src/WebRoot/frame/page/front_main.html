@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html style="overflow:hidden;">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<!--<title>MTS-金手指环球量化平台</title>-->
+<title>门户首页</title>
+<link rel="Shortcut Icon" href="../../kjdp.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../../frame/css/ui-front-window.css"/>
+<link rel="stylesheet" type="text/css" href="../../frame/css/front-main.css"/>
+<link rel="stylesheet" type="text/css" href="../../frame/css/front-common.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../frame/js/system-conf.js"></script>
+<script type="text/javascript" src="../../frame/js/kui.debugger.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript">
+var kportalConf = {
+
+	kjdp: {
+
+		flowCompConf: {
+			service: "P0004135"
+		},
+
+		layoutConf: {
+			service: "P0004101"
+		},
+
+		userConf: {
+			service: "P0000171"
+		},
+
+		platConf: {
+			service: "P0000181",
+			defaultParam: {STATUS: "1"},
+			filter: function(data) {
+				var ret = [];
+
+				$.each(data[0] || [], function() {
+					if(this.ID !== "0") {
+						ret.push(this);
+					}
+				});
+
+				if(sysConf.showCustomPlat) {
+					ret.push({ID: "-1", PLAT_NAME: "自定义平台"});
+				}
+
+				return [ret];
+            }
+		},
+
+        sysParamConf: {
+            service: "P0000001"
+        },
+
+		menuConf: {
+			service: "P0004001",
+			defaultParam: {MENU_PUR: "2"}
+		},
+		
+		treeConf: {
+			animate: true,
+			animateSpeed: 50,
+			conf: {
+				nodeId:'MENU_ID',
+				nodeName:'MENU_NAME',
+				treeType:'1',
+				parNode:'PAR_MENU'
+			}
+		},
+		//工作流服务调用
+        todoQueryConf: {
+            service: "P0005001",
+            defaultParam: {BPM_OP:"getCustReadyTaskCountByPriority"}
+        }
+	},
+	
+	other: {
+		
+		platConf: {
+			data: [[{
+				ID: "other", 
+				PLAT_NAME: sysConf ? sysConf.platName : "",
+				SEQ: "5",
+				STATUS: "1"
+			}]]
+		},
+		
+		userConf: {
+			data: [[{
+				CONFIGURE: {
+					defaultSkin: "compact",
+					defaultPlat: "other",
+					platImages: {
+						"other": "theme-blue-a"
+					}
+				}
+			}]]
+		}
+	}
+};
+
+window.isKjdp = "kjdp" === window.sysName;
+
+window.sysConf = $.extend({}, kportalConf[window.isKjdp ? "kjdp" : "other"], window.sysConf);
+</script>
+<script type="text/javascript" src="../../frame/js/front-base.js"></script>
+<script type="text/javascript" src="../../frame/js/front-main.js"></script>
+<script type="text/javascript">
+var $k = {
+	config: {
+		theme: 'trans',
+		checkingFlag: true
+	},
+	
+	lock: function(){
+		top.mainFrame.login.logout();
+	},
+	
+	portal: mainFrame,
+
+	showConfirmOnBeforeUnload: true
+};
+
+window.onbeforeunload = function() {
+	if(window.$k.showConfirmOnBeforeUnload && !window.doNotShowConfirmOnBeforeUnload) {
+		return "您确认要离开本页面 - 您输入的数据可能不会被保存？";
+	}
+}
+
+window.$ready = function() {
+	using(["menu", "linkbutton", "form", "uploadify", "dialog", "scrollbox"], function() {
+		if(window.isKjdp) {
+			kuiloader.loadCss("../../opp/css/portal-icon.css");
+		}
+        getMac();
+        mainFrame.init();
+	});
+
+	// 获取并显示mac地址
+	function getMac(){
+        $.ajax({
+            url:"/kjdp_qryConfig",
+            type:'POST',
+            dataType:'json',
+            jsonpCallback:"qryConfig",
+            data:{"SYS_CONF_KEY":"WEB_LOGIN_LIMIT"},
+            async:false,
+            success:function (data) {
+                if (data != null && data['result'] == 'true'){
+                    $.ajax({
+                        url:"http://127.0.0.1:43543/mac?callback=?",
+                        type:'GET',
+                        dataType:'jsonp',
+                        jsonpCallback:'foobar',
+						data:'',
+                        timeout:500
+                    }).done(function (data) {
+                        $("#mac_addr").val(data.mac);
+                        $("#int_org").html("操作站点: "+data.mac);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        $("#show_msg").html("请 <a href='javascript:void(0)' class='kui-linkbutton' " +
+							"onClick='setUpMacPlugin()'><span style='color: red; font-weight: bold'>下载</span></a> " +
+							"并手动安装安全信息组件!");
+                    });
+                }
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown){
+                console.log("获取配置文件属性失败");
+            }
+        });
+	}
+};
+function setUpMacPlugin(){
+    window.open("../../plugin/safePluginSetup.exe");
+}
+</script>
+
+</head>
+<body>
+<div id="top_bar" class='top-bar'>
+	<div class="icon-head">
+		<div class="head-img-wrap">
+			<img id="head_img" title="用户信息" src="../../frame/images/portal/ui-frame-leftbar-userpic.png" />
+		</div>
+		<div id="user_name" class="text-div text-white">未登录</div>
+		<div class="line"></div>
+		<div id="int_org" class="text-div text-blue text-div-large"></div>
+	</div>
+	<div id="switch_box_wrap" class="switch-box-wrap">
+		<div class="switch-box-btn switch-box-btn-left" title="上一页"></div>
+		<div id="switch_box" class="switch-box"></div>
+		<div class="switch-box-btn switch-box-btn-right" title="下一页"></div>
+	</div>
+	<div id="sys_date_div" class="switch-box-wrap" style="font-size: 16px;">
+		<div id="sys_date" class="sys_date_box"><span></span></div>
+		<span id="sys_time" class="sys_date_box" style="line-height: 42px;"></span>
+		<div id="sys_calender" style="display: none;"><iframe src="calendar.html" width="100%" height="97%"></iframe></div>
+	</div>
+	<div id="search_box" class="search-box">
+		<input id="search_input" class="search-input" value="搜索菜单" placeholder="搜索菜单"/>
+		<div id="search_items_panel" class="search-items-panel"></div>
+	</div>
+	<div class="line"></div>
+	<div id="icon_small_div" class="icon-small-div">
+		<div id="icon_setting" class="icon-small icon-setting" title="设置" style="visibility:hidden;"></div>
+		<div id="icon_help" class="icon-small icon-help" title="帮助" style="visibility:hidden;"></div>
+		<div id="icon_lock" class="icon-small icon-lock" title="锁定" style="visibility:hidden;"></div>
+		<div id="login" class="icon-small icon-login" title="登录"></div>
+	</div>
+</div>
+
+<div class="top-bar-shadow"></div>
+<div id="plat_prototype" style="display:none;">
+	<div class='left-toolbar'>
+		<div class="left-menu-box"></div>
+	</div>
+	<div class="left-collapse-box">
+		<span class="collpase-btn expanded" title="折叠"></span>
+	</div>
+	<div class='main-panel'></div>
+	<div class='bottom-bar'>
+		<div class="task-bar">
+			<div class="task-bar-btn task-bar-left" title="上一页"></div>
+			<div class="task-bar-items"></div>
+			<div class="task-bar-btn task-bar-right" title="下一页"></div>
+		</div>	
+	</div>
+	<img class='front-background-image plat-background-image' image_id="theme_sky" src="../../frame/images/portal/frame-bg-sky.jpg"/>
+</div>
+
+<div id="status_bar" class="status-bar">
+    <div class="status-bar-icon" title="系统运行信息"></div>
+    <div class="status-bar-content"></div>
+</div>
+
+<div id="login_window_div" style="display:none;background:none !important;" title="登录" resizable="false" closable="true" collapsible="false" minimizable="false" maximizable="false" modal="true">
+	<div class="login-panel no-validcode">
+		<div class="large-div user-div">
+			<input id="user_code" type="text"/>
+			<input id="mac_addr" type="text" style="display: none"/>
+		</div>
+		<div class="large-div pass-div">
+			<input id="password" type="password"/>
+		</div>
+		<div class="large-div valid-div">
+			<input id="valid_code" maxlength="4" type="text" size="6"/>
+			<img id="valid_img"/>
+		</div>
+		<div class="login-div">
+			<input id="btn_login" type="button" value="登&nbsp;&nbsp;录"/>
+		</div>
+		<div id="show_msg"></div>
+		<div id="tip_div" class="tip-div"></div>
+	</div>
+</div>
+
+<div id="lock_window_div" style="display:none;background:none !important;" title="用户锁定" resizable="false" closable="false" collapsible="false" minimizable="false" maximizable="false" modal="true">
+	<div id="login_panel" class="login-panel lock-panel no-padding-top">
+		<div class="head-img-div">
+			<img id="lock_head_img" width="100%" height="100%">
+		</div>
+		<div class="large-div user-div">
+			<input id="lock_user_code" type="text"/>
+		</div>
+		<div class="large-div pass-div">
+			<input id="lock_password" type="password"/>
+		</div>
+		<div class="login-div">
+			<input id="btn_unlock" type="button" value="解&nbsp;&nbsp;锁"/>
+		</div>
+		<div id="lock_tip_div" class="tip-div"><span id="switch_user" title="切换用户">切换用户</span></div>	
+	</div>
+</div>
+
+<div id="setting_window_div" style="display:none;position:relative;" title="设置" resizable="false" closable="true" collapsible="false" minimizable="false" maximizable="false" modal="true">
+	<div class="setting-wraps">
+		<div class="setting-wrap">
+			<div class="setting-title">默认平台</div>
+			<div class="setting-content">
+				<div id="content_plat" class="select-items"></div>
+			</div>
+		</div>
+		<div class="setting-wrap">
+			<div class="setting-title">主题皮肤</div>
+			<div class="setting-content">
+				<div id="content_skin" class="select-items">
+					<div class="select-item"><input skin_id="compact" name="skin-radio" type="radio"><span>传统风格</span></div>
+					<div class="select-item"><input skin_id="trans" name="skin-radio" type="radio"><span>简约风格</span></div>
+					<div class="select-item"><input skin_id="typical" name="skin-radio" type="radio"><span>经典风格</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="setting-wrap">
+			<div class="setting-title">背景图片</div>
+			<div class="setting-content">
+				<div id="content_bgimage">
+					<div id="theme-blue-a" skin="compact" class="theme-item theme-item-blue" bgimg="../../frame/images/portal/frame-bg-blue.jpg"></div>
+					<div id="theme-black-a" skin="compact" class="theme-item theme-item-black" bgimg="../../frame/images/portal/frame-bg-black.jpg"></div>
+					<div id="theme_sky" skin="trans" class="theme-item theme-item-sky" bgimg="../../frame/images/portal/frame-bg-sky.jpg"></div>
+					<div id="theme_green" skin="trans" class="theme-item theme-item-green" bgimg="../../frame/images/portal/frame-bg-leaf.jpg"></div>
+					<div id="theme_bluespace" skin="trans" class="theme-item theme-item-bluespace" bgimg="../../frame/images/portal/frame-bg-bluespace.jpg"></div>
+					<div id="theme-star" skin="trans" class="theme-item theme-item-star" bgimg="../../frame/images/portal/frame-bg-star.jpg"></div>
+					<div id="theme-darkglass" skin="trans" class="theme-item theme-item-darkglass" bgimg="../../frame/images/portal/frame-bg-darkglass.jpg"></div>
+					<div id="theme-blue" skin="typical" class="theme-item theme-item-blue" bgimg="../../frame/images/portal/frame-bg-blue.jpg"></div>
+					<div id="theme-black" skin="typical" class="theme-item theme-item-black" bgimg="../../frame/images/portal/frame-bg-black.jpg"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="user_info_win" style="display:none;" title="用户信息" resizable="false" closable="true" collapsible="false" minimizable="false" maximizable="false" modal="true">
+	<form id="user_info_form" class="user-info-form">
+    	<table class="user-info-table">
+    		<tr>
+    			<td>员工编号:</td>
+    			<td><input class="kui-validatebox" type="text" name="USER_CODE" kui-options="disabled:true"/></td>
+    			<td>员工名称:</td>
+    			<td><input class="kui-validatebox" type="text" name="USER_NAME" kui-options="disabled:true"/></td>
+    		</tr>
+    		<tr>
+    			<td>开户日期:</td>
+    			<td><input class="kui-validatebox" type="text" name="OPEN_DATE" kui-options="disabled:true"/></td>
+    			<td>办公电话:</td>
+    			<td><input class="kui-validatebox" type="text" name="OFF_TEL" kui-options="validType:'tel;length[0,32]'"/></td>
+    		</tr>
+    		<tr>
+    			<td>移动电话:</td>
+    			<td><input class="kui-validatebox" type="text" name="MOBILE" kui-options="validType:'mobile;length[0,32]'"/></td>
+    			<td>电子邮箱:</td>
+    			<td><input class="kui-validatebox" type="text" name="EMAIL" kui-options="validType:'email;length[0,32]'"></input></td>
+    		</tr>
+    		<tr>
+    			<td>签名备注:</td>
+    			<td colspan="3">
+    				<input class="kui-validatebox" type="text" name="SIGNATRUE" kui-options="validType:'length[0,512]'" style="width:100%;"/>
+    			</td>
+    		</tr>
+    	</table>
+		<div id="user_head_img_wrap" class="head-img-edit">
+			<img id="user_head_img" width="86" height="86" title="单击选择图片"/>
+		</div>
+    	<input id="img_file" type="file"/>
+    	<div class="user-info-op-btn-wrap">
+    		<span class="op-prompt">温馨提示：需要修改头像请点击右侧图片</span>
+	    	<a id="change_password" href="javascript:void(0)" class="kui-linkbutton">修改密码</a>
+	    	<a id="save_user_info" href="javascript:void(0)" class="kui-linkbutton">保存</a>
+	    </div>
+	</form>
+</div>
+
+<div id="password_change_win"style="display:none;" title="修改密码" resizable="false" closable="true" collapsible="false" minimizable="false" maximizable="false" modal="true">
+	<form id="password_change_form">
+		<table class="password-change-table">
+			<tr>
+				<td>员工编号:</td>
+				<td>
+					<input id="PWD_CHANGE_USER_CODE" class="kui-textinput" type="text" name="PWD_CHANGE_USER_CODE" kui-options="disabled:true"/>
+				</td>
+			</tr>
+			<tr>
+				<td>原密码:</td>
+				<td>
+					<input id="PWD_CHANGE_OLD" class="kui-password" type="password" name="PWD_CHANGE_OLD" kui-options="required:true,isValid:0,validType:'numchar[6,25]'"/>
+				</td>
+			</tr>
+			<tr>
+				<td>新密码:</td>
+				<td>
+					<input id="PWD_CHANGE_NEW" class="kui-password" type="password" name="PWD_CHANGE_NEW" kui-options="required:true,validType:'numchar[6,25]'"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<img id="front_background_image" class='front-background-image' src="../../frame/images/portal/frame-bg-sky.jpg"/>
+<div id="user_detail_info" class="user-detail-info">
+    <div class="user-detail-icon"></div>
+    <div class="user-detail-content">
+        <div class="user-detail-title">操作员信息</div>
+        <div class="user-detail-item">
+            <div class="detail-key">用户角色：</div>
+            <div class="detail-value" id="detail_USER_ROLE"></div>
+        </div>
+        <div class="user-detail-item">
+            <div class="detail-key">用户代码：</div>
+            <div class="detail-value" id="detail_USER_CODE"></div>
+        </div>
+        <div class="user-detail-item">
+            <div class="detail-key">用户名称：</div>
+            <div class="detail-value" id="detail_USER_NAME"></div>
+        </div>
+        <div class="user-detail-item">
+            <div class="detail-key">机构名称：</div>
+            <div class="detail-value" id="detail_ORG_NAME"></div>
+        </div>
+        <div class="user-detail-item">
+            <div class="detail-key">上次登录地点：</div>
+            <div class="detail-value" id="detail_LAST_LOGIN_SITE"></div>
+        </div>
+        <div class="user-detail-item">
+            <div class="detail-key">上次登录时间：</div>
+            <div class="detail-value" id="detail_LAST_LOGIN_TIME"></div>
+        </div>
+    </div>
+</div>
+<div id="printbox">
+	<!--  <embed id="idPrint" type="application/x-kd-reportprint" style="width:0px;height:0px;" /> -->
+</div>
+</body>
+</html>

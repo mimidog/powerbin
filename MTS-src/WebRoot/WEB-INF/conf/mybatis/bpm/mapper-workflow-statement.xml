@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bpm">
+  <sql id="limitBefore">
+    <choose>
+      <when test="databaseId.equals('oracle')"> select * from ( select a.*, ROWNUM rnum from ( </when>
+      <when test="databaseId.equals('mssql')"> SELECT SUB.* FROM ( </when>
+      <when test="databaseId.equals('mysql')"></when>
+   </choose>
+  </sql>  
+
+  <sql id="limitAfter">
+    <choose>
+      <when test="databaseId.equals('oracle')">   ) a where ROWNUM &lt; #{criteria.maxResults}) where rnum  &gt;= #{criteria.firstResult} </when>
+      <when test="databaseId.equals('mssql')"> )RES ) SUB WHERE SUB.rnk &gt;= #{criteria.firstResult} AND SUB.rnk &lt; #{criteria.maxResults} </when>
+      <when test="databaseId.equals('mysql')">
+      	LIMIT #{criteria.maxResults}  OFFSET #{criteria.firstResult}
+      </when>
+   </choose>
+  </sql> 
+  
+  <sql id="orderBy">
+    <choose>
+      <when test="databaseId.equals('oracle')"> ${criteria.orderBy} </when>
+      <when test="databaseId.equals('mssql')">  </when>
+      <when test="databaseId.equals('mysql')"> ${criteria.orderBy} </when>
+   </choose>
+  </sql> 
+  
+  <sql id="limitBetween">
+    <choose>
+      <when test="databaseId.equals('oracle')"> </when>
+      <when test="databaseId.equals('mssql')"> , row_number() over (${criteria.orderBy}) rnk FROM ( select distinct RES.*  </when>
+      <when test="databaseId.equals('mysql')"> </when>
+   </choose>
+  </sql> 
+  
+   <sql id="limitOuterJoinBetween">
+    <choose>
+      <when test="databaseId.equals('oracle')"> </when>
+      <when test="databaseId.equals('mssql')"> , row_number() over (${criteria.mssqlOrDB2OrderBy}) rnk FROM ( select distinct   </when>
+      <when test="databaseId.equals('mysql')"> </when>
+   </choose>
+  </sql> 
+  
+  <sql id="criteria">
+      <choose>
+      <when test="databaseId.equals('oracle')"> INSTR(RES.PRE_USER_TASK,historicTask.HI_TASKINST_ID) > 0  </when>
+      <when test="databaseId.equals('mssql')"> CHARINDEX(historicTask.HI_TASKINST_ID, RES.PRE_USER_TASK) > 0  </when>
+      <when test="databaseId.equals('mysql')"> INSTR(RES.PRE_USER_TASK,historicTask.HI_TASKINST_ID) > 0</when>
+   </choose>
+  </sql>
+  
+</mapper>

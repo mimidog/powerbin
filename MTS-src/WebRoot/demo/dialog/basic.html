@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Dialog - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Basic Dialog</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click below button to open or close dialog.</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="$('#dlg').dialog('open')">Open</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="$('#dlg').dialog('close')">Close</a>
+	</div>
+	<div id="dlg" class="kui-dialog" title="Basic Dialog" kui-options="iconCls:'icon-save',shadow:false,collapsible:true" style="width:400px;height:200px;padding:10px">
+		The dialog contentssss.
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,153 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>操作员岗位级别审核</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<link type="text/css" rel="stylesheet" href="../../kui-base/themes/trans/form.css">
+<link rel="stylesheet" type="text/css" href="../../business/common/css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../business/common/css/common.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+</style>
+<script>
+//初始化表单数据
+function initOperaBaseInfo(selRow){
+    $('#operBaseInfo_table').find("td[name]").each(function(){
+        var name = $(this).attr("name"),
+            dict = $(this).attr("dict"),
+            formatter = $(this).attr("formatter");
+        if(formatter) {
+            $(this).empty().append(window.parent[formatter](selRow[name]));//子页面，减少外部文件引用
+        } else if(dict) {
+            $(this).empty().append(window.parent.getSysDict(dict, selRow[name]));//子页面，减少外部文件引用
+        } else {
+            $(this).empty().append(selRow[name]);
+        }
+    })
+};
+//审核
+function postLvlchgAudit() {
+    var selRow = $("#OPER_POST_LVL_CHG_APP_table").datagrid("getSelected");
+    if (selRow == null) {
+        alert("请选中表格中的一条数据！");
+        return;
+    }
+    //初始化表单数据
+    initOperaBaseInfo(selRow);
+
+    using('dialog',function () {
+        $("#operPostLvlChgAudit_Dialog").dialog({
+            title: '岗位级别变更审核',
+            width: 650,
+            height: 400,
+            modal: true,
+            resizable: true,
+            onOpen: function() {
+
+            },
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function () {
+                    if($('#auditRs').combobox('getValue')==''){
+                        alert('请选择审核结果！');
+                        return ;
+                    }
+                    var reqParam={'service':'M0001008',LOG_ID:selRow['LOG_ID'],AUDIT_USER:g_user.userId}
+                    if($('#auditRs').combobox('getValue')=='1'){
+                        $.extend(reqParam,{POST_LVL:selRow['CHG_A_POST_LVL'],USER_CODE:selRow['OPER_USER']});
+                    }
+
+                    $('#operPostLvlChgAudit_form').form('submit',{
+                        req:[reqParam],
+                        success:function(){
+                            alert('人员岗位调整审核成功！');
+                            $('#OPER_POST_LVL_CHG_APP_table').datagrid('reload');
+                            $("#operPostLvlChgAudit_Dialog").dialog('close');
+                        }
+                    });
+
+                }
+            },
+                {
+                    text: '取消',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        $("#operPostLvlChgAudit_Dialog").dialog('close');
+
+                    }
+                }
+            ]
+        });
+    })
+}    
+</script>
+</head>
+<body>
+<table id="OPER_POST_LVL_CHG_APP_table" class="kui-datagrid"></table>
+<div id="operPostLvlChgAudit_Dialog" style="display: none;">
+    <table id="operBaseInfo_table" style="width: 100%;" class="table-body">
+        <tr>
+            <td class="form-label" style="width: 15%">流水号：</td>
+            <td name="LOG_ID" style="width: 18%"></td>
+            <td class="form-label" style="width: 15%">申请日期：</td>
+            <td name="APP_DATE" style="width: 18%"></td>
+            <td class="form-label" style="width: 15%">申请时间：</td>
+            <td name="APP_TIME"  style="width: 19%"></td>
+        </tr>
+
+        <tr>
+            <td class="form-label" style="width: 15%">人员ID：</td>
+            <td name="OPER_USER" ></td>
+            <td class="form-label" >人员名称：</td>
+            <td name="OPER_NAME" ></td>
+            <td class="form-label" >人员类型：</td>
+            <td name="OPER_TYPE" dict="USER_TYPE" style="width: 19%"></td>
+        </tr>
+        <tr>
+            <td class="form-label" style="width: 15%">人员状态：</td>
+            <td name="OPER_STA" dict="USER_STA" ></td>
+            <td class="form-label" >所属机构：</td>
+            <td name="OPER_ORG" formatter="getOrgName"></td>
+            <td class="form-label" >主岗位：</td>
+            <td name="MAIN_POST_NAME"></td>
+        </tr>
+        <tr>
+            <td class="form-label">人员岗位：</td>
+            <td name="POST_NAME"></td>
+            <td class="form-label">变更前岗位级别：</td>
+            <td name="CHG_B_POST_LVL" dict="POST_LVL"  style="font-weight: bold;color:red;"></td>
+            <td class="form-label">变更后岗位级别：</td>
+            <td name="CHG_A_POST_LVL" dict="POST_LVL" style="font-weight: bold;color:green;"></td>
+        </tr>
+    </table>
+    <form id="operPostLvlChgAudit_form" class="kui-form">
+        <div class="datagrid-queryForm  f13 bgnone" style="width:99%;position: absolute;margin-top: 5px;">
+            <div class="pack-header"><b>人员岗位级级别审核</b></div>
+            <br>
+            <table style="width:100%;height: 100px; padding-top: 10px;">
+                <tr style="line-height: 20px;vertical-align: baseline">
+                    <td class="form-label" style="width: 80px;">审核结果：</td>
+                    <td>
+                        <input id="auditRs" name="AUDIT_RS" class="kui-combobox"
+                                kui-options="required:true,autoFill:true,valueField:'value',textField:'text',data:[{value:1,text:'通过'},{value:2,text:'不通过'}]"
+                                />
+                    </td>
+                </tr>
+                <tr style="line-height: 20px;vertical-align: baseline">
+                    <td class="form-label" style="width: 80px;">审核意见：</td>
+                    <td>
+                        <textarea name="AUDIT_ADVISE" class="kui-textarea"  kui-options="validType:'val[1,200]'" style="width: 500px;height: 40px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

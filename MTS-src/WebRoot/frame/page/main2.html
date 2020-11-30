@@ -1,0 +1,236 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		using("tabs");
+		
+		$("#userName").text(g_user.userName);
+		
+		/* $("#userInfo").bind("click",function(){
+			
+		}); */
+		
+		initMenu();
+		
+		$(window).resize(initLayout);
+		
+	});
+	
+	function initLayout(){
+		var ch = $(window).height();
+		var cw = $(window).width();
+		$("#openTab").css("height",ch-75);
+		$("#menus").css("height",ch-110);
+	}
+	
+	function processData(data) {
+	    var menuData = {
+	        firMenus: [],
+	        secMenus: [],
+	        othMenus: []
+	    };
+	    var tmp = data[0]['data'][0];
+	    for (var i = 0; i < tmp.length; i++) {
+	        var menuLvl = tmp[i]['MENU_LVL'];
+	        var menu = {
+	            menuId: tmp[i]['MENU_ID'],
+	            parId: tmp[i]['PAR_MENU'],
+	            menuName: tmp[i]['MENU_NAME'],
+	            menuLvl: menuLvl,
+	            menuIco: tmp[i]['MENU_ICO'],
+	            menuLink: tmp[i]['MENU_LINK']
+	        }
+	        if (menuLvl.length == 2){
+	        	menuData.firMenus.push(menu);
+	        }else if(menuLvl.length == 4){
+	        	menuData.secMenus.push(menu);
+	        }else{
+	        	menuData.othMenus.push(menu);
+	        }
+	    }
+
+	    return menuData;
+	}
+	
+	function initMenu(){
+		ajaxRequest({
+	    	url:'ajax?returnType=json',
+	        func: function(data) {
+	        	drawFirstMenu(processData(data));
+	        	bindMenusEvent();
+	        },
+	        req: [{
+	            "service": "frameSelectMenu",
+	            "MENU_STA": "1"
+	        }]
+	    });
+	}
+
+	function changeIcon(target,clsName,cls) {
+		if ($(clsName).hasClass(cls)) {
+			$(clsName).removeClass(cls);
+		} 
+		target.find(clsName).addClass(cls); 
+	}
+	
+	function addMenuTab($target){
+		
+		var menuId = $target.parent().attr("id") ;
+		var menuLink = $target.parent().attr("menuLink") ;
+		var menuName = $target.parent().attr("title") ;
+		if( menuLink != "undefined"){
+			$k.addTabs(menuId,menuName,menuLink);
+		}
+	}
+	
+	function bindMenusEvent() {
+		var $firstMenu = $('li.first-menu > a');
+		
+		$firstMenu.click(function(event){
+			//event.preventDefault();
+			var $target = $(this) ;
+			var secData = $.data(document.body, 'frame-secMenus');
+			var id = $target.parent().attr("id");
+			$("#"+id+"").children('ul').remove();
+			drawOthMenu(secData,id,"sec-menu","title-icon-3");
+			
+			var ulNode = $target.siblings('ul');
+			$('#accordion li').children('ul').slideUp(0);
+			ulNode.slideToggle(0);
+			//$alert($firstMenu.hasClass("first-menu-selected"));
+			
+			
+			//$target.toggleClass("first-menu-selected");
+			//$target.css("width","170px");
+			//changeIcon($target,".title-icon-2","title-icon-2-selected");
+			//$alert($firstMenu.hasClass("first-menu-selected"));
+		});
+		var $secMenu = $('li.sec-menu > a');
+		$secMenu.live("click",function(event){
+			event.preventDefault();
+			var $target = $(this) ;
+			var othData = $.data(document.body, 'frame-thirMenus',othData);
+			var id = $target.parent().attr("id");
+			$("#"+id+"").children('ul').remove();
+			drawOthMenu(othData,id,"thir-menu","title-icon-4");
+			/* if($("#"+id+"").children('ul').length == 0){
+				drawOthMenu(othData,id,"thirMenu","title-icon-4");
+			} */
+			var ulNode = $target.siblings('ul');
+			var t = $('li.sec-menu > a') ;
+			$('li.sec-menu').children('ul').slideUp(0);
+			if(t.hasClass("sec-menu-selected")){
+				t.removeClass("sec-menu-selected");
+			}
+			$target.addClass("sec-menu-selected");
+			ulNode.slideToggle(0);
+			changeIcon($target,".title-icon-3","title-icon-3-selected");
+			addMenuTab($target);
+		});
+		var $thirMenu = $('li.thirMenu > a');
+		$thirMenu.live("click",function(event){
+			event.preventDefault();
+			var $target = $(this) ;
+			changeIcon($target,".title-icon-4","title-icon-4-selected");
+			addMenuTab($target);
+		});
+	}
+	
+	function drawOthMenu(data,id,li_cls,span_cls){
+		var parTarget = $("#"+id+"");
+		var $othMenu = $("<ul></ul>");
+		parTarget.append($othMenu);
+		for(var j=0;j<data.length;j++){
+			if(id == data[j].parId){
+				
+				var $othMenu_li = $("<li class='"+li_cls+"' id='"+data[j].menuId+"' title='"+data[j].menuName+"' menuLink='"+data[j].menuLink+"'></li>");
+				var $othMenu_a = $("<a href='#'  onclick=''><span class='"+span_cls+"'></span>"+data[j].menuName+"</a>");
+				
+				$othMenu.append($othMenu_li);
+				$othMenu_li.append($othMenu_a);
+				
+			}
+		}
+	}
+	
+	function drawFirstMenu(data){
+		var firData = data.firMenus;
+		var secData = data.secMenus;
+		var othData = data.othMenus;
+		$.data(document.body, 'frame-secMenus',secData);
+		$.data(document.body, 'frame-thirMenus',othData);
+		var $menu = $("<ul id='accordion'></ul>");
+		for(var i=0;i<firData.length;i++){
+			var $firstMenu = $("<li class='first-menu' id='"+firData[i].menuId+"'></li>");
+			var $firstMenu_a = $("<a href='#'>"+firData[i].menuName+"</a>");
+			var $firstMenu_span_1 = $("<span class='title-icon-1'></span>");
+			//$firstMenu_span_1.addClass(firData[i].menuIco);
+			var $firstMenu_span_2 = $("<span class='title-icon-2'></span>");
+			
+			$("#menus").append($menu);
+			$menu.append($firstMenu);
+			$firstMenu.append($firstMenu_a);
+			$firstMenu_a.prepend($firstMenu_span_1);
+			$firstMenu_a.prepend($firstMenu_span_2);
+			
+		}
+	}
+	
+	
+
+</script>
+<div id="ui-frame-layout" class="">
+    <div id="ui-frame-layout-top" class="ui-frame-top-0">
+        <div class="ui-frame-layout-top">
+            <div class="ui-frame-logo">
+                <div class="ui-frame-logo-img"></div>
+                <div class="ui-frame-logo-title"></div>
+            </div>
+            <div class="ui-frame-tools">
+                <div id="userImg" class="ui-frame-user-img">
+                    <img src="frame/images/frame/user-pic.png" />
+                </div>
+                <div id="userName" class="ui-frame-user-name">
+                </div>
+                <div class="tools-trans-bg">
+                    <div class="ui-frame-tools-bg tools-line">
+                    </div>
+                    <div class="tools-box">
+                        <div class="ui-frame-tools-bg tools-box-left">
+                        </div>
+                        <div class="ui-frame-tools-bg tools-box-center">
+                            <div class="tools-icons-bg tools-icons-1" title="返回首页">
+                            </div>
+                            <div class="tools-icons-bg tools-icons-2" onclick="$k.lock()" title="锁定系统">
+                            </div>
+                            <div class="tools-icons-bg tools-icons-3" onclick="$k.logout()" title="退出登录">
+                            </div>
+                        </div>
+                        <div class="ui-frame-tools-bg tools-box-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ui-frame-layout-west" class="ui-frame-layout-west">
+        <div class="ui-frame-layout-search">
+            <div class="search-box">
+                <div class="ui-frame-tools-bg search-box-left">
+                </div>
+                <div class="ui-frame-tools-bg search-box-center">
+                    <input type="text" name="frame-search" value="请输入关键字..." onclick="javascript:this.value=''">
+                    <div class="search-icons-bg search-ico" title="关键字搜索">
+                    </div>
+                </div>
+                <div class="ui-frame-tools-bg search-box-right">
+                </div>
+            </div>
+        </div>
+        <div id="menus" class="ui-frame-menus">
+        </div>
+    </div>
+    <div id="ui-frame-layout-content" class="">
+        <div id="openTab" class="kui-tabs" fit="true" style="height: 600px;" plain="true"
+        border="false">
+        </div>
+    </div>
+</div>

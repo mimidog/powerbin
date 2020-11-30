@@ -1,0 +1,765 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>权限信息管理</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+  function syncCompPermData() {
+      confirm("提示", "确认要同步组件权限数据吗？", function(flag) {
+        if(flag) {
+            ajaxRequest({
+                req: [{
+                    service: "P0002269"
+                }],
+                func: function() {
+                    $('#UUM_permissionManage').treegrid('reload');
+                    alert("同步组件权限数据成功！");
+                }
+            });
+        }
+      });
+  }
+    function dataFilter(data){
+    	var v_data = data[0] ;
+      if(!v_data) return  {
+       total:v_data.length,
+       rows:v_data
+       };
+      if(v_data.length > 0 ){
+        for(var i = 0, len = v_data.length; i < len; i++){
+          if(v_data[i]['PAR_PERM']=="0"){
+          }else{
+            v_data[i]['pid'] = v_data[i]['PAR_PERM'];
+          }
+        }
+      }
+       return  {
+       total:v_data.length,
+       rows:v_data
+       };
+    }
+    function loadTreeSuccess(row, data){
+        $('.datagrid-toolbar a').linkbutton('disable');
+        $("#sycn_comp", ".datagrid-toolbar").linkbutton('enable');
+    }
+    function loadEditData(){
+      $('#UUM_permissionManage').treegrid('reload');
+    }
+    function addButtonInfo(){
+      var selected = $('#UUM_permissionManage').treegrid('getSelected');
+      if(!selected){
+        alert('请选择一个管理菜单权限或者门户菜单权限！');
+        return;
+      }
+      $('#addButtonInfoForm').form('clear');
+      $('#addParPerm').text(selected['PERM_NAME']);
+      using('dialog',function(){
+        $('#addButtonInfo').dialog({
+          title:'新增按钮信息',
+          width:520,
+          height:300,
+          modal:true,
+          buttons:[
+            {
+              text:'确定',
+              iconCls:'icon-save',
+              handler:function(){
+                var PERM_NAME = $('#addButtonName').val();
+                var PAR_PERM = selected['PERM_ID'];
+                var REMARK = $('#addRemark').val();
+                var PERM_TYPE = '5';
+                var FORM_OBJ =  $('#addButtonInfoForm');
+                var DIALOG_OBJ = $('#addButtonInfo');
+                submitAddForm(DIALOG_OBJ,FORM_OBJ,PERM_NAME,PAR_PERM,PERM_TYPE,REMARK);
+              }
+            },
+            {
+              text:'取消',
+              iconCls:'icon-cancel',
+              handler:function () {
+                $('#addButtonInfo').dialog('close');
+              }
+            }
+          ]
+        })
+      })
+      $('#addButtonInfo').dialog('open');
+    }
+    function delPermInfo(){
+      var selected = $('#UUM_permissionManage').treegrid('getSelected');
+      if(!selected){
+        alert('请选择要删除的权限！');
+        return;
+      }else{
+    	  confirm('提示信息','是否确认删除?',function(isOK){
+    		    if(isOK){
+    		    	ajaxRequest({
+    		            req:[
+    		              {
+    		                service:'P0002258',
+    		                REQ_PERM_ID:selected['PERM_ID']
+    		              }
+    		            ],
+    		            func:function (data){
+    		                alert('提示信息','删除成功！','',function(){
+    		              	  $('#UUM_permissionManage').treegrid('reload');
+    		                });
+    		            },
+    		            error:function(){
+    		              alert('删除失败！');
+    		            }
+    		          })
+    		    }
+    		  });
+      }
+
+    }
+    function updateButtonInfo(){
+      var selected = $('#UUM_permissionManage').treegrid('getSelected');
+      if(!selected){
+        alert('请选择一行按钮信息！');
+        return;
+      }else{
+        $('#modButtonInfoForm').form('clear');
+        using('dialog',function(){
+          $('#modButtonInfo').dialog({
+            title:'修改按钮信息',
+            width:400,
+            height:280,
+            modal:true,
+            buttons:[
+              {
+                text:'确定',
+                iconCls:'icon-save',
+                handler:function(){
+                  var PERM_ID = selected['PERM_ID'];
+                  var PERM_NAME = $('#modPermName').val();
+                  var REMARK = $('#modRemark').val();
+                  var FORM_OBJ = $('#modButtonInfoForm');
+                  var DIALOG_OBJ =$('#modButtonInfo');
+                  submitModForm(DIALOG_OBJ,FORM_OBJ,PERM_ID,PERM_NAME,REMARK);
+
+                }
+              },
+              {
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function () {
+                  $('#modButtonInfo').dialog('close');
+                }
+              }
+            ]
+          })
+        })
+        $('#modPermName').val(selected["PERM_NAME"]);
+        $('#modRemark').val(selected['REMARK']);
+        $('#modButtonInfo').dialog('open');
+      }
+    }
+    function clickRow(row){
+      switch(row['FLAG'])
+      {
+        case '1'://最顶层的父节点
+          $('.datagrid-toolbar a').linkbutton('disable');
+          break;
+        case '2'://第2层
+          $('.datagrid-toolbar a:eq(0)').linkbutton('enable');
+          $('.datagrid-toolbar a:gt(0)').linkbutton('disable');
+          break;
+        case '3':
+          $('.datagrid-toolbar a').linkbutton('disable');
+          $('.datagrid-toolbar a:lt(2)').linkbutton('enable');
+          $('.datagrid-toolbar a:eq(4)').linkbutton('enable');
+          break;
+        case '5'://点击按钮权限
+          $('.datagrid-toolbar a:eq(0)').linkbutton('disable');
+          $('.datagrid-toolbar a:eq(1)').linkbutton('disable');
+          $('.datagrid-toolbar a:eq(2)').linkbutton('enable');
+          $('.datagrid-toolbar a:eq(3)').linkbutton('enable');
+          $('.datagrid-toolbar a:gt(3)').linkbutton('disable');
+          break;
+        case '6'://点击列权限
+          $('.datagrid-toolbar a').linkbutton('disable');
+          $('.datagrid-toolbar a:eq(0)').linkbutton('disable');
+          $('.datagrid-toolbar a:eq(5)').linkbutton('enable');
+          $('.datagrid-toolbar a:eq(6)').linkbutton('enable');
+          break;
+      }
+      if(row['PERM_NAME'] == "账户系统"){
+	  		$('.datagrid-toolbar a').linkbutton('disable');
+	  }
+
+      if("3" === row["PERM_TYPE"] || "9" === row["PERM_TYPE"]|| "8" === row["PERM_TYPE"]) {
+          $('.datagrid-toolbar a').linkbutton('disable');
+      }
+
+      $("#sycn_comp", ".datagrid-toolbar").linkbutton('enable');
+    }
+    function submitAddForm( DIALOG_OBJ,FORM_OBJ,PERM_NAME,PAR_PERM,PERM_TYPE,REMARK){
+      FORM_OBJ.form('submit', {
+        req: [{service:'P0002256',
+                  PERM_NAME:PERM_NAME,
+                  PAR_PERM:PAR_PERM,
+                  PERM_TYPE:PERM_TYPE,
+                  PERM_STA:'1',
+                  REMARK:REMARK}],
+        onSubmit: function(){
+          return FORM_OBJ.form('validate');// 返回false将停止表单的提交
+        },
+        success: function(){
+          DIALOG_OBJ.dialog('close');
+          alert('提示信息','新增成功！','',function(){
+        	  $('#UUM_permissionManage').treegrid('reload');
+          });
+        },fail:function(){
+          alert('新增失败！');
+        }
+      });
+    }
+    function submitModForm(DIALOG_OBJ,FORM_OBJ,PERM_ID,PERM_NAME,REMARK){
+      FORM_OBJ.form('submit', {
+        req: [{
+          service:'P0002257',
+          PERM_ID:PERM_ID,
+          PERM_NAME:PERM_NAME,
+          REMARK:REMARK
+        }],
+        onSubmit: function(){
+          return FORM_OBJ.form('validate');// 返回false将停止表单的提交
+        },
+        success: function(){
+          DIALOG_OBJ.dialog('close');
+          alert('提示信息','修改成功！','',function(){
+        	  $('#UUM_permissionManage').treegrid('reload');
+          });
+          
+        },fail:function(){
+          alert('修改失败！');
+        }
+      });
+    }
+    function saveDefVal(permId,consId,consType){
+    	var minVal,maxVal;
+    	if(consType == 1){
+    		minVal = $("#tMin").val();
+    		maxVal = $("#tMax").val();
+	  	}else if(consType == 2){
+	  		minVal = $("#dMin").datebox("getValue");
+    		maxVal = $("#dMax").datebox("getValue");
+	  	}else if(consType == 3){
+	  		minVal = $("#dtMin").datetimebox("getValue");
+    		maxVal = $("#dtMax").datetimebox("getValue");
+	  	}else if(consType == 4){
+	  		minVal = $("#ipMin").val();
+    		maxVal = $("#ipMax").val();
+	  	}
+    	if(minVal != "" || maxVal != ""){
+    		if(minVal== "" || maxVal == ""){
+    			alert("权限约束：约束范围最大值和最小值必须同时填写！");
+    			return false ;
+    		}
+    		if (compTimeVal(minVal,maxVal) === false) return false;
+    	}
+    	ajaxRequest({
+			async:false,
+	        req:[{
+	        	service:'P0002259',
+	        	PERM_ID:permId,
+	        	CONS_ID:consId,
+	        	CONS_MAX:maxVal,
+	        	CONS_MIN:minVal
+	        }],
+	        func:function(data){
+	        	alert("设置成功！");
+	        	$('#addDialog').dialog('close');
+	        	$("#UUM_consTbl").datagrid("reload");
+	        }
+	   });
+    }
+    function createDefValDialog(consId,consType){
+    	if(consType == 1){
+    		$("#timespinner").show();
+    		$("#date").hide();
+    		$("#datetime").hide();
+    		$("#ip").hide();
+	  	}else if(consType == 2){
+	  		$("#timespinner").hide();
+    		$("#date").show();
+    		$("#datetime").hide();
+    		$("#ip").hide();
+    		$("#dMin").datebox("reset");
+    		$("#dMax").datebox("reset");
+	  	}else if(consType == 3){
+	  		$("#timespinner").hide();
+    		$("#date").hide();
+    		$("#datetime").show();
+    		$("#ip").hide();
+	  	}else if(consType == 4){
+	  		$("#timespinner").hide();
+    		$("#date").hide();
+    		$("#datetime").hide();
+    		$("#ip").show();
+	  	}
+	    
+	    
+    }
+    function addCons(permId){
+    	$("#timespinner").hide();
+		$("#date").hide();
+		$("#datetime").hide();
+		$("#ip").hide();
+		$("#addPermConsForm").form("clear");
+    	initConsType(permId);
+    	
+        $('#addDialog').dialog({
+          title:'请选择约束类型',
+          width:560,
+          //height:380,
+          modal:true,
+          buttons:[
+            {
+              text:'保存',
+              iconCls:'icon-save',
+              handler:function(){
+            	  var consId = $("#consId").val();
+			  var consType = $("#cons_Type").val();
+			  if($('#addPermConsForm').form('validate')){
+				  saveDefVal(permId,consId,consType);
+			  }
+			  
+              }
+            },
+            {
+              text:'取消',
+              iconCls:'icon-cancel',
+              handler:function () {
+                $('#addDialog').dialog('close');
+              }
+            }
+          ]
+        });
+    }
+	function deleteCons(permId){
+		var row = $('#UUM_consTbl').datagrid('getSelections');
+	    if(row.length==0){
+	      alert('请选择要删除的数据！');
+	      return false ;
+	    }
+		confirm("提示","确定删除该数据？",function(isOk){
+			if(isOk){
+				ajaxRequest({
+		            req:[{
+		            	  service:'P0002261',
+		            	  PERM_ID:permId,
+		            	  CONS_ID:row[0].CONS_ID
+		                }],
+		            func:function(data){
+		            		alert("删除成功！");
+		            		$('#UUM_consTbl').datagrid('clearSelections');
+			            	$("#UUM_consTbl").datagrid("reload");
+			            	//$("#UUM_permissionManage").treegrid("reload");
+		            }
+		        });
+			}
+		});
+    }
+	
+	function initConsType(permId){
+		using('combogrid', function() {
+			$('#consType').combogrid({
+				panelHeight : 280,
+				panelWidth : 500,
+				idField : 'CONS_ID',
+				textField : 'CONS_NAME',
+				req : [ {
+					service : 'P0002267',
+					PERM_ID:permId
+				} ],
+				queryCols : [ {
+					'text' : '查询',
+					'icon' : 'icon-search',
+					collapsed : true,
+					cols : [ {
+						title : '约束名称',
+						field : 'CONS_NAME',
+						editor : {
+							type : 'text',
+							options : {
+								validType : 'val[0,32]'
+							}
+						}
+					} ]
+				} ],
+				columns : [ [ {
+					field : 'CONS_ID',
+					title : '约束编号',
+					sortType:'number',
+					width : 120
+				}, {
+					field : 'CONS_NAME',
+					title : '约束名称',
+					width : 150
+				}, {
+					field : 'CONS_TYPE',
+					title : '约束类型',
+					width : 120,
+					formatter : function(value, row, index) {
+						return getSysDictOpt('CONS_TYPE', value);
+					}
+				} ] ],
+				onClickRow : function(rowIndex, rowData) {
+					$("#consId").val(rowData["CONS_ID"]);
+					$("#cons_Type").val(rowData["CONS_TYPE"]);
+					createDefValDialog(rowData["CONS_ID"],rowData["CONS_TYPE"]);
+				},
+				onShowPanel:function(){
+		        	  if( $('#consType').combogrid("grid").length > 0){
+                		if(typeof $('body').find(".datagrid-queryForm form")[1] != "undefined"){
+                			$('body').find(".datagrid-queryForm form")[1].reset();
+                		}
+                		$('#consType').combogrid("grid").datagrid("reload");
+                    }
+		          }
+			});
+		});
+	}
+	
+    function initConsGrid(permId){
+	    	$("#UUM_consTbl").datagrid({
+	    		req:[{
+		            service:'P0002266',
+		            PERM_ID:permId
+		          }],
+		          async:false,
+		          idField:'CONS_ID',
+		          singleSelect:true,
+		          rowEdit:true,
+		          width:600,
+		          toolbar: [{
+			    		text:'添加',
+			    		iconCls: 'icon-add',
+			    		handler: function(){
+			    			addCons(permId);
+			    		}
+			    	},{
+			    		text:'删除',
+			    		iconCls: 'icon-remove',
+			    		handler: function(){
+			    			deleteCons(permId);
+			    		}
+			    	}],
+		          columns:[[
+		            {field:'CONS_ID',title:'约束编号',sortType:'number',width:50},
+		            {field:'CONS_NAME',title:'约束名称',width:120},
+		            {field:'CONS_TYPE',title:'约束类型',width:120,
+		              formatter: function(value,row,index){
+		                return getSysDictOpt('CONS_TYPE',value);
+		              }
+		            },
+		            {field:'CONS_MIN',title:'最小值',width:100},
+		            {field:'CONS_MAX',title:'最大值',width:100}
+		          ]],
+		          onLoadSuccess:function(){
+		        	  
+		          }
+	    	});
+    }
+    
+    
+    function addConsType(){
+    	
+    	 var selected = $('#UUM_permissionManage').treegrid('getSelected');
+         if(!selected){
+           alert('请选择约束的权限信息！');
+           return;
+         }
+         var permId = selected['PERM_ID'];
+         initConsGrid(permId);
+         
+             $('#addConsPermDialog').dialog({
+               title:selected['PERM_NAME']+'约束类型',
+               width:630,
+               //height:380,
+               modal:true,
+               buttons:[
+                 {
+                   text:'关闭',
+                   iconCls:'icon-save',
+                   handler:function(){
+                	   $('#addConsPermDialog').dialog('close');
+                       if($('#addDialog').dialog()){
+                   		 $('#addDialog').dialog('close');
+                   	  }
+                      $("#UUM_permissionManage").treegrid("reload");
+                   }
+                 }
+               ],
+               onClose:function(){            	 
+            	   $("#UUM_permissionManage").treegrid("reload");
+               }
+             });
+    }
+
+    function addColInfo(){
+      var selected = $('#UUM_permissionManage').treegrid('getSelected');
+      if(!selected){
+        alert('请选择一个管理菜单权限或者门户菜单权限！');
+        return;
+      }
+      $('#addColInfoForm').form('clear');
+      $('#addColParPerm').text(selected['PERM_NAME']);
+     
+        $('#addColInfo').dialog({
+          title:'新增列信息',
+          width:520,
+          height:300,
+          modal:true,
+          buttons:[
+            {
+              text:'确定',
+              iconCls:'icon-save',
+              handler:function(){
+                var PERM_NAME = $('#addColName').val();
+                var PAR_PERM = selected['PERM_ID'];
+                var REMARK = $('#addColRemark').val();
+                var PERM_TYPE = '6';
+                var FORM_OBJ =  $('#addColInfoForm');
+                var DIALOG_OBJ = $('#addColInfo');
+                submitAddForm(DIALOG_OBJ,FORM_OBJ,PERM_NAME,PAR_PERM,PERM_TYPE,REMARK);
+              }
+            },
+            {
+              text:'取消',
+              iconCls:'icon-cancel',
+              handler:function () {
+                $('#addColInfo').dialog('close');
+              }
+            }
+          ]
+       
+      })
+      $('#addColInfo').dialog('open');
+    }
+
+    function updateColInfo(){
+      var selected = $('#UUM_permissionManage').treegrid('getSelected');
+      if(!selected){
+        alert('请选择一行列信息！');
+        return;
+      }else{
+        $('#modColInfoForm').form('clear');
+       
+          $('#modColInfo').dialog({
+            title:'修改列信息',
+            width:400,
+            height:280,
+            modal:true,
+            buttons:[
+              {
+                text:'确定',
+                iconCls:'icon-save',
+                handler:function(){
+                  var PERM_ID = selected['PERM_ID'];
+                  var PERM_NAME = $('#modColPermName').val();
+                  var REMARK = $('#modColRemark').val();
+                  var FORM_OBJ = $('#modColInfoForm');
+                  var DIALOG_OBJ =$('#modColInfo');
+                  submitModForm(DIALOG_OBJ,FORM_OBJ,PERM_ID,PERM_NAME,REMARK);
+                }
+              },
+              {
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function () {
+                  $('#modColInfo').dialog('close');
+                }
+              }
+            ]
+          })
+        $('#modColPermName').val(selected["PERM_NAME"]);
+        $('#modColRemark').val(selected['REMARK']);
+        $('#modColInfo').dialog('open');
+      }
+    }
+    
+    function compTimeVal(min,max) {
+    	if (min.length == 8 && max.length == 8) {
+    			var strDate = new Date(min.substring(0,4)+'/'+min.substring(4,6)+'/'+min.substring(6,8));
+    			var endDate = new Date(max.substring(0,4)+'/'+max.substring(4,6)+'/'+max.substring(6,8));
+    			if (strDate > endDate) {
+        			alert("结束日期不能小于开始日期！");
+        			return false;
+        		}
+    	} else if(min.length == 5 && max.length == 5) {
+    			var sDate = new Date;
+    			var eDate = new Date;
+    			var s = min.split(/\:/g); 
+    			var e = max.split(/\:/g);
+    		    sDate.setHours(s[0]); 
+    		    sDate.setMinutes(s[1]);
+    		    eDate.setHours(e[0]); 
+    		    eDate.setMinutes(e[1]);
+    		    if (sDate > eDate) {
+    				alert("结束时间不能小于开始时间！");
+    				return false;
+    			}
+    	}
+    	return true;
+    }
+    
+  </script>
+</head>
+<body>
+<table id="UUM_permissionManage" title="权限信息" class="kui-treegrid"></table>
+<div id="addButtonInfo" style="display: none;padding-top: 15px;">
+  <form id="addButtonInfoForm" class="kui-form">
+    <table>
+      <tr style="height:30px">
+        <td style="text-align: right" width="70">父权限：</td>
+        <td width="170"><span id="addParPerm"></span></td>
+        <td style="text-align: right;margin-left: 10px">权限类型：</td>
+        <td><span id="addPermType">按钮权限</span></td>
+      </tr>
+      <tr style="height:30px">
+        <td style="text-align: right">按钮名称：</td>
+        <td><input id="addButtonName" class="kui-validatebox" kui-options="required:true,validType:'val[1,32]'" style="width: 150px;text-align: left"></td>
+        <td style="text-align: right">按钮状态：</td>
+        <td><span id="addButtonSta">启用</span></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">备注：</td>
+        <td colspan="3">
+        <textarea class="kui-textarea" id="addRemark" name="addRemark" kui-options="validType:'val[0,256]'" style="width: 360px;height: 80px;overflow-y:scroll"></textarea>
+        </td>
+      </tr>
+  </table>
+  </form>
+</div>
+
+
+<div id="modButtonInfo" style="display: none;padding-top: 15px;">
+  <form id="modButtonInfoForm" class="kui-form">
+    <table>
+      <tr style="height:30px">
+        <td style="text-align: right" width="70">按钮名称：</td>
+        <td><input id="modPermName" class="kui-validatebox" kui-options="required:true,validType:'val[1,32]'" style="width: 150px;text-align: left"></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">备注：</td>
+        <td>
+        <textarea class="kui-textarea" id="modRemark" name="modRemark" kui-options="validType:'val[0,256]'" style="width: 250px;height: 100px;overflow-y:scroll"></textarea>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div id="addConsPermDialog">
+	<table id="UUM_consTbl" style="height: 240px;"></table>
+</div>
+
+<div id="addDialog" style="display: none;">
+	<form id="addPermConsForm" class="kui-form">
+    <table>
+      <tr style="height:30px">
+        <td style="text-align: right" width="100">约束类型：</td>
+        <td width="170">
+        <input type='hidden' id='consId' />
+        <input type='hidden' id='cons_Type' />
+        	<select id="consType" style="width:130px" class='kui-combobox' kui-options="required:true"></select>
+        </td>
+      </tr>
+      
+      <tr id="timespinner" style="height:30px;display: none;">
+        <td style="text-align: right" width="100">开始时间：</td>
+        <td width="170">
+        	<input type='text' id='tMin' class='kui-timespinner' style='width:128px'/>
+        </td>
+        <td style="text-align: right" width="100">结束时间：</td>
+        <td width="170">
+        	<input type='text' id='tMax' class='kui-timespinner' style='width:128px'/>
+        </td>
+      </tr>
+      
+      <tr id="date" style="height:30px;display: none;">
+        <td style="text-align: right" width="100">开始日期：</td>
+        <td width="170">
+        	<input type='text' id='dMin' class='kui-datebox' style='width:133px'/>
+        </td>
+        <td style="text-align: right" width="100">结束日期：</td>
+        <td width="170">
+        	<input type='text' id='dMax' class='kui-datebox' style='width:133px'/>
+        </td>
+      </tr>
+      
+      
+      <tr id="datetime" style="height:30px;display: none;">   
+        <td style="text-align: right" width="100">开始时间日期：</td>
+        <td width="170">
+        	<input type='text' id='dtMin' class='kui-datetimebox' style='width:133px'/>
+        </td>
+        <td style="text-align: right" width="100">结束时间日期：</td>
+        <td width="170">
+        	<input type='text' id='dtMax' class='kui-datetimebox' style='width:133px'/>
+        </td>
+      </tr>
+      
+      <tr id="ip" style="height:30px;display: none;">
+        <td style="text-align: right" width="100">IP：</td>
+        <td width="170">
+        	<input type='text' id='ipMin' class='kui-validatebox' kui-options="validType:'ip'" style='width:130px'/>
+        </td>
+        <td style="text-align: right" width="100">至：</td>
+        <td width="170">
+        	<input type='text' id='ipMax' class='kui-validatebox' kui-options="validType:'ip'" style='width:130px'/>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div id="addColInfo" style="display: none;padding-top: 15px;">
+  <form id="addColInfoForm" class="kui-form">
+    <table>
+      <tr style="height:30px">
+        <td style="text-align: right" width="70">父权限：</td>
+        <td width="170"><span id="addColParPerm"></span></td>
+        <td style="text-align: right;margin-left: 10px">权限类型：</td>
+        <td><span id="addColPermType">列权限</span></td>
+      </tr>
+      <tr style="height:30px">
+        <td style="text-align: right">列名称：</td>
+        <td><input id="addColName" class="kui-validatebox" kui-options="required:true,validType:'val[1,32]'" style="width: 150px;text-align: left"></td>
+        <td style="text-align: right">列状态：</td>
+        <td><span id="addColSta">启用</span></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">备注：</td>
+        <td colspan="3">
+          <textarea class="kui-textarea" id="addColRemark" name="addColRemark" kui-options="validType:'val[0,256]'" style="width: 360px;height: 80px;overflow-y:scroll"></textarea>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div id="modColInfo" style="display: none;padding-top: 15px;">
+  <form id="modColInfoForm" class="kui-form">
+    <table>
+      <tr style="height:30px">
+        <td style="text-align: right" width="70">列名称：</td>
+        <td><input id="modColPermName" class="kui-validatebox" kui-options="required:true,validType:'val[1,32]'" style="width: 150px;text-align: left"></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">备注：</td>
+        <td>
+          <textarea class="kui-textarea" id="modColRemark" name="modRemark" kui-options="validType:'val[0,256]'" style="width: 250px;height: 100px;overflow-y:scroll"></textarea>
+      </tr>
+    </table>
+  </form>
+</div>
+<div id="masklayer" class="lockDiv"></div>
+</body>
+</html>

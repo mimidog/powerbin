@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--门户引擎布局管理bex设置   start-->
+    <bex bex_code="getAllLayout" bex_type="4" page_mode="2" bex_cate="1" attr1="getAllLayout"></bex>
+    <bex bex_code="getAllBoard" bex_type="4" page_mode="2" bex_cate="1" attr1="getAllBoard"></bex>
+    <bex bex_code="getLayout" bex_type="4" page_mode="2" bex_cate="1" attr1="getLayout">
+    	<param para_code="LAYOUT_ID" para_name="布局编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="addLayout" bex_type="4" page_mode="2" bex_cate="1" attr1="addLayout">
+    </bex>
+    <bex bex_code="updateLayout" bex_type="4" page_mode="2" bex_cate="1" attr1="updateLayout">
+    </bex>
+    <bex bex_code="deleteLayout" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteLayout">
+    </bex>
+    
+    <bex bex_code="getBoard" bex_type="4" page_mode="2" bex_cate="1" attr1="getBoard">
+    	<param para_code="BOARD_ID" para_name="板块编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="addBoard" bex_type="4" page_mode="2" bex_cate="1" attr1="addBoard">
+    </bex>
+    <bex bex_code="updateBoard" bex_type="4" page_mode="2" bex_cate="1" attr1="updateBoard">
+    </bex>
+    <bex bex_code="deleteBoard" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteBoard">
+    </bex>    
+    <bex bex_code="deleteAllBoard" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteAllBoard">
+    </bex>     
+    <!--门户引擎布局管理bex设置   end-->
+    
+    <!--门户引擎容器管理bex设置   start-->
+    <bex bex_code="getAllContainer" bex_type="4" page_mode="2" bex_cate="1" attr1="getAllContainer"></bex>
+    <bex bex_code="getContainer" bex_type="4" page_mode="2" bex_cate="1" attr1="getContainer">
+    	<param para_code="CONT_ID" para_name="容器编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="addContainer" bex_type="4" page_mode="2" bex_cate="1" attr1="addContainer">
+    </bex>
+    <bex bex_code="updateContainer" bex_type="4" page_mode="2" bex_cate="1" attr1="updateContainer">
+    </bex>
+    <bex bex_code="deleteContainer" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteContainer">
+    </bex>    
+    <!--门户引擎布局管理bex设置   end-->
+    
+    <!--门户引擎组件管理bex设置   start-->
+    <bex bex_code="getAllComponents" bex_type="4" page_mode="2" bex_cate="1" attr1="getAllComponents"></bex>
+    <bex bex_code="getAllCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="getAllCompParam"></bex>      
+    <bex bex_code="getComponents" bex_type="4" page_mode="2" bex_cate="1" attr1="getComponents">
+    	<param para_code="COMP_ID" para_name="组件编号" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="COMP_TYPE" para_name="组件类型" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="queryComponent" bex_type="4" page_mode="2" bex_cate="1" attr1="queryComponent">
+    	<param para_code="COMP_NAME" para_name="组件名称" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="COMP_TYPE" para_name="组件类型" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!--by  2016/04/20 把attr1的值由addComponent改为addComponent_MSSQL-->
+    <bex bex_code="addComponent" bex_type="4" page_mode="2" bex_cate="1" bex_desc="组件类型中已经存在同名的组件！" attr1="addComponent_MSSQL">
+    	<param para_code="COMP_ID" para_name="组件编号" data_type="12" para_type="0" def_val="-1"/>
+    	<param para_code="COMP_TYPE" para_name="组件类型" data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="COMP_NAME" para_name="组件名称" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="addCascadeComponent" bex_type="4" page_mode="2" bex_cate="1" attr1="addCascadeComponent">
+    </bex>
+    <bex bex_code="updateComponent" bex_type="4" page_mode="2" bex_cate="1" attr1="updateComponent">
+    </bex>
+    <bex bex_code="updateComponentName" bex_type="4" page_mode="2" bex_cate="1" attr1="updateComponentName">
+    </bex>
+    <bex bex_code="updateMenuContCompName" bex_type="4" page_mode="2" bex_cate="1" attr1="updateMenuContCompName">
+    </bex>
+    <bex bex_code="updateCascadeComponent" bex_type="4" page_mode="2" bex_cate="1" attr1="updateCascadeComponent">
+    </bex>
+    <bex bex_code="deleteComponent" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteComponent">
+    </bex>
+    <bex bex_code="deleteCascadeComponent" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteCascadeComponent">
+    </bex>
+    <bex bex_code="getCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="getCompParam">
+    	<param para_code="PARAM_CODE" para_name="组件参数编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="addCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="addCompParam">
+		<param para_code="PARAM_CODE" para_name="参数代码" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="updateCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="updateCompParam">
+    </bex>
+    <bex bex_code="deleteCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteCompParam">
+    </bex>    
+    <bex bex_code="deleteAllCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteAllCompParam">
+    </bex>
+
+  <!--门户引擎组件管理bex设置   end-->
+	
+	<!--门户菜单查询bex设置 -->
+    <bex bex_code="getUserPortalMenu" bex_type="4" page_mode="2" bex_cate="1" attr1="getUserPortalMenu">
+    </bex>
+	<bex bex_code="getUserMenuComp" bex_type="4" page_mode="2" bex_cate="1" attr1="getUserMenuComp">
+    </bex>
+	<bex bex_code="getUserMenuContComp" bex_type="4" page_mode="2" bex_cate="1" attr1="getUserMenuContComp">
+    </bex>
+	<bex bex_code="getUserMenuCompParam" bex_type="4" page_mode="2" bex_cate="1" attr1="getUserMenuCompParam">
+    </bex>
+	<bex bex_code="getUserMenuContTab" bex_type="4" page_mode="2" bex_cate="1" attr1="getUserMenuContTab">
+    </bex>
+	<bex bex_code="menuCompCfgSave" bex_type="4" page_mode="2" bex_cate="1" attr1="menuCompCfgSave">
+    </bex>
+    <!--门户菜单查询bex设置   end-->
+    <!--门户设计保存bex设置  start-->
+    <bex bex_code="insertKPT_HI_MENU_COMP" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_HI_MENU_COMP">
+    </bex>
+    <bex bex_code="insertKPT_HI_MENU_CONT_COMP" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_HI_MENU_CONT_COMP">
+    </bex>
+    <bex bex_code="insertKPT_HI_MENU_COMP_PARAM" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_HI_MENU_COMP_PARAM">
+    </bex>
+    <bex bex_code="insertKPT_HI_MENU_CONT_TAB" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_HI_MENU_CONT_TAB">
+    </bex>
+    <bex bex_code="deleteKPT_MENU_COMP_PARAM" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteKPT_MENU_COMP_PARAM">
+    </bex>
+    <bex bex_code="deleteKPT_MENU_CONT_COMP" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteKPT_MENU_CONT_COMP">
+    </bex>
+    <bex bex_code="deleteKPT_MENU_CONT_TAB" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteKPT_MENU_CONT_TAB">
+    </bex>
+    <bex bex_code="deleteKPT_MENU_COMP" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteKPT_MENU_COMP">
+    </bex>
+    <bex bex_code="getV_MENU_COMPS" bex_type="4" page_mode="2" bex_cate="1" attr1="getV_MENU_COMPS">
+    </bex>
+    <!--by  2016/04/21 把attr1的属性值由insertKPT_MENU_COMPBatch改为insertKPT_MENU_COMPBatch_MSSQL-->
+    <bex bex_code="insertKPT_MENU_COMPBatch" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_MENU_COMPBatch_MSSQL">
+    </bex>
+    <bex bex_code="getV_MENU_COMP_ID" bex_type="4" page_mode="2" bex_cate="1" attr1="getV_MENU_COMP_ID">
+    </bex>
+    <!--by  2016/04/21 把attr1的属性值由insertKPT_MENU_CONT_COMP改为insertKPT_MENU_CONT_COMP_MSSQL-->
+    <bex bex_code="insertKPT_MENU_CONT_COMP" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_MENU_CONT_COMP_MSSQL">
+    </bex>
+    <bex bex_code="getV_MENU_COMP_CONT_ID" bex_type="4" page_mode="2" bex_cate="1" attr1="getV_MENU_COMP_CONT_ID">
+    </bex>
+    <!--by  2016/04/21 把attr1的属性值由insertKPT_MENU_COMP_PARAM改为insertKPT_MENU_COMP_PARAM_MSSQL-->
+    <bex bex_code="insertKPT_MENU_COMP_PARAM" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_MENU_COMP_PARAM">
+    </bex>
+    <!--by  2016/04/21 把attr1的属性值由insertKPT_MENU_CONT_TAB改为insertKPT_MENU_CONT_TAB_MSSQL-->
+    <bex bex_code="insertKPT_MENU_CONT_TAB" bex_type="4" page_mode="2" bex_cate="1" attr1="insertKPT_MENU_CONT_TAB_MSSQL">
+    </bex>
+    <!--门户设计保存bex设置  end-->
+</bexs>
+ 

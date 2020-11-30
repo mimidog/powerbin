@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--查询资金账号信息-->
+    <bex bex_code="query_T_CUACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_CUACCT" attr2="mts"/>
+    <!--插入资金账号信息-->
+    <bex bex_code="insert_T_CUACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_CUACCT" attr2="mts"/>
+    <!--修改资金账号信息-->
+    <bex bex_code="update_T_CUACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_CUACCT" attr2="mts"/>
+    <!--删除资金账号信息-->
+    <bex bex_code="delete_T_CUACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_CUACCT" attr2="mts"/>
+
+    <!--查询交易账号信息-->
+    <bex bex_code="query_T_TRDACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_TRDACCT" attr2="mts"/>
+    <!--插入交易账号信息-->
+    <bex bex_code="insert_T_TRDACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_TRDACCT" attr2="mts"/>
+    <!--修改交易账号信息-->
+    <bex bex_code="update_T_TRDACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_TRDACCT" attr2="mts"/>
+    <!--删除交易账号信息-->
+    <bex bex_code="delete_T_TRDACCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_TRDACCT" attr2="mts"/>
+
+    <!--查询客户开户信息-->
+    <bex bex_code="query_T_CUSTOMER_OPEN_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1"
+                attr1="query_T_CUSTOMER_OPEN_INFO" attr2="mts"/>
+
+    <!--查询客户开户信息-->
+    <bex bex_code="query_T_CUSTOMER_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_CUSTOMER" attr2="mts"/>
+    <!--插入客户开户信息-->
+    <bex bex_code="insert_T_CUSTOMER_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_CUSTOMER" attr2="mts"/>
+    <!--修改客户开户信息-->
+    <bex bex_code="update_T_CUSTOMER_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_CUSTOMER" attr2="mts"/>
+    <!--删除客户开户信息-->
+    <bex bex_code="delete_T_CUSTOMER_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_CUSTOMER" attr2="mts"/>
+
+    <!--查询个人客户基本信息-->
+    <bex bex_code="query_T_CUST_BASE_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_CUST_BASE_INFO" attr2="mts"/>
+    <!--插入个人客户基本信息-->
+    <bex bex_code="insert_T_CUST_BASE_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_CUST_BASE_INFO" attr2="mts"/>
+    <!--修改个人客户基本信息-->
+    <bex bex_code="update_T_CUST_BASE_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_CUST_BASE_INFO" attr2="mts"/>
+    <!--删除个人客户基本信息-->
+    <bex bex_code="delete_T_CUST_BASE_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_CUST_BASE_INFO" attr2="mts"/>
+
+    <!--查询资金子账户设置信息-->
+    <bex bex_code="query_T_CUACCT_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_CUACCT_SUB" attr2="mts"/>
+    <!--插入资金子账户设置信息-->
+    <bex bex_code="insert_T_CUACCT_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_CUACCT_SUB" attr2="mts"/>
+    <!--修改资金子账户设置信息-->
+    <bex bex_code="update_T_CUACCT_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_CUACCT_SUB" attr2="mts"/>
+    <!--删除资金子账户设置信息-->
+    <bex bex_code="delete_T_CUACCT_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_CUACCT_SUB" attr2="mts"/>
+
+    <bex bex_code="CALL_FUN_GET_DATA_PERMISSION_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="CALL_FUN_GET_DATA_PERMISSION" attr2="mts"/>
+</bexs>
+ 

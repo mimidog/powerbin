@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html >
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Basic prompt - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+	</head>
+<body>
+	<h2>Alert Messager</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click on each button to display different alert prompt box.</div>
+	</div>
+  <div class="kui-msg"></div>
+	<div style="margin:10px 0;">
+		<a href="#" class="kui-linkbutton" onclick="alert1()">Alert</a>
+		<a href="#" class="kui-linkbutton" onclick="alert2()">Error</a>
+		<a href="#" class="kui-linkbutton" onclick="alert3()">Info</a>
+		<a href="#" class="kui-linkbutton" onclick="alert4()">Question</a>
+		<a href="#" class="kui-linkbutton" onclick="alert5()">Warning</a>
+	</div>
+	<script>
+		function alert1(){
+			alert('My Title','Here is a message!');
+		}
+		function alert2(){
+			alert('My Title','Here is a error message!','error');
+		}
+		function alert3(){
+			alert('My Title','Here is a info message!','info');
+		}
+		function alert4(){
+			alert('My Title','Here is a question message!','question');
+		}
+		function alert5(){
+			alert('My Title','Here is a warning message!','warning');
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>客户盈亏报表</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<script type="text/javascript" src="../../common/js/jquery-1.7.1.min.js"></script>
+<!--<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.js"></script>-->
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript" src="../../common/js/highcharts.js"></script>
+<script type="text/javascript" src="../../common/js/highcharts-grid.js"></script>
+<style type="text/css">
+.cust-form-table{
+    border: 0px;
+}
+.cust-form-label {
+    text-align: right;
+    vertical-align: text-bottom;
+    font-weight: bold;
+    font-size: 12px;
+    vertical-align: bottom;
+}
+.overview li {
+
+    display: inline;
+}
+.overview h2{
+    background:url("../../common/image/back-img-1.png");
+    text-align: center;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+</style>
+</head>
+<body>
+<form id="cust_Surplus_charts_form" class="kui-form">
+    <table class="cust-form-table" style="width:100%;">
+        <tr>
+            <td class="cust-form-label">资金账号：</td>
+            <td >
+                <input  id="cuacctId" name="CUACCT_ID" class="kui-combogrid" kui-options="panelWidth:450,
+                                                  panelHeight:240,
+                                                  idField: 'CUACCT_ID',
+                                                  textField: 'CUACCT_ID',
+                                                  req:[{ service:'M0000001',CUACCT_STATUS:'0'}],
+                                                  queryCols:[{
+                                                    'text':'查询',
+                                                    'icon':'icon-search',
+                                                    collapsed:true,
+                                                    cols:[{
+                                                      title:'资金账号',
+                                                      field:'CUACCT_ID',
+                                                      editor:{
+                                                        type:'text',
+                                                        options:{
+                                                          validType:'val[1,32]'
+                                                        }
+                                                      }
+                                                    }]
+                                                  }],
+                                                  columns: [[
+                                                        {field:'CUST_ID',title:'客户代码'},
+                                                        {field:'CUST_NAME',title:'客户简称'},
+                                                        {field:'CUACCT_ID',title:'资金账号'},
+                                                        {field:'OPEN_DATE',title:'开户日期'},
+                                                        {field:'CLOSE_DATE',title:'销户日期'}
+                                                    ]]"/>
+            </td>
+            <td class="cust-form-label">起始工作日：</td>
+            <td>
+                <input id="workBegDate" name="WORK_BEG_DATE" class="kui-datebox" kui-options="required:true"
+                       validtype="begDate['WORK_END_DATE']"/>
+            </td>
+            <td class="cust-form-label">截止工作日：</td>
+            <td>
+                <input id="workEndDate" name="WORK_END_DATE" class="kui-datebox" kui-options="required:true"
+                       validtype="endDate['WORK_BEG_DATE']"/>
+            </td>
+            <td>
+                <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-search'" onclick="chartDataQuery()">查询</a>
+            </td>
+        </tr>
+    </table>
+</form>
+<div class="overview">
+    <ul>
+        <li><h2>客户盈亏走势图</h2>
+            <div id="lineChar_div"></div>
+        </li>
+    </ul>
+</div>
+<script>
+window.$ready=function () {
+    _initLineCharWid=$('#lineChar_div').width();
+}
+function chartDataQuery(){
+    if($('#cust_Surplus_charts_form').form('validate')==false){
+        return;
+    }
+
+    if(differDate($('#workBegDate').datebox('getValue'),$('#workEndDate').datebox('getValue'))>30){
+        alert('提示信息','统计天数不支持超过30天','warning');
+        return;
+    }
+    chartDataReq($('#cuacctId').combogrid('getValue'),$('#workBegDate').datebox('getValue'),$('#workEndDate').datebox('getValue'));
+}
+//图表数据请求
+function chartDataReq(cuacctId,workBegDate,workEndDate) {
+    var reqs=[{service:'M0000107',CUACCT_ID:cuacctId,DATA_TYPE:'0',WORK_BEG_DATE:workBegDate,WORK_END_DATE:workEndDate},
+        {service:'M0000107',CUACCT_ID:cuacctId,DATA_TYPE:'1',WORK_BEG_DATE:workBegDate,WORK_END_DATE:workEndDate},
+        {service:'M0000107',CUACCT_ID:cuacctId,DATA_TYPE:'2',WORK_BEG_DATE:workBegDate,WORK_END_DATE:workEndDate},
+        {service:'M0000107',CUACCT_ID:cuacctId,DATA_TYPE:'3',WORK_BEG_DATE:workBegDate,WORK_END_DATE:workEndDate}]
+
+    ajaxRequest({
+        async: false,
+        req: reqs,
+        func: function (res) {
+
+            if(res[0].ANS_COMM_DATA[0].length==0){
+                alert('未查询到数据！');
+                rereut
+            }
+
+            delete res[0].ANS_COMM_DATA[0][0].CUACCT_ID;
+            delete res[1].ANS_COMM_DATA[0][0].CUACCT_ID;
+            delete res[2].ANS_COMM_DATA[0][0].CUACCT_ID;
+            delete res[3].ANS_COMM_DATA[0][0].CUACCT_ID;
+
+
+            var abeamTypeArr=Object.getKeys(res[0].ANS_COMM_DATA[0][0]);
+            var totalFundArr=Object.numValues(res[0].ANS_COMM_DATA[0][0]);
+            var totalSurplusArr=Object.numValues(res[1].ANS_COMM_DATA[0][0]);
+            var totalMaketValArr=Object.numValues(res[2].ANS_COMM_DATA[0][0]);
+            var totalFundBalArr=Object.numValues(res[3].ANS_COMM_DATA[0][0]);
+
+            var chartWidh= _initLineCharWid>abeamTypeArr.length*60 ? _initLineCharWid : abeamTypeArr.length*60
+            $('#lineChar_div').width(chartWidh);
+
+            var tmpArray=[];
+                tmpArray.push(Math.min.apply(null,totalFundArr));
+                tmpArray.push(Math.min.apply(null,totalSurplusArr));
+                tmpArray.push(Math.min.apply(null,totalMaketValArr));
+                tmpArray.push(Math.min.apply(null,totalFundBalArr));
+
+
+            var lastMinValue=Math.min.apply(null,tmpArray);
+
+           createLineChart(abeamTypeArr,totalFundArr,totalSurplusArr,totalMaketValArr,totalFundBalArr,lastMinValue);
+
+        }
+    });
+
+}
+//生成折线图
+function createLineChart(abeamTypeArr,totalFundArr,totalSurplusArr,totalMaketValArr,totalFundBalArr,
+                        minValue) {
+   var chart = new Highcharts.Chart({
+        chart:{
+            renderTo:'lineChar_div',
+            defaultSeriesType:'line'
+        },
+        title:{
+            text:''
+        },
+        subtitle:{
+            text:''
+        },
+        xAxis:[
+            {
+                categories:abeamTypeArr
+
+            }
+        ],
+        yAxis:[
+            {
+                min:minValue,
+                labels:{
+                    formatter:function(){
+                        return this.value;
+                    },
+                    style:{
+                        color:'#89A54E'
+                    }
+                },
+                title:{
+                    style:{
+                        color:'#89A54E'
+                    }
+                }
+            }
+        ],
+        tooltip:{
+            formatter:function(){
+                return '' + this.x + ': <span style="color:red;font-weight: bold;">' + this.y+'</span>';
+            }
+        },
+       series:[
+           {
+               name:'总资产',
+               data:totalFundArr
+           },
+           {
+               name:'总盈余',
+               data:totalSurplusArr
+           },
+           {
+               name:'总市值',
+               data:totalMaketValArr
+           },
+           {
+               name:'资金余额',
+               data:totalFundBalArr
+           }
+       ]
+    });
+}
+</script>
+</body>
+
+</html>

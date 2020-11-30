@@ -1,0 +1,390 @@
+.reportgrid{
+  padding:0px;
+}
+.reportgrid .panel-body {
+  overflow: hidden;
+  position: relative;
+}
+.reportgrid-view {
+  position: relative;
+  overflow: hidden;
+  border-top:1px #d9ecf8 solid;
+  border-left:1px #e3f0f8 solid;
+  border-right:1px #e3f0f8 solid;
+}
+.reportgrid-view1,
+.reportgrid-view2 {
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+}
+.reportgrid-view1 {
+  left: 0;
+}
+.reportgrid-view2 {
+  right: 0;
+}
+.reportgrid-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+  display: none;
+}
+.reportgrid-mask-msg {
+  position: absolute;
+  top: 50%;
+  margin-top: -20px;
+  padding: 12px 5px 10px 30px;
+  width: auto;
+  height: 16px;
+  border-width: 2px;
+  border-style: solid;
+  display: none;
+}
+.reportgrid-sort-icon {
+  padding: 0;
+}
+.reportgrid-title {
+	color:#000000;
+}
+.nullable-div {
+	color:red;
+	width:8px;
+	height:8px;
+	float:left;
+	margin: -4px 0 3px 3px;
+}
+.edit-nullalbe-div {
+	float:right;
+	width:8px;
+}
+.edit-div {
+	width:8px;
+	height:10px;
+	float:left;
+	margin:0 0 0 3px;
+}
+.edit-icon {
+	background:url('../icons/mini_edit.png') no-repeat center center;
+}
+.reportgrid-toolbar {
+  height: auto;
+  padding: 2px 5px 1px 2px;
+  border-width: 1px 1px 0 1px;
+  -moz-border-radius: 3px 3px 0 0;
+  -webkit-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  border-style: solid;
+  text-align:right;
+}
+.reportgrid-btn-separator {
+  float: left;
+  height: 18px;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #fff;
+  margin: 2px 1px;
+}
+.reportgrid .reportgrid-pager {
+  margin: 0;
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+}
+.reportgrid .reportgrid-pager-top {
+  border-width: 0 0 1px 0;
+}
+.reportgrid-header {
+  overflow: hidden;
+  cursor: default;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+}
+.reportgrid-header .floatTd {
+    position: absolute;
+    border: 3px solid #D4E8FF;
+    line-height: 24px;
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    background: #3078CC;
+}
+.reportgrid-header-inner {
+  float: left;
+  width: 10000px;
+}
+.reportgrid-header-row {
+  height: 25px;
+}
+.reportgrid-row {
+  height: 16px;
+}
+.reportgrid-header-row div.leftInsert {
+    border-left: 4px solid blue;
+    padding-left: 0px;
+}
+.reportgrid-header-row div.rightInsert {
+    border-right: 4px solid blue;
+    padding-right: 0px;
+}
+.reportgrid-header td,
+.reportgrid-body td,
+.reportgrid-footer td {
+  border-width: 0 1px 1px 0;
+  border-style: solid;
+  margin: 0;
+  padding: 0;
+}
+.reportgrid-cell,
+.reportgrid-cell-group,
+.reportgrid-header-rownumber,
+.reportgrid-cell-rownumber {
+  text-overflow:ellipsis;	
+  margin: 0;
+  padding: 0 4px;
+  white-space: nowrap;
+  word-wrap: normal;
+  overflow: hidden;
+  height: 18px;
+  line-height: 18px;
+  font-weight: normal;
+  font-size: 12px;
+}
+.reportgrid-cell-group {
+  text-align: center;
+}
+.reportgrid-header-rownumber,
+.reportgrid-cell-rownumber {
+  width: 25px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.reportgrid-body {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  zoom: 1;
+}
+.reportgrid-view1 .reportgrid-body-inner {
+  padding-bottom: 20px;
+}
+.reportgrid-view1 .reportgrid-body {
+  overflow: hidden;
+}
+.reportgrid-footer {
+  overflow: hidden;
+}
+.reportgrid-footer-inner {
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  width: 10000px;
+  float: left;
+}
+.reportgrid-row-editing .reportgrid-cell {
+  height: auto;
+}
+.reportgrid-header-check,
+.reportgrid-cell-check {
+  padding: 0;
+  width: 27px;
+  height: 18px;
+  font-size: 1px;
+  text-align: center;
+  overflow: hidden;
+}
+.reportgrid-header-check input,
+.reportgrid-cell-check input {
+  margin: 0;
+  padding: 0;
+  width: 15px;
+  height: 18px;
+}
+.reportgrid-resize-proxy {
+  position: absolute;
+  width: 1px;
+  height: 10000px;
+  top: 0;
+  cursor: e-resize;
+  display: none;
+}
+.reportgrid-body .reportgrid-editable {
+  margin: 0;
+  padding: 0;
+}
+.reportgrid-body .reportgrid-editable table {
+  width: 100%;
+  height: 100%;
+}
+.reportgrid-body .reportgrid-editable td {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.reportgrid-body .reportgrid-editable .reportgrid-editable-input {
+  margin: 0;
+  padding: 2px;
+  border-width: 1px;
+  border-style: solid;
+}
+.reportgrid-row-collapse {
+  background: url('images/datagrid_icons.png') no-repeat -48px center;
+}
+.reportgrid-row-expand {
+  background: url('images/datagrid_icons.png') no-repeat -32px center;
+}
+.reportgrid-mask-msg {
+  background: #ffffff url('images/loading.gif') no-repeat scroll 5px center;
+}
+.reportgrid-header,
+.reportgrid-td-rownumber {
+  background-color: #f2f2f2;
+  background: -webkit-linear-gradient(top,#e2eff8 0,#f4fbff 100%);
+  background: -moz-linear-gradient(top,#e2eff8 0,#f4fbff 100%);
+  background: -o-linear-gradient(top,#e2eff8 0,#f4fbff 100%);
+  background: linear-gradient(to bottom,#e2eff8 0,#f4fbff 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#e2eff8,endColorstr=#f4fbff,GradientType=0);
+}
+.reportgrid-cell-rownumber {
+  color: #000000;
+}
+.reportgrid-resize-proxy {
+  background: #aac5e7;
+}
+.reportgrid-mask {
+  background: #ccc;
+}
+.reportgrid-mask-msg {
+  border-color: #95B8E7;
+}
+
+.reportgrid-header,
+.reportgrid-toolbar,
+.reportgrid-pager/*,
+.reportgrid-footer-inner*/ {
+  border-color: #d9ecf8;
+}
+.reportgrid-footer-inner {
+  border-color: #e5e5e5;
+}
+.reportgrid-toolbar {
+  background: #f8fdff;
+  border-color:#edf5fa;
+}
+.reportgrid-pager {
+  background: #ebf6fc;
+  border-color:#d9ecf8;
+}
+.reportgrid-header td,
+.reportgrid-body td,
+.reportgrid-footer td {
+  border-color: #cdd6db;
+}
+.reportgrid-htable,
+.reportgrid-btable,
+.reportgrid-ftable {
+  color: #000000;
+}
+.reportgrid-row-alt {
+  background: #e9f3fa;
+}
+.reportgrid-row-over,
+.reportgrid-header td.reportgrid-header-over {
+  background: #cceaff;
+  color: #000000;
+  cursor: default;
+}
+.reportgrid-row-selected {
+  background: #ffeb9d;
+  color: #000000;
+}
+/*.reportgrid-row-selected .reportgrid-cell {
+  font-weight:bold;
+}*/
+
+.reportgrid-row-del td{
+  color:#888888;
+  background : #e0e0e0 url(images/row_del.gif) repeat-x center center;
+}
+
+.reportgrid-body .reportgrid-editable .reportgrid-editable-input {
+  border-color: #95B8E7;
+}
+
+.reportgrid-queryForm input.validatebox-text{
+	 width:120px;
+}
+.reportgrid-header-row div.reportgrid-cell{
+  font-weight:bolder;
+}
+
+div.reportgrid-cell a{
+  text-decoration: none;
+  color:#59a8f8;
+}
+.reportgrid-row-detail{
+	/*border:1px solid #83b3e7;*/
+	border-bottom:0px;
+	background-color:#c9e7ff;
+    height: 80px;
+    overflow-y:scroll;
+}
+
+.reportgrid-row-detail td{
+	line-height:16px;
+}
+
+.reportgrid-row-detail .reportgrid-detail-label{
+	white-space: nowrap;
+	border:0px;
+	text-align:right;
+}
+
+.reportgrid-row-detail .reportgrid-detail-value{
+	border:1px solid #b4d6f5;
+	background-color:#edf5ff;
+	height: 20px;
+}
+.reportgrid-query-label{
+	padding-left:15px;
+	text-align:right;
+}
+.reportgrid-queryForm{
+	border:0px #ddf0ff solid;
+	background-color:#ffffff; 
+	-moz-border-radius: 3px 3px 3px 3px;
+ 	-webkit-border-radius: 3px 3px 3px 3px;
+  	border-radius: 3px 3px 3px 3px;
+}
+
+.reportgrid-filter-icon {
+	width: 12px;
+	height: 18px;
+	padding: 0;
+	float: right;
+	background: url(images/filter.png) no-repeat 0px -17px;
+	cursor: pointer;
+}
+.filtered .reportgrid-filter-icon {
+	background-position: 0 0;
+}
+
+.reportgrid-sort-icon {
+  padding: 0;
+  width: 6px;
+  float: left;
+  height: 18px;
+}
+
+.reportgrid-sort-desc .reportgrid-sort-icon {
+  width: 16px;
+  padding: 0;
+  background: url('images/datagrid_icons.png') no-repeat -16px center;
+}
+.reportgrid-sort-asc .reportgrid-sort-icon {
+  width: 16px;
+  padding: 0;
+  background: url('images/datagrid_icons.png') no-repeat 0px center;
+}

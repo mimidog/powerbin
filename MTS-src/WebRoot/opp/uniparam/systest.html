@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>系统服务流水查询</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+  window.$ready=function(){
+		 ajaxRequest({
+        req:[
+          {service:'atomTest3',
+		   "USER_CODE":'1',
+		   "MENU_NAME":"原子业务测试",
+		   "MENU_PUR":"1",
+		   "MENU_LINK":"",
+		   "MENU_STA":"1",
+		   "MENU_PLAT":"1"}
+        ],
+        func:function(data){
+          $alert(data.length);
+        },
+        error:function(e){
+          $alert(321321);
+        }
+      });
+  }
+ 
+</script>

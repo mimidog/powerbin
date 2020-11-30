@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+	
+	<!-- 门户菜单查询 -->
+	<select id="Run_getAllLayout" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT LAYOUT_ID,LAYOUT_NAME,ICON FROM KPT_LAYOUT ORDER BY LAYOUT_ID ASC		
+	</select>
+    <select id="Run_getAllBoard" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT BOARD_ID,LAYOUT_ID,BOARD_CLASS,BOARD_ORD FROM KPT_BOARD ORDER BY LAYOUT_ID ASC,BOARD_ORD ASC	
+	</select>
+	<select id="Run_getAllContainer" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT CONT_ID,CONT_TYPE,CONT_NAME,DEF_WIDTH,DEF_HEIGHT FROM KPT_CONTAINER ORDER BY CONT_ID ASC		
+	</select>
+
+	<select id="Run_getUserPortalMenu" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="OP_POST == 1">
+			SELECT DISTINCT M.MENU_ID,
+		                M.MENU_NAME,
+		                M.PAR_MENU,
+		                M.MENU_LVL,
+		                M.MENU_PUR,
+		                M.MENU_ICO,
+		                M.MENU_PLAT,
+		                M.MENU_LINK
+		  FROM  UPM_MENU M
+		 WHERE  M.MENU_STA = '1'
+		   AND M.MENU_PUR &lt;&gt; '1'
+		 ORDER BY M.MENU_LVL
+		</if>
+		<if test="OP_POST != 1">
+		SELECT DISTINCT M.MENU_ID,
+		                M.MENU_NAME,
+		                M.PAR_MENU,
+		                M.MENU_LVL,
+		                M.MENU_PUR,
+		                M.MENU_ICO,
+		                M.MENU_PLAT,
+		                M.MENU_LINK,
+		                UUPC.CONS_ID,
+		                UUPC.CONS_MAX,
+		                UUPC.CONS_MIN,
+		                UC.CONS_TYPE
+		  FROM UUM_PERMISSION P
+		  JOIN UUM_USER_PERM UP
+		    ON CONVERT(VARCHAR,UP.PERM_ID) = P.PERM_ID
+		  LEFT JOIN UPM_MENU M
+		    ON PERM_VAL = CONVERT(VARCHAR,MENU_ID)
+		  LEFT JOIN UUM_USER_PERM_CONS UUPC
+		    ON UUPC.AUTH_ID = UP.AUTH_ID
+		  LEFT JOIN UUM_CONSTRAINTS UC ON UC.CONS_ID = UUPC.CONS_ID    
+		 WHERE UP.AUTH_TYPE = '1'
+		   AND M.MENU_PUR &lt;&gt; '1'
+		   AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+		   AND M.MENU_STA = '1'
+		   AND UP.ASS_TYPE = '1'
+		   AND ((UP.OBJ_ID = '${USER_CODE}' AND UP.OBJ_TYPE = '2') OR
+		       (UP.OBJ_ID IN
+		       (SELECT UOP.POST_ID
+		            FROM UUM_OPER_POST UOP
+		           WHERE UOP.USER_CODE = '${USER_CODE}'
+		             AND (SELECT POST_STA
+		                    FROM UUM_POST UUP
+		                   WHERE UOP.POST_ID = UUP.POST_ID) = '1') AND
+		       UP.OBJ_TYPE = '3')
+		       
+		       )
+		 ORDER BY M.MENU_LVL
+		</if>
+	</select>
+	<select id="Run_getUserMenuComp" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MC.MENU_COMP_ID,
+			   MC.USER_CODE,
+			   MC.USER_ROLE,
+			   MC.MENU_ID,
+			   MC.LAYOUT_ID,
+			   MC.BOARD_INDEX,
+			   MC.COMP_CONT_INDEX,
+			   MC.COMP_ID,
+			   MC.CONT_ID,
+			   MC.TAB_DIRECTION,
+			   MC.DISP_TITLE,
+			   MC.TITLE,
+			   MC.COMP_WIDTH,
+			   MC.COMP_HEIGHT,
+			   MC.COMP_LEFT,
+			   MC.COMP_TOP,
+			   MC.FIXED_DIRECTION,
+			   MC.FIXED_WIDTH,
+			   MC.FIXED_HEIGHT,
+			   C.COMP_TYPE,
+			   C.COMP_NAME,
+			   C.ICON,
+			   C.DEF_WIDTH,
+			   C.DEF_HEIGHT,
+			   C.WIN_WIDTH,
+			   C.WIN_HEIGHT,
+			   C.LINK_PAGE,
+			   KC.CONT_TYPE,
+			   UM.MENU_PUR,
+			   UM.MENU_PLAT
+		FROM KPT_MENU_COMP MC 
+		LEFT JOIN KPT_COMPONENTS C ON MC.COMP_ID = C.COMP_ID 
+		LEFT JOIN KPT_CONTAINER KC ON MC.CONT_ID = KC.CONT_ID
+		LEFT JOIN UPM_MENU UM ON MC.MENU_ID = UM.MENU_ID
+		WHERE MC.MENU_ID =${MENU_ID}
+		AND UM.MENU_STA = '1'
+		AND (C.COMP_ID IS NOT NULL OR KC.CONT_ID IS NOT NULL)
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND( MC.USER_CODE = '${USER_CODE}'
+		OR (EXISTS (SELECT 1 FROM UUM_OPER_POST UR WHERE UR.USER_CODE = '${USER_CODE}' AND MC.USER_ROLE = UR.POST_ID AND UR.MAIN_FLAG = '1'
+			 AND NOT EXISTS(SELECT 1 FROM KPT_MENU_COMP IMC WHERE MENU_ID =${MENU_ID} AND UR.USER_CODE = IMC.USER_CODE))
+			 AND EXISTS (SELECT 1 FROM UUM_POST UP WHERE MC.USER_ROLE = UP.POST_ID AND UP.POST_STA = '1')))
+		</if>
+		ORDER BY MENU_ID,COMP_CONT_INDEX
+	</select>
+
+	<select id="Run_getUserMenuContComp" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MCC.MENU_CONT_COMP_ID,
+			   MCC.MENU_COMP_ID,
+			   MCC.TAB_INDEX,
+			   MCC.COMP_INDEX,
+			   MCC.COMP_ID,
+			   MCC.DIR_NAME,
+			   MCC.DISP_TITLE,
+			   MCC.TITLE,
+			   MCC.COMP_WIDTH,
+			   MCC.COMP_HEIGHT,
+			   MCC.COMP_LEFT,
+			   MCC.COMP_TOP,
+			   MCC.FIXED_DIRECTION,
+			   MCC.FIXED_WIDTH,
+			   MCC.FIXED_HEIGHT,			   
+			   C.COMP_TYPE,
+			   C.COMP_NAME,
+			   dbo.KUI_SPELL(MCC.TITLE) AS COMP_SPELL,
+			   C.ICON,
+			   C.DEF_WIDTH,
+			   C.DEF_HEIGHT,
+			   C.WIN_WIDTH,
+			   C.WIN_HEIGHT,
+			   C.LINK_PAGE			   
+		  FROM KPT_MENU_CONT_COMP MCC LEFT JOIN KPT_COMPONENTS C ON MCC.COMP_ID = C.COMP_ID,KPT_MENU_COMP MC
+		WHERE MCC.MENU_COMP_ID = MC.MENU_COMP_ID
+		AND MC.MENU_ID =${MENU_ID}
+		AND EXISTS(SELECT 1 FROM UPM_MENU WHERE MENU_ID = ${MENU_ID} AND MENU_STA = '1')
+		AND C.COMP_ID IS NOT NULL
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND ( MC.USER_CODE = '${USER_CODE}'
+		OR ( EXISTS (SELECT 1 FROM UUM_OPER_POST UR WHERE UR.USER_CODE = '${USER_CODE}' AND MC.USER_ROLE = UR.POST_ID 
+			 AND NOT EXISTS(SELECT 1 FROM KPT_MENU_COMP IMC WHERE MENU_ID =${MENU_ID} AND UR.USER_CODE = IMC.USER_CODE)) 
+			 AND EXISTS (SELECT 1 FROM UUM_POST UP WHERE MC.USER_ROLE = UP.POST_ID AND UP.POST_STA = '1')))
+		</if>
+		ORDER BY MENU_COMP_ID,COMP_INDEX
+	</select>
+	
+	<select id="Run_getUserMenuCompParam" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MCP.MENU_COMP_PARAM_ID,
+			   MCP.MENU_COMP_ID,
+			   MCP.MENU_CONT_COMP_ID,
+			   MCP.PARAM_CODE,
+			   MCP.PARAM_VAL
+		  FROM KPT_MENU_COMP_PARAM MCP,KPT_MENU_COMP MC
+		  WHERE MCP.MENU_COMP_ID = MC.MENU_COMP_ID
+		AND MENU_ID =${MENU_ID}
+		AND EXISTS(SELECT 1 FROM UPM_MENU WHERE MENU_ID = ${MENU_ID} AND MENU_STA = '1')
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND ( MC.USER_CODE = '${USER_CODE}'
+		OR EXISTS ( SELECT 1
+                   FROM UUM_OPER_POST UR,UUM_POST UP
+                  WHERE UR.USER_CODE = '${USER_CODE}'
+                    AND MC.USER_ROLE = UR.POST_ID
+                    AND UP.POST_ID = UR.POST_ID
+                    AND UP.POST_STA = '1'))
+		</if>
+		ORDER BY MENU_COMP_ID
+	</select>
+	
+	<select id="Run_getUserMenuContTab" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MCT.MENU_CONT_TAB_ID,
+			   MCT.MENU_COMP_ID,
+			   MCT.TAB_INDEX,
+			   MCT.TAB_TITLE,
+			   MCT.DISP_TYPE
+		  FROM KPT_MENU_COMP MC,KPT_MENU_CONT_TAB MCT
+		  WHERE MC.MENU_COMP_ID = MCT.MENU_COMP_ID
+		AND MC.MENU_ID = ${MENU_ID}
+		AND EXISTS(SELECT 1 FROM UPM_MENU WHERE MENU_ID = ${MENU_ID} AND MENU_STA = '1')
+		<if test="USER_CODE != '' and USER_CODE != null">
+		AND ( MC.USER_CODE = '${USER_CODE}'
+		OR ( EXISTS (SELECT 1 FROM UUM_OPER_POST UR WHERE UR.USER_CODE = '${USER_CODE}' AND MC.USER_ROLE = UR.POST_ID 
+			 AND NOT EXISTS(SELECT 1 FROM KPT_MENU_COMP IMC WHERE MENU_ID =${MENU_ID} AND UR.USER_CODE = IMC.USER_CODE)) 
+			 AND EXISTS (SELECT 1 FROM UUM_POST UP WHERE MC.USER_ROLE = UP.POST_ID AND UP.POST_STA = '1')))
+		</if>
+		ORDER BY MENU_COMP_ID,TAB_INDEX
+	</select>
+	<!-- 门户菜单查询 -->
+</mapper>

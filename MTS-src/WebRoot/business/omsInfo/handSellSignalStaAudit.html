@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>手工卖信号录入审核</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.form-label {
+    text-align: right;
+    vertical-align: text-bottom;
+    line-height: 20px;
+    vertical-align: bottom;
+}
+.form-table{
+    border: 0px;
+    line-height: 20px;
+}
+.form-table tr{
+    height: 28px;
+    vertical-align: bottom;
+}
+.footer{
+    height: 100px;
+    width: 100%;
+    background-color: #ddd;
+    position: fixed;
+    bottom: 0;
+}
+.stockSpdTab tr{
+    line-height: 20px;
+}
+.stockSpdTab tr{
+    height: 22px;
+    vertical-align: bottom;
+}
+</style>
+<script>
+//得到系统日期
+function getSysDate(){
+    var sysControlInfo = commonRequest({
+        service:'M0001001'
+    });
+    return sysControlInfo[0].SYSTEM_DATE;
+}
+function audit_pass() {
+    var selRow = $('#handSellSignalStaAudit_table').datagrid('getSelected');
+    if (selRow == null) {
+        alert('请选择一条记录！');
+        return;
+    }
+    ajaxRequest({
+        req:[{
+            service:'M0000109',
+            STK_ID:selRow['STK_ID'],
+            UP_DATE:selRow['UP_DATE'],
+            UP_TIME:selRow['UP_TIME'],
+            AUDIT_SIGNAL_STATE:'1'
+        }],
+        func:function(data){
+            alert('审核通过！');
+            $('#handSellSignalStaAudit_table').datagrid('reload');
+        }
+    });
+
+}
+function audit_reject() {
+    var selRow = $('#handSellSignalStaAudit_table').datagrid('getSelected');
+    if (selRow == null) {
+        alert('请选择一条记录！');
+        return;
+    }
+    ajaxRequest({
+        req:[{
+            service:'M0000109',
+            STK_ID:selRow['STK_ID'],
+            UP_DATE:selRow['UP_DATE'],
+            UP_TIME:selRow['UP_TIME'],
+            AUDIT_SIGNAL_STATE:'2'
+        }],
+        func:function(data){
+            alert('驳回成功！');
+            $('#handSellSignalStaAudit_table').datagrid('reload');
+        }
+    });
+}
+
+function handSignalStaAudit_RowSel(rowIndex, rowData) {
+
+    $('.datagrid-toolbar a').linkbutton('enable');
+    switch (rowData.AUDIT_SIGNAL_STATE) {
+        case "1":
+            $('.datagrid-toolbar a').linkbutton('disable');
+            break;
+        case "2":
+            $('.datagrid-toolbar a:eq(1)').linkbutton('disable');
+    }
+
+}
+</script>
+</head>
+<body>
+<table id="handSellSignalStaAudit_table" class="kui-datagrid"></table>
+</body>
+</html>

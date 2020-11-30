@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>角色信息管理</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    function roleDelete(){
+      var rows = $('#UUM_roleManage').datagrid('getSelections');
+      if(rows.length==0){
+        alert('请选择一条数据！');
+      }else{
+        var ROLE_ID = rows[0]['ROLE_ID'];
+        ajaxRequest({
+          req:[{
+            ROLE_ID:ROLE_ID,
+            service:'P0001014'
+          }],
+          func:function(data){
+            //if(data[0]["service"]["flag"]=="0"){
+              alert('删除成功！');
+              $('#UUM_roleManage').datagrid('reload');
+            //}
+          },
+          error:function(){
+            alert('删除失败！');
+          }
+        })
+      }
+    }
+    
+  </script>
+</head>
+<body>
+<table id="UUM_roleManage" title=" " class="kui-datagrid"></table>
+</body>
+</html>

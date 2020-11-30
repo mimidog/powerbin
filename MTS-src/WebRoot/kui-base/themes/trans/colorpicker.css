@@ -1,0 +1,72 @@
+.colorpicker .combo-arrow{
+	background: none;
+}
+
+.colorpicker-panel {
+	border: 1px solid #dddddd;
+	background: #eeeeee url(images/colorpicker_bg.png) 50% bottom repeat-x;
+	color: #333333;
+}
+
+.colorpicker-panel .more-span {
+	display: none;
+}
+
+.colorpicker-panel .more-span div {
+	padding: 3px 0;
+}
+
+.colorpicker-panel ul {
+	height: 14px;
+	margin: auto;
+	padding: 0;
+	list-style-type: none;
+}
+
+.colorpicker-panel ul li {
+	float: left;
+	width: 17px;
+	height: 14px;
+	cursor: pointer;
+	list-style-type: none;
+}
+
+.colorpicker-panel th {
+	text-align: left;
+}
+
+.colorpicker-panel tr,.colorpicker-panel table {
+	border-collapse: separate;
+	border-spacing: 2px 0px;
+	*border-collapse: expression('separate', cellSpacing='2px');
+}
+
+.colorpicker-panel td {
+	width: 18px;
+	height: 16px;
+	+height: 18px;
+	border: solid 1px #c0c0c0;
+	cursor: pointer;
+}
+
+.colorpicker-panel .show-color {
+	float: left;
+	height: 18px;
+	margin: 3px 5px;
+}
+
+.colorpicker-panel .cur-color,.colorpicker-panel .hover-color {
+	float: left;
+	width: 18px;
+	height: 18px;
+	background: red;
+	margin: 0 2px;
+}
+
+.colorpicker-panel .show-color span {
+	font-size: 16px;
+}
+
+.colorpicker-panel .history-span {
+	display: none;
+}

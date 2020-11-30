@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<views> 
+  <!--KGE_TABSview设置start-->  
+  <view id="GEN_KGE_TABSManage" render="datagrid" title="对象模型管理" script="../../opp/js/general-util.js"> 
+    <conf service="P006001" onClickRow="onClickLeftTableRow" pageSize="10" colNumbers="2" border="false" noheader="true" onLoadSuccess="refreshsubFrame" onSelect="tabStateControl" fit="true" singleSelect="true"/>  
+    <qry_item field="tabNameLike" edt_width="100" title="表名" type="input" edt_validType="val[1,30]"/>  
+    <qry_item field="tabCname" edt_width="100" title="表中文名" type="input" edt_validType="val[1,100]"/>  
+    <btn_item text="新增" service="P006002" title="新增" handler="addTable" iconCls="icon-add"/>  
+    <btn_item text="修改" service="P006003" title="修改" handler="editTable" iconCls="icon-edit"/>  
+    <btn_item text="删除" service="P006004" title="删除" handler="removeTable" iconCls="icon-remove"/>  
+    <btn_item text="同步字段" title="同步存在表到模型对象" handler="copyOriginCols2Model" iconCls="icon-ok"/>  
+    <btn_item text="生成配置" title="生成配置" handler="tabGenerator" iconCls="icon-ok"/>  
+    <col_item field="tabId" title="表编码"/>  
+    <col_item field="tabName" title="表名" width="100"/>  
+    <col_item field="tabCname" title="表中文名" width="60"/>  
+    <col_item field="created" width="60" title="创建日期" sortType="date"/>  
+    <!--<col_item field="lastUpdateTime" width="60" title="最后修改日期"/>  -->  
+    <col_item field="lastUpdateUser" title="修改人" formatter="function(value){return parseLastUpdateUser(value) }"/>  
+    <col_item field="status" title="状态" type="combobox" edt_dict="GEN_OBJ_STATE"/> 
+  </view>  
+  <!--KGE_TABSview设置end-->  
+  <!--KGE_TAB_COLSview设置start-->  
+  <view id="GEN_KGE_TAB_COLSManage" render="datagrid" title="对象模型字段管理" script="../../opp/js/general-util.js"> 
+    <conf service="P006011" colNumbers="2" required="true" border="false" noheader="true" singleSelect="true" fit="true"/>  
+    <btn_item text="新增" service="P006012" title="新增" handler="addCol" iconCls="icon-add"/>  
+    <btn_item text="修改" service="P006013" title="修改" handler="editCol" iconCls="icon-edit"/>  
+    <btn_item text="删除" service="P006014" title="删除" handler="removeCol" iconCls="icon-remove"/>  
+    <col_item field="colName" title="字段名称"/>  
+    <col_item field="colCname" title="字段中文名"/>  
+    <col_item field="dataType" title="数据类型" type="combobox" edt_dict="DATA_TYPE"/>  
+    <col_item field="dataLength" title="字段长度"/>  
+    <col_item field="ispk" title="是否为主键" type="combobox" edt_dict="IS_PK"/>  
+    <col_item field="isnull" title="是否能为空" type="combobox" edt_dict="ISNULL"/>  
+    <col_item field="isQryItem" title="添加查询栏" type="combobox" edt_dict="GEN_ISSEARCH"/>  
+    <col_item field="inputType" title="输入类型" type="combobox" edt_dict="GEN_INPUT_TYPE"/>  
+    <col_item field="colDefault" title="默认值"/>  
+    <col_item field="created" title="创建日期" width="80" sortType="date"/> 
+  </view>  
+  <!--KGE_TAB_COLSview设置end-->  
+  <!--T_KHview设置start-->
+  <view id="GEN_T_KHManage" render="datagrid" title="客户测试" script="../../opp/js/general-util.js">
+    <conf service="KGE_T_KHQueryAll" colNumbers="2" pagination="true" fit="true"/>
+    <btn_item text="新增" service="KGE_T_KHInsert" title="新增" handler="commonAdd" iconCls="icon-add"/>
+    <btn_item text="修改" service="KGE_T_KHUpdate" title="修改" handler="commonModify" iconCls="icon-edit"/>
+    <btn_item text="删除" service="KGE_T_KHDelete" title="删除" handler="commonDelete" iconCls="icon-remove"/>
+    <col_item field="KHBH" title="客户编号" type="input" colspan="3" edt_validType="val[1,64]" edt_required="true" edit_flag="1"/>
+    <col_item field="KHXM" title="客户名称" type="input" colspan="3" edt_validType="val[1,64]"/>
+    <col_item field="SFZH" title="身份证号" type="input" colspan="3" edt_validType="val[1,64]"/>
+    <col_item field="KHZT" title="客户状态" type="input" edt_validType="int[15]" edt_setThousandChar="false"/>
+    <col_item field="CSRQ" title="出生日期" type="input" edt_validType="val[1,8]"/>
+    <col_item field="KHRQ" title="开户日期" type="input" edt_validType="val[1,8]"/>
+    <col_item field="LXDZ" title="联系地址" type="input" edt_validType="val[1,64]"/>
+  </view>
+  <!--T_KHview设置end-->
+
+
+</views>

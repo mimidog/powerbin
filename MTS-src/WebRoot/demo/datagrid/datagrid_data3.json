@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><requests><![CDATA[
+[
+{"service":{"flag":"0","serialNo":""},
+"message":[{"flag":"0","prompt":"成功","rows":"14","times":"100ms"}],
+"config":{},
+"data":[
+[
+  {"itemid":"计划-1","productid":"FI-SW-01","listprice":"12","unitcost":"1","attr1":"11111"},
+	{"itemid":"计划-2","productid":"K9-DL-01","listprice":"13","unitcost":"2","attr1":"22222"},
+	{"itemid":"计划-3","productid":"RP-SN-01","listprice":"14","unitcost":"3","attr1":"33333"}
+]
+]
+}
+]
+]]></requests>

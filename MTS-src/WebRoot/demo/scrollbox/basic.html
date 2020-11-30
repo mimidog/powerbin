@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>滚动条组件</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<style type="text/css">
+.scroll-parent {
+	border:1px solid black;
+	margin:10px auto;
+}
+</style>
+<script type="text/javascript">
+window.$ready = function() {
+using(["scrollbox", "resizable"], function() {
+	var scrollPanel = $("#scroll_panel");
+	
+	scrollPanel.scrollbox();
+	
+	$("#append").click(function() {
+		
+		scrollPanel.append("<div style='width:600px'>" + (scrollPanel.find("div").length + 1) +
+				"滚动条测试滚动条测试滚动条测试滚动条测试滚动条测试滚动条测试滚动条测试滚动条测试滚动条测试滚动条测试" + "</div>");
+	});
+	
+	$("#empty").click(function() {
+		scrollPanel.empty();
+	});
+	
+	$("#left").click(function() {
+		scrollPanel.scrollbox("scrollLeft", 0);
+	});
+	
+	$("#right").click(function() {
+		scrollPanel.scrollbox("scrollLeft", 30);
+	});
+	
+	$("#up").click(function() {
+		scrollPanel.scrollbox("scrollTop", 0);
+	});
+	
+	$("#down").click(function() {
+		scrollPanel.scrollbox("scrollTop", 30);
+	});
+	
+	$("#resize").click(function() {
+		$("#scroll_parent").css({width: 700, height: 500});
+	});
+});
+}
+</script>
+</head>
+<body>
+<input id="append" type="button" value="append text"/>
+<input id="empty" type="button" value="empty"/>
+<input id="left" type="button" value="scroll left" />
+<input id="right" type="button" value="scroll right" />
+<input id="up" type="button" value="scroll up" />
+<input id="down" type="button" value="scroll down" />
+<input id="resize" type="button" value="resize"/>
+
+<br/>
+
+<div id="scroll_parent" class="scroll-parent" style="width:400px;height:300px;">
+	<div id="scroll_panel" style="display:inline-block;">
+	</div>
+</div>
+</body>
+</html>

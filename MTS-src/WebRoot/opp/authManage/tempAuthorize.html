@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>代理权限设置</title>
+		<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+		<style type="text/css">
+			td {
+				font-family: '微软雅黑', sans-serif;
+				font-size: 13px;
+			}
+		</style>
+		<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+		<script type="text/javascript" src="js/authUtil.js"></script>
+		<script type="text/javascript" src="js/tempAuthorize.js"></script>
+	</head>
+
+	<body>
+		<div class="kui-layout" kui-options="fit:true" style="overflow: hidden;">
+			<div id="northPanel" kui-options="region:'north',border:true" style="height: 70px;border: solid 1px #e6f5ff;overflow: hidden;">
+				<div class="kui-panel" title="代理权限设置" kui-options="fit:true">
+					<div style="padding-left: 10px;padding-top: 8px;padding-bottom: 4px;">
+						<div style="float: left;width: 700px;">
+							<form class="kui-form" id="tempAuthForm">
+								<table>
+									<tr>
+										<td align="right">授权人：</td>
+										<td>
+											<select id="tempUserId" style="width: 80px;"></select>
+										</td>
+										<td align="right">代理给：</td>
+										<td>
+											<input id="otherOper" kui-options="required:true" style="width: 80px;" class="kui-combobox" onclick="$TempAuth.showPanelFun()" />
+										</td>
+										<td align="right">代理期限：</td>
+										<td>
+											<input class="kui-datetimebox" kui-options="required:true" style="width: 150px;" id="dateMin">
+										</td>
+										<td align="right">至</td>
+										<td>
+											<input class="kui-datetimebox" kui-options="required:true" style="width: 150px;" id="dateMax">
+										</td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						<div style="float: right;margin-right: 20px;overflow: hidden;">
+							<a class="kui-linkbutton" kui-options=" plain:true, iconCls:'icon-save'" onclick="$TempAuth.saveProPerm()">保存</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="westPanel" kui-options="region:'west',border:true" style="overflow:hidden;width: 400px;padding-top: 2px;">
+				<div style="float: left;width: 100%;height: 100%;">
+					<div id="permTreePanel" class="kui-panel" kui-options="fit:true" title="授权人权限">
+					</div>
+				</div>
+			</div>
+			<div id="centerPanel" kui-options="region:'center',border:true" style="padding-top: 2px;overflow: hidden;">
+				<div style="float: left;width: 100%;height: 100%;">
+					<div id="proAuthTreePanel" class="kui-panel" title="请选择代理权限" kui-options="fit:true" style="width: 100%;height: 100%;">
+					</div>
+				</div>
+
+			</div>
+		</div>
+		</div>
+	</body>
+
+</html>

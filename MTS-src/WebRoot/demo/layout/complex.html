@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Complex Layout - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Complex Layout</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>This sample shows how to create a complex layout.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<div class="kui-layout" style="width:700px;height:350px;">
+		<div kui-options="region:'north'" style="height:50px"></div>
+		<div kui-options="region:'south',split:true" style="height:50px;"></div>
+		<div kui-options="region:'east',split:true" title="East" style="width:180px;">
+			<ul class="kui-tree" kui-options="url:'../layout/tree_data1.json',animate:true,dnd:true"></ul>
+		</div>
+		<div kui-options="region:'west',split:true" title="West" style="width:100px;">
+			<div class="kui-accordion" kui-options="fit:true,border:false">
+				<div title="Title1" style="padding:10px;">
+					content1
+				</div>
+				<div title="Title2" kui-options="selected:true" style="padding:10px;">
+					content2
+				</div>
+				<div title="Title3" style="padding:10px">
+					content3
+				</div>
+			</div>
+		</div>
+		<div kui-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
+			<div class="kui-tabs" kui-options="fit:true,border:false,plain:true">
+				<div title="About" kui-options="href:'../layout/_content.html'" style="padding:10px"></div>
+				<div title="DataGrid" style="padding:5px">
+					<table class="kui-datagrid"
+							kui-options="url:'../layout/datagrid_data1.json',singleSelect:true,fit:true,fitColumns:true">
+						<thead>
+							<tr>
+								<th kui-options="field:'itemid'" width="80">Item ID</th>
+								<th kui-options="field:'productid'" width="100">Product ID</th>
+								<th kui-options="field:'listprice',align:'right'" width="80">List Price</th>
+								<th kui-options="field:'unitcost',align:'right'" width="80">Unit Cost</th>
+								<th kui-options="field:'attr1'" width="150">Attribute</th>
+								<th kui-options="field:'status',align:'center'" width="50">Status</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

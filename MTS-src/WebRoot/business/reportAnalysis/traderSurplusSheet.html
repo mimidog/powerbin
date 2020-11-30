@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>交易员盈亏汇总</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<link type="text/css" rel="stylesheet" href="../../kui-base/themes/trans/form.css">
+<link rel="stylesheet" type="text/css" href="../../business/common/css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../business/common/css/common.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script>
+//机构名称选择事件
+function orgCodeChg(orgcode) {
+    orgcode=orgcode.toString()
+  if($.trim(orgcode)==''){
+      $('.datagrid-queryForm').find(':input[comboname=OP_ID]').combogrid({
+          req:[{service:'P0001008',USER_STA:'1'}]
+      })
+  } else{
+      $('.datagrid-queryForm').find(':input[comboname=OP_ID]').combogrid({
+          req:[{service:'P0001008',USER_STA:'1',ORG_CODE_IN:orgcode}]
+      });
+  }
+}
+//操作员初始化事件
+function initOpInfo() {
+    $('.datagrid-queryForm').find(':input[comboname=OP_ID]').combogrid('grid').datagrid('reload');
+}
+
+//dagird置灰色
+function datagirdCellbakColor(value,row,index) {
+    return "<div style='background-color: #EFEFEF;font-weight: bold;font-size: 14px;'>"
+        +toThousands(parseFloat(value).toFixed(2))+"</div>"
+}
+
+//dagird置灰色
+function gdCellbakColor_negNumDisRed(value,row,index) {
+    if(Number(value)>0){
+        return "<div style='background-color: #EFEFEF;color: red;font-weight: bold;font-size: 14px;'>"
+            +toThousands(parseFloat(value).toFixed(2))+"</div>";
+    }
+    return "<div style='background-color: #EFEFEF;font-weight: bold;font-size: 14px;'>"
+        +toThousands(parseFloat(value).toFixed(2))+"</div>"
+}
+//负数显示红色
+function negNumDisRed(value,row,index) {
+    if(Number(value)>=0){
+        return toThousands(parseFloat(value).toFixed(2));
+    }
+    return "<div style='color:red;font-weight: bold;font-size: 14px;'>"
+        +toThousands(parseFloat(value).toFixed(2))+"</div>"
+}
+</script>
+</head>
+<body>
+<table id="mts_TRADER_SURPLUS_SUM_INFO_table" class="kui-datagrid"></table>
+</body>
+</html>

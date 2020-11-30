@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Basic Form - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+  kuiloader.onReady = function() {
+    using("form",
+    function() {
+        var queryCols = [{
+            "text": "分组1",
+            "collapsed": false,
+            "cols": [{
+                "field": "khxb",
+                "title": "不跨:",
+                "width": "120",
+                "rowspan": 1,
+                "colspan": 1,
+                "editor": {
+                    "type": "combobox",
+                    "options": {
+                        "dict":"CHK_RESULT"
+                    }
+                }
+            },
+            {
+                "field": "khxb",
+                "title": "跨2行:",
+                "width": "120",
+                "rowspan": 2,
+                "colspan": 1,
+                "editor": {
+                    "type": "combobox",
+                    "options": {
+                        "valueField": "sex",
+                        "textField": "sex_text",
+                        "required": false
+                    }
+                }
+            },
+            {
+                "field": "khxb",
+                "title": "跨2列:",
+                "width": "120",
+                "rowspan": 1,
+                "colspan": 2,
+                "editor": {
+                    "type": "combobox",
+                    "options": {
+                        "valueField": "sex",
+                        "textField": "sex_text",                      
+                        "required": false
+                    }
+                }
+            },
+            {
+                "field": "khxb",
+                "title": "跨2行:",
+                "width": "120",
+                "rowspan": 2,
+                "colspan": 1,
+                "editor": {
+                    "type": "combobox",
+                    "options": {
+                        "valueField": "sex",
+                        "textField": "sex_text",                        
+                        "required": false
+                    }
+                }
+            },
+            {
+                "field": "khxb",
+                "title": "跨3列:",
+                "width": "120",
+                "rowspan": 1,
+                "colspan": 3,
+                "editor": {
+                    "type": "combobox",
+                    "options": {
+                        "valueField": "sex",
+                        "textField": "sex_text",                        
+                        "required": false
+                    }
+                }
+            },
+            {
+                "field": "email",
+                "title": " 跨2行2列",
+                "width": "120",
+                "rowspan": 2,
+                "colspan": 2,
+                "editor": {
+                    "type": "validatebox",
+                    "options": {
+                        "required": true,
+                        "validType": "email",
+                        "disabled": false,
+                        "showMessage": true,
+                        "missingMessage": "必须输入！",
+                        "invalidMessage": "格式必须email格式!"
+                    }
+                }
+            }]
+        }];
+        var colNumbers = 2;
+        $("#ff").form({
+            queryCols: queryCols,
+
+            colNumbers: colNumbers
+        });
+    });
+  }
+  </script>
+</head>
+<body>
+<h2>Basic Form</h2>
+<div class="demo-info">
+  <div class="demo-tip icon-tip"></div>
+  <div>Fill the form and submit it.</div>
+</div>
+<div style="margin:10px 0;"></div>
+<form id="ff"></form>
+
+</body>
+</html>

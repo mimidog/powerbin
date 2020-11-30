@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>功能权限查询</title>
+		<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+		<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+		<script type="text/javascript" src="js/authUtil.js"></script>
+		<script type="text/javascript" src="js/lookFunPerm.js"></script>
+	</head>
+
+	<body>
+		<div class="kui-layout" kui-options="fit:true" style="overflow: hidden;">
+			<div id="northPanel" kui-options="region:'north',border:true" style="height: 75px;border: solid 1px #e6f5ff;overflow: hidden;">
+				<div class="kui-panel" title="功能权限查询" kui-options="fit:true">
+					<div style="padding-left: 10px;padding-top: 8px;padding-bottom: 4px;">
+						<div style="width:450px;float: left;">
+							<div style="margin-left: 15px;margin-top: 5px;margin-bottom: 5px;">
+								选择对象：
+								<select id="objId" style="width:100px" class="kui-combobox" kui-options="onSelect:$LookFunPerm.chooseObj,isClear:false">
+									<option value="2">人员</option>
+									<option value="3">岗位</option>
+									<option value="4">组织机构</option>
+								</select>
+								<span id="objName" style="margin-left: 20px;">人员</span>：
+								<span id="funOperId"></span>
+								<span id="selCombo"></span>
+								<span id='orgTree'></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="westPanel" kui-options="region:'west',border:true" style="overflow:hidden;width: 600px;padding-top: 2px;">
+				<div style="float: left;width: 100%;height: 100%;">
+					<div id="permTreePanel" class="kui-panel" kui-options="fit:true" title="权限信息">
+						<div id="permTree" kui-options="fit:true"></div>
+					</div>
+				</div>
+			</div>
+			<div id="centerPanel" kui-options="region:'center',border:true" style="padding-top: 2px;overflow: hidden;">
+				<div id="userId_1" style="float: left;display: none;width: 100%;height: 100%;">
+					<div id="pp" class="kui-panel" title="包含人员" kui-options="fit:true">
+						<table id="operTbl"></table>
+					</div>
+				</div>
+				<div id="userId_2" style="float: left;width: 100%;height: 100%;">
+					<div id="operPanel" class="kui-panel" title="人员基本信息" kui-options="fit:true" style="width: 100%;height: 100%;">
+						<div style="padding-top: 20px;padding-left: 10px;">ID号：<span id="userCode" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">人员姓名：<span id="userName" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">所属机构：<span id="org" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">人员状态：<span id="userState" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">岗&nbsp;&nbsp;&nbsp;&nbsp;位：<span id="post" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">电&nbsp;&nbsp;&nbsp;&nbsp;话：<span id="tel" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">邮&nbsp;&nbsp;&nbsp;&nbsp;箱：<span id="mail" style="padding-left: 10px;"></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="consPermDialog" style="display: none; ">
+			<form id='consForm'></form>
+		</div>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<!-- 人员功能授权service start -->
+	<service service_code="P0002221" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="userPermissionQuery"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="consPermQuer" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="consPermQuer"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="consQuer" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="consQuer"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0002222" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="permConsQuery"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0002223" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="consPermQueryData"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0002224" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="rolePremQuery"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0002225" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="operPremQuery"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0002226" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="postPremQuery"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0002227" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="orgPremQuery"
+				business_method="" serial_no="1" business_name=""
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0002228" service_name=""
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">		
+		<businesses>
+			<service_business business_code="insertMenuPerm"
+				business_method="" serial_no="1" business_name=""
+				business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0002231" service_name="权限查询"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="premQueryAll"
+				business_method="" serial_no="1" business_name="权限查询"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+		<service service_code="P0002229" service_name="新增权限"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="insertObjPerm"
+					business_method="" serial_no="1" business_name="新增权限"
+					business_type="3" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002230" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<!--businesses>
+				<service_business business_code="insertUserPermCon"
+					business_method="" serial_no="1" business_name=""
+					business_type="3" business_cate="1" attr1="" />
+			</businesses-->
+			<businesses>
+				<service_business business_code="insertUserPermCon"
+					business_method="" serial_no="1" business_name=""
+					business_type="3" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002232" service_name="已有权限查询"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="owerPremQuery"
+					business_method="" serial_no="1" business_name="已有权限查询"
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+
+		<!-- 人员功能授权service end -->
+		
+		<!-- 临时权限授权 start -->
+
+		<service service_code="P0002233" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="agentPermQuery"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002234" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="agentPermDelete"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+				<service_business business_code="agentPermInsert"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002235" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="agentPermDelete"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<!-- 临时权限授权 end -->
+		
+		<!-- 人员数据授权 start -->
+		<service service_code="P0002236" service_name="控制功能集查询"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="sysServiceFunQuery"
+					business_method="" serial_no="1" business_name="控制功能集查询"
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+	
+		<service service_code="P0002262" service_name="具体数据权限查询"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="dataPremSelectQuery"
+					business_method="" serial_no="1" business_name="具体数据权限查询"
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<!-- 人员数据授权 end -->
+		
+		<!-- 人员特殊授权 start -->
+		<service service_code="P0002237" service_name="人员特殊授权查询"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="specialPremQuery"
+					business_method="" serial_no="1" business_name="人员特殊授权查询"
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<!-- 人员特殊授权 end -->
+		<service service_code="P0002239" service_name="当前用户所有按钮及列权限"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="menuAuthQuery"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002240" service_name="所有按钮及列权限查询"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="buttonRowPermQuery"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<!-- 权限集设置 -->
+		<service service_code="P0002241" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="permisionSetQuery"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002247" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="funSetQuery"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002244" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="permSetDelete"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="permsetPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="2"  attr2="1"/>	-->
+			</businesses>
+		</service>
+		<service service_code="P0002249" service_name="权限集成员删除"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="sysServDelete"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="permsetMenberPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="2"  attr2="1"/>	-->
+			</businesses>
+		</service>
+		<service service_code="P0002248" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="sysServiceListQuery"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002242" service_name="权限集新增"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="seqdataPermSet"
+					business_method="" serial_no="1" business_name=""
+					business_type="3" business_cate="1" attr1="" />
+				<service_business business_code="permSetInsert"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+			    <!--<service_business business_code="permsetPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+			</businesses>
+		</service>
+		<service service_code="P0002245" service_name="权限集成员新增"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="funSetInsert"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="permsetMenberPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="1"  attr2="1"/>	-->
+			</businesses>
+		</service>
+		<service service_code="P0002246" service_name="权限集成员删除"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="funSetDelete"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="permsetMenberPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="2"  attr2="1"/>	-->
+			</businesses>
+		</service>
+		<service service_code="P0002243" service_name="权限集修改"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="permSetUpdate"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="permsetPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="1"  attr2="1"/>	-->
+			</businesses>
+		</service>
+		
+		<!-- 数据权限管理对象 -->
+		<service service_code="P0002251" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="dataPermMrgObjQuery"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		<service service_code="P0002254" service_name="数据权限管理对象删除"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="delDataPermMrgObj"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="manObjPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="2"  attr2="1"/>	-->
+			</businesses>
+		</service>
+		<service service_code="P0002252" service_name="数据权限管理对象新增"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="seqManageObjType"
+					business_method="" serial_no="1" business_name=""
+					business_type="3" business_cate="1" attr1="" />
+				<service_business business_code="insertDataPermMrgObj"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="manObjPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="1"  attr2="1"/>		-->
+			</businesses>
+		</service>
+		<service service_code="P0002253" service_name="数据权限管理对象修改"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="updateDataPermMrgObj"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="manObjPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="1"  attr2="1"/>		-->
+			</businesses>
+		</service>
+		<service service_code="P0002263" service_name="数据权限保存"
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="detDataPerm"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+				<service_business business_code="seqManageObjEmpower"
+					business_method="" serial_no="1" business_name=""
+					business_type="3" business_cate="1" attr1="" />
+				<service_business business_code="insertDataPerm"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="manObjEmpowerPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+			</businesses>
+		</service>
+		
+		<service service_code="P0002264" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="deleteDataPerm"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+				<!--注释掉发布功能 by  20160614-->
+				<!--<service_business business_code="manObjEmpowerPublish"
+					business_method="" serial_no="1" business_name="系统参数发布" 
+					business_type="3" business_cate="1" attr1="2"  attr2="1"/>	-->
+			</businesses>
+		</service>
+		
+		<service service_code="P0002265" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="selectDataPerm"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		
+		<service service_code="P0002268" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="premQueryAllByUser"
+					business_method="" serial_no="1" business_name=""
+					business_type="1" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		
+		<service service_code="P0002269" service_name=""
+			service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+			attr1="">
+			<businesses>
+				<service_business business_code="syncCompPerm"
+					business_method="" serial_no="1" business_name=""
+					business_type="3" business_cate="1" attr1="" />
+			</businesses>
+		</service>
+		
+</services>

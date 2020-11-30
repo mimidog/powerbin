@@ -1,0 +1,534 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>资金股份初始化</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.cust-form-table{
+    border: 0px;
+}
+.cust-form-label {
+    text-align: right;
+    vertical-align: text-bottom;
+    font-weight: bold;
+    font-size: 12px;
+    vertical-align: bottom;
+}
+</style>
+<script type="text/javascript">
+//当资金余额变化时，填充资金可用与未分配额度
+function funcBalChg() {
+    if($('#funcInfo_Bal').validatebox('isValid')==true){
+        $('#fund_info_hold_form').find(':input[name=FUND_AVL]').val(toThousands($('#funcInfo_Bal').val()));
+        $('#fund_info_hold_form').find(':input[name=UNUSE_AMOUNT]').val(toThousands($('#funcInfo_Bal').val()));
+    }
+}
+//当股份余额变化时，填充股份可用与未分配额度
+function instBalChg() {
+    if($('#instBal').validatebox('isValid')==true){
+        $('#mts_asset_hold_form').find(':input[name=INST_AVL]').val(toThousands($('#instBal').val()));
+        $('#mts_asset_hold_form').find(':input[name=UNUSE_AMOUNT]').val(toThousands($('#instBal').val()));
+    }
+}
+//当资金账号选择事件
+function cuacctId_Select(value) {
+  $('#trdacct').combobox({
+      req:[{
+          service:'M0000005',
+          CUACCT_ID:value
+      }]
+  }).combobox('clear');
+}
+
+//资金一级持仓信息清空
+function fundInfoForm_clear() {
+    $('#fund_info_hold_form').form('clear');
+}
+//资金一级持仓信息提交
+function fundInfoForm_submit(){
+    if($('#fund_info_form').form('validate')==false || $('#fund_info_hold_form').form('validate')==false){
+        return false
+    }
+    var fundParam=kui.serialize2Json(kui.serialize($('#fund_info_form')));
+    var fundHoldParam=kui.serialize2Json(kui.serialize($('#fund_info_hold_form')));
+
+     //通过资金号去【资金账号表】中查找客户号
+     var fundRs=commonRequest({
+         service:'M0000001',
+         CUACCT_ID:$('#cuacctId').val()
+     });
+
+    $.extend(fundParam,{CUST_ID:fundRs[0].CUST_ID});
+
+    //查询客户资金一级持仓信息
+    var fundHodRs=commonRequest($.extend({},fundParam,{service:'M0000054'}));
+
+    var isGoOn=true;
+
+    //判断客户原来是否有资产在一级持仓表中
+    if(fundHodRs.length>0 && fundHodRs[0].FUND_BAL>0){
+       alert('该客户资金已经初始化过！');
+       return;
+    }else{
+        fundHoldParam['FUND_BAL']=thousandsToString(fundHoldParam['FUND_BAL']);
+        fundHoldParam['FUND_AVL']=thousandsToString(fundHoldParam['FUND_AVL']);
+        fundHoldParam['UNUSE_AMOUNT']=thousandsToString(fundHoldParam['UNUSE_AMOUNT']);
+
+        //转入资金=资金余额
+        fundHoldParam['CALLOT_IN_FUND']=fundHoldParam['FUND_BAL'];
+        //合并客户号与资金账号信息
+        $.extend(fundHoldParam,fundParam);
+        //合并功能号【修改一级资金账号持仓】
+        $.extend(fundHoldParam,{service:'M0000056'});
+        ajaxRequest({
+            async:false,
+            req:[fundHoldParam],
+            func:function(data){
+                alert('资金一级持仓信息提交成功！');
+                //写入资金流水
+                writeCustfundLog(fundHoldParam)
+                fundInfoForm_clear();
+            }
+        });
+    }
+
+}
+
+//写入客户资金流水信息
+function writeCustfundLog(fundHoldParam) {
+    commonRequest({
+        service:'M0000106',
+        FLOW_TYPE:'1',      //1-资金流水，2-股份流水
+        CALLOT_DIRECT:'1', //1-转入，2-转出
+        USE_AMOUNT:fundHoldParam['FUND_AVL'],
+        CUACCT_ID:fundHoldParam['CUACCT_ID']
+    })
+}
+
+/**
+ * 根据证券类别查出相应费用
+ */
+function stockOutlayByStkCls(tradeParam) {
+    //存储股票费用记录
+    var OutLayRec={MIN_PROC_COST:0,PROC_COST:0,TRANSFER_COST:0,OTHER_COST:0,STAMP_TAX:0};
+
+    //客户号头的对应的费率
+    var rsCustStockCost=commonRequest({
+        service: 'M0000069',
+        CUST_ID:tradeParam['CUST_ID'],
+        TRADE_DIRECT:tradeParam['TRADE_DIRECT'] //交易方向
+    });
+    if(rsCustStockCost.length>0){
+        //最低手续费
+        OutLayRec['MIN_PROC_COST']=parseInt(rsCustStockCost[0].MIN_PROC_COST);
+        //手续费率
+        OutLayRec['PROC_COST']=parseFloat(rsCustStockCost[0].PROC_COST);
+        //过户费率
+        OutLayRec['TRANSFER_COST']=parseFloat(rsCustStockCost[0].TRANSFER_COST);
+        //其它费率
+        OutLayRec['OTHER_COST']=parseFloat(rsCustStockCost[0].OTHER_COST);
+        //印花税率
+        OutLayRec['STAMP_TAX']=parseFloat(rsCustStockCost[0].STAMP_TAX);
+    }else{
+        //资金账号级别头上对应的费用
+        var cuacctLvlCost=commonRequest({
+            service: 'M0000069',
+            CUACCT_LVL:tradeParam['CUACCT_LVL'],
+            TRADE_DIRECT:tradeParam['TRADE_DIRECT']//交易方向
+        });
+        if(cuacctLvlCost.length>0){
+            //最低手续费
+            OutLayRec['MIN_PROC_COST']=parseInt(cuacctLvlCost[0].MIN_PROC_COST);
+            //手续费率
+            OutLayRec['PROC_COST']=parseFloat(cuacctLvlCost[0].PROC_COST);
+            //过户费率
+            OutLayRec['TRANSFER_COST']=parseFloat(cuacctLvlCost[0].TRANSFER_COST);
+            //其它费率
+            OutLayRec['OTHER_COST']=parseFloat(cuacctLvlCost[0].OTHER_COST);
+            //印花税率
+            OutLayRec['STAMP_TAX']=parseFloat(cuacctLvlCost[0].STAMP_TAX);
+        }
+    }
+    return OutLayRec;
+}
+//交易改变事件
+function trdacctChg(value){
+
+    $('#stkId').combogrid('grid').datagrid('resize').datagrid('clean');
+    var trdacctRs=commonRequest({
+        service:'M0000005',
+        TRDACCT:value
+    });
+    if(trdacctRs.length>0){
+
+          $('#stkId').combogrid({
+              req:[{
+                  service:'M0000028',
+                  STKBD:trdacctRs[0].STKBD
+              }]
+          }).combogrid('grid').datagrid('reload');
+
+    }
+}
+
+//股份一级持仓信息清空
+function stockHoldForm_clear(){
+    $('#mts_asset_hold_form').form('clear');
+}
+//股份一级持仓信息提交
+function stockHoldForm_submit(){
+    if($('#fund_info_form').form('validate')==false || $('#mts_asset_hold_form').form('validate')==false){
+        return false
+    }
+
+    var fundParam=kui.serialize2Json(kui.serialize($('#fund_info_form')));
+    var assetHoldParam=kui.serialize2Json(kui.serialize($('#mts_asset_hold_form')));
+
+    assetHoldParam['INST_BAL']=thousandsToString(assetHoldParam['INST_BAL']);
+    assetHoldParam['INST_AVL']=thousandsToString(assetHoldParam['INST_AVL']);
+    assetHoldParam['UNUSE_AMOUNT']=thousandsToString(assetHoldParam['UNUSE_AMOUNT']);
+
+    var fundRs=commonRequest({
+        service:'M0000001',
+        CUACCT_ID:$('#cuacctId').val()
+    });
+
+    //存储股票费用比率
+    var OutLayRec=stockOutlayByStkCls({CUST_ID:fundRs[0].CUST_ID,CUACCT_LVL:fundRs[0].CUACCT_LVL,
+                                    TRADE_DIRECT:'1'});
+    //股票总价
+    var totalPriceCalc=parseFloat(assetHoldParam['COST_PRICE'])*parseInt(assetHoldParam['INST_BAL']);
+    //手续费用
+    var procCost=parseFloat((totalPriceCalc * OutLayRec['PROC_COST']).toFixed(4));
+    procCost=procCost>OutLayRec['MIN_PROC_COST'] ? procCost : OutLayRec['MIN_PROC_COST'];
+
+    //过户费用
+    var transferCost=parseFloat((totalPriceCalc * OutLayRec['TRANSFER_COST']).toFixed(4));
+    //其它费
+    var otherCost=parseFloat((totalPriceCalc * OutLayRec['OTHER_COST']).toFixed(4));
+    //印花税
+    var stampTax=parseFloat((totalPriceCalc * OutLayRec['STAMP_TAX']).toFixed(4));
+    //买入成本金额=总成交价+手续费+过户费+其它费+印花锐
+    var buyCostAmt=totalPriceCalc+procCost+transferCost+otherCost+stampTax
+
+    //合并功能号【修改一级股份账号持仓】
+    $.extend(assetHoldParam,{service:'M0000058',CUST_ID:fundRs[0].CUST_ID,CUACCT_ID:fundRs[0].CUACCT_ID,
+                             INST_ID:$('#stkId').combogrid('getValue'),
+                             BUY_COST_AMT:buyCostAmt,CALLOT_IN_ASSET:assetHoldParam['INST_BAL']});
+    ajaxRequest({
+        async:false,
+        req:[assetHoldParam],
+        func:function(data){
+            alert('股份一级持仓信息提交成功！');
+            //写入客户股份流水信息
+            writeCustAssetLog(assetHoldParam);
+
+            stockHoldForm_clear();
+            $('#trdacct').combobox({
+                req:[{
+                    service:'M0000005',
+                    CUACCT_ID:$('#cuacctId').val()
+                }]
+            })
+
+        }
+    });
+}
+
+//写入客户股份流水信息
+function writeCustAssetLog(assetHoldParam) {
+    commonRequest({
+        service:'M0000106',
+        FLOW_TYPE:'2',      //1-资金流水，2-股份流水
+        CALLOT_DIRECT:'1',//1-转入，2-转出
+        USE_AMOUNT: assetHoldParam['INST_AVL'],
+        CUACCT_ID:assetHoldParam['CUACCT_ID'],
+        TRDACCT:assetHoldParam['TRDACCT'],
+        STK_ID:assetHoldParam['INST_ID'],
+
+    })
+}
+</script>
+
+</head>
+<body>
+
+<div class="kui-panel" title="客户资金账号信息">
+    <form id="fund_info_form" class="kui-form">
+        <table class="cust-form-table" style="width:100%;">
+            <tr>
+                <td class="cust-form-label" style="width:160px;">资金账号：</td>
+                <td >
+                    <input id="cuacctId" name="CUACCT_ID" class="kui-autocomplete"  kui-options="required:true,
+                            minLength:1,max: 32,req:[{service:'M0000001'}], keyField:'CUACCT_ID', params:'CUACCT_ID',
+                            sourceField:'CUACCT_ID', mustMatch:false,matchCase:false, matchContains:true,
+                            scrollHeight:100,onSelect:cuacctId_Select"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <fieldset class="kui-fieldset" kui-options="title:'客户资金一级持仓信息',collapsed:false,animation:true">
+        <form id="fund_info_hold_form" class="kui-form">
+            <table class="cust-form-table" style="width:100%;">
+                <tr>
+                    <td class="cust-form-label">资金余额：</td>
+                    <td>
+                        <input id="funcInfo_Bal" name="FUND_BAL" is_sum=true
+                               class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'"  onchange="funcBalChg()" autocomplete="off"
+                               onblur="this.value=toThousands(this.value)"
+                               onfocus="this.value=thousandsToString(this.value)"
+                        />
+                    </td>
+                    <td class="cust-form-label">资金可用：</td>
+                    <td >
+                        <input name="FUND_AVL"  is_sum=true
+                               class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" autocomplete="off"
+                               onblur="this.value=toThousands(this.value)"
+                               onfocus="this.value=thousandsToString(this.value)"/>
+                    </td>
+                    <td class="cust-form-label">未分配额度：</td>
+                    <td >
+                        <input name="UNUSE_AMOUNT" is_sum=true
+                               class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" autocomplete="off"
+                               onblur="this.value=toThousands(this.value)"
+                               onfocus="this.value=thousandsToString(this.value)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cust-form-label">昨日余额：</td>
+                    <td >
+                        <input name="FUND_LAST_BAL"  is_sum=true autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                    <td class="cust-form-label">交易冻结金额：</td>
+                    <td>
+                        <input name="FUND_TRD_FRZ"   is_sum=true
+                               class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                    <td class="cust-form-label">长期冻结金额：</td>
+                    <td>
+                        <input name="FUND_LONG_FRZ"  is_sum=true autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cust-form-label">负债金额：</td>
+                    <td>
+                        <input name="FUND_DEBT"  is_sum=true autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                    <td class="cust-form-label">在途金额：</td>
+                    <td>
+                        <input name="FUND_OTD"  is_sum=true autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                    <td class="cust-form-label">信用金额：</td>
+                    <td>
+                        <input name="FUND_CREDIT" is_sum=true autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cust-form-label">利息基数：</td>
+                    <td>
+                        <input name="FUND_BLN_ACCU" is_sum=true  autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                    <td class="cust-form-label">上次计息日期：</td>
+                    <td>
+                        <input name="LAST_CAL_DATE"  class="kui-datebox"  />
+                    </td>
+
+                    <td class="cust-form-label">存管利率：</td>
+                    <td>
+                        <input name="FUND_RATE" is_sum=true autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,11,8]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="cust-form-label">融资利率：</td>
+                    <td colspan="5">
+                        <input name="CREDIT_RATE"  is_sum=true autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,11,8]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cust-form-label">备注：</td>
+                    <td colspan="5">
+                        <input name="REMARK"  autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'val[1,200]'" style="width: 90%;"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div style="text-align: center;margin-top: 20px;">
+            <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="fundInfoForm_submit()">提交</a>
+            <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-cancel'" onclick="fundInfoForm_clear()">清空</a>
+        </div>
+    </fieldset>
+    <fieldset class="kui-fieldset" kui-options="title:'客户股份一级持仓信息',collapsed:false,animation:true">
+        <form id="mts_asset_hold_form" class="kui-form">
+            <table class="cust-form-table" style="width:100%;">
+                <tr>
+                    <td class="cust-form-label">交易账号</td>
+                    <td>
+                        <input id="trdacct" name="TRDACCT" style="width: 120px;"
+                               class="kui-combobox" kui-options="required:true,autoFill:true,panelHeight:100,
+                               valueField:'TRDACCT',textField:'TRDACCT',onChange:trdacctChg">
+                    </td>
+                    <td class="cust-form-label">产品代码：</td>
+                    <td>
+                        <input id="stkId" name="STK_ID"  class="kui-combogrid" kui-options="required:true,panelHeight: 250,
+                                     panelHeight: 250,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'STK_ID',
+                                    textField: 'STK_NAME',
+                                    fallParas:[{enable:true}],
+                                    req:[{service:'M0000028'}],
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '证券代码', field: 'STK_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,20]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            },{
+                                                title: '证券名称', field: 'STK_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,20]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field: 'STK_ID', title: '证券代码',width:100},
+                                        {field: 'STK_NAME', title: '证券名称',width:100},
+                                        {field: 'STKBD',title:'交易板块',width:80,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('STKBD',value);
+                                          }
+                                        },
+                                         {field: 'MARKET_ID',title:'交易板块',width:80,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('MARKET',value);
+                                          }
+                                        }
+                                    ]]"/>
+                    </td>
+                    <td class="cust-form-label">产品余额：</td>
+                    <td>
+                        <input id="instBal" name="INST_BAL"
+                               class="kui-validatebox" kui-options="required:true,validType:'numberex[10,19,0]',
+                            invalidMessage:'请入不要起过19位整数位的数字'"  onchange="instBalChg()" autocomplete="off"
+                               onblur="this.value=toThousands(this.value)"
+                               onfocus="this.value=thousandsToString(this.value)"
+                        />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="cust-form-label">产品可用额：</td>
+                    <td>
+                        <input name="INST_AVL"
+                               class="kui-validatebox" kui-options="required:true,validType:'numberex[10,19,0]',
+                            invalidMessage:'请入不要起过19位整数位的数字'" autocomplete="off"
+                               onblur="this.value=toThousands(this.value)"
+                               onfocus="this.value=thousandsToString(this.value)"/>
+                    </td>
+                    <td class="cust-form-label">未分配额度：</td>
+                    <td >
+                        <input name="UNUSE_AMOUNT"
+                               class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'" autocomplete="off"
+                               onblur="this.value=toThousands(this.value)"
+                               onfocus="this.value=thousandsToString(this.value)"/>
+                    </td>
+                    <td class="cust-form-label">成本价：</td>
+                    <td >
+                        <input name="COST_PRICE"  autocomplete="off"
+                               class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                invalidMessage:'请入不要起过15位整数位的数字'"/>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td class="cust-form-label">产品昨日余额：</td>
+                    <td>
+                        <input name="INST_LAST_BAL"  autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'numberex[10,19,0]',
+                            invalidMessage:'请入不要起过19位整数位的数字'" />
+                    </td>
+                    <td class="cust-form-label">交易冻结数：</td>
+                    <td>
+                        <input name="INST_TRD_FRZ" class="kui-validatebox" kui-options="validType:'numberex[10,19,0]',
+                            invalidMessage:'请入不要起过19位整数位的数字'" autocomplete="off"/>
+                    </td>
+                    <td class="cust-form-label">长期冻结数：</td>
+                    <td>
+                        <input name="INST_LONG_FRZ" class="kui-validatebox" kui-options="validType:'numberex[10,19,0]',
+                            invalidMessage:'请入不要起过19位整数位的数字'"  autocomplete="off"/>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="cust-form-label">产品在途数：</td>
+                    <td>
+                        <input name="INST_OTD"
+                               class="kui-validatebox" class="kui-validatebox" kui-options="validType:'numberex[10,19,0]',
+                            invalidMessage:'请入不要起过19位整数位的数字'" autocomplete="off"/>
+                    </td>
+                    <td class="cust-form-label">产品在途可用：</td>
+                    <td>
+                        <input name="INST_BAL_OTD" class="kui-validatebox" kui-options="validType:'numberex[10,19,0]',
+                            invalidMessage:'请入不要起过19位整数位的数字'" autocomplete="off"/>
+                    </td>
+                    <td class="cust-form-label">产品市值：</td>
+                    <td>
+                        <input name="MKT_VALUE" class="kui-validatebox" kui-options="validType:'numberex[10,15,4]',
+                            invalidMessage:'请入不要起过15位整数位的数字'" autocomplete="off"/>
+                    </td>
+                <tr>
+                    <td class="cust-form-label">备注：</td>
+                    <td colspan="5">
+                        <input name="REMARK" autocomplete="off"
+                               class="kui-validatebox" kui-options="validType:'val[1,200]'" style="width: 90%;"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <div style="text-align: center;margin-top: 20px;">
+            <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="stockHoldForm_submit()">提交</a>
+            <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-cancel'" onclick="stockHoldForm_clear()">清空</a>
+        </div>
+    </fieldset>
+</div>
+
+
+</body>
+</html>

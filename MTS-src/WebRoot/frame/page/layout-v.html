@@ -1,0 +1,516 @@
+﻿<script language="javascript">
+$(function(){
+	$.parser.director($('div.ui-frame-content'));
+	$('div.ui-frame-title-ch').html(frameConfig.sysName);
+    $('div.ui-frame-title-en').html(frameConfig.engName);
+    $('div.ui-frame-title-split').html("/");
+	initLayout();
+    initMenus();
+    $(window).resize(initLayout);
+});
+
+function initLayout() {
+    var w = $(window).width();
+    var h = $(window).height();
+	var th = $('div.ui-frame-top').height();
+    $('div.ui-frame-menu-v').height(h-th);
+	$('div.ui-frame-menu-container').height(h-th-20);
+	$('div.ui-frame-menu-container').width(190);
+	$('div.ui-frame-content').height(h-th).css({float:'left',width:w-200,'margin-left':200});
+	$('div.ui-frame-tabs').width(w-200).height(30);
+	
+}
+function initMenus() {
+    ajaxRequest({
+    	url:'ajax?returnType=json',
+        //是否将返回结果进行转换, 默认'xml',不转化，直接返回服务器返回的xml 对象，如设置为'json', 将把xml 对象转换为json		 
+        func: function(data) {
+            drawMenus(processData(data));
+            bindMenusEvent();
+        },
+        //回调函数
+        req: [{
+            "service": "frameSelectMenu",
+            "MENU_STA": "1"
+        }]
+    });
+};
+function processData(data) {
+    var menuData = {
+        firMenus: [],
+        secMenus: [],
+        othMenus: []
+    };
+    var tmp = data[0]['data'][0];
+    for (var i = 0; i < tmp.length; i++) {
+        var menuLvl = tmp[i]['MENU_LVL'];
+        var menu = {
+            menuId: tmp[i]['MENU_ID'],
+            parId: tmp[i]['PAR_MENU'],
+            menuName: tmp[i]['MENU_NAME'],
+            menuLvl: menuLvl,
+            menuIco: tmp[i]['MENU_ICO'],
+            menuLink: tmp[i]['MENU_LINK']
+        }
+        if (menuLvl.length == 2) menuData.firMenus.push(menu);        
+        else menuData.othMenus.push(menu);
+    }
+
+    return menuData;
+}
+
+function drawMenus(data) {
+    drawFirMenus(data.firMenus);
+	$.data(document.body, 'frame-othMenus',data.othMenus);
+  
+}
+
+function drawFirMenus(data) {
+    var menus = ["<ul>"];
+    for (var i = 0; i < data.length; i++) {
+        menus.push("<li class=\"ui-frame-menu-node\" id=\"sys-menu-");
+        menus.push(data[i].menuId);
+        menus.push("\" nodeId=\"");
+        menus.push(data[i].menuId);
+        menus.push("\" parNode=\"");
+        menus.push(data[i].parId);
+        menus.push("\"><div class=\"ui-frame-menu-center\"><span class=\"ui-frame-menu-ico ");
+        menus.push(data[i].menuIco);
+        menus.push("\"></span>");
+        menus.push(data[i].menuName);
+        menus.push("</div></li>");
+    }
+    menus.push("</ul>");
+    $(menus.join('')).prependTo("div.ui-frame-menu-container");
+}
+
+function drawSecMenus(data,container) {
+    var menus = ["<ul>"];
+    for (var i = 0; i < data.length; i++) {
+        menus.push("<li class=\"ui-frame-submenu-node\" id=\"sys-menu-");
+        menus.push(data[i].menuId);
+        menus.push("\" nodeId=\"");
+        menus.push(data[i].menuId);
+        menus.push("\" parNode=\"");
+        menus.push(data[i].parId);
+        menus.push("\" link=\"");
+        menus.push(data[i].menuLink);
+        menus.push("\"><div class=\"ui-frame-submenu\" >");
+		if(!data[i].menuLink){
+			menus.push("<div class=\"ui-frame-icons icons-arrow-right\" style=\"float:left\"></div>");
+		}else{
+			menus.push("<div style=\"width:20px;height:20px;float:left\"></div>");
+		}
+        menus.push(data[i].menuName);
+        menus.push("</div></li>");
+    }
+    menus.push("</ul>");
+    $(menus.join('')).prependTo(container);
+	
+}
+
+function bindMenusEvent() {
+	
+    $("div.ui-frame-menu-container>ul>li").on("click",
+    function(e, dom) {
+        menuClick(e, dom)
+    });
+    $("div.ui-frame-menu-container li:eq(0)").trigger("click", ['div.ui-frame-menu-container li:eq(0)']);
+	$("div.ui-frame-content>div.ui-frame-tabs").on("click",function(e,dom){
+		var jqD= $(e.target);
+		if(jqD.hasClass("icons-arrow-close")){
+			var parJqD = jqD.parent();
+			var nodeId = parJqD.attr("nodeId");			
+			closeTabPage(nodeId);
+			if(parJqD.hasClass("ui-frame-v-tab-selected")){
+				var selectedNode = parJqD.next();
+				if(!selectedNode.is("li"))
+					selectedNode = parJqD.prev();				
+				if(selectedNode.is("li")){
+					
+					var pages = $.data(document.body, 'frame-pages');
+					openTabPage(pages['sys-menu-' + selectedNode.attr('nodeId')]);
+				}
+			}
+			parJqD.remove();
+		}
+		if(jqD.is("li")){
+			var pages = $.data(document.body, 'frame-pages');
+			openTabPage(pages['sys-menu-' + jqD.attr('nodeId')]);
+		}
+	});
+    /*$("div.ui-frame-sub-menu ul").on("click",
+    function(e, dom) {
+        subMenuClick(e, dom)
+    });
+    $("div.ui-frame-switch").on("click",
+    function(e) {
+        toggleSwitchPage(e)
+    });*/
+    
+}
+function menuClick(e, dom) {
+    var t = dom || e.target;
+	
+    var jqD = $(t);
+    if (!jqD.is("li")) {
+        jqD = jqD.parentsUntil("ul", "li");
+    }
+	
+    if (!jqD.hasClass("ui-frame-menu-selected")) {
+        $("div.ui-frame-menu-container li.ui-frame-menu-node").removeClass("ui-frame-menu-selected");
+		jqD.addClass("ui-frame-menu-selected");
+		var subContainer = jqD.next("div.ui-frame-sub-menu");
+		$("div.ui-frame-sub-menu").hide();		
+		if(subContainer.length>0){
+			subContainer.show();
+		}else{
+			subContainer = $("<div class=\"ui-frame-sub-menu\"></div>");
+			jqD.after(subContainer);
+			var data = [];
+			var othMenus = $.data(document.body, 'frame-othMenus');
+			
+			for(var i = 0;i<othMenus.length;i++){				
+				if(othMenus[i]["parId"]==jqD.attr("nodeId")) data.push(othMenus[i]);
+			}
+			drawSecMenus(data,subContainer);
+			subContainer.on("click",function (e,dom){
+				subMenuClick(e, dom);
+			});
+		}
+       // $("div.ui-frame-sub-menu li[parNode='" + jqD.attr("nodeId") + "']").show();
+    }
+}
+function subMenuClick(e, dom) {
+    var t = dom || e.target;
+    var jqD = $(t);
+    if (!jqD.is("li")) {
+        jqD = jqD.parentsUntil("ul", "li");
+    }
+	if(jqD.attr("link")){
+		if (!jqD.hasClass("ui-frame-submenu-selected")) {
+			var data = {
+				menuId: jqD.attr('nodeId'),
+				menuLink: jqD.attr('link'),
+				parId: jqD.attr('parNode'),
+				menuName: jqD.text()
+			};
+			//openTabPage(data);
+			addTab(data);
+		}
+	}else{
+		var subContainer = jqD.next("div.ui-frame-other-menu");
+		var expand = $("div.ui-frame-icons:eq(0)",jqD);
+		
+		if(!expand.hasClass("icons-arrow-down")){
+			if(subContainer.length>0){
+				subContainer.show();
+			}else{
+				
+				var data = [];
+				var othMenus = $.data(document.body, 'frame-othMenus');
+				for(var i = 0;i<othMenus.length;i++){				
+					if(othMenus[i]["parId"]==jqD.attr("nodeId")) data.push(othMenus[i]);
+				}
+				if(data.length>0){
+					subContainer = $("<div class=\"ui-frame-other-menu\"></div>");
+					jqD.after(subContainer);
+					drawSecMenus(data,subContainer);
+				}
+			}
+			expand.addClass("icons-arrow-down");
+		}else{
+			subContainer.hide();
+			expand.removeClass("icons-arrow-down");
+		}
+	}
+    /*if (!jqD.hasClass("ui-frame-submenu-selected")) {
+        var data = {
+            menuId: jqD.attr('nodeId'),
+            menuLink: jqD.attr('link'),
+            parId: jqD.attr('parNode'),
+            menuName: jqD.text()
+        };
+        openTabPage(data);
+    }*/
+}
+
+function menuNext(e) {
+    var l = $("div.ui-frame-menu-container ul").offset().left;
+    var w = 148;
+    var s = $("div.ui-frame-menu-container li").length;
+    var c = $("div.ui-frame-menu-container").width();
+    if (c > (s * 148 + l - w)) {
+        $("div.ui-frame-menu-next").hide();
+    }
+    $("div.ui-frame-menu-container ul").animate({
+        left: (l - w) + 'px',
+        top: '0px'
+    },
+    500);
+    $("div.ui-frame-menu-prev").show();
+}
+function menuPrev(e) {
+    var l = $("div.ui-frame-menu-container ul").offset().left;
+    var w = 148;
+    if (l + w >= 0) {
+        if (l + w >= 0) $("div.ui-frame-menu-prev").hide();
+        w = -l;
+    }
+    $("div.ui-frame-menu-container ul").animate({
+        left: (l + w) + 'px',
+        top: '0px'
+    },
+    500);
+    $("div.ui-frame-menu-next").show();
+}
+
+function openTabPage(options) {
+    if (!options || !options.menuLink) return false;
+    var pages = $.data(document.body, 'frame-pages');
+    var pageId = 'sys-menu-' + options.menuId;
+    var container = $("div.ui-frame-content");
+	$("div.ui-frame-tabs>ul>li",container).removeClass("ui-frame-v-tab-selected");
+    if (!pages) pages = {};
+    if (!pages[pageId]) {
+        pages[pageId] = options;
+        var content = "<iframe id=\"" + pageId + "\" nodeId=\"" + options.menuId + "\" scrolling=\"auto\" frameborder=\"0\" allowtransparency=\"true\"  style=\"width:100%;height:92%;overflow:auto;\"></iframe>";
+        container.append(content);
+        $("iframe#" + pageId, container).attr("src", options.menuLink);
+		$("div.ui-frame-tabs>ul",container).append("<li nodeId=\""+options.menuId+"\" class=\"ui-frame-v-tab\">"+options.menuName+"<a class=\"ui-frame-icons icons-arrow-close\" href=\"javascript:void(0)\"/></li>");
+    }
+	$("div.ui-frame-tabs>ul>li[nodeId='"+options.menuId+"']",container).addClass("ui-frame-v-tab-selected")
+    $("iframe:visible", container).hide();
+    $("iframe#" + pageId, container).show();
+    $("div.ui-frame-sub-menu li").removeClass("ui-frame-submenu-selected");
+    $("div.ui-frame-sub-menu li[nodeId=\"" + options.menuId + "\"]").addClass("ui-frame-submenu-selected");
+    $.data(document.body, 'frame-pages', pages);
+}
+function closeTabPage(nodeId) {
+	
+    var pageId = 'sys-menu-' + nodeId;
+    var container = $("div.ui-frame-content");
+	
+    $("iframe#" + pageId, container).attr('src', '').remove();
+    var pages = $.data(document.body, 'frame-pages');
+    delete pages[pageId];
+    $.data(document.body, 'frame-pages', pages);
+	$("div.ui-frame-sub-menu li").removeClass("ui-frame-submenu-selected");
+	
+}
+function toggleSwitchPage(e) {
+    var target = $("div.ui-frame-switch");
+    var offset = target.offset();
+    var pages = $.data(document.body, 'frame-pages');
+    var pos = {
+        top: offset.top + 26,
+        left: offset.left
+    }
+    if (!pages) return;
+    var container = $("div.ui-frame-switch-list");
+    var wrapList = function(data, ct) {
+        var list = ["<ul>"]
+        for (i in data) {
+            list.push("<li nodeId=\"");
+            list.push(data[i].menuId);
+            list.push("\"");
+            list.push("><div class=\"ui-frame-switch-list-text\">");
+            list.push(data[i].menuName);
+            list.push("</div><div class=\"ui-frame-icons ui-frame-switch-close\"></div></li>");
+        }
+        list.push("</ul>");
+        $(list.join('')).appendTo(ct);
+
+    }
+    if (container.is(":visible")) {
+        container.hide();
+        $("div.ui-frame-icons", "div.ui-frame-switch").removeClass("icons-arrow-up");
+    } else {
+        $("div.ui-frame-icons", "div.ui-frame-switch").addClass("icons-arrow-up");
+        if (container.length == 0) {
+            container = $("<div class=\"ui-frame-switch-list\"></div>");
+            container.css(pos).appendTo("body");
+            wrapList(pages, container);
+            var ctInterVal = null;
+            container.on('click',
+            function(e) {
+                var tar = $(e.target);
+				if(tar.hasClass('ui-frame-switch-close')){
+					tar = tar.parent('li');
+					closeTabPage(tar.attr('nodeId'));
+					container.find("ul").remove();
+					wrapList(pages, container);
+					tar = $('li:eq(0)', container);
+					tar.addClass("selected");
+                    openTabPage(pages['sys-menu-' + tar.attr('nodeId')]);
+				}else{
+					tar = tar.is("li")?tar:tar.parent('li');
+				}
+                if (tar.is("li")) {
+                    $('li', container).removeClass("selected");
+                    tar.addClass("selected");
+                    openTabPage(pages['sys-menu-' + tar.attr('nodeId')]);
+                }
+            }).on('mouseleave',
+            function(e) {
+                if (ctInterVal == null) {
+                    ctInterVal = window.setInterval(function() {
+                        container.hide();
+                        $("div.ui-frame-icons", "div.ui-frame-switch").removeClass("icons-arrow-up");
+                        window.clearInterval(ctInterVal);
+                        ctInterVal = null;
+                    },
+                    1000);
+                }
+            }).on('mouseenter',
+            function(e) {
+                if (ctInterVal != null) {
+                    window.clearInterval(ctInterVal);
+                    ctInterVal = null;
+                }
+            });
+        } else {
+            container.find("ul").remove();
+            wrapList(pages, container);
+            container.show();
+        }
+        var selectedId = $("iframe:visible", "div.ui-frame-content").attr("nodeId");
+        $("li[nodeId=\"" + selectedId + "\"]", container).addClass("selected");
+    }
+
+}
+
+function addTab(data){
+	var url = data.menuLink;
+	var sux = "_="+Math.random(99999999);
+
+	if(url.indexOf("?")>-1)url+="&"+sux;
+	else url+="?"+sux;
+    if(data.menuLink != ''){
+      $('#pageTabsBox').tabs('addPageTab',{
+        id:data.menuId,
+        title:data.menuName,
+        url:url
+      });
+    }
+}
+
+/**
+ * 右击TAB页签时弹出页签菜单
+ * 引入方式：kui-tabs回调方法 onContextMenu:showPageTabsMenu
+ * @param e
+ */
+function showPageTabsMenu(e){
+	e.preventDefault();
+	$('#pageTabsMenu').menu('show', {
+		left: e.pageX,
+		top: e.pageY
+	});
+}
+
+/**
+ * TAB页签弹出菜单项事件处理
+ * 引入方式：kui-menu回调方法 onClick:onPageMenuEvent
+ * @param item
+ */
+function onPageMenuEvent(item){
+	var $pageTab = $('#pageTabsBox'),
+		$selectedTab = $pageTab.tabs('getSelected');
+	var itemName = item.name;
+	switch(itemName){
+	
+		case 'update':
+			var cUrl = $('iframe',$selectedTab).attr('src');
+			$pageTab.tabs('update',{
+				tab:$selectedTab,
+				options:{
+					content:"<iframe frameborder=\"0\" scrolling=\"no\" src=\""+cUrl+"\" style=\"width:100%;height:100%;overflow:auto;\"></iframe>"
+				}
+			});
+		break;
+		
+		case 'close':
+			if ($selectedTab){
+				var index = $pageTab.tabs('getTabIndex', $selectedTab);
+				$pageTab.tabs('close', index);
+			}
+		break;
+			
+		case 'closeAll':
+			$(".tabs-panels > .panel", $pageTab).each(function(){
+				var index = $pageTab.tabs('getTabIndex', $(this).find(".panel-body"));
+				$pageTab.tabs('close', index);
+			});
+			
+		break;
+		
+		case 'closeOther':
+			$selectedTab.parent().siblings().each(function(){
+				var index = $pageTab.tabs('getTabIndex', $(this).find(".panel-body"));
+				$pageTab.tabs('close', index);
+			});
+		break;
+		
+		case 'closeRight':
+			$selectedTab.parent().nextAll().each(function(){
+				var index = $pageTab.tabs('getTabIndex', $(this).find(".panel-body"));
+				$pageTab.tabs('close', index);
+			});
+		break;
+		
+		case 'closeLeft':
+			$selectedTab.parent().prevAll().each(function(){
+				var index = $pageTab.tabs('getTabIndex', $(this).find(".panel-body"));
+				$pageTab.tabs('close', index);
+			});
+		break;
+		
+		default:
+		break;
+	}
+		
+}
+
+</script>
+<div id="layout-v" class="ui-frame-layout-v">
+<div class="ui-frame-background ui-frame-top">
+    <div class="ui-frame-logo">
+        <div class="ui-frame-logo-img"></div>
+        <div class="ui-frame-title-ch"></div>
+        <div class="ui-frame-title-split"></div>
+        <div class="ui-frame-title-en"></div>
+    </div>
+    <div class="ui-frame-tools">
+        <div class="ui-frame-tools-ico ui-frame-homepage" onclick="startUp();">返回首页</div>
+        <div class="ui-frame-tools-ico ui-frame-user"></div>
+        <div class="ui-frame-tools-ico ui-frame-help">帮助</div>
+        <div class="ui-frame-tools-ico ui-frame-message">消息</div>
+        <div class="ui-frame-tools-ico ui-frame-style" onclick="setThemes()">风格</div>
+		<div class="ui-frame-tools-ico ui-frame-setting" onclick="setting()">设置</div>
+		<div class="ui-frame-tools-ico ui-frame-lock" onclick="lock()">锁定</div>
+		<div class="ui-frame-tools-ico ui-frame-exit" onclick="logout()">退出</div>
+    </div>
+    <div style="clear:both"></div>
+</div>
+<div class="ui-frame-menu">
+	<div class="ui-frame-menu-container"></div>
+</div>
+<!-- 主界面 工作区内容 -->
+<div class="ui-frame-content" style="padding-bottom:10px;">
+	<!--div class="ui-frame-tabs"><ul class="tabs"></ul></div-->
+	<div id="pageTabsBox" class="kui-tabs" fit="true" border="false" kui-options="onContextMenu:showPageTabsMenu">
+    </div>
+	<div id="pageTabsMenu" class="kui-menu" kui-options="onClick:onPageMenuEvent" style="width:150px;display:none;">
+        <div kui-options="name:'update'">刷新</div>
+        <div class="menu-sep"></div>
+        <div kui-options="name:'close'">关闭</div>
+        <div kui-options="name:'closeAll'">全部关闭</div>
+        <div kui-options="name:'closeOther'">关闭其他</div>
+        <div class="menu-sep"></div>
+        <div kui-options="name:'closeRight'">当前页右侧全部关闭</div>
+        <div kui-options="name:'closeLeft'">当前页左侧全部关闭</div>
+        <div class="menu-sep"></div>
+        <!--<div kui-options="name:'exit'">退出</div>-->
+    </div>
+</div>
+</div>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <!--认购/申购-->
+    <print id="OTC_SUBSCRIBE" ticket="handForm_sywg.jpg" width="19" height="9.3">
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px"  location="{x:89,y:74}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px"  location="{x:89,y:74}" />-->
+        <field id="PRINT_DATE" label="日期" value="" font-color="#000000" font-size="14px" location="{x:456,y:74}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" font-size="14px" location="{x:102,y:103}" />
+        <!--<field id="TA_ACCT" label="登记账号" value="" font-color="#000000" font-size="14px" location="{x:370,y:103}" />-->
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="14px"  location="{x:599,y:103}" />
+
+        <field id="BSN_TITLE" label="业务标题" value="您的 认购/申购 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:60,y:135}" />
+        <field id="INST_ID" label="产品代码" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:165}" />
+        <field id="INST_DESC" label="产品简称" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:380,y:165}" />
+        <!--<field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="15px" label-print="1" location="{x:130,y:185}" />-->
+        <!--<field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:185}" />-->
+        <field id="PAY_WAY" label="支付方式" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:185}" />
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:380,y:185}" />
+        <field id="TRD_ID" label="交易类别" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:205}" />
+        <field id="TRD_AMT" label="交易金额" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:380,y:205}" />
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="15px" label-print="1" location="{x:130,y:225}" />
+    </print>
+    <!--赎回-->
+    <print id="OTC_REDEEM" ticket="handForm_sywg.jpg" width="19" height="9.3">
+        <field id="OP_CODE" label="柜员代码" value="" font-color="#000000" font-size="14px"  location="{x:89,y:74}" />
+        <!--<field id="OP_NAME" label="柜员名称" value="" font-color="#000000" font-size="14px"  location="{x:89,y:74}" />-->
+        <field id="PRINT_DATE" label="日期" value="" font-color="#000000" font-size="14px" location="{x:456,y:74}" />
+        <field id="CUACCT_CODE" label="资产账号" value="" font-color="#000000" font-size="14px" location="{x:102,y:103}" />
+        <!--<field id="TA_ACCT" label="登记账号" value="" font-color="#000000" font-size="14px" location="{x:370,y:103}" />-->
+        <field id="USER_NAME" label="客户名称" value="" font-color="#000000" font-size="14px"  location="{x:599,y:103}" />
+
+        <field id="BSN_TITLE" label="业务标题" value="您的 赎回 委托信息如下：" font-size="1.2em" font-color="#000000" location="{x:60,y:135}" />
+
+        <field id="INST_CODE" label="产品代码" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:165}" />
+        <field id="INST_DESC" label="产品简称" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:380,y:165}" />
+        <!--<field id="CUST_CODE" label="客户编号" value="" font-color="#000000" font-size="15px" label-print="1" location="{x:130,y:185}" />-->
+        <!--<field id="TA_CODE" label="登记机构" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:185}" />-->
+        <field id="TA_ACCT" label="登记账号" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:185}" />
+        <field id="TRD_QTY" label="赎回份额" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:380,y:185}" />
+        <field id="BIG_REG_FLAG" label="巨额赎回标志" value="" font-color="#000000" label-print="1" font-size="15px" location="{x:130,y:205}" />
+        <field id="OP_ORG_NAME" label="受理营业部" value=""  font-color="#000000" font-size="15px" label-print="1" location="{x:380,y:205}" />
+    </print>
+</config>

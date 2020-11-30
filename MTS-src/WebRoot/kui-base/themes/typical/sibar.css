@@ -1,0 +1,254 @@
+.sibar-side {
+	position: fixed;
+	border: 1px solid #C7C7C7;
+	height: 100%;
+	background: url(images/kui_transparent_70.png);
+}
+
+.sibar-side-title {
+	color: #000;
+	border-bottom: 1px dashed #A7A7A7;
+	line-height: 30px;
+	margin: 0 35px;
+	padding-left: 20px;
+	font-family: '微软雅黑';
+	font-size: 16px;
+	width: 400px;
+	background: url(images/sibar_side.png) no-repeat -50px -26px;
+}
+
+.sibar-side-hide {
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin: -24px 0 0 12px;
+	cursor: pointer;
+	background: url(images/tabs_icons.png) no-repeat -16px 0;
+}
+
+.side-hide {
+	background-position: 0 0;
+}
+
+.sibar-side ul {
+	padding: 0;
+	margin: 10px 0 0 13px;
+	background: url(images/sibar_line.png) repeat-y 7px 0;
+}
+
+.sibar-side li {
+	list-style: none;
+	height: 35px;
+	line-height: 35px;
+	cursor: pointer;
+	font-size: 14px;
+	font-family: 微软雅黑;
+	color: #4D4D4D;
+}
+
+.sibar-side-content {
+	height: 35px;
+	margin: 0 20px;
+	padding: 0 0 0 10px;
+	border-bottom: 2px solid #E2E2E2;
+}
+
+.sibar-side-left {
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin: 11px 0 0 0;
+	background: url(images/sibar_side.png) no-repeat;
+}
+
+.sibar-side-right {
+	float: right;
+	width: 16px;
+	height: 16px;
+	margin: 11px 6px 0 0;
+	background: url(images/sibar_side.png) no-repeat 20px 20px;
+}
+/*起点的li标签*/
+li.sibar-side-start {
+	height: 20px;
+	line-height: 20px;
+	cursor: auto;
+}
+
+li.sibar-side-start .sibar-side-left {
+	background-position: 0 0;
+	margin: -3px 0 0 0;
+}
+/*终点的li标签*/
+li.sibar-side-end {
+	height: 20px;
+	line-height: 20px;
+	cursor: auto;
+}
+
+li.sibar-side-end .sibar-side-left {
+	background-position: 0 0;
+	margin: 10px 0 0 0;
+}
+/*一级li标签及其以下的元素*/
+li.sibar-side-level1 .sibar-side-left {
+	background-position: -47px 0;
+}
+/*二级li标签及其以下的元素*/
+li.sibar-side-level2 {
+	height: 25px;
+	line-height: 25px;
+}
+
+li.sibar-side-level2 .sibar-side-content {
+	height: 25px;
+	line-height: 25px;
+	border-bottom: 1px solid transparent;
+	padding: 0 0 0 45px;
+	font-size: 13px;
+}
+
+li.sibar-side-level2 .sibar-side-left {
+	height: 16px;
+	background-position: 20px 20px;
+	margin: 5px 0 0 0;
+}
+
+li.sibar-side-level2 .sibar-side-right {
+	height: 16px;
+	margin: 5px 6px 0 0;
+}
+/*增加right的li标签及其下级子元素*/
+li.right .sibar-side-content {
+	color: #148C36;
+	background: transparent;
+}
+
+li.right .sibar-side-left {
+	background-position: -15px 0;
+}
+
+li.right .sibar-side-right {
+	background-position: -98px 0;
+}
+/*增加wrong的li标签及其下级子元素*/
+li.wrong .sibar-side-content {
+	color: #F94F0D;
+	background: transparent;
+}
+
+li.wrong .sibar-side-left {
+	background-position: -31px 0;
+}
+
+/*增加hover的li标签及其下级子元素*/
+li.hover .sibar-side-content {
+	color: #F94F0D;
+	background: #FFFBEE;
+	border: 1px solid #FFE7C8;
+}
+
+li.hover .sibar-side-left {
+	background-position: -68px 0;
+}
+
+li.hover .sibar-side-right {
+	background-position: -114px 0;
+}
+
+.kui-sibar {
+	background: url(images/kui_transparent_85.png);
+	padding: 1px 0;
+}
+
+/*对panel的CSS样式进行修改*/
+.kui-sibar>.panel {
+	border: 1px solid #C2C2C2;
+	margin: 9px 0;
+}
+
+.kui-sibar>.panel>.panel-header {
+	border: none;
+	background: url(images/kui_transparent_50.png);
+}
+
+.kui-sibar>.panel>.panel-body {
+	border: 4px solid #F4F4F4;
+	border-top: none;
+}
+/*被选中时panel的CSS样式进行修改*/
+.kui-sibar>.sibar-content-hover {
+	border-color: #FFF;
+}
+
+.kui-sibar>.sibar-content-hover>.panel-header {
+	background: url(images/kui_transparent_50.png);
+}
+
+.kui-sibar>.sibar-content-hover>.panel-header .panel-title{
+	color: #F94F0D;
+}
+
+.kui-sibar>.sibar-content-hover>.panel-body {
+}
+/*二级菜单下的panel的样式*/
+.kui-sibar .detail-tip {
+	font-family: '宋体', simsun;
+	font-size: 1em;
+	color: #5099e2;
+	margin: 8px 20px 0 20px;
+	text-transform: none;
+	border-bottom: 1px dotted #CCC;
+}
+
+.kui-sibar .detail-tip span {
+	cursor: pointer;
+}
+
+.kui-sibar .detail-tip .detail-icon {
+	background: url('images/line_tag1.gif') no-repeat center center;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	z-index: 2;
+	margin-right: 5px;
+}
+
+.kui-sibar .detail-tip .detail-shrink {
+	width: 16px;
+	height: 12px;
+	float: right;
+	background: url(images/sibar_side.png) no-repeat 0 -16px;
+}
+
+.kui-sibar .detail-tip .detail-shrinked {
+	background-position: -16px -16px;
+}
+/*一级菜单下的“展开更多”的样式*/
+.sibar-toggle {
+	position: absolute;
+	width: 40px;
+	right: 0px;
+	cursor: pointer;
+	color: #333;
+	font-size: 12px;
+	padding: 5px;
+	border: 1px solid #C2C2C2;
+	background: url(images/kui_transparent_50.png);
+	z-index: 10;
+}
+
+.sibar-content-hover .sibar-toggle {
+	border-color: #FFF;
+}
+
+.sibar-toggle span {
+	width: 16px;
+	height: 12px;
+	float: right;
+	background: url(images/sibar_side.png) no-repeat -16px -16px;
+}
+
+.hover span {
+	background: url(images/sibar_side.png) no-repeat 0 -16px;
+}

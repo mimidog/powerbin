@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="DynamicMapper.ProcessDefinition">
+  
+  <!-- PROCESSDEFINITION INSERT -->
+
+  <insert id="BpmProcessDefinitionInsert" parameterType="map">
+    insert into UWK_RE_PROCDEF(PROCDEF_ID, REV, PROCDEF_CATEGORY, PROCDEF_NAME, PROCDEF_KEY, PROCDEF_VERSION, DEPLOYMENT_ID, RESOURCE_NAME, DGRM_RESOURCE_NAME, DESCRIPTION, HAS_START_FORM_KEY, SUSPENSION_STATE, CREATE_TIME)
+    values (#{processDefinition.id, jdbcType=VARCHAR},
+    		1,
+            #{processDefinition.category, jdbcType=VARCHAR},
+            #{processDefinition.name, jdbcType=VARCHAR},
+            #{processDefinition.key, jdbcType=VARCHAR}, 
+            #{processDefinition.version, jdbcType=INTEGER},
+            #{processDefinition.deploymentId, jdbcType=VARCHAR},
+            #{processDefinition.resourceName, jdbcType=VARCHAR},
+            #{processDefinition.diagramResourceName, jdbcType=VARCHAR},
+            #{processDefinition.description, jdbcType=VARCHAR},
+            #{processDefinition.hasStartFormKey, jdbcType=BOOLEAN},
+            #{processDefinition.suspensionState, jdbcType=INTEGER},
+            #{processDefinition.createTime, jdbcType=TIMESTAMP}
+            )
+  </insert>
+  
+  <!-- PROCESSDEFINITION UPDATE -->
+
+  <update id="BpmProcessDefinitionUpdate" parameterType="map">
+    update UWK_RE_PROCDEF set
+      REV = #{processDefinition.revisionNext, jdbcType=INTEGER},    
+      SUSPENSION_STATE = #{processDefinition.suspensionState, jdbcType=INTEGER},
+      PROCDEF_CATEGORY = #{processDefinition.category, jdbcType=VARCHAR}
+    where PROCDEF_ID = #{processDefinition.id, jdbcType=VARCHAR}
+      and REV = #{processDefinition.revision, jdbcType=INTEGER}
+  </update>
+
+  <!-- PROCESSDEFINITION DELETE -->
+
+  <delete id="BpmProcessDefinitionDeleteByDeploymentId" parameterType="map">
+    delete from UWK_RE_PROCDEF where DEPLOYMENT_ID = #{deploymenId} 
+  </delete>
+  
+  
+  <!-- PROCESSDEFINITION RESULTMAP -->
+
+  <resultMap id="processDefinitionResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity">
+    <id property="id" column="PROCDEF_ID" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" />
+    <result property="category" column="PROCDEF_CATEGORY" />
+    <result property="name" column="PROCDEF_NAME" />
+    <result property="key" column="PROCDEF_KEY" jdbcType="VARCHAR" />
+    <result property="version" column="PROCDEF_VERSION" jdbcType="INTEGER"/>
+    <result property="deploymentId" column="DEPLOYMENT_ID" jdbcType="VARCHAR"/>
+    <result property="resourceName" column="RESOURCE_NAME" jdbcType="VARCHAR"/>
+    <result property="diagramResourceName" column="DGRM_RESOURCE_NAME" jdbcType="VARCHAR"/>
+    <result property="description" column="DESCRIPTION" jdbcType="VARCHAR" />
+    <result property="hasStartFormKey" column="HAS_START_FORM_KEY" jdbcType="BOOLEAN"/>
+    <result property="suspensionState" column="SUSPENSION_STATE" jdbcType="INTEGER"/>
+    <result property="createTime" column="CREATE_TIME"  jdbcType="TIMESTAMP"/>
+  </resultMap>
+  <!-- PROCESSDEFINITION SELECT -->
+
+  <select id="BpmProcessDefinitionSelect" parameterType="map" resultMap="processDefinitionResultMap">
+    select * from UWK_RE_PROCDEF where PROCDEF_ID = #{processDefinitionId}
+  </select>
+
+  <select id="BpmProcessDefinitionSelectById" parameterType="map" resultMap="processDefinitionResultMap">
+    select * from UWK_RE_PROCDEF where PROCDEF_ID = #{processDefinitionId}
+  </select>
+
+  <select id="BpmProcessDefinitionSelectByQueryCriteria" parameterType="map" resultMap="processDefinitionResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+
+  <select id="BpmProcessDefinitionSelectCountByQueryCriteria" parameterType="map" resultType="long">
+    select count(RES.PROCDEF_ID)
+    <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectProcessDefinitionsByQueryCriteriaSql">  
+    from UWK_RE_PROCDEF RES
+    <if test="criteria.eventSubscriptionType != null">
+    	inner join UWK_RU_EVENT_SUBSCR EVT on RES.PROCDEF_ID = EVT.CONFIGURATION
+    </if>
+    <where>
+      <if test="criteria.id != null">
+        RES.PROCDEF_ID = #{criteria.id}
+      </if>
+      <if test="criteria.category != null">
+        and RES.PROCDEF_CATEGORY = #{criteria.category}
+      </if>
+      <if test="criteria.categoryLike != null">
+        and RES.PROCDEF_CATEGORY like '%${criteria.categoryLike}%'
+      </if>
+      <if test="criteria.categoryNotEquals != null">
+        and ( RES.PROCDEF_CATEGORY &lt;&gt; #{criteria.categoryNotEquals} OR RES.PROCDEF_CATEGORY is null )
+      </if>
+      <choose>
+      	<when test="criteria.ignoredCase">
+      		<if test="criteria.name != null">
+		        and LOWER(RES.PROCDEF_NAME) = LOWER(#{criteria.name})
+		      </if>
+		      <if test="criteria.nameLike != null">
+		        and LOWER(RES.PROCDEF_NAME) like LOWER('%${criteria.nameLike}%')
+		      </if>
+		      <if test="criteria.key != null">
+		        and LOWER(RES.PROCDEF_KEY) = LOWER(#{criteria.key})
+		      </if>
+		      <if test="criteria.keyLike != null">
+		        and LOWER(RES.PROCDEF_KEY) like LOWER('%${criteria.keyLike}%')
+		      </if>
+      	</when>
+      	<otherwise>
+	      	  <if test="criteria.name != null">
+		        and RES.PROCDEF_NAME = #{criteria.name}
+		      </if>
+		      <if test="criteria.nameLike != null">
+		        and RES.PROCDEF_NAME like '%${criteria.nameLike}%'
+		      </if>
+		      <if test="criteria.key != null">
+		        and RES.PROCDEF_KEY = #{criteria.key}
+		      </if>
+		      <if test="criteria.keyLike != null">
+		        and RES.PROCDEF_KEY like '%${criteria.keyLike}%'
+		      </if>
+      	</otherwise>
+      </choose>
+      <if test="criteria.resourceName != null">
+        and RES.RESOURCE_NAME = #{criteria.resourceName}
+      </if>
+      <if test="criteria.resourceNameLike != null">
+        and RES.RESOURCE_NAME like '%${criteria.resourceNameLike}%'
+      </if>
+      <if test="criteria.version != null">
+        and RES.PROCDEF_VERSION = #{criteria.version}
+      </if>
+      <if test="criteria.deploymentId != null">
+        and RES.DEPLOYMENT_ID = #{criteria.deploymentId}
+      </if>
+      <if test="criteria.latest">
+        and RES.PROCDEF_VERSION = (select max(PROCDEF_VERSION) from UWK_RE_PROCDEF where PROCDEF_KEY = RES.PROCDEF_KEY)
+      </if>
+      <if test="criteria.suspensionState != null">
+        and (RES.SUSPENSION_STATE = #{criteria.suspensionState.stateCode})
+      </if>
+      <if test="criteria.eventSubscriptionType != null">
+      	and (EVT.EVENT_TYPE = #{criteria.eventSubscriptionType} and EVT.EVENT_NAME = #{criteria.eventSubscriptionName}) 
+      </if>
+      <if test="criteria.authorizationUserId != null">
+        AND (exists (select IDENTITY_ID  from UWK_RU_IDENTITYLINK  IDN where IDN.PROC_DEF_ID = RES.PROCDEF_ID and IDN.USER_ID = #{criteria.authorizationUserId})
+        <if test="criteria.authorizationGroups != null &amp;&amp; criteria.authorizationGroups.size() &gt; 0">
+         OR exists (select IDENTITY_ID from UWK_RU_IDENTITYLINK  IDN where IDN.PROC_DEF_ID = RES.PROCDEF_ID and IDN.GROUP_ID IN
+            <foreach item="group" index="index" collection="criteria.authorizationGroups" 
+                     open="(" separator="," close=")">
+              #{group}
+            </foreach>
+         )
+         </if>
+        )
+      </if>
+    </where>
+  </sql>
+    
+  <select id="BpmProcessDefinitionSelectByDeploymentAndKey" parameterType="map" resultMap="processDefinitionResultMap">
+    select * 
+    from UWK_RE_PROCDEF 
+    where DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR}
+      and PROCDEF_KEY = #{processDefinitionKey,jdbcType=VARCHAR}
+  </select>
+    
+  <select id="BpmProcessDefinitionSelectLatestByKey" parameterType="map" resultMap="processDefinitionResultMap">
+    select *
+    from UWK_RE_PROCDEF 
+    where PROCDEF_KEY = #{key} and
+          PROCDEF_VERSION = (select max(PROCDEF_VERSION) from UWK_RE_PROCDEF where PROCDEF_KEY = #{key})
+  </select>
+  
+    <!-- mysql specific sql -->
+  <select id="BpmProcessDefinitionSelectByQueryCriteria_mysql" parameterType="hashmap" resultMap="processDefinitionResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select distinct RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+
+  <!-- mysql specific sql -->
+  <select id="BpmProcessDefinitionSelectCountByQueryCriteria_mysql" parameterType="hashmap" resultType="long">
+    select distinct count(RES.PROCDEF_ID)
+    <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
+  </select>
+  
+  <select id="BpmProcessDefinitionSelectByNativeQuery" parameterType="hashmap" resultMap="processDefinitionResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+  	<include refid="bpm.limitBefore"/>
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+    <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmProcessDefinitionSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+</mapper>

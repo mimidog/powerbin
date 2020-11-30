@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>客户费率设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript">
+//【费用类型】选择事件
+function outlayTypeSel(val) {
+    var d = $(document).find('div[id^="PrivateCommonDialogId"]:visible');
+    d.find(':input[comboname=CUACCT_LVL]').combo('clear').combo('enable',true);
+    d.find(':input[comboname=CUST_ID]').combo('clear').combo('enable',true);
+    if(val=='1'){
+        d.find(':input[comboname=CUST_ID]').combo('disable',true);
+    }else if(val=='2'){
+        d.find(':input[comboname=CUACCT_LVL]').combo('disable',true);
+    }
+
+
+}
+/**新增功能**/
+function outlaySet_add(e) {
+    var $dialog = $.builder.buildCommonDialog.createCommonDialog(e.data.target, { w: '520px', h: '300px' }, add, e.data.title || '新增', "icon-add");
+    var req = e.data.req;
+    if (e.data.req && typeof e.data.req == "string")
+        req = eval("(" + e.data.req + ")");
+    if (req && !req[0].service) {
+        req[0]["service"] = "M0000070";
+    }
+    var columns = e.data.target.datagrid("getOriginalColumns");
+    var config = {
+        common: true,
+        render: "form",
+        colNumbers: 2,
+        req: req,
+        col: columns
+    };
+    var rowDefVal_array=[];
+    rowDefVal_array['MIN_PROC_COST']=getSysParamValuebyCode('MIN_PROC_COST_DEF_VAL');
+    rowDefVal_array['PROC_COST']=getSysParamValuebyCode('PROC_COST_DEF_VAL');
+    rowDefVal_array['TRANSFER_COST']=getSysParamValuebyCode('TRANSFER_COST_DEF_VAL');
+    rowDefVal_array['OTHER_COST']=getSysParamValuebyCode('OTHER_COST_DEF_VAL');
+    rowDefVal_array['STAMP_TAX']=getSysParamValuebyCode('STAMP_TAX_DEF_VAL');
+    $.parser.director($dialog, { config: config,record: rowDefVal_array });
+
+}
+/**新增回调**/
+function add(e) {
+
+    var d = $(document).find('div[id^="PrivateCommonDialogId"]:visible');
+    var dialogId = d.attr("id").split("*");
+    if (d.find("form").form('validate') == false) {
+        return;
+    }
+
+  var paramJson = kui.serialize2Json(kui.serialize(d.find("form")))//系列化表单json
+    paramJson["service"] = "M0000070";
+    if (parseFloat(paramJson["PROC_COST"])>=1 || parseFloat(paramJson["TRANSFER_COST"])>=1
+        || parseFloat(paramJson["OTHER_COST"])>=1 || parseFloat(paramJson["STAMP_TAX"])>=1) {
+        $.message.alert('操作提示', '手续费率、过户费率、印花税率可能存在大于等于1的情况', 'error');
+        return;
+    }
+
+
+    d.find("form").form('submit', {
+        req: [paramJson],
+        success: function () {
+            $('#' + dialogId[1]).datagrid('reload');
+            d.dialog("close");
+        }
+    });
+}
+/**修改功能**/
+function outlaySet_mod(e) {
+    var row = e.data.target.datagrid("getSelected");
+    if (row == null) {
+        alert('提示', "请选择一条数据！");
+        return false;
+    }
+    var $dialog = $.builder.buildCommonDialog.createCommonDialog(e.data.target, { w: '520px', h: '300px' }, modify, e.data.title || '修改', "icon-edit");
+    var req = e.data.req;
+    if (e.data.req && typeof e.data.req == "string")
+        req = eval("(" + e.data.req + ")");
+    var columns = e.data.target.datagrid("getOriginalColumns");
+    if (req && !req[0].service) {
+        req[0]["service"] = "M0000071";
+    }
+
+    var aconfig = {
+        common: true,
+        render: "form",
+        colNumbers: 2,
+        modify: false,
+        req: req,
+        queryCols: [{ text: "", collapsed: true, cols: columns }]
+    };
+    row['PROC_COST']=parseFloat(row['PROC_COST']);
+    row['TRANSFER_COST']=parseFloat(row['TRANSFER_COST']);
+    row['OTHER_COST']=parseFloat(row['OTHER_COST']);
+    row['STAMP_TAX']=parseFloat(row['STAMP_TAX']);
+
+    $.parser.director($dialog, { config: aconfig, record: row },function () {
+        setTimeout(function () {
+            var d = $(document).find('div[id^="PrivateCommonDialogId"]:visible');
+            d.find(':input[comboname=OUTLAY_TYPE]').combo('disable',true);
+            d.find(':input[comboname=CUACCT_LVL]').combo('disable',true);
+            d.find(':input[comboname=CUST_ID]').combo('disable',true);
+            d.find(':input[comboname=STK_CLS]').combo('disable',true);
+            d.find(':input[comboname=TRADE_DIRECT]').combo('disable',true);
+        },100);
+    });
+
+}
+/**修改回调**/
+function modify(e) {
+
+    var d = $(document).find('div[id^="PrivateCommonDialogId"]:visible');
+    var dialogId = d.attr("id").split("*");
+    if (d.find("form").form('validate') == false) {
+        return;
+    }
+
+    var paramJson = kui.serialize2Json(kui.serialize(d.find("form")))//系列化表单json
+    paramJson["service"] = "M0000071";
+
+    if (parseFloat(paramJson["PROC_COST"])>=1 || parseFloat(paramJson["TRANSFER_COST"])>=1
+        || parseFloat(paramJson["OTHER_COST"])>=1 || parseFloat(paramJson["STAMP_TAX"])>=1) {
+        $.message.alert('操作提示', '手续费率、过户费率、印花税率可能存在大于等于1的情况', 'error');
+        return;
+    }
+
+
+    d.find("form").form('submit', {
+        req: [paramJson],
+        success: function () {
+            $('#' + dialogId[1]).datagrid('reload');
+            d.dialog("close");
+        }
+    });
+}
+</script>
+
+</head>
+<body>
+<table id="mts_outlay_set_table" class="kui-datagrid"></table>
+</body>
+</html>

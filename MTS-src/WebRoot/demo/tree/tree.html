@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Tree - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+	<script type="text/javascript">
+		function reload(){
+			var node = $('#tt2').tree('getSelected');
+			if (node){
+				$('#tt2').tree('reload', node.target);
+			} else {
+				$('#tt2').tree('reload');
+			}
+		}
+		function getChildren(){
+			var node = $('#tt2').tree('getSelected');
+			if (node){
+				var children = $('#tt2').tree('getChildren', node.target);
+			} else {
+				var children = $('#tt2').tree('getChildren');
+			}
+			var s = '';
+			for(var i=0; i<children.length; i++){
+				s += children[i].text + ',';
+			}
+			alert(s);
+		}
+		function getChecked(){
+			var nodes = $('#tt2').tree('getChecked');
+			var s = '';
+			for(var i=0; i<nodes.length; i++){
+				if (s != '') s += ',';
+				s += nodes[i].text;
+			}
+			alert(s);
+		}
+		function getSelected(){
+			var node = $('#tt2').tree('getSelected');
+			if(!node){
+				  alert("请选择一个");
+				}else{
+					alert(node.text);
+				}
+			
+		}
+		function collapse(){
+			var node = $('#tt2').tree('getSelected');
+			$('#tt2').tree('collapse',node.target);
+		}
+		function expand(){
+			var node = $('#tt2').tree('getSelected');
+			$('#tt2').tree('expand',node.target);
+		}
+		function collapseAll(){
+			var node = $('#tt2').tree('getSelected');
+			if (node){
+				$('#tt2').tree('collapseAll', node.target);
+			} else {
+				$('#tt2').tree('collapseAll');
+			}
+		}
+		function expandAll(){
+			var node = $('#tt2').tree('getSelected');
+			if (node){
+				$('#tt2').tree('expandAll', node.target);
+			} else {
+				$('#tt2').tree('expandAll');
+			}
+		}
+		function append(){
+			var node = $('#tt2').tree('getSelected');
+			$('#tt2').tree('append',{
+				parent: (node?node.target:null),
+				data:[{
+					text:'new1',
+					checked:true
+				},{
+					text:'new2',
+					state:'closed',
+					children:[{
+						text:'subnew1'
+					},{
+						text:'subnew2'
+					}]
+				}]
+			});
+		}
+		function remove(){
+			var node = $('#tt2').tree('getSelected');
+			$('#tt2').tree('remove', node.target);
+		}
+		function update(){
+			var node = $('#tt2').tree('getSelected');
+			if (node){
+				node.text = '<span style="font-weight:bold">new text</span>';
+				node.iconCls = 'icon-save';
+				$('#tt2').tree('update', node);
+			}
+		}
+		function isLeaf(){
+			var node = $('#tt2').tree('getSelected');
+			var b = $('#tt2').tree('isLeaf', node.target);
+			alert(b)
+		}
+		
+		$(function(){
+		kuiloader.load('tree',function(){	
+			//如果themes/icon.css后加载的话，tree-file会覆盖icon-add等icon.css中的样式
+			//所以可以以后不用easyloader加载js和css 防止css的覆盖
+			kuiloader.load('themes/icon.css',function(){
+
+			});	
+			
+		});
+		
+		});
+	</script>
+</head>
+<body>
+	<h2>Tree</h2>
+	<div class="demo-info" style="margin-bottom:10px">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the node and drag it to other position.</div>
+	</div>
+	
+	<p>Create from HTML markup</p>
+	<ul id="tt1" class="kui-tree" kui-options="animate:true,dnd:true">
+		<li kui-options="state:'open',iconCls:'icon-add',id:'1'">
+			<span>Folder</span>
+			<ul>
+				<li kui-options="state:'open',iconCls:'icon-add',id:'1-1'">
+					<span>Sub Folder 1</span>
+					<ul>
+						<li>
+							<span><a href="#">File 11</a></span>
+						</li>
+						<li>
+							<span>File 12</span>
+						</li>
+						<li kui-options="iconCls:'icon-add'">
+							<span>Add</span>	
+						</li>
+						<li>
+							<span>File 13</span>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<span>File 2</span>
+				</li>
+				<li>
+					<span>File 3</span>
+				</li>
+				<li><span>File 4</span></li>
+				<li><span>File 5</span></li>
+			</ul>
+		</li>
+		<li>
+			<span>File21</span>
+		</li>
+	</ul>
+	<hr></hr>
+	<p>Create from JSON data</p>
+	<div style="margin:10px;">
+		<a href="#" onclick="reload()">reload</a>
+		<a href="#" onclick="getChildren()">getChildren</a>
+		<a href="#" onclick="getChecked()">getChecked</a>
+		<a href="#" onclick="getSelected()">getSelected</a>
+		<a href="#" onclick="collapse()">collapse</a>
+		<a href="#" onclick="expand()">expand</a>
+		<a href="#" onclick="collapseAll()">collapseAll</a>
+		<a href="#" onclick="expandAll()">expandAll</a>
+		<a href="#" onclick="append()">append</a>
+		<a href="#" onclick="remove()">remove</a>
+		<a href="#" onclick="update()">update</a>
+		<a href="#" onclick="isLeaf()">isLeaf</a>
+	</div>
+
+	<ul id="tt2" class="kui-tree"  kui-options="url:'tree_dataXml.json',checkbox:true,
+			onClick: function(node){
+				$(this).tree('toggle', node.target);
+			},
+			  	req:[{
+    'service': 'empManage',
+    'conf': 'true',
+    'pageoffset': '0',
+    'pagecount': '20',
+    'param1': '0',
+    'param2': '15'
+	},
+  	{
+  	'service': 'empManage1',
+    'conf': 'true',
+    'pageoffset': '0',
+    'pagecount': '20',
+    'param1': '0',
+    'param2': '15'
+  	}],
+			onContextMenu: function(e,node){
+				e.preventDefault();
+				$(this).tree('select',node.target);
+				$('#mm').menu('show',{
+					left: e.pageX,
+					top: e.pageY
+				});
+			}"
+	></ul>
+	
+	<div id="mm" class="kui-menu" style="width:120px;">
+		<div onclick="append()" kui-options="iconCls:'icon-add'">Append</div>
+		<div onclick="remove()" kui-options="iconCls:'icon-remove'">Remove</div>
+		<div class="menu-sep"></div>
+		<div onclick="expand()">Expand</div>
+		<div onclick="collapse()">Collapse</div>
+	</div>
+</body>
+</html>

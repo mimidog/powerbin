@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Custom Menu Item - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Custom Menu Item</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Right click on page to display menu, move to the 'Open' item to display its custom sub content.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<div id="mm" class="kui-menu" style="width:120px;">
+		<div>New</div>
+		<div>
+			<span>Open</span>
+			<div class="menu-content" style="text-align:left;padding:10px">
+				<div style="font-weight:bold;font-size:16px">Select your Language:</div>
+				<ul style="margin:0;padding:0 0 0 40px">
+					<li><a href="javascript:void(0)">Java</a></li>
+					<li><a href="javascript:void(0)">Basic</a></li>
+					<li><a href="javascript:void(0)">C++</a></li>
+					<li><a href="javascript:void(0)">Fortran</a></li>
+					<li>
+						<span>Other</span>
+						<input>
+					</li>
+				</ul>
+				<div style="padding:10px 0 0 30px">
+					<a href="javascript:void(0)" class="kui-linkbutton" kui-options="iconCls:'icon-ok'">Ok</a>
+				</div>
+			</div>
+		</div>
+		<div kui-options="iconCls:'icon-save'">Save</div>
+		<div kui-options="iconCls:'icon-print'">Print</div>
+		<div class="menu-sep"></div>
+		<div>Exit</div>
+	</div>
+	<script>
+		$(function(){
+			$(document).bind('contextmenu',function(e){
+				e.preventDefault();
+				$('#mm').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+			});
+		});
+	</script>
+
+</body>
+</html>

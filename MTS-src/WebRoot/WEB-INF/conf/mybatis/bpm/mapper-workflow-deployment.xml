@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="DynamicMapper.Deployment">
+
+  <!-- DEPLOYMENT INSERT -->
+  
+  <insert id="BpmDeploymentInsert" parameterType="map">
+    insert into  UWK_RE_DEPLOYMENT (DEPLOYMENT_ID, DNAME, DEPLOY_CATEGORY, DEPLOY_TIME)
+    values(
+	    #{deployment.id, jdbcType=VARCHAR}, 
+	    #{deployment.name, jdbcType=VARCHAR}, 
+	    #{deployment.category, jdbcType=VARCHAR}, 
+	    #{deployment.deploymentTime, jdbcType=TIMESTAMP}
+    )
+  </insert>
+  
+  <!-- DEPLOYMENT UPDATE -->
+  
+  <update id="BpmDeploymentUpdate" parameterType="hashmap">
+    update UWK_RE_DEPLOYMENT set
+      DEPLOY_CATEGORY = #{deployment.category, jdbcType=VARCHAR}
+    where DEPLOYMENT_ID = #{deployment.id, jdbcType=VARCHAR}
+  </update>
+  
+  <!-- DEPLOYMENT DELETE -->
+  
+  <delete id="BpmDeploymentDelete" parameterType="hashmap">
+    delete from UWK_RE_DEPLOYMENT where DEPLOYMENT_ID = #{id}
+  </delete>
+
+  <!-- DEPLOYMENT RESULTMAP -->
+  
+  <resultMap id="deploymentResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.DeploymentEntity">
+    <id property="id" column="DEPLOYMENT_ID" jdbcType="VARCHAR" />
+    <result property="name" column="DNAME" jdbcType="VARCHAR" />
+    <result property="category" column="DEPLOY_CATEGORY" jdbcType="VARCHAR" />
+    <result property="deploymentTime" column="DEPLOY_TIME" jdbcType="TIMESTAMP"/>
+  </resultMap>
+  <!-- DEPLOYMENT SELECT -->
+
+  <select id="BpmDeploymentsSelectByQueryCriteria" parameterType="hashmap" resultMap="deploymentResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectDeploymentsByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+
+  <select id="BpmDeploymentSelectCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select count(RES.DEPLOYMENT_ID)
+    <include refid="selectDeploymentsByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectDeploymentsByQueryCriteriaSql">  
+    from UWK_RE_DEPLOYMENT RES
+    <if test="criteria.processDefinitionKey != null or criteria.processDefinitionKeyLike != null">
+    	inner join UWK_RE_PROCDEF PROCDEF on RES.DEPLOYMENT_ID = PROCDEF.DEPLOYMENT_ID
+    </if>
+    <where>
+      <if test="criteria.deploymentId != null">
+        RES.DEPLOYMENT_ID = #{criteria.deploymentId}
+      </if>
+      <if test="criteria.name != null">
+        and RES.DNAME = #{criteria.name}
+      </if>
+      <if test="criteria.nameLike != null">
+        and RES.DNAME like '%${criteria.nameLike}%'
+      </if>
+      <if test="criteria.category != null">
+        and RES.DEPLOY_CATEGORY = #{criteria.category}
+      </if>
+      <if test="criteria.categoryNotEquals != null">
+        and ( RES.DEPLOY_CATEGORY &lt;&gt; #{criteria.categoryNotEquals} OR RES.DEPLOY_CATEGORY is null )  
+      </if>
+      <if test="criteria.processDefinitionKey != null">
+        and PROCDEF.PROCDEF_KEY = #{criteria.processDefinitionKey}
+      </if>
+      <if test="criteria.processDefinitionKeyLike != null">
+        and PROCDEF.PROCDEF_KEY like '%${criteria.processDefinitionKeyLike}%'
+      </if>
+    </where>
+  </sql>
+    
+  <select id="BpmDeploymentsSelectByName" parameterType="hashmap" resultMap="deploymentResultMap">
+    select * from UWK_RE_DEPLOYMENT D where D.DNAME=#{criteria.name} order by D.DEPLOY_TIME desc
+  </select>
+  
+  <select id="BpmDeploymentSelectById" parameterType="hashmap" resultMap="deploymentResultMap">
+    select * from UWK_RE_DEPLOYMENT where DEPLOYMENT_ID = #{id}
+  </select>
+  
+  <!-- mysql specific -->
+  <select id="BpmDeploymentsSelectByQueryCriteria_mysql" parameterType="hashmap" resultMap="deploymentResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select distinct RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectDeploymentsByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <!-- mysql specific -->
+  <select id="BpmDeploymentSelectCountByQueryCriteria_mysql" parameterType="hashmap" resultType="long">
+    select distinct count(RES.DEPLOYMENT_ID)
+    <include refid="selectDeploymentsByQueryCriteriaSql"/>
+  </select>
+  
+  <select id="BpmDeploymentSelectByNativeQuery" parameterType="hashmap" resultMap="deploymentResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+  	<include refid="bpm.limitBefore"/> 
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+    <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmDeploymentSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+</mapper>

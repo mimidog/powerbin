@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+
+    <select id="QRY_SEQ" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT NEXT VALUE FOR ${SEQ_NAME} AS ID FROM
+        <foreach collection="SEQ_LIST" open="(" close=")" separator="UNION ALL">
+            SELECT '1' AS OP
+        </foreach>
+        A
+    </select>
+
+    <select id="QRY_CALENDAR_INFO" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CALENDAR_TYPE, STKBD, PHYSICAL_DATE, TRD_DATE_FLAG, SETT_DATE_FLAG
+        FROM T_CALENDAR
+        <where>
+
+            <if test="CALENDAR_TYPE != null and CALENDAR_TYPE != ''">
+                AND CALENDAR_TYPE = '${CALENDAR_TYPE}'
+            </if>
+            <if test="PHYSICAL_DATE != null and PHYSICAL_DATE != ''">
+                AND PHYSICAL_DATE = '${PHYSICAL_DATE}'
+            </if>
+            <if test="PHYSICAL_DATE_LIKE != null and PHYSICAL_DATE_LIKE != ''">
+                AND PHYSICAL_DATE LIKE CONCAT('${PHYSICAL_DATE_LIKE}','%')
+            </if>
+            <if test="PHYSICAL_DATE_THAN != null and PHYSICAL_DATE_THAN != ''">
+                AND PHYSICAL_DATE &gt; '${PHYSICAL_DATE_THAN}'
+            </if>
+            <if test="TRD_DATE_FLAG != null and TRD_DATE_FLAG != ''">
+                AND TRD_DATE_FLAG = '${TRD_DATE_FLAG}'
+            </if>
+            <if test="SETT_DATE_FLAG != null and SETT_DATE_FLAG != ''">
+                AND SETT_DATE_FLAG = '${SETT_DATE_FLAG}'
+            </if>
+            <if test="SYSTEM_DATE_NOW_AND_LATER != null and SYSTEM_DATE_NOW_AND_LATER != ''">
+                AND PHYSICAL_DATE &gt;= (SELECT SYSTEM_DATE FROM SYS_CONTROL)
+            </if>
+            <if test="NEWEST_YEAR_DATE_LATER != null and NEWEST_YEAR_DATE_LATER != ''">
+                AND LEFT(PHYSICAL_DATE,4) = (SELECT LEFT(MAX(PHYSICAL_DATE),4) FROM T_CALENDAR)
+            </if>
+            <if test="YEAR_LIKE != null and YEAR_LIKE != ''">
+                AND LEFT(PHYSICAL_DATE,4) = '${YEAR_LIKE}'
+            </if>
+        </where>
+    </select>
+
+    <!--查询系统日期信息-->
+    <select id="QRY_SYS_CONTROL_INFO" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT SYSTEM_DATE, STATUS
+        FROM T_SYS_CONTROL
+        <where>
+            <if test="SYSTEM_DATE != null and SYSTEM_DATE != ''">
+                AND SYSTEM_DATE = '${SYSTEM_DATE}'
+            </if>
+            <if test="STATUS != null and STATUS != ''">
+                AND STATUS = '${STATUS}'
+            </if>
+        </where>
+    </select>
+
+    <!--查询处理日期的下一交易日信息(TRD_DATE_FLAG==1,HANDLE_DATE当前日期)-->
+    <select id="QRY_NEXT_TRADING_DAY" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT MIN(PHYSICAL_DATE) AS NEXT_TRD_DATE
+        FROM T_CALENDAR
+        <where>
+            <if test="PHYSICAL_DATE != null and PHYSICAL_DATE != ''">
+                AND PHYSICAL_DATE &gt; '${PHYSICAL_DATE}'
+            </if>
+            <if test="TRD_DATE_FLAG != null and TRD_DATE_FLAG != ''">
+                AND TRD_DATE_FLAG = '${TRD_DATE_FLAG}'
+            </if>
+        </where>
+    </select>
+    <!--查询处理日期的上一交易日信息-->
+    <select id="QRY_LAST_TRADING_DAY" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT MAX(PHYSICAL_DATE) AS LAST_PHYSICAL_DATE
+        FROM T_CALENDAR
+        <where>
+            <if test="PHYSICAL_DATE != null and PHYSICAL_DATE != ''">
+                AND PHYSICAL_DATE &lt; '${PHYSICAL_DATE}'
+            </if>
+            <if test="TRD_DATE_FLAG != null and TRD_DATE_FLAG != ''">
+                AND TRD_DATE_FLAG = '${TRD_DATE_FLAG}'
+            </if>
+        </where>
+    </select>
+
+    <!--更新系统日期信息-->
+    <update id="MOD_SYS_CONTROL_INFO" parameterType="java.util.HashMap">
+        UPDATE T_SYS_CONTROL
+        SET  SYSTEM_DATE = '${SYSTEM_DATE}'
+    </update>
+    <!--数据库备份-->
+    <select id="database_BACKUP" parameterType="java.util.HashMap">
+      BACKUP DATABASE
+      #{DB_NAME,jdbcType=VARCHAR}
+      TO disk=
+      #{FILE_PATH,jdbcType=VARCHAR}
+      WITH INIT
+    </select>
+
+    <!--查询操作员岗位变量申请信息-->
+    <select id="query_T_OPER_POST_LVL_CHG_APP" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT LOG_ID, APP_DATE, APP_TIME, OPER_USER, OPER_NAME, OPER_ORG, OPER_TYPE,
+        POST_ID,kdbase.dbo.KUI_GET_POST_NAMES(U.OPER_USER) AS POST_NAME,
+        MAIN_POST_ID,
+        (SELECT UP.POST_NAME
+        FROM kdbase..UUM_OPER_POST P,kdbase..UUM_POST UP
+        WHERE P.USER_CODE = U.OPER_USER AND P.MAIN_FLAG = '1' AND UP.POST_ID = P.POST_ID) AS MAIN_POST_NAME,
+        OPER_STA,
+        CHG_B_POST_LVL, CHG_A_POST_LVL, AUDIT_USER, AUDIT_RS, AUDIT_ADVISE, AUDIT_DATE, AUDIT_TIME
+        FROM T_OPER_POST_LVL_CHG_APP U
+        <where>
+          <if test="LOG_ID != null and LOG_ID != ''">
+              AND LOG_ID = '${LOG_ID}'
+          </if>
+          <if test="OPER_USER != null and OPER_USER != ''">
+              AND OPER_USER = '${OPER_USER}'
+          </if>
+          <if test="APP_DATE != null and APP_DATE != ''">
+              AND APP_DATE = '${APP_DATE}'
+          </if>
+            <if test="AUDIT_RS != null and AUDIT_RS != ''">
+                AND AUDIT_RS = '${AUDIT_RS}'
+            </if>
+      </where>
+    </select>
+    <!--新增操作员岗位变量申请信息-->
+    <insert id="insert_T_OPER_POST_LVL_CHG_APP" parameterType="java.util.HashMap">
+      INSERT INTO T_OPER_POST_LVL_CHG_APP (LOG_ID, APP_DATE, APP_TIME, OPER_USER, OPER_NAME, OPER_ORG, OPER_TYPE,
+                  POST_ID, MAIN_POST_ID, OPER_STA, CHG_B_POST_LVL, CHG_A_POST_LVL, AUDIT_USER,AUDIT_RS, AUDIT_ADVISE,
+                  AUDIT_DATE, AUDIT_TIME)
+       VALUES ('${LOG_ID}', '${APP_DATE}', '${APP_TIME}', '${OPER_USER}', '${OPER_NAME}', '${OPER_ORG}', '${OPER_TYPE}',
+            '${POST_ID}', '${MAIN_POST_ID}', '${OPER_STA}', '${CHG_B_POST_LVL}', '${CHG_A_POST_LVL}', '${AUDIT_USER}',
+            '${AUDIT_RS}','${AUDIT_ADVISE}','${AUDIT_DATE}', '${AUDIT_TIME}')
+    </insert>
+    <!--更新操作员岗位变量申请信息-->
+    <update id="update_T_OPER_POST_LVL_CHG_AUDIT" parameterType="java.util.HashMap">
+        UPDATE T_OPER_POST_LVL_CHG_APP  SET AUDIT_USER = '${AUDIT_USER}',AUDIT_RS = '${AUDIT_RS}',
+        AUDIT_ADVISE = '${AUDIT_ADVISE}',AUDIT_DATE = '${AUDIT_DATE}',AUDIT_TIME = '${AUDIT_TIME}'
+        <where>
+            <if test="LOG_ID != null and LOG_ID != ''">
+                AND LOG_ID = '${LOG_ID}'
+            </if>
+        </where>
+    </update>
+    <!--更新操作员表中岗位级别-->
+    <update id="update_UUM_USER_POST_LVL" parameterType="java.util.HashMap">
+        UPDATE UUM_USER  SET POST_LVL = '${POST_LVL}'
+        <where>
+            <if test="USER_CODE != null and USER_CODE != ''">
+                AND USER_CODE = '${USER_CODE}'
+            </if>
+        </where>
+    </update>
+    <!--查询行情订阅信息-->
+    <select id="qury_T_SUBSCRBIE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT SS_TYPE, SS_MARKET, STK_CODE,(SELECT STK_NAME FROM T_STK_INFO T1 WHERE T1.STK_ID=STK_CODE) AS STK_NAME,
+               SS_CODE, REMARK
+        FROM T_SUBSCRBIE
+        <where>
+            <if test="SS_TYPE != null and SS_TYPE != ''">
+                AND SS_TYPE = '${SS_TYPE}'
+            </if>
+            <if test="SS_MARKET != null and SS_MARKET != ''">
+                AND SS_MARKET = '${SS_MARKET}'
+            </if>
+            <if test="STK_CODE != null and STK_CODE != ''">
+                AND STK_CODE = '${STK_CODE}'
+            </if>
+        </where>
+    </select>
+    <!--新增行情订阅信息-->
+    <insert id="insert_T_SUBSCRBIE" parameterType="java.util.HashMap">
+        INSERT INTO T_SUBSCRBIE (SS_TYPE, SS_MARKET, STK_CODE, SS_CODE, REMARK)
+        VALUES ('${SS_TYPE}','${SS_MARKET}','${STK_CODE}','${SS_CODE}','${REMARK}')
+    </insert>
+    <!--修改行情订阅信息-->
+    <update id="update_T_SUBSCRBIE" parameterType="java.util.HashMap">
+       UPDATE T_SUBSCRBIE  SET  SS_CODE ='${SS_CODE}', REMARK ='${SS_CODE}'
+        <where>
+            <if test="SS_TYPE != null and SS_TYPE != ''">
+                AND SS_TYPE = '${SS_TYPE}'
+            </if>
+            <if test="SS_MARKET != null and SS_MARKET != ''">
+                AND SS_MARKET = '${SS_MARKET}'
+            </if>
+            <if test="STK_CODE != null and STK_CODE != ''">
+                AND STK_CODE = '${STK_CODE}'
+            </if>
+        </where>
+
+    </update>
+    <!--删除行情订阅信息-->
+    <delete id="delete_T_SUBSCRBIE" parameterType="java.util.HashMap">
+        delete  from T_SUBSCRBIE
+        <where>
+            <if test="SS_TYPE != null and SS_TYPE != ''">
+                AND SS_TYPE = '${SS_TYPE}'
+            </if>
+            <if test="SS_MARKET != null and SS_MARKET != ''">
+                AND SS_MARKET = '${SS_MARKET}'
+            </if>
+            <if test="STK_CODE != null and STK_CODE != ''">
+                AND STK_CODE = '${STK_CODE}'
+            </if>
+        </where>
+    </delete>
+
+</mapper>

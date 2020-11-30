@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Flow demo</title>
+<link rel="stylesheet" type="text/css" href="../../themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="css/kui.flow.css"/>
+<script type="text/javascript" src="../core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../../accountSystem/js/common.js"></script>
+</head>
+<body>
+	<div id="kui-flow"></div>	
+
+	<script>
+		requireJS(["/frame/js/front-base.js","/kui-base/js/plugins/kui.flow.js"],function(){
+			var pkg = kportal.registNamespace("kui.plugin");
+			new pkg.Flow({
+				"$target":$("#kui-flow"),
+				"imgPath":"../../../frame/images/steps/",
+				"arrText":["视频见证","影像上传","身份验证","基本资料","其他资料","风险测评投资教育"],
+				"stepNum":6,
+				"currIndex":3
+			});
+		});		
+	</script>
+</body>
+</html>

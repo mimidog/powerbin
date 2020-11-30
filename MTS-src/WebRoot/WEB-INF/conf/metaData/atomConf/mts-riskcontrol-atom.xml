@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+	<atom atom_code="queryRiskControlTypeCfgInfoAtom" atom_name="查询风控类型信息"
+		  atom_method="queryRiskControlTypeCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		   attr1="" attr2=""/>
+
+	<atom atom_code="addRiskControlTypeCfgInfoAtom" atom_name="新增风控类型信息"
+		  atom_method="addRiskControlTypeCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modRiskControlTypeCfgInfoAtom" atom_name="修改风控类型信息"
+		  atom_method="modRiskControlTypeCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modRiskControlTypeCfgStaInfoAtom" atom_name="修改风控类型状态信息"
+		  atom_method="modRiskControlTypeCfgStaInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delRiskControlTypeCfgInfoAtom" atom_name="删除风控类型信息"
+		  atom_method="delRiskControlTypeCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryRiskCfgInfoAtom" atom_name="查询风控配置信息"
+		  atom_method="queryRiskCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addRiskCfgInfoAtom" atom_name="新增风控配置信息"
+		  atom_method="addRiskCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modRiskCfgInfoAtom" atom_name="修改风控配置信息"
+		  atom_method="modRiskCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delRiskCfgInfoAtom" atom_name="删除风控配置信息"
+		  atom_method="delRiskCfgInfo"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryTradeActCtrlAtom" atom_name="查询操作员交易行为控制信息"
+		  atom_method="queryTradeActCtrl"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addTradeActCtrlAtom" atom_name="新增操作员交易行为控制信息"
+		  atom_method="addTradeActCtrl"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modTradeActCtrlAtom" atom_name="修改操作员交易行为控制信息"
+		  atom_method="modTradeActCtrl"  atom_class="com.szkingdom.business.mts.RiskControlManager"
+		  attr1="" attr2=""/>
+</atoms>
+ 

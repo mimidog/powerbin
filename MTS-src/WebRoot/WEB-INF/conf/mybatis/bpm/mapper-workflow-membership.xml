@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="DynamicMapper">
+  
+  <!-- MEMBERSHIP INSERT -->
+
+  <insert id="BpmMembershipInsert" parameterType="map">
+    insert into UUM_OPER_POST (USER_CODE, POST_ID)
+    values (
+      '#{userId}',
+      #{groupId ,jdbcType=NUMERIC}
+    )
+  </insert>
+  
+  <!-- MEMBERSHIP UPDATE -->
+  
+  <!-- MEMBERSHIP DELETE -->
+
+  <delete id="BpmMembershipDeleteByUserId" parameterType="string">
+    delete from UUM_OPER_POST
+    where USER_CODE = '#{userId}' 
+  </delete>
+
+  <delete id="BpmMembershipDelete" parameterType="map">
+    delete from UUM_OPER_POST
+    where USER_CODE = '#{userId}'
+      and POST_ID = #{groupId} 
+  </delete>
+
+  <!-- MEMBERSHIP RESULTMAP -->
+  
+  <!-- MEMBERSHIP DELETE -->
+
+  <delete id="BpmMembershipDeleteByGroupId" parameterType="string">
+    delete from UUM_OPER_POST
+    where POST_ID = #{groupId} 
+  </delete>
+  
+</mapper>

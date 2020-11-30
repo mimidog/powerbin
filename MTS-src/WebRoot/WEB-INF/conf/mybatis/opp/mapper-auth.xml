@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+
+	<!-- 员工功能授权 start -->
+	<select id="consPermQuer" parameterType="hashmap" resultType="java.util.HashMap">
+	    SELECT CONS_ID FROM UUM_PERMISSION WHERE PERM_ID = '${PERM_ID}'
+	</select>
+	<select id="consQuer" parameterType="hashmap" resultType="java.util.HashMap">
+	    SELECT CONS_TYPE FROM UUM_CONSTRAINTS WHERE CONS_ID = '${CONS_ID}'
+	</select>
+	<select id="permConsQuery" parameterType="hashmap" resultType="java.util.HashMap">
+	    SELECT UPC.PERM_ID,UPC.CONS_ID,UP.PERM_NAME,UC.CONS_NAME,UC.CONS_TYPE FROM UPM_PERM_CONS UPC,UUM_CONSTRAINTS UC,UUM_PERMISSION UP WHERE 
+		UPC.CONS_ID = UC.CONS_ID AND  UP.PERM_ID = UPC.PERM_ID AND  UC.CONS_STATE = '1'
+		<if test="PERM_ID != '-1'">
+			AND UPC.PERM_ID IN (${PERM_ID})
+		</if>
+	</select>
+	
+	<select id="consPermQueryData" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UPC.PERM_ID,
+		       UPC.CONS_ID,
+		       UP.PERM_NAME,
+		       UC.CONS_NAME,
+		       UC.CONS_TYPE,
+		       CON.AUTH_ID,
+		       CON.USER_PERM_CODE,
+		       CON.CONS_ID,
+		       ISNULL(CON.CONS_MAX,UPC.CONS_MAX) AS CONS_MAX,
+		       ISNULL(CON.CONS_MIN,UPC.CONS_MIN) AS CONS_MIN
+		  FROM UPM_PERM_CONS UPC
+		  JOIN UUM_CONSTRAINTS UC
+		    ON UPC.CONS_ID = UC.CONS_ID
+		  JOIN UUM_PERMISSION UP
+		    ON UP.PERM_ID = UPC.PERM_ID
+		  LEFT JOIN UUM_USER_PERM UUP
+		    ON UUP.PERM_ID = UPC.PERM_ID
+		   AND UUP.OBJ_ID = '${OBJ_ID}'
+		   AND UUP.OBJ_TYPE = '${OBJ_TYPE}'
+		   AND UUP.ASS_TYPE = '${ASS_TYPE}'
+		   AND UUP.AUTH_TYPE = '${AUTH_TYPE}'
+		  LEFT JOIN (SELECT CON1.* FROM UUM_USER_PERM_CONS CON1,UPM_PERM_CONS UPC1,UUM_USER_PERM UUP1,UUM_CONSTRAINTS UC1 WHERE 
+      UPC1.CONS_ID = UC1.CONS_ID AND  UUP1.PERM_ID = UPC1.PERM_ID AND UUP1.AUTH_ID = CON1.AUTH_ID AND CON1.CONS_ID = UC1.CONS_ID AND UC1.CONS_STATE = '1') CON
+		    ON UUP.AUTH_ID = CON.AUTH_ID AND CON.CONS_ID = UC.CONS_ID
+		 WHERE UC.CONS_STATE = '1'
+		 <if test="PERM_ID != '-1'">
+			AND UPC.PERM_ID ='${PERM_ID}'
+		</if>
+	</select>
+	<select id="consPermQueryData_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UPC.PERM_ID,
+		       UPC.CONS_ID,
+		       UP.PERM_NAME,
+		       UC.CONS_NAME,
+		       UC.CONS_TYPE,
+		       CON.AUTH_ID,
+		       CON.USER_PERM_CODE,
+		       CON.CONS_ID,
+		       ISNULL(CON.CONS_MAX,UPC.CONS_MAX) AS CONS_MAX,
+		       ISNULL(CON.CONS_MIN,UPC.CONS_MIN) AS CONS_MIN
+		  FROM UPM_PERM_CONS UPC
+		  JOIN UUM_CONSTRAINTS UC
+		    ON UPC.CONS_ID = UC.CONS_ID
+		  JOIN UUM_PERMISSION UP
+		    ON UP.PERM_ID = UPC.PERM_ID
+		  LEFT JOIN UUM_USER_PERM UUP
+		    ON UUP.PERM_ID = UPC.PERM_ID
+		   AND UUP.OBJ_ID = '${OBJ_ID}'
+		   AND UUP.OBJ_TYPE = '${OBJ_TYPE}'
+		   AND UUP.ASS_TYPE = '${ASS_TYPE}'
+		   AND UUP.AUTH_TYPE = '${AUTH_TYPE}'
+		  LEFT JOIN (SELECT CON1.* FROM UUM_USER_PERM_CONS CON1,UPM_PERM_CONS UPC1,UUM_USER_PERM UUP1,UUM_CONSTRAINTS UC1 WHERE 
+      UPC1.CONS_ID = UC1.CONS_ID AND  UUP1.PERM_ID = UPC1.PERM_ID AND UUP1.AUTH_ID = CON1.AUTH_ID AND CON1.CONS_ID = UC1.CONS_ID AND UC1.CONS_STATE = '1') CON
+		    ON UUP.AUTH_ID = CON.AUTH_ID AND CON.CONS_ID = UC.CONS_ID
+		 WHERE UC.CONS_STATE = '1'
+		 <if test="PERM_ID != '-1'">
+			AND UPC.PERM_ID ='${PERM_ID}'
+		</if>
+	</select>
+	<select id="premQueryAll" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT P.PERM_ID,
+			   P.PERM_NAME,
+			   P.PAR_PERM,
+			   P.PERM_TYPE,
+			   P.PERM_STA,
+			   P.PERM_VAL,
+			   P.PERM_LVL,
+			   P.REMARK,
+			   KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+		  FROM UUM_PERMISSION P 
+		 WHERE P.PERM_STA = '1'
+		   AND CHARINDEX( ',' + P.PERM_TYPE +',',',' + '${PERM_TYPE}' + ',') > 0
+     	   AND ((SELECT P1.PERM_STA FROM UUM_PERMISSION P1 WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM='0')
+	  ORDER BY P.PERM_LVL
+	</select>
+	
+	<select id="premQueryAll_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT P.PERM_ID,
+			   P.PERM_NAME,
+			   P.PAR_PERM,
+			   P.PERM_TYPE,
+			   P.PERM_STA,
+			   P.PERM_VAL,
+			   P.PERM_LVL,
+			   P.REMARK,
+			   dbo.KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+		  FROM UUM_PERMISSION P 
+		 WHERE P.PERM_STA = '1'
+		   AND P.PERM_TYPE in (${PERM_TYPE})
+     	   AND ((SELECT P1.PERM_STA FROM UUM_PERMISSION P1 WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM='0')
+	  ORDER BY P.PERM_LVL
+	</select>
+	
+	<select id="premQueryAllByUser" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="OP_POST == 1">
+		SELECT P.PERM_ID,
+			   P.PERM_NAME,
+			   P.PAR_PERM,
+			   P.PERM_TYPE,
+			   P.PERM_STA,
+			   P.PERM_VAL,
+			   P.PERM_LVL,
+			   P.REMARK,
+			   KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+		  FROM UUM_PERMISSION P 
+		 WHERE P.PERM_STA = '1'
+		   AND CHARINDEX( ','+ P.PERM_TYPE +',',',' + '${PERM_TYPE}' + ',') > 0
+     	   AND ((SELECT P1.PERM_STA FROM UUM_PERMISSION P1 WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM='0')
+	  ORDER BY P.PERM_LVL
+		</if>
+		<if test="OP_POST != 1">
+			SELECT * FROM
+	    (SELECT P.PERM_ID,
+	               P.PERM_NAME,
+	               P.PAR_PERM,
+	               P.PERM_TYPE,
+				   P.PERM_STA,
+				   P.PERM_VAL,
+	               P.PERM_LVL,
+			       P.REMARK,
+			       KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+			  FROM UUM_PERMISSION P
+			 WHERE P.PERM_STA = '1'
+	       AND P.PERM_ID IN (SELECT P.PERM_ID
+	      FROM UUM_PERMISSION P, UUM_USER_PERM UUP
+	     WHERE P.PERM_STA = '1'
+	       AND UUP.PERM_ID = P.PERM_ID
+	       AND UUP.OBJ_TYPE = '2'
+	       AND UUP.OBJ_ID = #{OP_CODE,jdbcType=VARCHAR}
+	       AND UUP.AUTH_TYPE = '2'
+	       AND CHARINDEX(',' + P.PERM_TYPE + ',',',' + '${PERM_TYPE}' + ',') > 0
+	       AND ((SELECT P1.PERM_STA
+	               FROM UUM_PERMISSION P1
+	              WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM = '0')) 
+			UNION
+			SELECT P.PERM_ID,
+			P.PERM_NAME,
+			P.PAR_PERM,
+			P.PERM_TYPE,
+			P.PERM_STA,
+			P.PERM_VAL,
+			P.PERM_LVL,
+			P.REMARK,
+			KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+			FROM UUM_PERMISSION P
+			WHERE P.PERM_STA = '1'
+			AND P.PERM_ID IN
+			(SELECT P.PERM_ID
+			FROM UUM_USER_PERM PE
+			JOIN UUM_PERMISSION P
+			ON PE.PERM_ID = P.PERM_ID
+			AND P.PERM_STA = '1'
+			WHERE PE.OBJ_TYPE = '3'
+			AND PE.AUTH_TYPE = '2'
+			AND CHARINDEX( ',' + P.PERM_TYPE + ',',',' + '${PERM_TYPE}' + ',') > 0
+			AND EXISTS (SELECT 1
+			FROM UUM_POST P, UUM_OPER_POST OP
+			WHERE PE.OBJ_ID = OP.POST_ID
+			AND OP.POST_ID = P.POST_ID
+			AND P.POST_STA = '1'
+			AND OP.USER_CODE = #{OP_CODE,jdbcType=VARCHAR})))
+	  ORDER BY PERM_LVL
+		</if>
+	</select>
+	<!--by  ,2016/07/07，添加9999用户与岗位判断-->
+	<select id="premQueryAllByUser_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="OP_POST == 9999 or OP_CODE==9999">
+		SELECT P.PERM_ID,
+			   P.PERM_NAME,
+			   P.PAR_PERM,
+			   P.PERM_TYPE,
+			   P.PERM_STA,
+			   P.PERM_VAL,
+			   P.PERM_LVL,
+			   P.REMARK,
+			   dbo.KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+		  FROM UUM_PERMISSION P 
+		 WHERE P.PERM_STA = '1'
+		   AND P.PERM_TYPE IN (${PERM_TYPE})
+     	   AND ((SELECT P1.PERM_STA FROM UUM_PERMISSION P1 WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM='0')
+	  ORDER BY P.PERM_LVL
+		</if>
+		<if test="OP_POST == 1 or OP_CODE==8888" >
+			SELECT P.PERM_ID,
+			P.PERM_NAME,
+			P.PAR_PERM,
+			P.PERM_TYPE,
+			P.PERM_STA,
+			P.PERM_VAL,
+			P.PERM_LVL,
+			P.REMARK,
+			dbo.KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+			FROM UUM_PERMISSION P
+			WHERE P.PERM_STA = '1'
+			AND P.PERM_TYPE IN (${PERM_TYPE})
+			AND ((SELECT P1.PERM_STA FROM UUM_PERMISSION P1 WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM='0')
+			AND (PERM_ID='2'  OR P.PERM_VAL IN (SELECT CAST(MENU_ID AS VARCHAR)
+							FROM UPM_MENU
+							WHERE MENU_PUR != '1'
+							AND MENU_PLAT != '0'
+							AND MENU_STA = '1'
+							AND MENU_PLAT != '0'))
+			ORDER BY P.PERM_LVL
+		</if>
+
+		<if test="OP_POST != 1 and OP_POST != 9999 and OP_CODE!=9999">
+		SELECT P.PERM_ID,
+			   P.PERM_NAME,
+			   P.PAR_PERM,
+			   P.PERM_TYPE,
+			   P.PERM_STA,
+			   P.PERM_VAL,
+			   P.PERM_LVL,
+			   P.REMARK,
+			   dbo.KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+		  FROM UUM_PERMISSION P,UUM_USER_PERM UUP 
+		 WHERE P.PERM_STA = '1' 
+		   AND UUP.PERM_ID = P.PERM_ID
+		   AND UUP.OBJ_TYPE = '2'
+		   AND UUP.OBJ_ID = #{OP_CODE,jdbcType=VARCHAR}
+		   AND UUP.AUTH_TYPE = '2' 
+		   AND P.PERM_TYPE IN (${PERM_TYPE})
+     	   AND ((SELECT P1.PERM_STA FROM UUM_PERMISSION P1 WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM='0')
+	  		UNION 
+	    SELECT DISTINCT P.PERM_ID,
+	               P.PERM_NAME,
+	               P.PAR_PERM,
+	               P.PERM_TYPE,
+				   P.PERM_STA,
+				   P.PERM_VAL,
+	               P.PERM_LVL,
+			       P.REMARK,
+			       dbo.KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+			  FROM UUM_PERMISSION P			
+	       WHERE P.PERM_STA = '1'
+	       AND P.PERM_ID IN (SELECT P.PERM_ID
+	      FROM UUM_PERMISSION P, UUM_USER_PERM UUP
+	     WHERE P.PERM_STA = '1'
+	       AND UUP.PERM_ID = P.PERM_ID
+	       AND UUP.OBJ_TYPE = '2'
+	       AND UUP.OBJ_ID = #{OP_CODE,jdbcType=VARCHAR}
+	       AND UUP.AUTH_TYPE = '2'
+	       AND P.PERM_TYPE IN (${PERM_TYPE})
+	       AND ((SELECT P1.PERM_STA
+	               FROM UUM_PERMISSION P1
+	              WHERE P1.PERM_ID = P.PAR_PERM) = '1' OR P.PAR_PERM = '0')) 
+	  ORDER BY PERM_LVL
+		</if>
+	</select>
+	<select id="rolePremQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		<!--SELECT R.ROLE_ID, C.USER_PERM_CODE,C.CONS_ID,C.CONS_MAX, C.CONS_MIN, CON.CONS_NAME, CON.CONS_TYPE
+	    FROM UUM_ROLE R,UUM_USER_PERM UP,UUM_USER_PERM_CONS C,UUM_CONSTRAINTS CON
+        WHERE UP.OBJ_ID = R.ROLE_ID AND UP.OBJ_TYPE = '1'  AND R.ROLE_STA = '1'  
+        AND UP.AUTH_TYPE = '1'  AND UP.PERM_ID = '${PERM_ID}' AND C.CONS_ID = CON.CONS_ID(+) AND C.AUTH_ID(+) = UP.AUTH_ID-->
+        
+        SELECT R.ROLE_ID 
+		  FROM UUM_ROLE           R
+		  JOIN UUM_USER_PERM      UP ON UP.OBJ_ID = CONVERT(VARCHAR,R.ROLE_ID)
+		 WHERE UP.OBJ_TYPE = '1'
+		   AND R.ROLE_STA = '1'
+		   AND UP.AUTH_TYPE = '1'
+		   AND CHARINDEX( ',' + UP.PERM_ID +',',',' + '${PERM_ID}' + ',') > 0
+	</select>
+	<select id="operPremQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT U.USER_CODE 
+		  FROM UUM_USER           U
+		  JOIN UUM_USER_PERM      UP ON UP.OBJ_ID = CONVERT(VARCHAR,U.USER_CODE)
+		  WHERE UP.OBJ_TYPE = '2'
+		   AND U.USER_STA = '1'
+		   AND UP.AUTH_TYPE = '1'
+		   AND CHARINDEX( ',' + UP.PERM_ID +',',',' + '${PERM_ID}' + ',') > 0
+	</select>
+	<select id="operPremQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT U.USER_CODE 
+		  FROM UUM_USER           U
+		  JOIN UUM_USER_PERM      UP ON UP.OBJ_ID = U.USER_CODE
+		  WHERE UP.OBJ_TYPE = '2'
+		   AND U.USER_STA = '1'
+		   AND UP.AUTH_TYPE = '1'
+		   AND UP.PERM_ID IN (${PERM_ID})
+	</select>
+	<select id="postPremQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT PO.POST_ID
+		  FROM UUM_POST PO
+		  JOIN UUM_USER_PERM      UP ON UP.OBJ_ID = PO.POST_ID
+		  WHERE UP.OBJ_TYPE = '3'
+		   AND PO.POST_STA = '1'
+		   AND UP.AUTH_TYPE = '1'
+		   AND UP.PERM_ID IN (${PERM_ID})
+	</select>
+	<select id="orgPremQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		 <!--SELECT O.ORG_CODE,C.USER_PERM_CODE,C.CONS_ID,C.CONS_MAX, C.CONS_MIN, CON.CONS_NAME, CON.CONS_TYPE
+		 FROM UPM_ORG O,UUM_USER_PERM UP,UUM_USER_PERM_CONS C,UUM_CONSTRAINTS CON
+	     WHERE UP.OBJ_ID = O.ORG_CODE AND UP.OBJ_TYPE = '4'  AND O.ORG_STA = '1' 
+	     AND UP.AUTH_TYPE = '1'  AND UP.PERM_ID = '${PERM_ID}' AND C.CONS_ID = CON.CONS_ID(+) AND C.AUTH_ID(+) = UP.AUTH_ID-->
+	     SELECT O.ORG_CODE
+		  FROM UPM_ORG O
+		  JOIN UUM_USER_PERM      UP ON CONVERT(VARCHAR,UP.OBJ_ID) = O.ORG_CODE
+		  WHERE UP.OBJ_TYPE = '4'
+		   AND O.ORG_STA = '1'
+		   AND UP.AUTH_TYPE = '1'
+		   AND UP.PERM_ID IN (${PERM_ID})
+	</select>	
+	<select id="orgPremQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+	     SELECT O.ORG_CODE
+		   FROM UPM_ORG O
+		  JOIN UUM_USER_PERM      UP ON CAST(UP.OBJ_ID AS VARCHAR) = O.ORG_CODE
+		  WHERE UP.OBJ_TYPE = '4'
+		   AND O.ORG_STA = '1'
+		   AND UP.AUTH_TYPE = '1'
+		   AND UP.PERM_ID IN (${PERM_ID})
+	</select>
+	<select id="owerPremQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="USER_CODE == 8888">
+		SELECT P.PERM_ID,
+		       P.PERM_NAME,
+		       P.PERM_TYPE,
+		       P.PAR_PERM,
+		       P.PERM_STA,
+		       P.PERM_VAL,
+		       P.REMARK,
+		       P.PERM_LVL,
+		       '' AS CONS_ID
+		  FROM UUM_PERMISSION P
+		   WHERE P.PERM_STA = '1'
+		 ORDER BY P.PERM_LVL
+		</if>
+		<if test="USER_CODE != 8888">
+		SELECT P.PERM_ID,
+		       P.PERM_NAME,
+		       P.PERM_TYPE,
+		       P.PAR_PERM,
+		       P.PERM_STA,
+		       P.PERM_VAL,
+		       P.REMARK,
+		       P.PERM_LVL,
+		       KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+		  FROM UUM_USER_PERM PE
+		  JOIN UUM_PERMISSION P
+		    ON PE.PERM_ID = P.PERM_ID 
+		    <if test="PERM_TYPE != null and PERM_TYPE != ''">
+		    	AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+		    </if>
+		   AND P.PERM_STA = '1'
+		 WHERE 1=1
+		 	AND (( PE.OBJ_TYPE = '${OBJ_TYPE}' AND CONVERT(VARCHAR,PE.OBJ_ID) = '${OBJ_ID}'))
+			AND PE.AUTH_TYPE = '${AUTH_TYPE}'
+		 UNION 
+		SELECT DISTINCT P.PERM_ID,
+				       P.PERM_NAME,
+				       P.PERM_TYPE,
+				       P.PAR_PERM,
+				       P.PERM_STA,
+				       P.PERM_VAL,
+				       P.REMARK,
+				       P.PERM_LVL,
+				       KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+				  FROM UUM_PERMISSION P
+				 START WITH 1=1 
+		       AND P.PERM_STA = '1'
+		       <if test="PERM_TYPE != null and PERM_TYPE != ''">
+		    	AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+		       </if>
+		       AND P.PERM_ID IN (SELECT P.PERM_ID
+				  FROM UUM_USER_PERM PE
+				  JOIN UUM_PERMISSION P
+				    ON PE.PERM_ID = P.PERM_ID
+				   AND P.PERM_STA = '1'
+				 WHERE 1=1
+				 	AND (( PE.OBJ_TYPE = '${OBJ_TYPE}' AND CONVERT(VARCHAR,PE.OBJ_ID) = '${OBJ_ID}'))
+					AND PE.AUTH_TYPE = '${AUTH_TYPE}')
+					<if test="PERM_VAL != null and PERM_VAL != ''">
+						AND P.PERM_VAL='${PERM_VAL}'
+					</if>
+		      CONNECT BY NOCYCLE PRIOR P.PAR_PERM = P.PERM_ID
+				 ORDER BY PERM_LVL   
+		</if>
+	</select>
+	
+	<select id="owerPremQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="USER_CODE == 8888">
+		SELECT P.PERM_ID,
+		       P.PERM_NAME,
+		       P.PERM_TYPE,
+		       P.PAR_PERM,
+		       P.PERM_STA,
+		       P.PERM_VAL,
+		       P.REMARK,
+		       P.PERM_LVL,
+		       '' AS CONS_ID
+		  FROM UUM_PERMISSION P
+		   WHERE P.PERM_STA = '1'
+		 ORDER BY P.PERM_LVL
+		</if>
+		<if test="USER_CODE != 8888">
+		SELECT P.PERM_ID,
+               P.PERM_NAME,
+               P.PERM_TYPE,
+               P.PAR_PERM,
+               P.PERM_STA,
+               P.PERM_VAL,
+               P.REMARK,
+               P.PERM_LVL,
+               dbo.KUI_GET_CONS(P.PERM_ID) AS CONS_ID
+          FROM UUM_USER_PERM PE
+          JOIN UUM_PERMISSION P
+            ON PE.PERM_ID = P.PERM_ID 
+            <if test="PERM_TYPE != null and PERM_TYPE != ''">
+                AND (P.PERM_TYPE = '1' OR P.PERM_TYPE = '2')
+            </if>
+           AND P.PERM_STA = '1'
+         WHERE 1=1
+            AND (( PE.OBJ_TYPE = '${OBJ_TYPE}' AND CONVERT(VARCHAR,PE.OBJ_ID) = '${OBJ_ID}'))
+            AND PE.AUTH_TYPE = '${AUTH_TYPE}'
+			<if test="PERM_VAL != null and PERM_VAL != ''">
+				AND P.PERM_VAL='${PERM_VAL}'
+			</if>
+            ORDER BY P.PERM_LVL
+		</if>
+	</select>
+	<!-- 员工功能授权 end -->
+
+	<!-- 临时权限授权 start -->	
+	<select id="agentPermQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UAP.PERM_ID,UAP.DATE_MIN,UAP.DATE_MAX, P.PERM_NAME,P.PERM_TYPE,P.PAR_PERM,P.PERM_VAL
+		  FROM UUM_AGENT_PERM UAP
+		  JOIN UUM_PERMISSION P
+		    ON UAP.PERM_ID = P.PERM_ID
+		   AND P.PERM_STA = '1'
+     LEFT JOIN UPM_MENU M
+		    ON P.PERM_VAL = M.MENU_ID
+		   AND M.MENU_STA = '1'
+		 WHERE USER_CODE = '${USER_CODE}'
+		   AND AGENT_USER_CODE = '${AGENT_USER_CODE}'
+		 ORDER BY P.PERM_LVL
+	</select>
+	<select id="agentPermQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UAP.PERM_ID,UAP.DATE_MIN,UAP.DATE_MAX, P.PERM_NAME,P.PERM_TYPE,P.PAR_PERM,P.PERM_VAL
+		  FROM UUM_AGENT_PERM UAP
+		  JOIN UUM_PERMISSION P
+		    ON UAP.PERM_ID = P.PERM_ID
+		   AND P.PERM_STA = '1'
+     LEFT JOIN UPM_MENU M
+		    ON P.PERM_VAL = CAST(M.MENU_ID AS VARCHAR)
+		   AND M.MENU_STA = '1'
+		 WHERE USER_CODE = '${USER_CODE}'
+		   AND AGENT_USER_CODE = '${AGENT_USER_CODE}'
+		 ORDER BY P.PERM_LVL
+	</select>
+	<select id="frameAgentPermQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT M.MENU_ID,
+	       M.MENU_NAME,
+	       M.PAR_MENU,
+	       M.MENU_PUR,
+	       M.MENU_LINK,
+	       M.MENU_ICO,	
+	       M.MENU_LVL,
+	       M.MENU_PLAT,
+	       UAP.CONS_ID,
+	       UAP.CONS_MAX,
+           UAP.CONS_MIN,
+           UAP.CONS_TYPE
+		  FROM (SELECT UAP.USER_CODE,UAP.PERM_ID,UAP.DATE_MIN,UAP.DATE_MAX,UUPC.CONS_ID,UUPC.CONS_MAX,UUPC.CONS_MIN,UC.CONS_TYPE FROM UUM_AGENT_PERM UAP
+			     LEFT JOIN UUM_USER_PERM UUP ON UAP.AGENT_USER_CODE = UUP.OBJ_ID AND UUP.OBJ_TYPE ='2'
+			     LEFT JOIN UUM_USER_PERM_CONS UUPC ON UUPC.AUTH_ID = UUP.AUTH_ID
+			     LEFT JOIN UUM_CONSTRAINTS UC ON UC.CONS_ID = UUPC.CONS_ID  AND UC.CONS_STATE = '1') UAP
+		  JOIN UUM_PERMISSION P
+		    ON UAP.PERM_ID = P.PERM_ID
+		   AND P.PERM_STA = '1'
+     	  JOIN UPM_MENU M
+		    ON P.PERM_VAL = M.MENU_ID AND M.MENU_STA = '1'
+		   <if test="MENU_PUR == '-1'">
+		   AND M.MENU_PUR = '1'
+	       </if>
+	       <if test="MENU_PUR != '-1'">
+	       AND M.MENU_PUR &lt;&gt; '1'
+	       </if>  
+		 WHERE UAP.USER_CODE = '${USER_CODE}'
+		   AND  CONVERT(DATETIME,UAP.DATE_MIN) &lt;= GETDATE()
+		   AND  CONVERT(DATETIME,UAP.DATE_MAX) &gt;= GETDATE()
+		 ORDER BY M.MENU_LVL
+	</select>
+	<select id="frameAgentPermQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT M.MENU_ID,
+	       M.MENU_NAME,
+	       M.PAR_MENU,
+	       M.MENU_PUR,
+	       M.MENU_LINK,
+	       M.MENU_ICO,	
+	       M.MENU_LVL,
+	       M.MENU_PLAT,
+	       UAP.CONS_ID,
+	       UAP.CONS_MAX,
+           UAP.CONS_MIN,
+           UAP.CONS_TYPE
+		  FROM (SELECT UAP.USER_CODE,UAP.PERM_ID,UAP.DATE_MIN,UAP.DATE_MAX,UUPC.CONS_ID,UUPC.CONS_MAX,UUPC.CONS_MIN,UC.CONS_TYPE FROM UUM_AGENT_PERM UAP
+			     LEFT JOIN UUM_USER_PERM UUP ON UAP.AGENT_USER_CODE = UUP.OBJ_ID AND UUP.OBJ_TYPE ='2'
+			     LEFT JOIN UUM_USER_PERM_CONS UUPC ON UUPC.AUTH_ID = UUP.AUTH_ID
+			     LEFT JOIN UUM_CONSTRAINTS UC ON UC.CONS_ID = UUPC.CONS_ID  AND UC.CONS_STATE = '1') UAP
+		  JOIN UUM_PERMISSION P
+		    ON UAP.PERM_ID = P.PERM_ID
+		   AND P.PERM_STA = '1'
+     	  JOIN UPM_MENU M
+		    ON P.PERM_VAL = M.MENU_ID AND M.MENU_STA = '1'
+		   <if test="MENU_PUR == '-1'">
+		   AND M.MENU_PUR = '1'
+	       </if>
+	       <if test="MENU_PUR != '-1'">
+	       AND M.MENU_PUR &lt;&gt; '1'
+	       </if>  
+		 WHERE UAP.USER_CODE = '${USER_CODE}'
+		   AND CONVERT(datetime,UAP.DATE_MIN) &lt;= GETDATE()
+		   AND CONVERT(datetime,UAP.DATE_MAX) &gt;= GETDATE()
+		 ORDER BY M.MENU_LVL
+	</select>
+	<insert id="agentPermInsert" parameterType="hashmap">
+	INSERT INTO UUM_AGENT_PERM SELECT (NEXT VALUE FOR SEQ_UUM_AGENT_PERM), '${USER_CODE}', '${AGENT_USER_CODE}',COLUMN_VALUE,'${DATE_MIN}','${DATE_MAX}'
+    FROM  TABLE(FN_SPLIT('${PERM_ID}', ','))
+	</insert>
+	
+	<insert id="agentPermInsert_MSSQL" parameterType="hashmap">
+	INSERT INTO UUM_AGENT_PERM SELECT '${ID}', '${USER_CODE}', '${AGENT_USER_CODE}',COLUMN_VALUE,'${DATE_MIN}','${DATE_MAX}'
+    FROM  TABLE(FN_SPLIT('${PERM_ID}', ','))
+	</insert>
+	
+	<delete id="agentPermDelete" parameterType="string">
+		DELETE UUM_AGENT_PERM WHERE USER_CODE = '${USER_CODE}' AND AGENT_USER_CODE = '${AGENT_USER_CODE}'
+  	</delete>
+    <!-- 临时权限授权 end -->
+
+	<!-- 员工数据授权 start -->
+	<select id="sysServiceFunQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT SE.SERVICE_CODE,SE.SERVICE_NAME FROM UPM_SYS_SERVICE SE WHERE SE.ACCESS_CONTROL = 1
+		<if test="SERVICE_NAME != null and SERVICE_NAME != '-1'">
+            AND SERVICE_NAME like '%${SERVICE_NAME}%'  
+        </if>
+	</select>
+	<select id="dictItemQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT A.ITEM_ID, A.DICT_CODE,A.DICT_ITEM_NAME FROM UPM_DICT_ITEMS A WHERE A.DICT_CODE = '${DICT_CODE}'
+	</select>
+	
+	<select id="dataPremSelectQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT DATA_PERM_ID,OBJ_TYPE,OBJ_ID,PERM_TYPE,FUNC_CODE,CLIENT_PERM,ACC_PERM,C_ORG_TYPE,C_CLIENT_TYPE,
+		A_ORG_TYPE,A_CLIENT_TYPE,CLIENT_ORG_CODE,CLIENT_ORG_VALUE,CLIENT_CODE,CLIENT_VAL,ACC_CODE,ACC_VAL,
+		ACC_ORG_CODE,ACC_ORG_VAL FROM UUM_DATA_PERM WHERE OBJ_TYPE = '${OBJ_TYPE}' AND OBJ_ID = '${OBJ_ID}'
+	</select>
+	<!-- 员工数据授权 end -->
+
+	<!-- 员工特殊授权 start -->
+	<select id="specialPremQuery" parameterType="hashmap" resultType="java.util.HashMap">
+	SELECT PE.PERM_ID,
+         C.USER_PERM_CODE,
+         C.CONS_ID,
+         C.CONS_MAX,
+         C.CONS_MIN,
+         CON.CONS_NAME,
+         CON.CONS_TYPE
+      FROM UUM_USER_PERM      PE
+      JOIN UUM_USER           U ON PE.OBJ_ID = U.USER_CODE
+      LEFT JOIN   UUM_USER_PERM_CONS C ON C.AUTH_ID = PE.AUTH_ID
+      LEFT JOIN   UUM_CONSTRAINTS    CON ON C.CONS_ID = CON.CONS_ID AND CON.CONS_STATE = '1'
+     WHERE PE.OBJ_ID = '${USER_CODE}'
+       AND PE.OBJ_TYPE = '2'
+       AND PE.AUTH_TYPE='3'
+
+	</select>
+	<!-- 员工特殊授权 end -->
+	
+	<select id="userPermissionQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="OBJ_ID == 1">
+			SELECT PERM_ID, PERM_NAME, PERM_TYPE, PAR_PERM, PERM_STA, PERM_VAL, REMARK,PERM_LVL
+			FROM UUM_PERMISSION
+			WHERE PERM_STA = '1'
+			ORDER BY PERM_LVL
+		</if>
+		<if test="OBJ_ID != 1">
+		SELECT PERM_ID, PERM_NAME, PERM_TYPE, PAR_PERM, PERM_STA, PERM_VAL, REMARK,PERM_LVL, KUI_GET_CONS(PERM_ID) AS CONS_ID,WM_CONCAT(OBJ_TYPE) AS OBJ_TYPE FROM (
+			SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL, '2' AS OBJ_TYPE
+				  FROM UUM_USER_PERM PE
+				  JOIN UUM_PERMISSION P
+				    ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1'
+				  JOIN UUM_USER U
+				    ON PE.OBJ_ID = U.USER_CODE
+				 WHERE PE.OBJ_ID = '${OBJ_ID}'
+				   AND PE.OBJ_TYPE = '2'
+				   AND PE.AUTH_TYPE = '1' 
+			UNION
+		    SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL, '2' AS OBJ_TYPE
+				  FROM UUM_PERMISSION P
+			START WITH P.PERM_STA = '1'
+		       AND P.PERM_ID IN (SELECT P.PERM_ID 
+		      FROM UUM_USER_PERM PE
+				  JOIN UUM_PERMISSION P
+				    ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1'
+				  JOIN UUM_USER U
+				    ON PE.OBJ_ID = U.USER_CODE
+				 WHERE PE.OBJ_ID = '${OBJ_ID}'
+				   AND PE.OBJ_TYPE = '2'
+				   AND PE.AUTH_TYPE = '1' )
+		      CONNECT BY NOCYCLE PRIOR P.PAR_PERM = P.PERM_ID  
+		    UNION
+				SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL, '3' AS OBJ_TYPE
+		      FROM UUM_USER_PERM PE
+		      JOIN UUM_PERMISSION P
+		        ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1' 
+		     WHERE PE.OBJ_TYPE = '3'
+		       AND PE.AUTH_TYPE = '1'
+		       AND EXISTS (SELECT 1
+		              FROM UUM_POST P, UUM_OPER_POST OP
+		             WHERE PE.OBJ_ID = OP.POST_ID
+		               AND OP.POST_ID = P.POST_ID
+		               AND P.POST_STA = '1'
+		               AND OP.USER_CODE = '${OBJ_ID}')
+		    UNION
+		    SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL, '3' AS OBJ_TYPE
+				  FROM UUM_PERMISSION P
+			START WITH P.PERM_STA = '1'
+		       AND P.PERM_ID IN (SELECT P.PERM_ID 
+		      FROM UUM_USER_PERM PE
+		      JOIN UUM_PERMISSION P
+		        ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1' 
+		     WHERE PE.OBJ_TYPE = '3'
+		       AND PE.AUTH_TYPE = '1'
+		       AND EXISTS (SELECT 1
+		              FROM UUM_POST P, UUM_OPER_POST OP
+		             WHERE PE.OBJ_ID = OP.POST_ID
+		               AND OP.POST_ID = P.POST_ID
+		               AND P.POST_STA = '1'
+		               AND OP.USER_CODE = '${OBJ_ID}') )
+		      CONNECT BY NOCYCLE PRIOR P.PAR_PERM = P.PERM_ID             
+		    UNION
+		    
+		    SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL, '4' AS OBJ_TYPE
+		      FROM UUM_USER_PERM PE
+		      JOIN UUM_PERMISSION P
+		        ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1'
+		     WHERE PE.OBJ_TYPE = '4'
+		       AND PE.AUTH_TYPE = '1'
+		       AND EXISTS (SELECT 1
+		              FROM UUM_USER U, UPM_ORG O
+		             WHERE CONVERT(VARCHAR,PE.OBJ_ID) = U.ORG_CODE
+		               AND CONVERT(VARCHAR,U.ORG_CODE) = O.ORG_CODE
+		               AND O.ORG_STA = '1'
+		               AND U.USER_CODE = '${OBJ_ID}')
+		    UNION
+		    SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL, '4' AS OBJ_TYPE
+				  FROM UUM_PERMISSION P
+			START WITH P.PERM_STA = '1'
+		       AND P.PERM_ID IN (SELECT P.PERM_ID 
+		      FROM UUM_USER_PERM PE
+		      JOIN UUM_PERMISSION P
+		        ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1'
+		     WHERE PE.OBJ_TYPE = '4'
+		       AND PE.AUTH_TYPE = '1'
+		       AND EXISTS (SELECT 1
+		              FROM UUM_USER U, UPM_ORG O
+		             WHERE CONVERT(VARCHAR,PE.OBJ_ID) = U.ORG_CODE
+		               AND CONVERT(VARCHAR,U.ORG_CODE) = O.ORG_CODE
+		               AND O.ORG_STA = '1'
+		               AND U.USER_CODE = '${OBJ_ID}') )
+		      CONNECT BY NOCYCLE PRIOR P.PAR_PERM = P.PERM_ID             
+		    UNION  
+         SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL, '5' AS OBJ_TYPE
+		  FROM UUM_AGENT_PERM UAP
+		  JOIN UUM_PERMISSION P
+		    ON UAP.PERM_ID = P.PERM_ID
+		   AND P.PERM_STA = '1'
+		 WHERE USER_CODE = '${OBJ_ID}'
+		   AND  CONVERT(DATETIME,UAP.DATE_MIN) &lt;= GETDATE()
+		   AND  CONVERT(DATETIME,UAP.DATE_MAX) &gt;= GETDATE()
+		               ) A
+		GROUP BY PERM_ID, PERM_NAME, PERM_TYPE, PAR_PERM, PERM_STA, PERM_VAL, REMARK,PERM_LVL
+		ORDER BY PERM_LVL
+		</if>
+     </select>
+     
+     <select id="userPermissionQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		<if test="OBJ_ID == 1">
+			SELECT PERM_ID, PERM_NAME, PERM_TYPE, PAR_PERM, PERM_STA, PERM_VAL, REMARK,PERM_LVL
+			FROM UUM_PERMISSION
+			WHERE PERM_STA = '1'
+			ORDER BY PERM_LVL
+		</if>
+		<if test="OBJ_ID != 1">
+		SELECT PERM_ID, PERM_NAME, PERM_TYPE, PAR_PERM, PERM_STA, PERM_VAL, REMARK,PERM_LVL, dbo.KUI_GET_CONS(PERM_ID) AS CONS_ID FROM (
+			SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL
+				  FROM UUM_USER_PERM PE
+				  JOIN UUM_PERMISSION P
+				    ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1'
+				  JOIN UUM_USER U
+				    ON PE.OBJ_ID = U.USER_CODE
+				 WHERE PE.OBJ_ID = '${OBJ_ID}'
+				   AND PE.OBJ_TYPE = '2'
+				   AND PE.AUTH_TYPE = '1' 
+		    UNION
+				SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL
+		      FROM UUM_USER_PERM PE
+		      JOIN UUM_PERMISSION P
+		        ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1' 
+		     WHERE PE.OBJ_TYPE = '3'
+		       AND PE.AUTH_TYPE = '1'
+		       AND EXISTS (SELECT 1
+		              FROM UUM_POST P, UUM_OPER_POST OP
+		             WHERE PE.OBJ_ID = OP.POST_ID
+		               AND OP.POST_ID = P.POST_ID
+		               AND P.POST_STA = '1'
+		               AND OP.USER_CODE = '${OBJ_ID}')
+		               
+		    UNION
+		    
+		    SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL
+		      FROM UUM_USER_PERM PE
+		      JOIN UUM_PERMISSION P
+		        ON PE.PERM_ID = P.PERM_ID AND P.PERM_STA = '1'
+		     WHERE PE.OBJ_TYPE = '4'
+		       AND PE.AUTH_TYPE = '1'
+		       AND EXISTS (SELECT 1
+		              FROM UUM_USER U, UPM_ORG O
+		             WHERE CAST(PE.OBJ_ID AS VARCHAR) = U.ORG_CODE
+		               AND CAST(U.ORG_CODE AS VARCHAR) = O.ORG_CODE
+		               AND O.ORG_STA = '1'
+		               AND U.USER_CODE = '${OBJ_ID}')
+		              
+		    UNION  
+         SELECT P.PERM_ID, P.PERM_NAME, P.PERM_TYPE, P.PAR_PERM, P.PERM_STA, P.PERM_VAL, P.REMARK,P.PERM_LVL
+		  FROM UUM_AGENT_PERM UAP
+		  JOIN UUM_PERMISSION P
+		    ON UAP.PERM_ID = P.PERM_ID
+		   AND P.PERM_STA = '1'
+		 WHERE USER_CODE = '${OBJ_ID}'
+		   AND cast(UAP.DATE_MIN as datetime) &lt;= GETDATE()
+		   AND cast(UAP.DATE_MAX as datetime) &gt;= GETDATE()        
+		               ) A
+		GROUP BY PERM_ID, PERM_NAME, PERM_TYPE, PAR_PERM, PERM_STA, PERM_VAL, REMARK,PERM_LVL
+		ORDER BY PERM_LVL
+		</if>
+     </select>
+     
+     <select id="menuAuthQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UP.PERM_ID,
+		       UP.PERM_NAME,
+		       UP.PERM_TYPE,
+		       UP.PERM_STA,
+	           UP.PAR_PERM,
+	           (SELECT A.PERM_VAL FROM UUM_PERMISSION A WHERE A.PERM_ID = UP.PAR_PERM) AS PAR_MENU_ID,
+			   UC.CONS_TYPE,
+	           UUPC.CONS_MAX,
+	           UUPC.CONS_MIN
+		  FROM UUM_PERMISSION UP
+		  JOIN UUM_USER_PERM UUP
+		    ON UUP.PERM_ID = UP.PERM_ID AND UUP.AUTH_TYPE = '1'
+		  LEFT JOIN UUM_USER_PERM_CONS UUPC
+		    ON UUPC.AUTH_ID = UUP.AUTH_ID
+		  LEFT JOIN UUM_CONSTRAINTS UC
+		    ON UC.CONS_ID = UUPC.CONS_ID AND UC.CONS_STATE = '1' 
+		 WHERE 1=1 
+		 <if test="MENU_ID != '-1'">
+		   AND UP.PAR_PERM =
+		       (SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_VAL = '${MENU_ID}')
+		</if>
+		 
+		   AND (UP.PERM_TYPE = '5' OR UP.PERM_TYPE = '6')
+		   AND ((UUP.OBJ_ID = '${USER_CODE}' AND UUP.OBJ_TYPE = '2') 
+		        OR
+				    (UUP.OBJ_ID IN
+				       (SELECT UOP.POST_ID FROM UUM_OPER_POST UOP
+				           WHERE UOP.USER_CODE = '${USER_CODE}'
+				             AND (SELECT POST_STA FROM UUM_POST UUP
+				                   WHERE UOP.POST_ID = UUP.POST_ID) = '1') AND UUP.OBJ_TYPE = '3')
+				OR 
+		       	(UUP.OBJ_ID IN (SELECT UUR.ROLE_ID FROM UUM_USER_ROLE UUR WHERE USER_CODE = '${USER_CODE}'
+		                              AND (SELECT ROLE_STA FROM UUM_ROLE UR
+				                   WHERE UUR.ROLE_ID = UR.ROLE_ID) = '1') AND UUP.OBJ_TYPE = '1')
+		       	OR
+		       	(UUP.OBJ_ID IN (SELECT UU.ORG_CODE FROM UUM_USER UU WHERE USER_CODE = '${USER_CODE}' 
+		                              AND (SELECT UO.ORG_STA FROM UPM_ORG UO 
+		                       WHERE UO.ORG_CODE = UU.ORG_CODE) = '1') AND UUP.OBJ_TYPE = '4')
+		        )
+	</select>
+	<select id="menuAuthQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UP.PERM_ID,
+		       UP.PERM_NAME,
+		       UP.PERM_TYPE,
+		       UP.PERM_STA,
+	           UP.PAR_PERM,
+	           (SELECT A.PERM_VAL FROM UUM_PERMISSION A WHERE A.PERM_ID = UP.PAR_PERM) AS PAR_MENU_ID,
+			   UC.CONS_TYPE,
+	           UUPC.CONS_MAX,
+	           UUPC.CONS_MIN
+		  FROM UUM_PERMISSION UP
+		  JOIN UUM_USER_PERM UUP
+		    ON UUP.PERM_ID = UP.PERM_ID AND UUP.AUTH_TYPE = '1'
+		  LEFT JOIN UUM_USER_PERM_CONS UUPC
+		    ON UUPC.AUTH_ID = UUP.AUTH_ID
+		  LEFT JOIN UUM_CONSTRAINTS UC
+		    ON UC.CONS_ID = UUPC.CONS_ID AND UC.CONS_STATE = '1' 
+		 WHERE 1=1 
+		 <if test="MENU_ID != '-1'">
+		   AND UP.PAR_PERM =
+		       (SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_VAL = '${MENU_ID}')
+		</if>
+		 
+		   AND (UP.PERM_TYPE = '5' OR UP.PERM_TYPE = '6')
+		   AND ((UUP.OBJ_ID = '${USER_CODE}' AND UUP.OBJ_TYPE = '2') 
+		        OR
+				    (UUP.OBJ_ID IN
+				       (SELECT CONVERT(VARCHAR,UOP.POST_ID) FROM UUM_OPER_POST UOP
+				           WHERE UOP.USER_CODE = '${USER_CODE}'
+				             AND (SELECT POST_STA FROM UUM_POST UUP
+				                   WHERE UOP.POST_ID = UUP.POST_ID) = '1') AND UUP.OBJ_TYPE = '3')
+				OR 
+		       	(UUP.OBJ_ID IN (SELECT CONVERT(VARCHAR,UUR.ROLE_ID) FROM UUM_USER_ROLE UUR WHERE USER_CODE = '${USER_CODE}'
+		                              AND (SELECT ROLE_STA FROM UUM_ROLE UR
+				                   WHERE UUR.ROLE_ID = UR.ROLE_ID) = '1') AND UUP.OBJ_TYPE = '1')
+		       	OR
+		       	(UUP.OBJ_ID IN (SELECT UU.ORG_CODE FROM UUM_USER UU WHERE USER_CODE = '${USER_CODE}' 
+		                              AND (SELECT UO.ORG_STA FROM UPM_ORG UO 
+		                       WHERE UO.ORG_CODE = UU.ORG_CODE) = '1') AND UUP.OBJ_TYPE = '4')
+		        )
+	</select>
+	<select id="buttonRowPermQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UP.PERM_ID,
+		       UP.PERM_NAME,
+		       UP.PERM_TYPE,
+		       UP.PERM_STA,
+		       UP.PAR_PERM,
+		       (SELECT A.PERM_VAL
+		          FROM UUM_PERMISSION A
+		         WHERE A.PERM_ID = UP.PAR_PERM) AS PAR_MENU_ID
+		  FROM UUM_PERMISSION UP
+		 WHERE 1 = 1
+		   AND (UP.PERM_TYPE = '5' OR UP.PERM_TYPE = '6')
+	</select>
+	
+	<!-- 权限集设置 -->
+	<select id="permisionSetQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT PERM_SET_ID,PERM_SET_NAME,REMARK FROM UUM_DATA_PERM_SET WHERE 1=1
+		<if test="PERM_SET_NAME != '-1' and PERM_SET_NAME != NULL">
+		   AND PERM_SET_NAME LIKE '%${PERM_SET_NAME}%'
+		</if>
+		ORDER BY PERM_SET_ID
+	</select>
+	<select id="funSetQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT A.PERM_SET_ID,B.SERVICE_CODE,B.SERVICE_NAME FROM UUM_DATA_PERM_SET_MEMBER A, UPM_SYS_SERVICE B WHERE A.SERVICE_CODE = B.SERVICE_CODE
+		<if test="PERM_SET_ID != '-1' and PERM_SET_ID != NULL">
+		   AND PERM_SET_ID = '${PERM_SET_ID}'
+		</if>
+	</select>
+	<delete id="permSetDelete" parameterType="string">
+		DELETE UUM_DATA_PERM_SET WHERE PERM_SET_ID = '${PERM_SET_ID}'
+  	</delete>
+  	<delete id="sysServDelete" parameterType="string">
+		DELETE UUM_DATA_PERM_SET_MEMBER 
+		WHERE PERM_SET_ID = '${PERM_SET_ID}' 
+		  AND SERVICE_CODE IN (SELECT COLUMN_VALUE FROM  TABLE(FN_SPLIT('${SERVICE_CODE}', ',')))
+  	</delete>
+  	<select id="sysServiceListQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT SE.SERVICE_CODE,SE.SERVICE_NAME FROM UPM_SYS_SERVICE SE WHERE SE.ACCESS_CONTROL = 1 AND
+		NOT EXISTS (SELECT B.SERVICE_CODE FROM UUM_DATA_PERM_SET_MEMBER A, UPM_SYS_SERVICE B 
+		WHERE A.SERVICE_CODE = B.SERVICE_CODE AND PERM_SET_ID = '${PERM_SET_ID}' AND SE.SERVICE_CODE = A.SERVICE_CODE)		
+		<if test="SERVICE_NAME != null and SERVICE_NAME != '-1'">
+            AND SERVICE_NAME like '%${SERVICE_NAME}%'  
+        </if>
+	</select>
+  	<insert id="permSetInsert" parameterType="hashmap">
+		  INSERT INTO UUM_DATA_PERM_SET(PERM_SET_ID,PERM_SET_NAME,REMARK)
+		  VALUES (#{ID},'${PERM_SET_NAME}','${REMARK}')
+	</insert>
+	<insert id="funSetInsert" parameterType="hashmap">
+		  INSERT INTO UUM_DATA_PERM_SET_MEMBER SELECT '${PERM_SET_ID}',COLUMN_VALUE 
+    	  	FROM  TABLE(FN_SPLIT('${SERVICE_CODE}', ','))
+	</insert>
+	<delete id="funSetDelete" parameterType="string">
+		DELETE UUM_DATA_PERM_SET_MEMBER WHERE PERM_SET_ID = '${PERM_SET_ID}'
+  	</delete>
+	<update id="permSetUpdate" parameterType="hashmap">
+	    UPDATE UUM_DATA_PERM_SET SET
+	    PERM_SET_NAME='${PERM_SET_NAME}',
+	    REMARK='${REMARK}'
+	    WHERE PERM_SET_ID=#{PERM_SET_ID,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 数据权限管理对象 -->
+	<select id="dataPermMrgObjQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT T.CTRL_OBJ_ID,
+	       T.CTRL_OBJ_NAME,
+	       T.CTRL_OBJ_TYPE,
+	       T.DATA_LOAD_TYPE,
+	       T.INPUT_TYPE,
+	       T.TREE_INPUT_ID,
+	       T.DICT_NAME,   
+	       T.FUNC_ID,
+	       T.FUNC_PARAM,
+	       T.FUNC_RET_ID,
+	       T.FUNC_RET_NAME,
+	       T.REMARK
+	  FROM UUM_MANAGE_OBJ_TYPE T WHERE 1=1
+		<if test="CTRL_OBJ_NAME != '-1' and CTRL_OBJ_NAME != NULL">
+		   AND T.CTRL_OBJ_NAME like '%${CTRL_OBJ_NAME}%'
+		</if>
+		<if test="CTRL_OBJ_TYPE != '-1' and CTRL_OBJ_TYPE != NULL">
+		   AND T.CTRL_OBJ_TYPE like '%${CTRL_OBJ_TYPE}%'
+		</if>
+		<if test="DATA_LOAD_TYPE != '-1' and DATA_LOAD_TYPE != NULL">
+		   AND T.DATA_LOAD_TYPE like '%${DATA_LOAD_TYPE}%'
+		</if>
+	</select>
+	<delete id="delDataPermMrgObj" parameterType="string">
+		DELETE UUM_MANAGE_OBJ_TYPE WHERE CTRL_OBJ_ID = '${CTRL_OBJ_ID}'
+  	</delete>
+  	<insert id="insertDataPermMrgObj" parameterType="hashmap">
+		  INSERT INTO UUM_MANAGE_OBJ_TYPE(CTRL_OBJ_ID,CTRL_OBJ_NAME,CTRL_OBJ_TYPE,DATA_LOAD_TYPE,INPUT_TYPE,TREE_INPUT_ID,DICT_NAME,FUNC_ID,FUNC_PARAM,FUNC_RET_ID,FUNC_RET_NAME,REMARK)
+		  VALUES (#{ID},'${CTRL_OBJ_NAME}','${CTRL_OBJ_TYPE}','${DATA_LOAD_TYPE}','${INPUT_TYPE}','${TREE_INPUT_ID}','${DICT_NAME}','${FUNC_ID}','${FUNC_PARAM}','${FUNC_RET_ID}','${FUNC_RET_NAME}','${REMARK}')
+	</insert>
+	<insert id="insertDataPerm" parameterType="hashmap">
+		  INSERT INTO MANAGE_OBJ_EMPOWER(EMPOWER_SNO,EMPOWER_TYPE,EMPOWER_OBJ_TYPE,EMPOWER_OBJ_ID,PERM_SET_ID,CTRL_OBJ_ID,CTRL_OBJ_VAL,REMARK)
+		  VALUES (#{ID},'${EMPOWER_TYPE}','${EMPOWER_OBJ_TYPE}','${EMPOWER_OBJ_ID}','${PERM_SET_ID}','${CTRL_OBJ_ID}','${CTRL_OBJ_VAL}','${REMARK}')
+	</insert>
+	<delete id="detDataPerm" parameterType="string">
+		DELETE MANAGE_OBJ_EMPOWER WHERE EMPOWER_TYPE = '${EMPOWER_TYPE}' 
+			AND EMPOWER_OBJ_TYPE = '${EMPOWER_OBJ_TYPE}' 
+			AND EMPOWER_OBJ_ID = '${EMPOWER_OBJ_ID}' 
+			AND PERM_SET_ID = '${PERM_SET_ID}' 
+			AND CTRL_OBJ_ID = '${CTRL_OBJ_ID}' 
+	</delete>
+  	<delete id="deleteDataPerm" parameterType="string">
+		DELETE MANAGE_OBJ_EMPOWER WHERE EMPOWER_SNO = '${EMPOWER_SNO}' 
+  	</delete>
+  	<select id="selectDataPerm" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT EMPOWER_SNO,EMPOWER_TYPE,EMPOWER_OBJ_TYPE,EMPOWER_OBJ_ID,PERM_SET_ID,CTRL_OBJ_ID,CTRL_OBJ_VAL,REMARK,
+		(SELECT CTRL_OBJ_TYPE
+          FROM UUM_MANAGE_OBJ_TYPE
+         WHERE MANAGE_OBJ_EMPOWER.CTRL_OBJ_ID =
+               UUM_MANAGE_OBJ_TYPE.CTRL_OBJ_ID) AS CTRL_OBJ_TYPE  
+		  FROM MANAGE_OBJ_EMPOWER
+		 WHERE 1=1
+		 <if test="EMPOWER_TYPE != '-1'">
+			AND EMPOWER_TYPE ='${EMPOWER_TYPE}'
+		 </if>
+		 <if test="EMPOWER_OBJ_TYPE != '-1'">
+			AND EMPOWER_OBJ_TYPE ='${EMPOWER_OBJ_TYPE}'
+		 </if>
+		 <if test="PERM_SET_ID != '-1'">
+			AND PERM_SET_ID ='${PERM_SET_ID}'
+		 </if>
+		 ORDER BY EMPOWER_SNO
+	</select>
+	<update id="updateDataPermMrgObj" parameterType="hashmap">
+	    UPDATE UUM_MANAGE_OBJ_TYPE SET
+	    CTRL_OBJ_NAME='${CTRL_OBJ_NAME}',
+        CTRL_OBJ_TYPE='${CTRL_OBJ_TYPE}',
+        DATA_LOAD_TYPE='${DATA_LOAD_TYPE}',
+        INPUT_TYPE='${INPUT_TYPE}',
+        TREE_INPUT_ID='${TREE_INPUT_ID}',
+        DICT_NAME='${DICT_NAME}',   
+        FUNC_ID='${FUNC_ID}',
+        FUNC_PARAM='${FUNC_PARAM}',
+        FUNC_RET_ID='${FUNC_RET_ID}',
+        FUNC_RET_NAME='${FUNC_RET_NAME}',
+        REMARK='${REMARK}'
+	    WHERE CTRL_OBJ_ID=#{CTRL_OBJ_ID,jdbcType=INTEGER}
+	</update>
+    <insert id="userPermInsert" parameterType="hashmap">
+    	 INSERT INTO UUM_USER_PERM
+        (AUTH_ID, OBJ_TYPE, OBJ_ID, ASS_TYPE, PERM_ID, AUTH_TYPE)
+      VALUES
+        (#{ID}, '${OBJ_TYPE}', '${OBJ_ID}', '${ASS_TYPE}', '${PERM_ID}', '${AUTH_TYPE}')
+    </insert>
+    
+    <insert id="userPermInsertBatch" parameterType="hashmap">
+    	 INSERT INTO UUM_USER_PERM
+        (AUTH_ID, OBJ_TYPE, OBJ_ID, ASS_TYPE, PERM_ID, AUTH_TYPE)
+        SELECT (NEXT VALUE FOR SEQ_AUTH_ID),T.* from
+		  (
+        <foreach collection="PERM_ID" item="item" index="index" separator="union all" >  
+		 (SELECT '${OBJ_TYPE}' AS OBJ_TYPE, '${OBJ_ID}' AS OBJ_ID, '${ASS_TYPE}' AS ASS_TYPE, #{item} AS PERM_ID, '${AUTH_TYPE}' AS AUTH_TYPE )
+		</foreach> 
+		 ) T 
+    </insert>
+	<insert id="userPermInsertBatch_MSSQL" parameterType="hashmap">
+         INSERT INTO UUM_USER_PERM
+        (AUTH_ID, OBJ_TYPE, OBJ_ID, ASS_TYPE, PERM_ID, AUTH_TYPE)
+        <foreach collection="PERM_ID" item="item" index="index" separator="union all" >  
+         (SELECT ${item.AUTH_ID} AS AUTH_ID, '${OBJ_TYPE}' AS OBJ_TYPE, '${OBJ_ID}' AS OBJ_ID, '${ASS_TYPE}' AS ASS_TYPE, ${item.PERM_ID} AS PERM_ID, '${AUTH_TYPE}' AS AUTH_TYPE )
+        </foreach> 
+    </insert>
+    
+    
+    <delete id="userPermDelete" parameterType="hashmap">
+    	 DELETE FROM UUM_USER_PERM
+    	  WHERE 1 = 1
+    	    AND OBJ_TYPE = '${OBJ_TYPE}'
+    	    AND OBJ_ID   IN (${OBJ_ID})
+    	    AND AUTH_TYPE ='${AUTH_TYPE}'
+    	    AND PERM_ID IN (${PERM_ID})
+    	    AND ASS_TYPE = '${ASS_TYPE}'
+    </delete>
+    
+    <insert id="userPermConInsert" parameterType="hashmap">
+    	 INSERT INTO UUM_USER_PERM_CONS
+        (USER_PERM_CODE, AUTH_ID, CONS_ID, CONS_VAL, CONS_MAX, CONS_MIN)
+      VALUES
+        (#{ID}, '${AUTH_ID}', '${CONS_ID}', '${CONS_VAL}', '${CONS_MAX}', '${CONS_MIN}')
+    </insert>
+    
+    <insert id="userPermConInsertByDefault" parameterType="hashmap">
+    	 INSERT INTO UUM_USER_PERM_CONS
+        (USER_PERM_CODE, AUTH_ID, CONS_ID, CONS_VAL, CONS_MAX, CONS_MIN)
+        (SELECT (NEXT VALUE FOR SEQ_USER_PERM_CONS),(SELECT AUTH_ID FROM UUM_USER_PERM WHERE OBJ_TYPE = '${OBJ_TYPE}' AND OBJ_ID = '${OBJ_ID}' AND AUTH_TYPE = '1' AND PERM_ID = '${PERM_ID}'),
+			CONS_ID,'',CONS_MAX,CONS_MIN FROM UPM_PERM_CONS UPC WHERE PERM_ID = '${PERM_ID}')
+    </insert>
+    
+    <insert id="userPermConInsertByDefault_MSSQL" parameterType="hashmap">
+    	 INSERT INTO UUM_USER_PERM_CONS
+        (AUTH_ID, CONS_ID, CONS_VAL, CONS_MAX, CONS_MIN)
+        (SELECT (SELECT AUTH_ID FROM UUM_USER_PERM WHERE OBJ_TYPE = '${OBJ_TYPE}' AND OBJ_ID = '${OBJ_ID}' AND AUTH_TYPE = '1' AND PERM_ID = '${PERM_ID}'),
+			CONS_ID,'',CONS_MAX,CONS_MIN FROM UPM_PERM_CONS UPC WHERE PERM_ID = '${PERM_ID}')
+    </insert>
+    
+    <insert id="userPermConInsertBatch" parameterType="hashmap">
+    	 INSERT INTO UUM_USER_PERM_CONS
+ 	       (USER_PERM_CODE, AUTH_ID, CONS_ID, CONS_VAL, CONS_MAX, CONS_MIN)
+ 	     SELECT (NEXT VALUE FOR SEQ_USER_PERM_CONS),T.* from
+ 	     (
+      	 <foreach collection="PERM_CONS" item="item" index="index" separator="union all" >  
+		 (SELECT #{item.AUTH_ID} AS AUTH_ID, #{item.CONS_ID} AS CONS_ID, #{item.CONS_VAL} AS CONS_VAL, #{item.CONS_MAX} AS CONS_MAX, #{item.CONS_MIN} AS CONS_MIN )
+		 </foreach>
+		 ) T 
+    </insert>
+     <insert id="userPermConInsertBatch_MSSQL" parameterType="hashmap">
+    	 INSERT INTO UUM_USER_PERM_CONS
+ 	       ( AUTH_ID, CONS_ID, CONS_VAL, CONS_MAX, CONS_MIN) 	     
+      	 <foreach collection="PERM_CONS" item="item" index="index" separator="union all" >  
+		 (SELECT #{item.AUTH_ID} AS AUTH_ID, #{item.CONS_ID} AS CONS_ID, #{item.CONS_VAL} AS CONS_VAL, #{item.CONS_MAX} AS CONS_MAX, #{item.CONS_MIN} AS CONS_MIN )
+		 </foreach>		
+    </insert>
+    <delete id="userPermConDelete" parameterType="hashmap">
+    	 DELETE UUM_USER_PERM_CONS WHERE AUTH_ID = '${AUTH_ID}'
+    </delete>
+    
+    <select id="userPermConQuery" parameterType="hashmap" resultType="java.util.HashMap">
+    	 SELECT AUTH_ID,
+				OBJ_TYPE,
+				OBJ_ID,
+				ASS_TYPE,
+				PERM_ID,
+				AUTH_TYPE
+		   FROM UUM_USER_PERM 
+          WHERE OBJ_TYPE = '${OBJ_TYPE}'
+            AND OBJ_ID = '${OBJ_ID}'
+            AND AUTH_TYPE = '${AUTH_TYPE}'
+            AND ASS_TYPE = '${ASS_TYPE}'
+            AND PERM_ID = '${PERM_ID}'
+    </select>
+    
+     <delete id="agentUserPermDelete" parameterType="hashmap">
+    	 DELETE FROM UUM_AGENT_PERM 
+			WHERE PERM_ID IN (${PERM_ID}) AND AGENT_USER_CODE IN (${OBJ_ID})
+     </delete>
+     
+     <select id="getUserCompPerm"  parameterType="hashmap"  resultType="java.util.HashMap">
+		 SELECT DISTINCT PERM_VAL
+		   FROM UUM_USER_PERM UUP JOIN UUM_PERMISSION UP ON UUP.PERM_ID = UP.PERM_ID
+		 WHERE     UP.PERM_TYPE = '3'
+	       AND UP.PERM_STA = '1'
+	       AND UUP.AUTH_TYPE = '1'
+	       AND (   (UUP.OBJ_TYPE = '2' AND UUP.OBJ_ID = '${USER_CODE}')
+	            OR (    UUP.OBJ_TYPE = '3'
+	                AND EXISTS
+	                       (SELECT 1
+	                          FROM UUM_POST POST, UUM_OPER_POST OP
+	                         WHERE     UUP.OBJ_ID = OP.POST_ID
+	                               AND OP.POST_ID = POST.POST_ID
+	                               AND POST.POST_STA = '1'
+	                               AND OP.USER_CODE = '${USER_CODE}'))
+	            OR ( UUP.OBJ_TYPE = '4'
+	                AND EXISTS
+	                     (SELECT 1
+	                         FROM UUM_USER U, UPM_ORG O
+	                         WHERE   UUP.OBJ_ID = U.ORG_CODE
+	                             AND U.ORG_CODE = O.ORG_CODE
+	                             AND O.ORG_STA = '1'
+	                             AND U.USER_CODE = '${USER_CODE}')))
+     </select>
+</mapper>

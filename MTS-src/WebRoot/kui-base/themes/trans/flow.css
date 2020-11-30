@@ -1,0 +1,147 @@
+body {
+	font-family: '微软雅黑', sans-serif;
+	font-size: 13px;
+}
+
+.flow-f a {
+	text-decoration: none;
+}
+
+.flow-f ul li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.flow-panel {
+	height: 85px;
+	vertical-align: middle;
+}
+
+.flow-icon-bg{
+	width:38px;
+	height:38px;
+	margin-left:35px;
+	display: inline-block;
+	background:url(images/step-bg-todo.png);
+	z-index:1;
+}
+
+.flow-icon-bg-runing{
+	width:38px;
+	height:38px;
+	margin-left:35px;
+	display: inline-block;
+	background:url(images/step-bg-doing.png);
+	z-index:1;
+}
+
+.flow-icon-bg-over{
+	width:38px;
+	height:38px;
+	margin-left:35px;
+	display: inline-block;
+	background:url(images/step-bg-done.png);
+	z-index:1;
+}
+ 
+.flow-panel ul li {
+	float: left;
+	padding-right: 5px;
+}
+
+.flow-panel span {
+/*	cursor:pointer;*/
+	text-align: center;
+}
+
+.view-panel {
+	border: 1px solid #D0E9FA;
+	height: 285px;
+	overflow: auto;
+}
+
+.flow-tools {
+	height: 30px;
+	margin: 10px;
+}
+
+.flow-prev {
+	border: 1px solid #D0E9FA;
+	background-color: #D0E9FA;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	float: left;
+	cursor: pointer;
+	text-align: center;
+}
+
+.flow-next {
+	border: 1px solid #D0E9FA;
+	background-color: #D0E9FA;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	float: left;
+	cursor: pointer;
+	text-align: center;
+	margin-left: 10px;
+}
+
+.flow-txt{
+	margin-left: 5px;
+	color: #55bdf2;
+	width:100px;
+	text-align: center;
+}
+
+.flow-runing-txt{
+	margin-left: 5px;
+	color: #f94f0d;
+}
+
+.flow-over-txt{
+	margin-left: 5px;
+	color: #434343;
+}
+
+.step-icon{
+	width:17px;
+	height:16px;
+	display: inline-block;
+	background:url(images/step-icon-todo.png);
+	z-index: 1;
+}
+
+.step-icon-runing{
+	width:17px;
+	height:16px;
+	display: inline-block;
+	background:url(images/step-icon-doing.png);
+	z-index: 1;
+}
+
+.step-icon-over{
+	width:17px;
+	height:16px;
+	display: inline-block;
+	background:url(images/step-icon-done.png);
+	z-index: 1;
+}
+
+.step-arrow{
+	width:41px;
+	height:12px;
+	display: inline-block;
+	background:url(images/step-arrow-doing.png);
+	z-index: 1;
+}
+
+.step-arrow-over{
+	width:41px;
+	height:12px;
+	display: inline-block;
+	background:url(images/step-arrow-done.png);
+	z-index: 1;
+}

@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+
+.export-div-reportDialog {
+	margin-left: 5px
+}
+
+.export-div-print-columns {
+	float: left;
+	margin-right: 5px
+}
+
+.export-div-print-columns-div {
+	margin: 5px
+}
+
+.export-div-chk {
+	height: 25px
+}
+
+.export-div-chk-li {
+	list-style-type: none;
+	text-decoration: none;
+	width: auto;
+}
+
+.export-div-chk-li-span1 {
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: -moz-inline-box;
+	display: inline-block;
+	/*width:130px;*/
+}
+
+.export-div-chk-li-span2 {
+	float: right;
+	margin-right: 5px;
+	height: 25px;
+}
+
+.export-div-chk-li-span2 input {
+	width: 25px;
+}
+
+.export-div-float-left {
+	float: left
+}
+
+.export-div-title-range {
+	margin-bottom: 5px
+}
+
+.export-div-save {
+	float: right;
+	margin-right: 5px;
+	margin-top: 5px
+}

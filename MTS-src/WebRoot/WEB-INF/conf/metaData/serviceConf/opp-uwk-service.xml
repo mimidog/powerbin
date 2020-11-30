@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+    <service service_code="P0005001" service_name="General workflow service invoker"
+             service_cate="20"  attr1="">
+    </service>
+
+</services>

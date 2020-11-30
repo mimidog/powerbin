@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="DynamicMapper.IdentityLink">
+
+  <!-- INSERT IDENTITY LINK -->
+  
+  <insert id="BpmIdentityLinkInsert" parameterType="map">
+    insert into UWK_RU_IDENTITYLINK (IDENTITY_ID, REV, ITYPE, USER_ID, GROUP_ID, TASK_ID, PROC_INST_ID, PROC_DEF_ID, ASSIGNEE,CREATE_TIME)
+    values (#{identityLink.id, jdbcType=VARCHAR},
+            1,
+            #{identityLink.type, jdbcType=VARCHAR},
+            #{identityLink.userId, jdbcType=VARCHAR},
+            #{identityLink.groupId, jdbcType=VARCHAR},
+            #{identityLink.taskId, jdbcType=VARCHAR},
+            #{identityLink.processInstanceId, jdbcType=VARCHAR},
+            #{identityLink.processDefId, jdbcType=VARCHAR},
+            #{identityLink.assignee, jdbcType=VARCHAR},
+            #{identityLink.createTime, jdbcType=TIMESTAMP})
+  </insert>
+  
+  <!-- IDENTITY LINK DELETE -->
+  
+  <delete id="BpmIdentityLinkDelete" parameterType="map">
+    delete from UWK_RU_IDENTITYLINK where IDENTITY_ID = #{id}
+  </delete>
+  
+  <delete id="BpmIdentityLinkDeleteByProcDef" parameterType="map">
+    delete from UWK_RU_IDENTITYLINK where PROC_DEF_ID = #{id}
+  </delete>
+  
+ <!-- IDENTITY LINK RESULTMAP -->
+
+  <resultMap id="identityLinkResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.IdentityLinkEntity">
+    <id property="id" column="IDENTITY_ID" jdbcType="VARCHAR" />
+    <result property="type" column="ITYPE" jdbcType="VARCHAR" />
+    <result property="userId" column="USER_ID" jdbcType="VARCHAR" />
+    <result property="groupId" column="GROUP_ID" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />    
+    <result property="processDefId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="assignee" column="ASSIGNEE" jdbcType="VARCHAR" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <!-- IDENTITY LINK SELECT -->
+
+  <select id="BpmIdentityLinkSelectById" parameterType="map" resultMap="identityLinkResultMap">
+    select * from UWK_RU_IDENTITYLINK where IDENTITY_ID = #{id}
+  </select>
+  
+  <select id="BpmIdentityLinkSelectByTask" parameterType="map" resultMap="identityLinkResultMap">
+    select * from UWK_RU_IDENTITYLINK where TASK_ID = #{taskId}
+  </select>
+  
+  <select id="BpmIdentityLinkSelectByProcessInstance" parameterType="map" resultMap="identityLinkResultMap">
+    select * from UWK_RU_IDENTITYLINK where PROC_INST_ID = #{procInstId}
+  </select>
+  
+  <select id="BpmIdentityLinkSelectByProcessDefinition" parameterType="map" resultMap="identityLinkResultMap">
+    select * from UWK_RU_IDENTITYLINK where PROC_DEF_ID = #{procDefId}
+  </select>
+  
+ <select id="BpmIdentityLinkSelect" resultMap="identityLinkResultMap">
+    select * from UWK_RU_IDENTITYLINK
+  </select>
+  
+  <select id="BpmIdentityLinkSelectByTaskUserGroupAndType" parameterType="map" resultMap="identityLinkResultMap">
+    select * 
+    from UWK_RU_IDENTITYLINK 
+    where TASK_ID = #{identityLink.taskId}
+      <if test="identityLink.userId != null">
+        and USER_ID = #{identityLink.userId}
+      </if>
+      <if test="identityLink.groupId != null">
+        and GROUP_ID = #{identityLink.groupId}
+      </if>
+      <if test="identityLink.type != null">
+        and ITYPE = #{identityLink.type}
+      </if>
+  </select>
+  
+  <select id="BpmIdentityLinkSelectByProcessDefinitionUserAndGroup" parameterType="map" resultMap="identityLinkResultMap">
+    select * 
+    from UWK_RU_IDENTITYLINK 
+    where PROC_DEF_ID = #{identityLink.processDefinitionId}
+      <if test="identityLink.userId != null">
+        and USER_ID = #{identityLink.userId}
+      </if>
+      <if test="identityLink.groupId != null">
+        and GROUP_ID = #{identityLink.groupId}
+      </if>
+  </select>
+  
+</mapper>

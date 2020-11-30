@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<!--客户资金账号管理view   start-->
+	<view id="mts_custCuacctInfo_table" render="datagrid" title=" ">
+		<conf service="M0000001" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="CUST_ID" title="客户代码" type="input" dt_validType="val[1,30]"/>
+		<qry_item field="TEL" title="首选联系电话" type="input" dt_validType="val[1,30]"/>
+		<qry_item field="CUACCT_ID" title="资金账号" type="input" dt_validType="val[1,30]"/>
+
+
+		<btn_item text="新增" service="M0000002" title="新增资金账号" handler="openCuacct_add" iconCls="icon-add" width="580" height="340"/>
+		<btn_item text="修改" service="M0000003" title="修改资金账号" handler="openCuacct_mod" iconCls="icon-edit"   width="580" height="340"/>
+		<!--<btn_item text="删除" service="M0000004" title="删除资金账号" handler="commonDelete" iconCls="icon-remove"/>-->
+		<col_item field="CUST_ID" sortType="number" width="100" edit_flag="1" title="客户代码" edt_required="true" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="CUST_NAME" edt_idField="CUST_ID" edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'M0000009',CUST_STATUS:'0'}]"
+				  edt_columns="[[
+										{field:'CUST_ID',title:'客户代码',width:70,sortable:true,sortType:'number'},
+                                        {field:'CUST_NAME',title:'客户简称',width:70},
+                                        {field:'CUST_TYPE',title:'客户类型',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_TYPE',value);
+                                          }
+                                        },
+                                        {field:'CUST_LVL',title:'客户级别',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_LVL',value);
+                                          }
+                                        },
+                                        {field:'CUST_STATUS',title:'客户状态',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_STATUS',value);
+                                          }
+                                        }
+						]]"
+				  edt_queryCols="[{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '客户代码', field: 'CUST_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                title: '客户简称', field: 'CUST_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }]"
+		/>
+		<col_item field="CUST_NAME" title="客户简称"  type="input" edit_flag="3"/>
+		<col_item field="CURRENCY" title="币种" edit_flag="1" type="combobox" edt_dict="CURRENCY" edt_required="true" edt_autoFill="false"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="2" edt_required="false" edt_validType="numchar[1,30]"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL" edt_required="true" edt_autoFill="true"/>
+		<col_item field="CUACCT_STATUS" title="资金账号状态"  type="combobox" edt_dict="CUACCT_STATUS" edt_required="true" edt_autoFill="true"/>
+		<col_item field="PAY_TYPE" title="支付类型"  type="combobox" edt_dict="PAY_TYPE"  />
+		<col_item field="PAY_ORG" title="支付机构"  type="combobox"   edt_dict="PAY_ORG" />
+		<col_item field="PAY_ID" title="支付账户"  type="input"  edt_validType="int[32]" />
+		<col_item field="OPEN_DATE" title="开户日期" type="datebox" edt_validType="begDate['CLOSE_DATE']"   />
+		<col_item field="CLOSE_DATE" title="销户日期" type="datebox" edt_validType="endDate['OPEN_DATE']"  />
+		<col_item field="UP_DATE" title="更新日期" type="datebox" edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  colspan="4" edt_width="350"/>
+	</view>
+
+	<!--客户交易账号管理view   start-->
+	<view id="mts_custTrdacctInfo_table" render="datagrid" title=" " >
+		<conf service="M0000005" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="CUST_ID" title="客户代码" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="TEL" title="首选联系电话" type="input" dt_validType="val[1,30]"/>
+		<qry_item field="CUACCT_ID" title="资金账号" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="STKBD" title="交易板块" type="combobox" edt_dict="STKBD" />
+		<qry_item field="TRDACCT" title="交易账号" type="input" dt_validType="int[30]"/>
+
+		<btn_item text="新增" service="M0000006" title="新增交易账号" handler="custTradeInfo_add" iconCls="icon-add"  width="580" height="440"/>
+		<btn_item text="修改" service="M0000007" title="修改交易账号" handler="custTradeInfo_mod" iconCls="icon-edit"  width="580" height="440"/>
+		<!--<btn_item text="删除" service="M0000008" title="删除交易账号"  handler="commonDelete" iconCls="icon-remove"  />-->
+		<col_item field="CUST_ID" sortType="number" width="100" edit_flag="1" title="客户代码" edt_required="true" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="CUST_NAME" edt_idField="CUST_ID" edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'M0000009',CUST_STATUS:'0'}]"
+				  edt_columns="[[
+										{field:'CUST_ID',title:'客户代码',width:70,sortable:true,sortType:'number'},
+                                        {field:'CUST_NAME',title:'客户简称',width:70},
+                                        {field:'CUST_TYPE',title:'客户类型',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_TYPE',value);
+                                          }
+                                        },
+                                        {field:'CUST_LVL',title:'客户级别',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_LVL',value);
+                                          }
+                                        },
+                                        {field:'CUST_STATUS',title:'客户状态',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_STATUS',value);
+                                          }
+                                        }
+						]]"
+				  edt_queryCols="[{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '客户代码', field: 'CUST_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                title: '客户简称', field: 'CUST_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }]"
+		/>
+		<col_item field="CUST_NAME" title="客户简称"  type="input" edit_flag="3"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="1" edt_required="true" edt_validType="numchar[1,30]"/>
+		<col_item field="MAKET_ID" title="交易市场"  type="combobox" edit_flag="1" edt_dict="MAKET" edt_required="true" edt_autoFill="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox" edit_flag="1" edt_dict="STKBD" edt_required="true" edt_autoFill="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"   edt_required="true" edt_validType="val[1,30]"/>
+		<col_item field="STK_STATUS" title="交易账号状态"  type="combobox"  edt_dict="STK_STATUS" edt_required="true" edt_autoFill="true"/>
+		<col_item field="STKPBU" title="交易单元"  type="input"   edt_validType="val[1,8]"/>
+		<col_item field="ID_TYPE" title="证件类型"  type="combobox"  edt_dict="ID_TYPE"   edt_autoFill="true"/>
+		<col_item field="ID_CODE" title="证件号码"  type="input"   edt_validType="val[1,40]" colspan="4" edt_width="370"/>
+		<col_item field="ID_ADDR" title="证件地址"  type="input"   edt_validType="val[1,120]" colspan="4"  edt_width="370"/>
+		<col_item field="ID_ISS_AGCY" title="发证机关"  type="input"  edt_validType="val[1,64]" colspan="4"  edt_width="370"/>
+		<col_item field="ID_EXP_DATE" title="证件有效日期" type="datebox" />
+		<col_item field="OPEN_DATE" title="开户日期" type="datebox" edt_validType="begDate['CLOSE_DATE']" />
+		<col_item field="CLOSE_DATE" title="销户日期" type="datebox" edt_validType="endDate['OPEN_DATE']"  />
+		<col_item field="YMT_CODE" title="一码通编号" type="input"  edt_validType="val[1,20]"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+	</view>
+
+	<!-- 个人客户开户管理view   start-->
+	<view id="mts_perCustOpenInfo_table" render="datagrid" title=" " >
+		<conf service="M0000009" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="CUST_ID" title="客户代码" type="input" edt_validType="numchar[1,30]"/>
+		<qry_item field="CUST_NAME" title="客户简称" type="input" edt_validType="numchar[1,30]"/>
+		<qry_item field="ID_TYPE" title="证件类型" type="combobox" edt_dict="ID_TYPE"/>
+		<qry_item field="ID_CODE" title="证件号码" type="input" edt_validType="val[1,40]"/>
+		<qry_item field="TEL" title="首选联系电话" type="input" edt_validType="val[1,20]"/>
+
+		<btn_item text="新增" service="M0000010" title="新增客户信息" handler="openPerCust_add" iconCls="icon-add"  width="580" height="500"/>
+		<btn_item text="修改" service="M0000011" title="修改客户信息" handler="openPerCust_edit" iconCls="icon-edit"  width="580" height="500"/>
+		<!--<btn_item text="删除" service="M0000012" title="删除客户信息"  handler="commonDelete" iconCls="icon-remove"  />-->
+
+		<col_item field="CUST_ID"   title="客户代码" type="input" edit_flag="1" edt_required="true" edt_validType="val[1,30]"/>
+		<col_item field="CUST_NAME" title="客户简称"  type="input"  edt_required="true" edt_validType="val[1,32]"/>
+		<col_item field="ORG_CODE" title="机构名称" edt_required="true" edt_width="120" edt_isClear="true"
+				  type="combotree"
+				  edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+				  edt_panelWidth="230"
+				  edt_panelHeight="250"
+				  edt_nodeId="ORG_CODE"
+				  edt_nodeName="ORG_CODE_NAME"
+				  edt_parNode="PAR_ORG"
+				  edt_treeType="1"
+		/>
+
+		<col_item field="CUST_TYPE" title="客户类型"  type="combobox" edt_dict="CUST_TYPE"  edt_required="true" edt_defaultValue="1" edt_disabled="true" edt_autoFill="true"/>
+		<col_item field="CUST_LVL" title="客户级别"  type="combobox" edt_dict="CUST_LVL"  edt_required="true" edt_autoFill="true"/>
+		<col_item field="CUST_STATUS" title="客户状态"  type="combobox" edt_dict="CUST_STATUS"  edt_required="true" edt_autoFill="true"/>
+		<col_item field="RISK_CONTROLLER" title="风控员编号"  type="input" />
+		<col_item field="RISK_CONTROLLER_NAME" title="风控员名称"  type="input" />
+		<col_item field="CUST_DIRECTOR" title="客户经理编号"  type="input"/>
+		<col_item field="CUST_DIRECTOR_NAME" title="客户经理名称"  type="input" />
+		<col_item field="ID_TYPE" title="证件类型"  type="combobox"  edt_dict="ID_TYPE"  />
+		<col_item field="ID_CODE" title="证件号码"  type="input"   edt_validType="val[1,48]" colspan="4" edt_width="370"/>
+		<col_item field="ID_ADDR" title="证件地址"  type="input"   edt_validType="val[1,120]" colspan="4"  edt_width="370"/>
+		<col_item field="ID_ISS_AGCY" title="发证机关"  type="input"  edt_validType="val[1,64]" colspan="4"  edt_width="370"/>
+		<col_item field="ID_EXP_DATE" title="证件有效日期" type="datebox"  />
+		<col_item field="TEL" title="首选联系电话" type="input"  edt_required="true"  edt_validType="mobileortel"/>
+		<col_item field="TEL2" title="联系电话" type="input"  edt_validType="mobileortel"/>
+		<col_item field="WEBCHAT" title="微信号" type="input"  edt_validType="val[1,30]"/>
+		<col_item field="EMAIL" title="邮箱" type="input"  edt_validType="email"/>
+		<col_item field="OP_SECU" title="开户券商简称" type="input"  edt_validType="val[1,16]"/>
+		<col_item field="OP_DEP" title="开户营业部" type="input"   edt_validType="val[1,32]" colspan="4"  edt_width="370"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_dict="CHANNEL"  />
+		<col_item field="OPEN_DATE" title="开户日期" type="datebox" edt_validType="begDate['CLOSE_DATE']"  />
+		<col_item field="CLOSE_DATE" title="销户日期" type="datebox" edt_validType="endDate['OPEN_DATE']"  />
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  colspan="4" edt_width="370"/>
+	</view>
+
+	<view id="mts_CustCuacctSubInfo_table" render="datagrid" title=" " >
+		<conf service="M0000013" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="CUST_ID" title="客户代码" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="CUACCT_ID" title="资金账号" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="OP_ID" title="人员名称" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="USER_NAME" edt_idField="USER_CODE"
+				  edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'P0001008',USER_STA:'1'}]"
+				  edt_columns="[[
+								{field:'USER_CODE',title:'人员ID',width:70},
+								{field:'USER_NAME',title:'人员名称',width:70},
+								{field:'USER_TYPE',title:'人员类型',width:70,
+								  formatter: function(value,row,index){
+									return getSysDictOpt('USER_TYPE',value);
+								  }
+								}
+								]]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'USER_NAME',title:'人员名称',
+						  editor:{
+							  type:'text',
+							  options:{
+								validType:'val[1,64]'
+							  }
+							}
+						  }]
+						}
+					   ]"
+		/>
+		<btn_item text="新增" service="M0000014" title="新增资金账号子账户信息" handler="custCuacctSubInfo_add" iconCls="icon-add"  />
+		<!--<btn_item text="修改" service="M0000015" title="修改资金账号子账户信息" handler="commonModify" iconCls="icon-edit"  width="520" height="240"/>-->
+		<btn_item text="删除" service="M0000016" title="删除资金账号子账户信息"  handler="custCuacctSubInfo_del" iconCls="icon-remove"  />
+		<col_item field="CUST_ID" sortType="number" width="100" edit_flag="1" title="客户代码" edt_required="true" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="CUST_NAME" edt_idField="CUST_ID" edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'M0000009',CUST_STATUS:'0'}]"
+				  edt_columns="[[
+										{field:'CUST_ID',title:'客户代码',width:70,sortable:true,sortType:'number'},
+                                        {field:'CUST_NAME',title:'客户简称',width:70},
+                                        {field:'ORG_NAME',title:'机构名称'},
+                                        {field:'CUST_TYPE',title:'客户类型',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_TYPE',value);
+                                          }
+                                        },
+                                        {field:'CUST_LVL',title:'客户级别',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_LVL',value);
+                                          }
+                                        },
+                                        {field:'CUST_STATUS',title:'客户状态',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_STATUS',value);
+                                          }
+                                        }
+						]]"
+				  edt_queryCols="[{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '客户代码', field: 'CUST_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                title: '客户简称', field: 'CUST_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }]"
+		/>
+		<col_item field="CUST_NAME" title="客户简称"  type="input" edit_flag="3"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input"  edt_required="true" edt_validType="val[1,32]" edit_flag="1"/>
+		<col_item field="OP_ID" sortType="number" width="100" edit_flag="1" title="交易员编号" edt_required="true" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="USER_CODE" edt_idField="USER_NAME"
+				  edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'P0001008',USER_STA:'1'}]"
+				  edt_columns="[[
+						{field:'USER_CODE',title:'操作员代码',width:70,sortable:true,sortType:'number'},
+						{field:'USER_NAME',title:'操作员名称',width:70},
+						{field:'USER_TYPE',title:'操作员类型',width:70,
+						  formatter: function(value,row,index){
+							return getSysDictOpt('USER_TYPE',value);
+						  }
+						}
+						]]"
+							  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'USER_NAME',title:'操作员名称',
+						  editor:{
+							  type:'text',
+							  options:{
+								validType:'val[1,64]'
+							  }
+							}
+						  }]
+						}
+					   ]"
+		/>
+		<col_item field="OP_NAME" title="交易员名称"  type="input" edit_flag="3"/>
+		<col_item field="EFT_DATE" title="开始日期" type="datebox" edt_validType="begDate['EXP_DATE']"  edt_required="true" />
+		<col_item field="EXP_DATE" title="失效日期" type="datebox" edt_validType="endDate['EFT_DATE']" />
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  />
+	</view>
+
+	<!--资金一级持仓查询view   start-->
+	<view id="custFirstLevelQuery_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000054'}]" pageSize="10" colNumbers="4" fit="true"
+			  onClickRow="onClick" showRowDetail="true" isShowDetail=""/>
+		<col_item field="CUST_ID"   title="客户代码" type="input" />
+		<col_item field="CUST_NAME"   title="客户名称" type="input" />
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" />
+		<col_item field="UNUSE_AMOUNT" title="未分配额度"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_LAST_BAL" title="昨日余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BAL" title="资金余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_AVL" title="资金可用"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_TRD_FRZ" title="资金交易冻结金额"  type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_LONG_FRZ" title="资金长期冻结金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_DEBT" title="负债金额"  type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_OTD" title="在途金额"  type="input"    align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_CREDIT" title="信用金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BLN_ACCU" title="利息基数" type="datebox"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="LAST_CAL_DATE" title="上次计息日期" type="input"  />
+		<col_item field="FUND_RATE" title="存管利率" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CREDIT_RATE" title="融资利率" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CALLOT_IN_FUND" title="转入资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_OUT_FUND" title="转出资金" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+	<!--资金二级资金持仓查询view   start-->
+	<view id="custSecondLevelQuery_table" render="datagrid" title=" " script="../../common/js/common.js">
+		<conf req="[{service:'M0000055',CUST_ID:'-1', OP_ID:g_user.userId, USER_POST:g_user.USER_POST}]" pageSize="10" colNumbers="4"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<col_item field="OP_ID" title="交易员代码"  type="input" formatter="formatTradeAllQueryLink"/>
+		<col_item field="OP_NAME" title="交易员名称"  type="input"/>
+		<col_item field="FUND_LAST_BAL" title="昨日余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BAL" title="资金余额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_AVL" title="资金可用"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_TRD_FRZ" title="资金交易冻结金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_LONG_FRZ" title="资金长期冻结金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_DEBT" title="负债金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_OTD" title="在途金额"  type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_CREDIT" title="信用金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BLN_ACCU" title="利息基数" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="LAST_CAL_DATE" title="上次计息日期" type="input" />
+		<col_item field="FUND_RATE" title="存管利率" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CREDIT_RATE" title="融资利率" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CALLOT_IN_FUND" title="转入资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_OUT_FUND" title="转出资金" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+
+	<!--客户二级资金持仓查询view   start-->
+	<view id="custSecondCuacctLevelQuery_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000055', OP_ID:g_user.userId, USER_POST:g_user.USER_POST}]" pageSize="10" colNumbers="4" fit="true"
+			   showRowDetail="true" isShowDetail=""/>
+		<col_item field="OP_ID" title="交易员代码"  type="input"  formatter="formatTradeAllQueryLink"/>
+		<col_item field="OP_NAME" title="交易员名称"  type="input"/>
+		<col_item field="FUND_LAST_BAL" title="昨日余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BAL" title="资金余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_AVL" title="资金可用"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_TRD_FRZ" title="资金交易冻结金额"  type="input"    align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_LONG_FRZ" title="资金长期冻结金额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_DEBT" title="负债金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_OTD" title="在途金额"  type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_CREDIT" title="信用金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BLN_ACCU" title="利息基数" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="LAST_CAL_DATE" title="上次计息日期" type="input"  />
+		<col_item field="FUND_RATE" title="存管利率" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CREDIT_RATE" title="融资利率" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CALLOT_IN_FUND" title="转入资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_OUT_FUND" title="转出资金" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+
+	<view id="custSecondCuacctLevelQuery_1_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000055', OP_ID:g_user.userId, USER_POST:g_user.USER_POST}]" pageSize="10" colNumbers="4" fit="true"
+			  showRowDetail="true" isShowDetail=""/>
+		<col_item field="OP_ID" title="交易员代码"  type="input" />
+		<col_item field="OP_NAME" title="交易员名称"  type="input"/>
+		<col_item field="FUND_LAST_BAL" title="昨日余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BAL" title="资金余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_AVL" title="资金可用"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_TRD_FRZ" title="资金交易冻结金额"  type="input"    align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_LONG_FRZ" title="资金长期冻结金额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_DEBT" title="负债金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_OTD" title="在途金额"  type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_CREDIT" title="信用金额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BLN_ACCU" title="利息基数" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="LAST_CAL_DATE" title="上次计息日期" type="input"  />
+		<col_item field="FUND_RATE" title="存管利率" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CREDIT_RATE" title="融资利率" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(6));}"/>
+		<col_item field="CALLOT_IN_FUND" title="转入资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_OUT_FUND" title="转出资金" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+
+	<!--股份一级持仓查询view   start-->
+	<view id="firstLevelHoldingQuery_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000059'}]" pageSize="10" colNumbers="4" fit="true"
+			  onClickRow="onClick" onLoadSuccess="cleanSecondTable" showRowDetail="true" isShowDetail=""/>
+		<col_item field="CUST_ID"   title="客户代码" type="input" />
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" />
+		<col_item field="TRDACCT" title="交易账号"  type="input" />
+		<col_item field="INST_ID" title="产品代码"  type="input" />
+		<col_item field="INST_NAME" title="产品名称"  type="input"/>
+		<col_item field="COST_PRICE" title="成本价"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="INST_LAST_BAL" title="产品昨日余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value));}"/>
+		<col_item field="INST_BAL" title="产品余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="产品可用额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UNUSE_AMOUNT" title="未分配额度"  type="input"   align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_TRD_FRZ" title="产品交易冻结数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_LONG_FRZ" title="产品长期冻结数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_OTD" title="产品在途数"  type="input"   align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL_OTD" title="产品在途可用"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MKT_VALUE" title="产品市值" type="datebox"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+
+	<!--股份二级资金持仓查询view   start-->
+	<view id="secondLevelHoldingQuery_table" render="datagrid" script="../../common/js/common.js" >
+		<conf req="[{service:'M0000053',OP_ID:g_user.userId, USER_POST:g_user.USER_POST}]" pageSize="10" colNumbers="4"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<col_item field="OP_ID" title="交易员代码"  type="input" formatter="formatTradeAllQueryLink"/>
+		<col_item field="OP_NAME" title="交易员名称"  type="input"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" />
+		<col_item field="TRDACCT" title="交易账号"  type="input" />
+		<col_item field="INST_ID" title="产品代码"  type="input" />
+		<col_item field="INST_NAME" title="产品名称"  type="input"/>
+		<col_item field="COST_PRICE" title="成本价"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="INST_LAST_BAL" title="产品昨日余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL" title="产品余额"  type="input"   align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="产品可用额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_TRD_FRZ" title="产品交易冻结数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_LONG_FRZ" title="产品长期冻结数"  type="input"   align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_OTD" title="产品在途数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL_OTD" title="产品在途可用" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MKT_VALUE" title="产品市值" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_IN_ASSET" title="转入股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="CALLOT_OUT_ASSET" title="转出股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+
+	<!--客户二级股份持仓查询view   start-->
+	<view id="custSecondLevelHoldingQuery_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000053'}]" pageSize="10" colNumbers="4"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="CUACCT_ID" title="资金账号" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="TRDACCT" title="交易账号" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="OP_ID" title="人员名称" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="USER_NAME" edt_idField="USER_CODE"
+				  edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'P0001008',USER_STA:'1'}]"
+				  edt_columns="[[
+								{field:'USER_CODE',title:'人员ID',width:70},
+								{field:'USER_NAME',title:'人员名称',width:70},
+								{field:'USER_TYPE',title:'人员类型',width:70,
+								  formatter: function(value,row,index){
+									return getSysDictOpt('USER_TYPE',value);
+								  }
+								}
+								]]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'USER_NAME',title:'人员名称',
+						  editor:{
+							  type:'text',
+							  options:{
+								validType:'val[1,64]'
+							  }
+							}
+						  }]
+						}
+					   ]"
+		/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" />
+		<col_item field="TRDACCT" title="交易账号"  type="input" />
+		<col_item field="OP_ID" title="交易员代码"  type="input"  formatter="formatTradeAllQueryLink"/>
+		<col_item field="OP_NAME" title="交易员名称"  type="input"/>
+		<col_item field="INST_ID" title="产品代码"  type="input"/>
+		<col_item field="INST_NAME" title="产品名称"  type="input"/>
+		<col_item field="COST_PRICE" title="成本价"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="INST_LAST_BAL" title="产品昨日余额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL" title="产品余额"  type="input"   ealign="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="产品可用额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_TRD_FRZ" title="产品交易冻结数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_LONG_FRZ" title="产品长期冻结数"  type="input"   align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_OTD" title="产品在途数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL_OTD" title="产品在途可用" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MKT_VALUE" title="产品市值" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_IN_ASSET" title="转入股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="CALLOT_OUT_ASSET" title="转出股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+
+	<view id="custSecondLevelHoldingQuery_1_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000053', OP_ID:g_user.userId, USER_POST:g_user.USER_POST}]" pageSize="10" colNumbers="4" fit="true" onClickRow="onClick" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="CUACCT_ID" title="资金账号" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="TRDACCT" title="交易账号" type="input" dt_validType="numchar[1,30]"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" />
+		<col_item field="TRDACCT" title="交易账号"  type="input" />
+		<col_item field="OP_ID" title="交易员代码"  type="input" />
+		<col_item field="OP_NAME" title="交易员名称"  type="input"/>
+		<col_item field="INST_ID" title="产品代码"  type="input"/>
+		<col_item field="INST_NAME" title="产品名称"  type="input"/>
+		<col_item field="COST_PRICE" title="成本价"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="INST_LAST_BAL" title="产品昨日余额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL" title="产品余额"  type="input"   ealign="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="产品可用额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_TRD_FRZ" title="产品交易冻结数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_LONG_FRZ" title="产品长期冻结数"  type="input"   align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_OTD" title="产品在途数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL_OTD" title="产品在途可用" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MKT_VALUE" title="产品市值" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_IN_ASSET" title="转入股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="CALLOT_OUT_ASSET" title="转出股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+	<!--委托明细查询view   start-->
+	<view id="entrustmentDetailQuery_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"
+			   fit="true" req="[{service:'M0000045',OP_ID:g_user.userId, USER_POST:g_user.USER_POST,OMS_STATUS:'1',OMS_DATE:getSysDate()}]"/>
+
+		<qry_item field="OMS_ID" title="申请编号" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="STK_ID" title="证券代码" type="input" dt_validType="numchar[1,30]"/>
+		<qry_item field="STK_NAME" title="证券名称" type="input" dt_validType="numchar[1,19]"/>
+
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="3" />
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DEPOS_QTY" title="委托数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UNMATCH_QTY" title="未成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUST_NAME" title="客户名称"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="businessDetailsQuery_table"  render="datagrid" title="订单交易明细" script="../../common/js/common.js">
+		<conf req="[{service:'M0000049',OP_ID:g_user.userId, USER_POST:g_user.USER_POST,UP_DATE:getSysDate()}]"  pageSize="10" colNumbers="4"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
+		<qry_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
+		<qry_item field="STK_ID" title="证券代码" type="input" />
+		<qry_item field="STK_NAME" title="证券名称" type="input" />
+
+		<col_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
+		<col_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  />
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox"  edt_dict="OMS_TYPE" edt_autoFill="true" hidden="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="MATCH_QTY" title="成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"/>
+		<col_item field="MATCH_PRICE" title="成交价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="MATCH_AMT" title="成交金额" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="MATCH_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" />
+		<col_item field="TRADER_ID" title="交易员代码" type="input" />
+		<col_item field="TRADER_NAME" title="交易员名称"   />
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="unfinishedBusinessDetailsQuery_table"  render="datagrid" title="未成交" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000045',OP_ID:g_user.userId, USER_POST:g_user.USER_POST, OMS_DATE:getSysDate(),UNMATCH_QTY_THAN_ZERO:'0'}]"  onSelect="queyOmsMatch"/>
+
+		<qry_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
+		<qry_item field="STK_ID" title="证券代码" type="input" />
+		<qry_item field="STK_NAME" title="证券名称" type="input" />
+
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="3" />
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DEPOS_QTY" title="委托数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UNMATCH_QTY" title="未成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3"/>
+		<col_item field="OP_NAME" title="操作员名称"   edit_flag="3"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUST_NAME" title="客户名称"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+   <!--统计持仓产品的市值-->
+	<view id="holdStockMaketTotal_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000108'}]" pageSize="10" colNumbers="4" fit="true" sortName="TOTAL_INST_AVL" sortOrder="asc"
+			  onClickRow="holdStockMaketTotal_table_click" showRowDetail="true" isShowDetail=""/>
+		<col_item field="INST_ID" title="产品代码"  type="input" />
+		<col_item field="INST_NAME" title="产品名称"  type="input"/>
+		<col_item field="TOTAL_INST_BAL" title="产品余额"  type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="TOTAL_INST_AVL" title="产品可用额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+	</view>
+</views>

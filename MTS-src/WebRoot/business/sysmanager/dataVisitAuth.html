@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>数据访问</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<!--<script type="text/javascript" src="js/authUtil.js"></script>
+<script type="text/javascript" src="js/funcAuthorization.js"></script>-->
+<script type="text/javascript">
+ //机构树表格过滤器
+function orgDgFilter(data) {
+    if (!data[0]){
+        return {
+            total : data[0].length,
+            rows : data[0]
+        };
+    }
+    if (data[0].length > 0 && data[0].length > 0) {
+        for ( var i = 0, len = data[0].length; i < len; i++) {
+            if (data[0][i]['PAR_ORG'] == "0") {
+            } else {
+                data[0][i]['pid'] = data[0][i]['PAR_ORG'];
+            }
+        }
+    }else{
+        $(".datagrid-header-check").find("input").removeAttr("checked");
+    }
+    return {
+        total : data[0].length,
+        rows : data[0]
+    };
+}
+function orgDgSelect(node){
+    var selNodeArray=new Array();
+    var selNodes=$('#orgTree').treegrid('getSelections');
+    $.each(selNodes,function (idx,item) {
+        selNodeArray.push(item.ORG_CODE);
+    })
+
+    using('datagrid',function(){
+        $('#operTbl').datagrid({
+            fallParas: [
+                {enable: true}
+            ],
+            req: [{
+
+                service: "P0001008",
+                USER_STA: '1',
+                ORG_CODE_IN: selNodeArray.toString()
+
+            }],
+            columns: [
+                [
+                    {
+                        field: 'USER_CODE',
+                        title: 'ID号',
+                        sortType: 'number'
+                    },
+                    {
+                        field: 'USER_NAME',
+                        title: '人员姓名'
+
+                    },
+                    {
+                        field: 'ORG_NAME',
+                        title: '机构名称'
+                    }
+                ]
+            ]
+        });
+    });
+}
+</script>
+</head>
+<body>
+
+<div class="kui-panel" id="bigPanel" kui-options="fit:true,title:' '">
+    <div  id="main_layout" class="kui-layout" kui-options="fit:true">
+        <div kui-options="region:'north',border:true" style="height: 40px;border: solid 1px #e6f5ff;overflow: hidden;">
+            <div style="width:450px;float: left;">
+                <form class="kui-form" id="funAuthForm">
+                    选择对象：<select id="objId" style="width:100px" class="kui-combobox"
+                                 kui-options="isClear:false,required:true">
+                    <option value="3">岗位</option>
+                    <option value="4">人员</option>
+                </select>
+                    <span id="objName" style="margin-left: 20px;">岗位</span>：
+                    <span id="selCombo"></span>
+                </form>
+            </div>
+            <div style="padding-left: 10px;padding-top: 8px;padding-bottom: 4px;">
+                <div style="float: right;margin-right: 20px;overflow: hidden;">
+                    <a class="kui-linkbutton" kui-options=" plain:true, iconCls:'icon-save'" >保存</a>
+                </div>
+            </div>
+        </div>
+        <div kui-options="region:'west',border:true"  style="overflow:hidden;width: 460px;padding-top: 2px;">
+            <div style="float: left;width: 100%;height: 100%;">
+                <div id="p" class="kui-tabs" kui-options="fit:true">
+                    <div title="机构访问权限">
+                        <ul id="orgTree" class="kui-treegrid" kui-options="fit:true,
+                                                    idField: 'ORG_CODE',
+                                                    treeField: 'ORG_NAME',
+                                                    singleSelect: false,
+                                                    cascadeCheck: false,
+                                                    collapseAll:false,
+                                                    lines: true,
+                                                    loadFilter:orgDgFilter,
+                                                    onClick:orgDgSelect,
+                                                    req: [
+                                                        {
+                                                            service: 'P0001031'
+                                                        }
+                                                    ],
+                                                    columns: [
+                                                        [
+                                                            {title: '机构代码', field: 'PERM_ID', checkbox: true},
+                                                            {title: '机构名称', field: 'ORG_NAME',sortable: false}
+                                                        ]
+                                                    ]
+                                    ">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="centerPanel" kui-options="region:'center',border:true" style="padding-top: 2px;overflow: hidden;">
+            <div style="float: left;width: 100%;height: 100%;">
+                <div id="operPanel" class="kui-panel" title="包含人员" kui-options="fit:true" style="width: 400px;height: 500px;">
+                    <table id="operTbl" kui-options="fit:true"></table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+    <service service_code="M0001000" service_title="查询交易日历信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="QRY_CALENDAR_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001001" service_title="查询系统日期信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="QRY_SYS_CONTROL_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001002" service_title="设置下一个交易" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="setNextTrdDayAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001003" service_title="查询下一个交易" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="QRY_NEXT_TRADING_DAY_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001004" service_title="执行mts数据库清算前的备份" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="mtsclearBDBBackupAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001005" service_title="执行mts数据库日切前的备份" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="mtsSyscutBDBBackupAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001006" service_title="查询操作员岗位变量申请信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryOperaterPostLvlChgAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001007" service_title="新增操作员岗位变量申请信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addOperaterPostLvlChgAppAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001008" service_title="审核操作员岗位变量申请信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="auditOperaterPostLvlChgAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001009" service_title="查询处理日期的上一交易日信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="QRY_LAST_TRADING_DAY_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001010" service_title="查询行情订阅信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryMtsSubscrbieInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001011" service_title="新增行情订阅信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addMtsSubscrbieInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001012" service_title="修改行情订阅信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modMtsSubscrbieInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001013" service_title="删除行情订阅信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delMtsSubscrbieInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001014" service_title="查询序列号配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryMtsSerialAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001015" service_title="新增序列号配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addMtsSerialAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001016" service_title="修改序列号配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modMtsSerialAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0001017" service_title="删除序列号配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delMtsSerialAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+</services>

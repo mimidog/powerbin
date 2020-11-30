@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>角色权限设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+
+$(function () {
+    $('table[func="getView"]').attr('id', 'UUM_roleMrg2').addClass('kui-datagrid');
+});
+
+var ROLE_ID; //声明一个全局变量用来获取选中的角色id
+
+// 角色使用权限设置
+function roleUsePermSet() {
+    var row = $('table[func="getView"]').datagrid('getSelected');
+    if (row == null) {
+        $.message.alert('请选择一条记录！');
+        return;
+    } else {
+        ROLE_ID = row['ROLE_ID'];
+        unAllSelect($('#usePermTree'));
+        searchHadUsePerm();
+        $('#roleUsePermWindow').window('open');
+    }
+}
+
+// 角色授权权限设置
+function roleAuthPermSet() {
+    var row = $('table[func="getView"]').datagrid('getSelected');
+
+    if (row == null) {
+        $.message.alert('请选择一条记录！');
+        return;
+    } else {
+        ROLE_ID = row['ROLE_ID'];
+        unAllSelect($('#authPermTree'));
+        searchHadAuthPerm();
+        $('#roleAuthPermWindow').window('open');
+    }
+}
+
+/**目录树取消全选**/
+function unAllSelect(treeObj) {
+    var roots = treeObj.tree('getRoots');//获取根节点，返回节点数组。
+    for (var i = 0; i < roots.length; i++) {
+        var node = treeObj.tree('find', roots[i].id);  //分别获取单个节点
+        treeObj.tree('uncheck', node.target);    //设置节点的未选中状态。
+    }
+}
+
+
+//得到已有的使用权限
+function searchHadUsePerm() {
+    var rs = commonRequest({
+        bex_codes:'UUM_userPermQuery',
+        OBJ_ID:ROLE_ID,
+        OBJ_TYPE:'1',
+        AUTH_TYPE:'1'
+    });
+    if (rs.length > 0) {
+        for (var i = 0; i < rs.length; i++) {
+            var node = $('#usePermTree').tree('find', rs[i].PERM_ID); //根据权节点的ID值得到节点对象
+            if (node != null) {
+                $('#usePermTree').tree('check', node.target);//设置节点的选中状态
+            }
+        }
+        $('#usePermTree').tree('collapseAll');
+    } else {
+        $('#usePermTree').tree('collapseAll');
+    }
+}
+//得到已有的授权权限
+function searchHadAuthPerm() {
+    var rs = commonRequest({
+        bex_codes:'UUM_userPermQuery',
+        OBJ_ID:ROLE_ID,
+        OBJ_TYPE:'1',
+        AUTH_TYPE:'2'
+    });
+    if (rs.length > 0) {
+        for (var i = 0; i < rs.length; i++) {
+            var node = $('#authPermTree').tree('find', rs[i].PERM_ID); //根据权节点的ID值得到节点对象
+            if (node != null) {
+                $('#authPermTree').tree('check', node.target);//设置节点的选中状态
+            }
+        }
+        $('#authPermTree').tree('collapseAll');
+    } else {
+        $('#authPermTree').tree('collapseAll');
+    }
+
+}
+//                提交使用权限
+function tijiaoUse() {
+    var permIds = '';
+    var checkedNodes = $('#usePermTree').tree('getChecked'); //点得到所有选中的节点
+    if (checkedNodes.length == 0) {
+        $.message.alert('请选择权限！');
+        return;
+    }
+    if (checkedNodes.length > 0) {
+        $.each(checkedNodes, function (checkkey, checknodeVal) {
+            permIds += checkedNodes[checkkey].id + ',';
+        });
+        permIds = permIds.substring(0, permIds.length - 1); //得到符合插入的id串
+        var rs = commonRequest({
+            bex_codes:'UUM_userPermQuery',
+            OBJ_ID:ROLE_ID,
+            OBJ_TYPE:'1',
+            AUTH_TYPE:'1'
+        });
+        //先判断该角色是否已经有对应的权限，做标记并作判断
+        if (rs.length > 0) {  //已存在权限的情况
+            var PERM_SET_ID = rs[0].PERM_SET_ID;
+            // 先删除该权限集编号下的所有权限编号，然后在该权限集编号上添加已选择好的权限id
+            ajaxRequest({
+                async:false,
+                req:[
+                    {
+                        service:'P9999999',
+                        bex_codes:'UUM_permSetMemberDelete',
+                        PERM_SET_ID:PERM_SET_ID,
+                        AUTH_TYPE:'1'
+                    }
+                ],
+                func:function (data) {
+                    if (data[0].message[0].flag == "0") {
+                        var permID = permIds.split(',')
+                        if (permID.length > 0) {
+                            for (var i = 0; i < permID.length; i++) {
+                                ajaxRequest({
+                                    async:false,
+                                    req:[
+                                        {
+                                            service:'P9999999',
+                                            bex_codes:'UUM_permSetMemberInsert',
+                                            PERM_SET_ID:PERM_SET_ID,
+                                            PERM_ID:permID[i],
+                                            AUTH_TYPE:'1'
+                                        }
+                                    ],
+                                    func:function (data) {
+                                    },
+                                    error:function () {
+                                        $.message.alert('操作失败！');
+                                        return;
+                                    }
+                                });
+                            }
+                        } else {
+                            $.message.alert("没有要插入的选项！请选择");
+                            return;
+                        }
+                        $.message.alert('角色使用设置权限成功！');
+                        $('#roleUsePermWindow').window('close');
+                    } else {
+                        $.message.alert(data[0]['message'][0]['prompt'] + "!");
+                        return;
+                    }
+                },
+                error:function () {
+                    $.message.alert('操作失败！');
+                    return;
+                }
+            });
+
+        } else {//该角色还没对应的权限时，执行以下操作
+            //先在权限集表中新建新的记录，然后把新建的记录的权限集编号作为用户权限表中的权限集的值添加到其中（并且新建记录把角色id带上）
+            var NEW_PERM_SET_ID = parseInt(10000 * Math.random());
+//             $.message.alert('生成的新的NEW_PERM_SET_ID' + NEW_PERM_SET_ID);
+            ajaxRequest({
+                async:false,
+                req:[
+                    {
+                        service:'P9999999',
+                        bex_codes:'UUM_userPermInsert',
+                        OBJ_TYPE:'1',
+                        OBJ_ID:ROLE_ID,
+                        ASS_TYPE:'1',
+                        PERM_ID:NEW_PERM_SET_ID,
+                        AUTH_TYPE:'1'
+                    }
+                ],
+                func:function (data) {
+                    if (data[0].message[0].flag == "0") {
+                        var permID = permIds.split(',')
+                        if (permID.length > 0) {
+                            for (var i = 0; i < permID.length; i++) {
+                                ajaxRequest({
+                                    async:false,
+                                    req:[
+                                        {
+                                            service:'P9999999',
+                                            bex_codes:'UUM_permSetMemberInsert',
+                                            PERM_SET_ID:NEW_PERM_SET_ID,
+                                            PERM_ID:permID[i],
+                                            AUTH_TYPE:'1'
+                                        }
+                                    ],
+                                    func:function (data) {
+                                    },
+                                    error:function () {
+                                        $.message.alert('操作失败！');
+                                        return;
+                                    }
+                                });
+                            }
+                        } else {
+                            $.message.alert("没有要插入的选项！请选择");
+                            return;
+                        }
+                        $.message.alert('角色使用设置权限成功！');
+                        $('#roleUsePermWindow').window('close');
+                    } else {
+                        $.message.alert(data[0]['message'][0]['prompt'] + "!");
+                        return;
+                    }
+                },
+                error:function () {
+                    $.message.alert('操作失败！');
+                    return;
+                }
+            });
+
+        }
+    }
+}
+
+//提交授权权限
+function tijiaoAuth() {
+    var permIds = '';
+    var checkedNodes = $('#authPermTree').tree('getChecked'); //点得到所有选中的节点
+    if (checkedNodes.length == 0) {
+        alert('请选择权限！');
+        return;
+    }
+    if (checkedNodes.length > 0) {
+        $.each(checkedNodes, function (checkkey, checknodeVal) {
+            permIds += checkedNodes[checkkey].id + ',';
+        });
+        permIds = permIds.substring(0, permIds.length - 1); //得到符合插入的id串
+        var rs = commonRequest({
+            bex_codes:'UUM_userPermQuery',
+            OBJ_ID:ROLE_ID,
+            OBJ_TYPE:'1',
+            AUTH_TYPE:'2'
+        });
+        //先判断该角色是否已经有对应的权限，做标记并作判断
+        if (rs.length > 0) {  //已存在权限的情况
+            var PERM_SET_ID = rs[0].PERM_SET_ID;
+            // 先删除该权限集编号下的所有权限编号，然后在该权限集编号上添加已选择好的权限id
+            ajaxRequest({
+                async:false,
+                req:[
+                    {
+                        service:'P9999999',
+                        bex_codes:'UUM_permSetMemberDelete',
+                        PERM_SET_ID:PERM_SET_ID,
+                        AUTH_TYPE:'2'
+                    }
+                ],
+                func:function (data) {
+                    if (data[0].message[0].flag == "0") {
+                        var permID = permIds.split(',')
+                        if (permID.length > 0) {
+                            for (var i = 0; i < permID.length; i++) {
+                                ajaxRequest({
+                                    async:false,
+                                    req:[
+                                        {
+                                            service:'P9999999',
+                                            bex_codes:'UUM_permSetMemberInsert',
+                                            PERM_SET_ID:PERM_SET_ID,
+                                            PERM_ID:permID[i],
+                                            AUTH_TYPE:'2'
+                                        }
+                                    ],
+                                    func:function (data) {
+
+                                    },
+                                    error:function () {
+                                        $.message.alert('操作失败！');
+                                        return;
+                                    }
+                                });
+                            }
+                        } else {
+                            $.message.alert("没有要插入的选项！请选择");
+                            return;
+                        }
+
+                        $.message.alert('角色授权权限设置成功！');
+                        $('#roleAuthPermWindow').window('close');
+                    } else {
+                        $.message.alert(data[0]['message'][0]['prompt'] + "!");
+                        return;
+                    }
+                },
+                error:function () {
+                    $.message.alert('操作失败！');
+                    return;
+                }
+            });
+
+        } else {//该角色还没对应的权限时，执行以下操作
+            //先在权限集表中新建新的记录，然后把新建的记录的权限集编号作为用户权限表中的权限集的值添加到其中（并且新建记录把角色id带上）
+            var NEW_PERM_SET_ID = parseInt(10000 * Math.random());
+            ajaxRequest({
+                async:false,
+                req:[
+                    {
+                        service:'P9999999',
+                        bex_codes:'UUM_userPermInsert',
+                        OBJ_TYPE:'1',
+                        OBJ_ID:ROLE_ID,
+                        ASS_TYPE:'1',
+                        PERM_ID:NEW_PERM_SET_ID,
+                        AUTH_TYPE:'2'
+                    }
+                ],
+                func:function (data) {
+                    if (data[0].message[0].flag == "0") {
+                        var permID = permIds.split(',')
+                        if (permID.length > 0) {
+                            for (var i = 0; i < permID.length; i++) {
+                                ajaxRequest({
+                                    async:false,
+                                    req:[
+                                        {
+                                            service:'P9999999',
+                                            bex_codes:'UUM_permSetMemberInsert',
+                                            PERM_SET_ID:NEW_PERM_SET_ID,
+                                            PERM_ID:permID[i],
+                                            AUTH_TYPE:'2'
+                                        }
+                                    ],
+                                    func:function (data) {
+                                    },
+                                    error:function () {
+                                        $.message.alert('操作失败！');
+                                        return;
+                                    }
+                                });
+                            }
+                        } else {
+                            $.message.alert("没有要插入的选项！请选择");
+                            return;
+                        }
+                        $.message.alert('角色授权权限设置成功！');
+                        $('#roleAuthPermWindow').window('close');
+                    } else {
+                        $.message.alert(data[0]['message'][0]['prompt'] + "!");
+                        return;
+                    }
+
+                },
+                error:function () {
+                    $.message.alert('操作失败！');
+                    return;
+                }
+            });
+
+        }
+    }
+}
+
+
+</script>
+</head>
+<body>
+<table func="getView"></table>
+<div id="roleAuthPermWindow" class="kui-window" style=" width:400px;height:350px;padding:10px"
+     kui-options=" title:'角色授权权限',modal:true,closed:true,iconCls:'icon-save'">
+
+    <div class="kui-layout" kui-options="fit:true">
+        <div kui-options="region:'center'" style="padding:10px;">
+            <ul id="authPermTree" class="kui-tree" kui-options="
+                        animate:true,
+                        checkbox:true,
+                        req:[{service:'P9999999',
+                              bex_codes:'UPM_menuQuery2'}],
+                        conf:{
+                            nodeId:'MENU_ID',
+                            nodeName:'MENU_NAME',
+                            treeType:'1',
+                            parNode:'PAR_MENU'
+                        }
+                        "></ul>
+        </div>
+
+        <div kui-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+            <a href="javascript:void(0)" class="kui-linkbutton" onclick="tijiaoAuth()">提交</a>
+            <a href="javascript:void(0)" class="kui-linkbutton"
+               onclick="javascript:$('#roleAuthPermWindow').window('close')">取消</a>
+        </div>
+    </div>
+
+</div>
+
+<div id="roleUsePermWindow" class="kui-window" style=" width:400px;height:350px;padding:10px"
+     kui-options=" title:'角色使用权限',modal:true,closed:true,iconCls:'icon-save'">
+
+    <div class="kui-layout" kui-options="fit:true">
+        <div kui-options="region:'center'" style="padding:10px;">
+            <ul id="usePermTree" class="kui-tree" kui-options="
+                        animate:true,
+                        checkbox:true,
+                        req:[{service:'P9999999',
+                              bex_codes:'UPM_menuQuery2'}],
+                        conf:{
+                            nodeId:'MENU_ID',
+                            nodeName:'MENU_NAME',
+                            treeType:'1',
+                            parNode:'PAR_MENU'
+                        }
+                        "></ul>
+        </div>
+
+        <div kui-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+            <a href="javascript:void(0)" class="kui-linkbutton" onclick="tijiaoUse()">提交</a>
+            <a href="javascript:void(0)" class="kui-linkbutton"
+               onclick="javascript:$('#roleUsePermWindow').window('close')">取消</a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

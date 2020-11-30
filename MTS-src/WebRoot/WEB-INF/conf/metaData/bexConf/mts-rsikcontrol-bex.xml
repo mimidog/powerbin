@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--查询维度设置信息-->
+    <bex bex_code="query_T_RISK_TYPE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_RISK_TYPE_CFG" attr2="mts"/>
+    <!--插入维度设置信息-->
+    <bex bex_code="insert_T_RISK_TYPE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_RISK_TYPE_CFG" attr2="mts"/>
+    <!--修改维度设置信息-->
+    <bex bex_code="update_T_RISK_TYPE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_RISK_TYPE_CFG" attr2="mts"/>
+    <!--修改风控类型状态信息-->
+    <bex bex_code="update_T_RISK_TYPE_CFG_STA_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_RISK_TYPE_CFG_STA" attr2="mts"/>
+    <!--删除维度设置信息-->
+    <bex bex_code="delete_T_RISK_TYPE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_RISK_TYPE_CFG" attr2="mts"/>
+
+    <!--查询风控配置信息-->
+    <bex bex_code="query_T_RISK_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_RISK_CFG" attr2="mts"/>
+    <!--新增风控配置信息-->
+    <bex bex_code="insert_T_RISK_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_RISK_CFG" attr2="mts"/>
+    <!--更新风控配置信息-->
+    <bex bex_code="update_T_RISK_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_RISK_CFG" attr2="mts"/>
+    <!--删除风控配置信息-->
+    <bex bex_code="delete_T_RISK_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_RISK_CFG" attr2="mts"/>
+
+    <!--查询操作员交易行为控制信息-->
+    <bex bex_code="query_T_TRADE_ACT_CTRL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_TRADE_ACT_CTRL" attr2="mts"/>
+    <!--新增操作员交易行为控制信息-->
+    <bex bex_code="insert_T_TRADE_ACT_CTRL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_TRADE_ACT_CTRL" attr2="mts"/>
+    <!--修改操作员交易行为控制信息-->
+    <bex bex_code="update_T_TRADE_ACT_CTRL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_TRADE_ACT_CTRL" attr2="mts"/>
+
+
+</bexs>
+ 

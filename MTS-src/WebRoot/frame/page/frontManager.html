@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>门户设计</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="../../opp/css/portal-icon.css"/>
+<link rel="stylesheet" type="text/css" href="../../frame/css/front-manager.css"/>
+<link rel="stylesheet" type="text/css" href="../../frame/css/front-common.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../frame/js/front-base.js"></script>
+<script type="text/javascript" src="../../frame/js/front-manager.js"></script>
+<script type="text/javascript">
+window.$ready = function() {
+	using(["panel", "layout", "tree", "accordion", "menu", "linkbutton", "combobox", "combogrid", "validatebox"], function() {
+		frontManager.init();
+	});
+}
+</script>
+</head>
+<body id="layout_main" kui-options="fit:true">
+	<div kui-options="region:'west',split:false" style="width:180px;overflow:auto;">
+		<div id="accordion_west" kui-options="border:false" style="height:350px;">
+			<div id="accordion_layout" title="布局" kui-options="selected:true,iconCls:'portal-icon portal-panel'"></div>		
+			<div id="accordion_container" title="容器" kui-options="iconCls:'portal-icon portal-container'"></div>
+			<div id="accordion_component" title="组件" kui-options="iconCls:'portal-icon portal-comp'" ></div>
+		</div>				
+		<div id="accordion_west_param" kui-options="border:false">
+			<div id="accordion_comp_param" title="组件参数" style="max-height:140px;" kui-options="iconCls:'portal-icon portal-param',selected:true"></div>
+		</div>				
+	</div>
+	<div kui-options="region:'center'">
+		<div id="panel_design" kui-options="fit:true" style="overflow:hidden;">
+			<div id="panel_menu" class="panel-menu">
+				<div class="search-wrap">
+					<div class="user-label">
+						<input id="radio_user_code" type="radio" name="search_radio" value="0"/>员工编号&nbsp;
+						<input id="radio_user_role" type="radio" name="search_radio" value="1"/>岗位
+					</div>
+					<div class="user-select">
+						<input id="user_role" kui-options="req:[{service:'P0001045',ORD_BY_NAME:'1',POST_STA:'1'}],isClear:false,panelWidth:350,panelHeight:280,idField:'POST_ID',textField:'POST_NAME'"/>
+						<input id="user_code" kui-options="req:[{service:'P0001008',USER_STA:'1'}],fallParas:[{enable:true}],isClear:false,panelWidth:500,panelHeight:280,idField:'USER_CODE',textField:'USER_NAME'"/>
+					</div>
+				</div>
+				<div id="menu_div" class="menu-div">
+					<div class="menu-tab-wrap">
+						<div class="menu-tab-btn menu-tab-btn-left" title="上一页"></div>
+						<div id="menu_tab_items" class="menu-tab-items"></div>
+						<div class="menu-tab-btn menu-tab-btn-right" title="下一页"></div>
+					</div>
+					<div class="menu-accordion">
+						<div id="menu_accordion_header" class="menu-accordion-headers"></div>
+						<div id="menu_wrap" class="menu-wrap"></div>
+					</div>
+				</div>
+				<div class="btn-wrap">
+					<div id="btn_pre" class="div-icon-button btn-icon-preview" title="预览"></div>
+					<div id="btn_save" class="div-icon-button btn-icon-save" title="保存"></div>
+					<div id="btn_float" class="div-icon-button btn-icon-max" title="最大化"></div>
+					<div id="btn_clear" class="div-icon-button btn-icon-clear" title="清空菜单"></div>
+					<div id="btn_copy" class="div-icon-button btn-icon-copy" title="复制"></div>
+					<div id="btn_paste" class="div-icon-button btn-icon-paste" title="粘贴"></div>
+				</div>		
+			</div>		
+			<div id="id_layout_wrap" class="layout-wrap">
+			</div>
+		</div>
+	</div>
+	<div id="preview_window" style="display:none;" title="预览" closable="true" collapsible="false" minimizable="false" maximizable="false" modal="true">
+		<div id="id_layout_wrap_preview" class="layout-wrap layout-wrap-preview">
+		</div>
+	</div>
+	<div id="menu_design" style="width:100px;display:none;">
+		<div id="disp_title">禁用标题</div>
+		<div id="rename_title">修改标题</div>
+		<div id="params">组件参数</div>
+		
+		<div id="fixed_top" fixed_direction="0">向上停靠</div>
+		<div id="fixed_bottom" fixed_direction="2">向下停靠</div>
+		<div id="fixed_left" fixed_direction="3">向左停靠</div>
+		<div id="fixed_right" fixed_direction="1">向右停靠</div>
+		<div id="cancel_fixed">取消停靠</div>
+		
+		<div id="top" align="0">页签靠上</div>
+		<div id="right" align="1">页签靠右</div>
+		<div id="bottom" align="2">页签靠下</div>
+		<div id="left" align="3">页签靠左</div>
+		
+		<div class="menu-sep"></div>
+		
+		<div id="remove" iconCls="icon-remove">移除</div>
+	</div>
+	<div id="menu_directory" style="width:100px;display:none;">
+		<div id="add_dir">新建文件夹</div>
+		<div id="change_view">快捷方式视图</div>
+		<div id="rename_dir">重命名</div>
+		<div id="rename_title">修改标题</div>
+		<div id="params">组件参数</div>
+		<div id="remove_out">移出文件夹</div>
+		<div id="remove" iconCls="icon-remove">移除</div>
+	</div>
+	<div id="menu_tab" style="width:100px;display:none;">
+		<div id="add_tab">添加页签</div>
+		<div id="rename_title">修改标题</div>
+		<div id="remove" iconCls="icon-remove">移除</div>
+	</div>
+</body>
+</html>

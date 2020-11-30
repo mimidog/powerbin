@@ -1,0 +1,98 @@
+.node-pointer {
+	cursor:pointer !important;
+}
+
+.flow-panel {
+	background: -webkit-linear-gradient(bottom, #E5F5FF 0, #FFFFFF 100%);
+	background: -moz-linear-gradient(bottom, #E5F5FF 0, #FFFFFF 100%);
+	background: -o-linear-gradient(bottom, #E5F5FF 0, #FFFFFF 100%);
+	background: linear-gradient(to bottom, #E5F5FF 0, #FFFFFF 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5F5FF, endColorstr=#FFFFFF, GradientType=0);
+	width:100%;
+	height:55px;
+	font-size:13px;
+	font-family: "微软雅黑";
+}
+
+.flow-panel .flow-scroll {
+	background-image:url(images/step-turn-arrow-bg.png);
+	background-repeat:no-repeat;
+	width:20px;
+	height:35px;
+	float:left;
+	margin-top:10px;
+	cursor:pointer;
+	visibility: hidden;
+}
+
+.flow-panel .flow-scroll-left {
+	background-position: 0 0;
+}
+
+.flow-panel .flow-scroll-right {
+	background-position: -18px 0;
+	margin-left:5px;
+}
+
+.flow-panel .flow-center {
+	float:left;
+	height:55px;
+	overflow:hidden;
+}
+
+.flow-panel .flow-nodes {
+	float:left;
+	height:55px;
+}
+
+.flow-panel .flow-nodes .flow-node {
+	background-image:url(images/step-icon-bg.png);
+	background-repeat:no-repeat;
+	max-width:105px;
+	height:30px;
+	float:left;
+	cursor:default;
+	line-height:30px;
+	padding-left:33px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    margin-top:13px;
+}
+
+.flow-panel .flow-nodes .flow-node-done {
+	background-position:2px 1px;
+	color:#57A9E3;
+} 
+
+.flow-panel .flow-nodes .flow-node-ing {
+	background-position:2px -27px;
+	color:#1A70C2;
+} 
+
+.flow-panel .flow-nodes .flow-node-todo {
+	background-position:2px -55px;
+	color:#8F8F8F;
+}
+
+.flow-panel .flow-nodes .node-selected {
+	font-weight:bold;
+}
+
+.flow-panel .flow-nodes .flow-arrow {
+	background-image:url(images/step-arrow-bg.png);
+	background-repeat:no-repeat;
+	width:43px;
+	height:15px;
+	float:left;
+	margin: 19px 5px 0px 10px;
+}
+
+.flow-panel .flow-nodes .flow-arrow-done {
+	background-position:0 0;
+} 
+
+.flow-panel .flow-nodes .flow-arrow-todo {
+	background-position:-42px 0;
+} 

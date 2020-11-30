@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+	<atom atom_code="seqItemId" atom_name="字典条目序列产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_SEQNEXTVAL" attr1="SEQ_DICT_ITEM" attr2=""/>
+    <atom atom_code="insertSysMenu" atom_name="新增系统菜单" atom_class="com.szkingdom.business.atom.param.SysMenuAtom" atom_method="executeInsertMenu" attr1="SEQ_MENU" attr2=""/>
+	<atom atom_code="insertSysPerm" atom_name="新增系统权限" atom_class="com.szkingdom.business.atom.perm.PermAtom" atom_method="executeInsertPerm" attr1="SEQ_PERMISSION" attr2=""/>
+	<atom atom_code="delSysPerm" atom_name="删除系统权限" atom_class="com.szkingdom.business.atom.perm.PermAtom" atom_method="executeDelPerm" attr1="" attr2=""/>
+	<atom atom_code="delSysMenu" atom_name="删除系统菜单" atom_class="com.szkingdom.business.atom.param.SysMenuAtom" atom_method="executeDelMenu" attr1="" attr2=""/>
+
+
+	<!--by 越帅军 2016/07/14 添加用户权限信息序列器-->
+	<atom atom_code="seqUserPermId" atom_name="用户权限序列产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom"
+		  atom_method="COMM_SEQNEXTVAL" attr1="SEQ_AUTH_ID" attr2="AUTH_ID"/>
+
+	<!--添加attr2属性即要添加插入的列名，如PERM_ID，，by  2016/07/14-->
+	<atom atom_code="seqPermissionId" atom_name="权限序列产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom"
+		  atom_method="COMM_SEQNEXTVAL" attr1="SEQ_PERMISSION" attr2="PERM_ID"/>
+
+
+	<!--by 越帅军 2016/04/20 添加“特殊权限定义表”序列器-->
+	<atom atom_code="seqSpePermId" atom_name="特殊权限定义序列产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom"
+		  atom_method="COMM_SEQNEXTVAL" attr1="SEQ_PRE_PERM" attr2=""/>
+
+	<!--by 越帅军 2016/04/20 添加组件序列器-->
+	<atom atom_code="seqComponentsId" atom_name="组件序列产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom"
+		  atom_method="COMM_SEQNEXTVAL" attr1="SEQ_COMPONENTS" attr2=""/>
+
+
+	<atom atom_code="syncCompPerm" atom_name="同步组件权限" atom_class="com.szkingdom.business.atom.component.ComponentAtom" atom_method="executeSyncComp" attr1="SEQ_PERMISSION" attr2=""/>
+	<atom atom_code="addCascadeComponent" atom_name="组件新增到权限表中" atom_class="com.szkingdom.business.atom.component.ComponentAtom" atom_method="addCascadeComponent" attr1="SEQ_PERMISSION" attr2=""/>
+	<atom atom_code="updateCascadeComponent" atom_name="在权限表中进行组件更新" atom_class="com.szkingdom.business.atom.component.ComponentAtom" atom_method="updateCascadeComponent" attr1="" attr2=""/>
+	<atom atom_code="Run_getUserMenuComp" atom_name="门户菜单组件查询" atom_class="com.szkingdom.business.atom.component.ComponentAtom" atom_method="getUserMenuComp" attr1="" attr2=""/>
+	<atom atom_code="Run_getUserMenuContComp" atom_name="门户菜单容器组件查询" atom_class="com.szkingdom.business.atom.component.ComponentAtom" atom_method="getUserMenuContComp" attr1="" attr2=""/>
+	
+	<atom atom_code="insertRefPlat" atom_name="新增系统关联平台" atom_class="com.szkingdom.business.atom.param.RefPlatAtom" atom_method="executeInsertRefPlat" attr1="SEQ_UUM_PLATFORM" attr2=""/>
+	<atom atom_code="modifyRefPlat" atom_name="修改系统关联平台" atom_class="com.szkingdom.business.atom.param.RefPlatAtom" atom_method="executeModifyRefPlat" attr1="" attr2=""/>
+	<atom atom_code="deleteRefPlat" atom_name="删除系统关联平台" atom_class="com.szkingdom.business.atom.param.RefPlatAtom" atom_method="executeDeleteRefPlat" attr1="" attr2=""/>
+	
+	<atom atom_code="batchUpdateUserPassword" atom_name="批量修改人员密码" atom_class="com.szkingdom.business.atom.user.UserPasswordAtom" atom_method="batchUpdateUserPassword" attr1="" attr2=""/>
+
+	<atom atom_code="insertMenuPerm" atom_name="菜单模式权限维护" atom_class="com.szkingdom.business.atom.perm.UserPermAtom" atom_method="executeInsertMenuPerm" attr1="SEQ_AUTH_ID" attr2=""/>
+	<atom atom_code="insertObjPerm" atom_name="对象模式权限维护" atom_class="com.szkingdom.business.atom.perm.UserPermAtom" atom_method="executeInsertObjPerm" attr1="SEQ_AUTH_ID" attr2=""/>
+	<atom atom_code="insertUserPermCon" atom_name="权限约束维护" atom_class="com.szkingdom.business.atom.perm.UserPermConAtom" atom_method="executeInsertUserPermCons" attr1="SEQ_USER_PERM_CONS" attr2=""/>
+	<atom atom_code="insertUserConfig" atom_name="用户配置维护" atom_class="com.szkingdom.business.atom.user.UserConfigAtom" atom_method="executeInsertUserConfig" attr1="" attr2=""/>
+	<atom atom_code="selectUserMenu" atom_name="查询用户菜单" atom_class="com.szkingdom.business.atom.user.UserMenuAtom" atom_method="executeselectMenu" attr1="" attr2=""/>
+	<atom atom_code="insertServiceLog" atom_name="新增操作流水" atom_class="com.szkingdom.business.atom.param.SysServiceLogAtom" atom_method="executeInsertServiceLog" attr1="" attr2=""/>
+    <atom atom_code="generatorModelConf" atom_name="生成对象模型配置" atom_class="com.szkingdom.business.atom.generator.GeneratorAtom" atom_method="doAtomGenerator" attr1="" attr2=""/>
+	
+	<atom atom_code="sysMenuLvlUpdate" atom_name="菜单级别更新" atom_class="com.szkingdom.business.atom.param.SysMenuAtom" atom_method="executeMoveMenu" attr1="" attr2=""/>
+	<atom atom_code="sysMenubatchSync" atom_name="菜单批量导入" atom_class="com.szkingdom.business.atom.syncmenu.SyncMenuAtom" atom_method="batchSyncMenu" attr1="SEQ_MENU" attr2=""/>
+
+	<!--by  2016/04/21
+             @attr1：【KPT_MENU_COMP】表插入的序列器-SEQ_MENU_COMP
+             @attr2: 【KPT_MENU_CONT_COMP】表插入的序列器-SEQ_MENU_CONT_COMP
+             @attr3: 【KPT_MENU_COMP_PARAM】表插入的序列器-SEQ_MENU_COMP_PARAM
+             @attr4: 【KPT_MENU_CONT_TAB】表入的序列器-SEQ_MENU_CONT_TAB
+        -->
+	<atom atom_code="menuCompCfgSave" atom_name="门户设计保存" atom_class="com.szkingdom.business.atom.kpt.KptCompAtom" atom_method="executeMenuCompCfgSave"
+		  attr1="SEQ_MENU_COMP" attr2="SEQ_MENU_CONT_COMP" attr3="SEQ_MENU_COMP_PARAM" attr4="SEQ_MENU_CONT_TAB"/>
+	
+    <atom atom_code="seqPostId" atom_name="岗位序列产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_SEQNEXTVAL" attr1="SEQ_POST" attr2=""/>
+	<atom atom_code="seqRoleId" atom_name="角色序列产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_SEQNEXTVAL" attr1="SEQ_ROLE" attr2=""/>
+
+
+	<atom atom_code="permLvl" atom_name="权限级别产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_CREATELVL" attr1="UUM_PERMISSION,PERM_ID,PAR_PERM,PERM_LVL,4,${PAR_PERM}" attr2=""/>
+	<atom atom_code="orgLvl" atom_name="机构级别产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_CREATELVL" attr1="UPM_ORG,ORG_CODE,PAR_ORG,ORG_LVL,4,${PAR_ORG}" attr2=""/>
+	<atom atom_code="seqdataPermSet" atom_name="权限集产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_SEQNEXTVAL" attr1="SEQ_DATA_PERM_SET" attr2=""/>
+	<atom atom_code="seqManageObjType" atom_name="权限管理对象产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_SEQNEXTVAL" attr1="SEQ_MANAGE_OBJ_TYPE" attr2=""/>
+	<atom atom_code="seqManageObjEmpower" atom_name="数据权限对象产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_SEQNEXTVAL" attr1="SEQ_MANAGE_OBJ_EMPOWER" attr2=""/>
+	<atom atom_code="seqOPSiteId" atom_name="用户操作站点对象产生器" atom_class="com.szkingdom.frame.business.atom.bizcomm.BizCommAtom" atom_method="COMM_SEQNEXTVAL" attr1="SEQ_OP_SITE" attr2=""/>
+
+	<atom atom_code="userInfoInsert" atom_name="人员开户" atom_class="com.szkingdom.business.atom.user.UserInfoInsertAtom" atom_method="executeInsertUserInfo" attr1="" attr2=""/>
+	
+	<!-- 发布  -->
+	<atom atom_code="sysParamPublish" atom_name="系统参数发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="sysParamPublish" attr1="" attr2=""/>
+	<atom atom_code="dictPublish" atom_name="数据字典发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="dictPublish" attr1="" attr2=""/>
+	<atom atom_code="dictItemPublish" atom_name="数据字典项发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="dictItemPublish" attr1="" attr2=""/>
+	<atom atom_code="orgPublish" atom_name="机构发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="orgPublish" attr1="" attr2=""/>
+	<atom atom_code="userInfoPublish" atom_name="用户信息发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="userInfoPublish" attr1="" attr2=""/>
+	<atom atom_code="postPublish" atom_name="岗位发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="postPublish" attr1="" attr2=""/>
+	<atom atom_code="rolePublish" atom_name="角色发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="rolePublish" attr1="" attr2=""/>
+	<atom atom_code="userPostPublish" atom_name="用户岗位发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="userPostPublish" attr1="" attr2=""/>
+	<atom atom_code="userMainPostPublish" atom_name="用户岗位发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="userMainPostPublish" attr1="" attr2=""/>
+	<atom atom_code="userRolePublish" atom_name="用户角色发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="userRolePublish" attr1="" attr2=""/>
+	<atom atom_code="permsetPublish" atom_name="权限集发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="permsetPublish" attr1="" attr2=""/>
+	<atom atom_code="permsetMenberPublish" atom_name="权限集成员发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="permsetMenberPublish" attr1="" attr2=""/>
+	<atom atom_code="sysServicePublish" atom_name="系统服务发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="sysServicePublish" attr1="" attr2=""/>
+	<atom atom_code="manObjPublish" atom_name="数据权限发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="manObjPublish" attr1="" attr2=""/>
+	<atom atom_code="manObjEmpowerPublish" atom_name="数据权限对象发布" atom_class="com.szkingdom.business.atom.publish.OppPublishAtom" atom_method="manObjEmpowerPublish" attr1="" attr2=""/>
+	<atom atom_code="threadTest" atom_name="线程测试" atom_class="com.szkingdom.business.atom.thread.test.ThreadTestAtom" atom_method="threadTest" attr1="" attr2=""/>
+	<atom atom_code="threadTest2" atom_name="线程测试" atom_class="com.szkingdom.business.atom.thread.test.ThreadTestAtom" atom_method="threadTest2" attr1="" attr2=""/>
+	<atom atom_code="threadTest3" atom_name="线程测试" atom_class="com.szkingdom.business.atom.thread.test.ThreadTestAtom" atom_method="threadTest3" attr1="" attr2=""/>
+	
+	<atom atom_code="helpInsert" atom_name="帮助信息新增" atom_class="com.szkingdom.business.atom.help.HelpAtom" atom_method="insertHelpAdd" attr1="" attr2=""/>	
+  <atom atom_code="helpUpdate" atom_name="帮助信息修改" atom_class="com.szkingdom.business.atom.help.HelpAtom" atom_method="updateHelpInfo" attr1="" attr2=""/>	
+
+</atoms>
+ 

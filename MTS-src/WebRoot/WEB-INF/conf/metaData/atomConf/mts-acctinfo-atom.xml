@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+	<atom atom_code="queryCustCuacctInfoAtom" atom_name="查询客户资金账号信息"
+		  atom_method="queryCustCuacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		   attr1="" attr2=""/>
+
+	<atom atom_code="addCustCuacctInfoAtom" atom_name="新增客户资金账号信息"
+		  atom_method="addCustCuacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modCustCuacctInfoAtom" atom_name="修改客户资金账号信息"
+		  atom_method="modCustCuacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delCustCuacctInfoAtom" atom_name="删除客户资金账号信息"
+		  atom_method="delCustCuacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryCustTrdacctInfoAtom" atom_name="查询客户交易账号信息"
+		  atom_method="queryCustTrdacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addCustTrdacctInfoAtom" atom_name="新增客户交易账号信息"
+		  atom_method="addCustTrdacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modCustTrdacctInfoAtom" atom_name="修改客户交易账号信息"
+		  atom_method="modCustTrdacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delCustTrdacctInfoAtom" atom_name="修改客户交易账号信息"
+		  atom_method="delCustTrdacctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryPerCustOpenAcctInfoAtom" atom_name="查询个人客户开户信息"
+		  atom_method="queryPerCustOpenAcctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addPerCustOpenAcctInfoAtom" atom_name="新增个人客户开户信息"
+		  atom_method="addPerCustOpenAcctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modPerCustOpenAcctInfoAtom" atom_name="修改个人客户开户信息"
+		  atom_method="modPerCustOpenAcctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delPerCustOpenAcctInfoAtom" atom_name="删除个人客户开户信息"
+		  atom_method="delPerCustOpenAcctInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryCustCuacctSubInfoAtom" atom_name="查询资金子账户设置信息"
+		  atom_method="queryCustCuacctSubInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addCustCuacctSubInfoAtom" atom_name="新增资金子账户设置信息"
+		  atom_method="addCustCuacctSubInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modCustCuacctSubInfoAtom" atom_name="修改资金子账户设置信息"
+		  atom_method="modCustCuacctSubInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delCustCuacctSubInfoAtom" atom_name="删除资金子账户设置信息"
+		  atom_method="delCustCuacctSubInfo"  atom_class="com.szkingdom.business.mts.AcctInfoManager"
+		  attr1="" attr2=""/>
+
+</atoms>
+ 

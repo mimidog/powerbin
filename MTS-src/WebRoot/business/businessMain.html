@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html style="overflow:hidden;">
+<head>
+<meta charset="UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>业务首页</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../../frame/css/ui-front-window.css"/>
+<link rel="stylesheet" type="text/css" href="../../frame/css/front-main.css"/>
+<link rel="stylesheet" type="text/css" href="../../frame/css/front-common.css"/>
+<link rel="stylesheet" type="text/css" href="../../opp/css/portal-icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../frame/js/front-base.js"></script>
+<script type="text/javascript" src="../../frame/js/front-main.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript">
+(function ($,window,undefined) {
+
+    var _shortCustMenu=[{MENU_ID:'11072',MENU_NAME:'客户综合查询',MENU_LINK:'../../business/accinInfo/customerIntegratedQuery.html',
+        MENU_PLAT:'1',MENU_ICO:'tools-icon-88'},
+        {MENU_ID:'11073',MENU_NAME:'交易员综合查询',MENU_LINK:'../../business/accinInfo/TraderOverAllQuery.html',
+            MENU_PLAT:'1',MENU_ICO:'tools-icon-143'}
+    ]
+	var busMainObj=function () {
+
+    };
+
+    var obj=busMainObj.prototype;
+
+     obj.fn={
+        init:function(){
+            obj.fn.intiPageSize();
+            obj.fn.initPageContent();
+            obj.fn.bindShortCut_evet();
+		},
+		//初始化页面大小
+        intiPageSize:function(){
+            $('.cont-tab-body').height($(document).height());
+            $('.cont-tab-body').width($(document).width());
+		},
+		//初始化页面内容
+        initPageContent:function () {
+            $('.cont-tab-body').html('');
+
+            if(_shortCustMenu.length==0){
+                $('.cont-tab-body').html('<img src="../common/image/back-img-1.png" height="'+($(document).height()-5)+'" '
+											+'width="'+$(document).width()+'"/>');
+			}
+            $.each(_shortCustMenu,function (idx,element) {
+					if($.trim(element.MENU_LINK) !='' && $.trim(element.MENU_ICO) !=''){
+					var dragWrap = $('<div class="drag-wrap"></div>');
+					$('.cont-tab-body').append(dragWrap);
+					dragWrap.addClass('shortcut-drag-wrap').addClass('drag-comp')
+						.attr('menu_id', element.MENU_ID).attr('title', element.MENU_NAME).attr('menu_plat', element.MENU_PLAT)
+						.attr('link_page', element.MENU_LINK);
+
+					var dragBody = $('<div class="drag-body"></div>');
+					dragBody.appendTo(dragWrap);
+					dragBody.addClass('' + element.MENU_ICO + '').css('cursor', 'pointer');
+
+					var dragName = $('<div class="drag-name"></div>');
+					dragName.appendTo(dragWrap).text(element.MENU_NAME);
+				}
+
+            })
+        },
+        //绑定图标点击事件
+        bindShortCut_evet:function () {
+            $('div.drag-wrap').click(function () {
+                var portal = top.window.mainFrame;
+                var mainPanel = portal.plat.getPlatMainPanel(),
+                    existWrap = mainPanel.find(".layout-wrap[menu_id='" +$(this).attr('menu_id')+ "']"),
+                    lWrap = $("<div class='layout-wrap'></div>").attr("menu_id", $(this).attr('menu_id'));
+
+                if (existWrap.length > 0) {
+                    portal.taskBar.maxTask.call(existWrap);
+                    return false;
+                }
+
+                lWrap.appendTo(mainPanel).show().siblings().hide();
+
+                portal.taskBar.addTaskItem.call(lWrap,$(this).attr('title'));
+                var iframeOpts = {
+                    src: portal.buildURL($(this).attr('link_page'), {
+                        "menuId": portal.taskBar.uuid,
+                        "CHK_FLAG": undefined,
+                        "F_SUBSYS": undefined,
+                        "F_MENU_PLAT": portal.plat.getPlatMainPanel(),
+                        "_": $.now()
+                    }),
+                    width: mainPanel.width() - 25,
+                    height: mainPanel.height() - 20
+                };
+
+                lWrap.width(iframeOpts.width + 10).height(iframeOpts.height + 5);
+                portal.createIframe(lWrap, iframeOpts);
+            })
+        }
+	}
+
+	window.pageObj=new busMainObj();
+})(jQuery,window)
+
+
+window.$ready=function(){
+    pageObj.fn.init();
+}
+
+</script>
+</head>
+<body>
+<div class="comp-body" >
+	<div class="cont-tab-wrap">
+		<div class="cont-tab-body" tab_index="0" disp_type="1"
+			 style="z-index: 0; display: block;">
+		</div>
+	</div>
+</div>
+</body>

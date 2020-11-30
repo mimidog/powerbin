@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="DynamicMapper.EventSubscription">
+
+  <!-- DELETE -->
+  <delete id="BpmEventSubscriptionDeleteSignal" parameterType="hashmap">
+    delete from UWK_RU_EVENT_SUBSCR where EVENT_SUBSCR_ID = #{id} and REV = #{revision}
+  </delete>
+  
+  <delete id="BpmEventSubscriptionDeleteCompensate" parameterType="hashmap">
+    delete from UWK_RU_EVENT_SUBSCR where EVENT_SUBSCR_ID = #{id} and REV = #{revision}
+  </delete>
+  
+  <delete id="BpmEventSubscriptionDeleteMessage" parameterType="hashmap">
+    delete from UWK_RU_EVENT_SUBSCR where EVENT_SUBSCR_ID = #{id} and REV = #{revision}
+  </delete>
+
+  <!-- RESULTMAP -->
+
+  <resultMap id="eventSubscriptionResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.EventSubscriptionEntity">
+    <id property="id" column="EVENT_SUBSCR_ID" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+    <result property="eventType" column="EVENT_TYPE" jdbcType="VARCHAR" />
+    <result property="eventName" column="EVENT_NAME" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACTIVITY_ID" jdbcType="VARCHAR" />
+    <result property="configuration" column="CONFIGURATION" jdbcType="VARCHAR" />
+    <result property="created" column="CREATE_TIME" jdbcType="TIMESTAMP" />           
+    <discriminator javaType="string" column="EVENT_TYPE">
+      <case value="message" resultMap="messageResultMap"/> 
+      <case value="signal" resultMap="signalResultMap"/> 
+      <case value="compensate" resultMap="compensateResultMap"/>
+    </discriminator>
+  </resultMap>
+
+  <resultMap id="messageResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.MessageEventSubscriptionEntity" extends="eventSubscriptionResultMap"/>
+  <resultMap id="signalResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.SignalEventSubscriptionEntity" extends="eventSubscriptionResultMap"/>   
+  <resultMap id="compensateResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.CompensateEventSubscriptionEntity" extends="eventSubscriptionResultMap"/>   
+
+  <!-- SELECT -->  
+
+  <select id="BpmEventSubscriptionSelect" parameterType="hashmap" resultMap="eventSubscriptionResultMap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME from UWK_RU_EVENT_SUBSCR where EVENT_SUBSCR_ID = #{id}
+  </select>
+
+  <select id="BpmEventSubscriptionSelectByQueryCriteria" parameterType="hashmap" resultMap="eventSubscriptionResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectEventSubscriptionByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmEventSubscriptionSelectCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select count(distinct RES.EVENT_SUBSCR_ID)
+    <include refid="selectEventSubscriptionByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectEventSubscriptionByQueryCriteriaSql">
+    from UWK_RU_EVENT_SUBSCR RES
+    <where>
+      <if test="eventSubscriptionId != null">
+        RES.EVENT_SUBSCR_ID = #{criteria.eventSubscriptionId}
+      </if>
+      <if test="processInstanceId != null">
+        and RES.PROC_INST_ID = #{criteria.processInstanceId}
+      </if>
+      <if test="executionId != null">
+        and RES.EXECUTION_ID = #{criteria.executionId}
+      </if>
+      <if test="activityId != null">
+        and RES.ACTIVITY_ID = #{criteria.activityId}
+      </if>
+      <if test="eventType != null">
+        and RES.EVENT_TYPE = #{criteria.eventType}
+      </if>
+      <if test="eventName != null">
+        and RES.EVENT_NAME = #{criteria.eventName}
+      </if>       
+    </where>
+  </sql>
+  
+  <select id="BpmEventSubscriptionsSelectSignalByEventName" parameterType="hashmap" resultMap="eventSubscriptionResultMap">
+    select * 
+    from UWK_RU_EVENT_SUBSCR EVT
+    inner join UWK_RU_EXECUTION EXC on EVT.EXECUTION_ID = EXC.EXECUTION_ID
+    where EVENT_TYPE = 'signal'
+    	and EVENT_NAME = #{eventName}
+    	and EXC.SUSPENSION_STATE = 1
+  </select>
+  
+   <select id="BpmSignalEventSubscriptionsSelectByProcessInstanceAndEventName" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select * 
+    from UWK_RU_EVENT_SUBSCR EVT
+    where (EVENT_TYPE = 'signal')
+        and EVENT_NAME = #{eventName}  
+        and PROC_INST_ID = #{processInstanceId}
+  </select> 
+  
+  <select id="BpmSignalEventSubscriptionsSelectByExecution" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = 'signal')
+        and (EXECUTION_ID = #{executionId})  
+  </select>
+  
+  <select id="BpmSignalEventSubscriptionsSelectByNameAndExecution" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = 'signal')
+    	and (EXECUTION_ID = #{executionId})
+    	and (EVENT_NAME = #{eventName})
+  </select>
+  
+  <select id="BpmEventSubscriptionsSelectByExecution" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EXECUTION_ID = #{executionId})
+  </select>
+      
+  <select id="BpmEventSubscriptionsSelectByExecutionAndType" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = #{eventType})
+    	and (EXECUTION_ID = #{executionId})
+  </select>
+  
+  <select id="BpmEventSubscriptionsSelectByExecutionTypeAndActivity" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = #{eventType})
+    	and (EXECUTION_ID = #{executionId})
+    	and (ACTIVITY_ID = #{activityId})
+  </select>
+  
+  <select id="BpmEventSubscriptionsSelectByConfiguration" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = #{eventType})
+    	and (CONFIGURATION = #{configuration})
+  </select>
+  
+  <select id="BpmEventSubscriptionsSelectByName" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = #{eventType})
+    	and (EVENT_NAME = #{eventName})
+  </select>
+  
+  <select id="BpmEventSubscriptionsSelectByNameAndExecution" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = #{eventType})
+    	and (EVENT_NAME = #{eventName})
+    	and (EXECUTION_ID = #{executionId})
+  </select>
+  
+   <select id="BpmStartEventSubscriptionSelectMessageByName" resultMap="eventSubscriptionResultMap" parameterType="hashmap">
+    select EVENT_SUBSCR_ID, REV, EVENT_TYPE, EVENT_NAME, EXECUTION_ID, PROC_INST_ID, ACTIVITY_ID, CONFIGURATION, CREATE_TIME 
+    from UWK_RU_EVENT_SUBSCR
+    where (EVENT_TYPE = 'message')
+    	and (EVENT_NAME = #{eventName})
+    	and EXECUTION_ID is null
+  </select>
+  
+  
+  <!-- MESSAGE INSERT -->
+  <insert id="BpmEventSubscriptionInsertMessage" parameterType="hashmap">
+ 	insert into UWK_RU_EVENT_SUBSCR (
+            EVENT_SUBSCR_ID, 
+            REV,
+            EVENT_TYPE,
+           	EVENT_NAME,
+           	EXECUTION_ID,
+           	PROC_INST_ID,
+           	ACTIVITY_ID,
+           	CONFIGURATION,
+           	CREATE_TIME
+    )
+    values (#{eventSubscriptionEntity.id, jdbcType=VARCHAR},
+            1,
+            #{eventSubscriptionEntity.eventType, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.eventName, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.executionId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.processInstanceId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.activityId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.configuration, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.created, jdbcType=TIMESTAMP}                   
+    )
+  </insert>
+
+  <!-- MESSAGE UPDATE -->
+
+  <update id="BpmEventSubscriptionUpdateMessage" parameterType="hashmap">
+    update UWK_RU_EVENT_SUBSCR
+    <set>
+       REV =  #{eventSubscriptionEntity.revisionNext, jdbcType=INTEGER},
+       EVENT_NAME = #{eventSubscriptionEntity.eventName, jdbcType=VARCHAR},
+       EXECUTION_ID = #{eventSubscriptionEntity.executionId, jdbcType=VARCHAR},
+       PROC_INST_ID = #{eventSubscriptionEntity.processInstanceId, jdbcType=VARCHAR},
+       ACTIVITY_ID = #{eventSubscriptionEntity.activityId, jdbcType=VARCHAR},
+       CONFIGURATION = #{eventSubscriptionEntity.configuration, jdbcType=VARCHAR},  
+       CREATE_TIME = #{eventSubscriptionEntity.created, jdbcType=TIMESTAMP}
+    </set>
+    where EVENT_SUBSCR_ID= #{eventSubscriptionEntity.id, jdbcType=VARCHAR}
+      and REV = #{eventSubscriptionEntity.revision, jdbcType=INTEGER}
+  </update>
+  
+   <!-- SIGNAL INSERT -->
+  
+  <insert id="BpmEventSubscriptionInsertSignal" parameterType="hashmap">
+   insert into UWK_RU_EVENT_SUBSCR (
+            EVENT_SUBSCR_ID, 
+            REV,
+            EVENT_TYPE,
+           	EVENT_NAME,
+           	EXECUTION_ID,
+           	PROC_INST_ID,
+           	ACTIVITY_ID,
+           	CONFIGURATION,
+           	CREATE_TIME
+    )
+    values (#{eventSubscriptionEntity.id, jdbcType=VARCHAR},
+            1,
+            'signal',
+            #{eventSubscriptionEntity.eventName, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.executionId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.processInstanceId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.activityId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.configuration, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.created, jdbcType=TIMESTAMP}          
+    )
+  </insert>
+
+  <!-- SIGNAL UPDATE -->
+
+  <update id="BpmEventSubscriptionUpdateSignal" parameterType="hashmap">
+    update UWK_RU_EVENT_SUBSCR
+    <set>
+       REV =  #{eventSubscriptionEntity.revisionNext, jdbcType=INTEGER},
+       EVENT_NAME = #{eventSubscriptionEntity.eventName, jdbcType=VARCHAR},
+       EXECUTION_ID = #{eventSubscriptionEntity.executionId, jdbcType=VARCHAR},
+       PROC_INST_ID = #{eventSubscriptionEntity.processInstanceId, jdbcType=VARCHAR},
+       ACTIVITY_ID = #{eventSubscriptionEntity.activityId, jdbcType=VARCHAR},
+       CONFIGURATION = #{eventSubscriptionEntity.configuration, jdbcType=VARCHAR},  
+       CREATE_TIME = #{eventSubscriptionEntity.created, jdbcType=TIMESTAMP}
+    </set>
+    where EVENT_SUBSCR_ID= #{id, jdbcType=VARCHAR}
+      and REV = #{revision, jdbcType=INTEGER}
+  </update>
+  
+   <!-- Compensate INSERT -->
+  
+  <insert id="BpmEventSubscriptionInsertCompensate" parameterType="hashmap">
+    insert into UWK_RU_EVENT_SUBSCR (
+            EVENT_SUBSCR_ID, 
+            REV,
+            EVENT_TYPE,
+           	EVENT_NAME,
+           	EXECUTION_ID,
+           	PROC_INST_ID,
+           	ACTIVITY_ID,
+           	CONFIGURATION,
+           	CREATE_TIME
+    )
+    values (#{eventSubscriptionEntity.id, jdbcType=VARCHAR},
+            1,
+            'compensate',
+            #{eventSubscriptionEntity.eventName, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.executionId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.processInstanceId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.activityId, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.configuration, jdbcType=VARCHAR},
+            #{eventSubscriptionEntity.created, jdbcType=TIMESTAMP}        
+    )
+  </insert>
+  
+  <!-- Compensate UPDATE -->
+
+  <update id="BpmEventSubscriptionUpdateCompensate" parameterType="hashmap">
+    update UWK_RU_EVENT_SUBSCR
+    <set>
+       REV =  #{eventSubscriptionEntity.revisionNext, jdbcType=INTEGER},
+       EVENT_NAME = #{eventSubscriptionEntity.eventName, jdbcType=VARCHAR},
+       EXECUTION_ID = #{eventSubscriptionEntity.executionId, jdbcType=VARCHAR},
+       PROC_INST_ID = #{eventSubscriptionEntity.processInstanceId, jdbcType=VARCHAR},
+       ACTIVITY_ID = #{eventSubscriptionEntity.activityId, jdbcType=VARCHAR},
+       CONFIGURATION = #{eventSubscriptionEntity.configuration, jdbcType=VARCHAR},  
+       CREATE_TIME = #{eventSubscriptionEntity.created, jdbcType=TIMESTAMP}
+    </set>
+    where EVENT_SUBSCR_ID= #{eventSubscriptionEntity.id, jdbcType=VARCHAR}
+      and REV = #{eventSubscriptionEntity.revision, jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

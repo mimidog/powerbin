@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.GroupEntity">
+
+  <!-- GROUP INSERT -->
+  <insert id="BpmGroupInsert" parameterType="map">
+    insert into UUM_ROLE (ROLE_ID, ROLE_NAME, ROLE_STA, REMARK)
+    values (
+      SEQ_ROLE_ID.NEXTVAL,
+      #{group.name ,jdbcType=VARCHAR},
+      #{group.state ,jdbcType=CHAR},
+      #{group.remark ,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!-- GROUP UPDATE -->
+  
+  <update id="BpmGroupUpdate" parameterType="map">
+    update UUM_ROLE set
+      ROLE_NAME = #{group.name ,jdbcType=VARCHAR},
+      ROLE_STA = #{group.state ,jdbcType=CHAR},
+      REMARK = #{group.remark ,jdbcType=VARCHAR}
+    where ROLE_ID = #{group.id ,jdbcType=NUMERIC}
+  </update>
+  
+  <!-- GROUP DELETE -->
+
+  <delete id="BpmGroupDelete" parameterType="map">
+    delete from UUM_ROLE where ROLE_ID = #{group.id ,jdbcType=NUMERIC}
+  </delete>
+
+ 
+<!--    <resultMap id="groupResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.GroupEntity">
+    <id property="id" column="role_id" jdbcType="VARCHAR" />
+    <result property="name" column="role_name" jdbcType="VARCHAR" />
+    <result property="state" column="role_sta" jdbcType="VARCHAR" />
+    <result property="remark" column="remark" jdbcType="VARCHAR" />
+  </resultMap> -->
+  
+  <resultMap id="groupResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.GroupEntity">
+    <id property="id" column="POST_ID" jdbcType="VARCHAR" />
+    <result property="name" column="POST_NAME" jdbcType="VARCHAR" />
+    <result property="state" column="POST_STA" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <!-- GROUP SELECT -->
+
+  <select id="BpmGroupSelect" parameterType="string" resultMap="groupResultMap">
+    select * from UEM_POST where POST_ID = #{id ,jdbcType=NUMERIC}
+  </select>
+    
+  <select id="BpmGroupSelectByUserId" parameterType="long" resultMap="groupResultMap">
+    SELECT R.*
+	  FROM UUM_POST R, UUM_OPER_POST  MEMBERSHIP
+	 WHERE R.POST_ID = MEMBERSHIP.POST_ID
+	   AND MEMBERSHIP.USER_CODE = #{userId ,jdbcType=VARCHAR}
+  </select>
+
+ <!--  <select id="BpmGroupsSelectByUserIdAndGroupType" parameterType="hashmap" resultType="hashmap">
+    select g.*
+    from uum_role g, UWK_ID_MEMBERSHIP membership
+    where g.GROUP_ID = membership.GROUP_ID
+      and membership.USER_ID = #{userId}
+      <if test="groupType != null">
+         and g.GTYPE = #{groupType}
+      </if>
+  </select> -->
+  
+   <select id="BpmGroupSelectByQueryCriteria" parameterType="map" resultMap="groupResultMap">
+	  	<include refid="bpm.limitBefore"/>
+	    select RES.* <include refid="bpm.limitBetween"/>
+	    <include refid="selectGroupByQueryCriteriaSql" />
+    	<include refid="bpm.orderBy"/>
+    	<include refid="bpm.limitAfter"/>
+  </select>
+  
+   <select id="BpmGroupSelectCountByQueryCriteria" parameterType="map" resultType="long">
+    select count(RES.POST_ID)
+    <include refid="selectGroupByQueryCriteriaSql" />
+  </select>
+  
+  <sql id="selectGroupByQueryCriteriaSql">
+    from UEM_POST RES
+    <if test="criteria !=null and criteria.userId != null">
+      inner join UEM_EMP_POST UR on RES.POST_ID = UR.POST_ID
+      inner join UEM_EMP U on UR.USER_CODE = U.USER_CODE
+    </if>
+    <where>
+      <if test="criteria !=null and criteria.id != null">
+        RES.POST_ID = #{criteria.id}
+      </if>
+      <if test="criteria !=null and criteria.name != null">
+        and RES.POST_NAME = #{criteria.name}
+      </if>
+      <if test="criteria !=null and criteria.nameLike != null">
+        and RES.POST_NAME like '%${criteria.nameLike}%'
+      </if>
+      <if test="criteria !=null and criteria.userId != null">
+        and U.USER_CODE = #{criteria.userId}
+      </if>
+      <if test="criteria !=null and criteria.state != 0">
+        and RES.POST_STA = #{criteria.state}
+      </if>
+      <if test="criteria !=null and criteria.procDefId != null">
+        and exists (select IDENTITY_ID from UWK_RU_IDENTITYLINK where PROC_DEF_ID = #{procDefId} and GROUP_ID=RES.POST_ID )
+      </if>
+      
+    </where>
+  </sql>
+
+  <select id="BpmGroupSelectByNativeQuery" parameterType="java.util.Map" resultType="hashmap">
+    <if test="resultType == 'LIST_PAGE'">
+       	<include refid="bpm.limitBefore"/>
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+        <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmGroupSelectCountByNativeQuery" parameterType="java.util.Map" resultType="hashmap">
+    ${sql}
+  </select>
+  
+</mapper>

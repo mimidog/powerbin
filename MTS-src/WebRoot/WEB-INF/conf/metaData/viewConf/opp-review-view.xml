@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+    <!--统一审核配置view   start-->
+    <view id="CHK_config" render="datagrid" title="统一审核配置">
+        <conf service="P0000201" pageSize="10" colNumbers="1" onSelect="onClickMainTableRow"/>
+        <qry_item field="SERVICE_CODE" title="服务代码" type="input" edt_validType="val[1,32]"/>
+        <qry_item field="ORG_CODE" title="机构名称" edt_width="140" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+        <btn_item text="新增" service="P0000202" title="统一审核配置新增" handler="chkConfigAdd" iconCls="icon-add"/>
+        <btn_item text="删除" service="P0000204" title="统一审核配置删除" handler="chkConfigDel" iconCls="icon-remove"/>
+        <col_item field="CHK_CFG_SN" title="复核配置编号"  type="input"/>
+        <col_item field="SERVICE_CODE" title="服务代码"  type="input"/>
+    	<col_item field="ORG_CODE" title="机构名称" edt_width="140" 
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    </view>
+    <!--统一审核配置view   end-->
+	<!--审核执行配置管理view   start-->
+    <view id="CHK_lvl_config" title="审核执行配置管理" render="datagrid">
+        <conf service="P0000211" colNumbers="2" required="true" border="false" noheader="true" onSelect="onClickSecondTableRow"/>
+        <btn_item text="新增" service="P0000212" title="新增" handler="chkLvladd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000213" title="修改" handler="chkLvlModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000214" handler="chkLvlDelete" iconCls="icon-remove"/>
+        <col_item field="CHK_LVL_SN" title="执行配置号"  type="input" hidden="true" />
+        <col_item field="CHK_CFG_SN" title="复核配置编号"  type="input" hidden="true"/>
+        <col_item field="CHK_TYPE" title="复核类型"  type="combobox" edt_dict="CHK_TYPE"/>
+        <col_item field="OP_CODES" title="复核对象"  type="input" />
+        <col_item field="OP_LVL" title="复核顺序"  type="input" />
+    </view>
+    <!--审核执行配置管理view   end-->
+    <!--统一审核参数配置view   start-->
+    <view id="CHK_para_config" render="datagrid" title="统一审核参数配置">
+		<conf service="P0000221" colNumbers="2" required="true" border="false" noheader="true"/>
+        <btn_item text="新增" service="P0000222" title="新增" handler="chkparaadd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000223" title="修改" handler="chkparaModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000224" handler="chkparaDelete" iconCls="icon-remove"/>
+        <col_item field="CHK_PARA_SN" title="参数配置号"  type="input" hidden="true" />
+        <col_item field="CHK_LVL_SN" title="执行配置号"  type="input" hidden="true" />
+        <col_item field="CHK_CFG_SN" title="复核配置编号"  type="input" hidden="true" />
+        <col_item field="LBM_PARA" title="参数名"  type="input" />
+        <col_item field="LBM_PARA_OP" title="运算符"  type="combobox" edt_dict="LBM_PARA_OP"/>
+        <col_item field="LBM_PARA_VALUE" title="运算值"  type="input"/>
+    </view>
+    <!--统一审核参数配置view   end-->
+ 	
+
+	<!--待办任务管理view   start-->
+    <view id="CHK_log" render="datagrid" title="审核">
+        <conf fit="true" req="[{service:'P0005001', BPM_OP:'listReadyTask'}]"
+              singleSelect="true" pageSize="10" loadFilter="filterBpmData" onSelect="taskStateControl"/>
+ 	    <!--qry_item field="taskName" title="任务名称" type="input" edt_validType="val[1,64]"/>
+        <qry_item field="processDefinitionName" title="流程名称" type="input" edt_validType="val[1,64]"/>
+        <btn_item text="认领" title="认领任务" handler="claimTask" iconCls="icon-client-info"/-->
+        <btn_item text="处理" title="处理待办任务" handler="dueTask" iconCls="icon-edit"/>
+        <!--btn_item text="代理" title="代理待办任务" handler="delegateTask" iconCls="icon-user-set"/-->
+        <!--btn_item text="回退" handler="backTask" iconCls="icon-back"/-->
+
+        <col_item field="processDefinitionId" title="" hidden="true"/>
+        <col_item field="taskId" title="任务标识" hidden="true"/>
+        <col_item field="taskName" title="任务名称" width="100"/>
+	    <col_item field="processDefinitionName" title="流程名称" width="100"/>
+        <col_item field="startTime" title="下发时间" width="120"/>
+        <col_item field="processInstanceState" title="流程实例状态" width="100" type="combobox" edt_dict="PROCESS_INSTANCE_STA"/>
+        <col_item field="assignee" title="处理人" width="80"/>
+        <col_item field="preAssignee" title="上一步处理人" width="80"/>
+	    <col_item field="preTaskName" title="上一步骤名称" width="80" />
+        <col_item field="taskState" title="任务状态"  type="combobox" edt_dict="TASK_STATE" width="80"/>
+        <col_item field="isDelegate" title="是否代理"  type="combobox" edt_dict="IS_DELEGATE" width="80"/>
+    </view>
+    <!--待办任务管理view   start-->
+    <view id="CHK_log" render="datagrid" title="待办任务管理" >
+        <conf fit="true" req="[{service:'P0005001', BPM_OP:'listReadyTask'}]"
+              singleSelect="true" pageSize="10" loadFilter="filterBpmData" onSelect="taskStateControl"/>
+        <btn_item text="认领" title="认领任务" handler="claimTask" iconCls="icon-client-info"/>
+        <btn_item text="处理" title="处理待办任务" handler="dueTask" iconCls="icon-edit"/>
+
+        <col_item field="processDefinitionId" title="" hidden="true"/>
+        <col_item field="taskId" title="任务标识" hidden="true"/>
+        <col_item field="taskName" title="任务名称" width="100"/>
+	    <col_item field="processDefinitionName" title="流程名称" width="100"/>
+        <col_item field="startTime" title="下发时间" width="120"/>
+        <col_item field="processInstanceState" title="流程实例状态" width="100" type="combobox" edt_dict="PROCESS_INSTANCE_STA"/>
+        <col_item field="assignee" title="处理人" width="80"/>
+        <col_item field="preAssignee" title="上一步处理人" width="80"/>
+	    <col_item field="preTaskName" title="上一步骤名称" width="80" />
+        <col_item field="taskState" title="任务状态"  type="combobox" edt_dict="TASK_STATE" width="80"/>
+    </view>
+    <!--待办任务管理view   end-->
+
+    <!--待办任务管理view   end-->
+
+</views>

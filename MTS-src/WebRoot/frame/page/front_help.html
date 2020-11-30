@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>帮助与支持</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<style type="text/css">
+.left-panel .tree {
+	font-family:"微软雅黑", arial, sans-serif !important;
+}
+.left-panel .tree .tree-node-hover {
+	background-repeat:repeat-x !important;
+	background-color:transparent !important;
+}
+.left-panel .tree .tree-node-selected {
+	background: -webkit-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: -moz-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: -o-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: linear-gradient(to right, #1a6fc2 0, #369bd5 100%) !important;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#1a6fc2, endColorstr=#369bd5, GradientType=1) !important;
+	background-repeat: repeat-x !important;
+	color:#FFFFFF !important;
+	font-weight:bold;
+}
+
+.left-panel .tree .tree-hit {
+	background:none;
+	background-repeat: no-repeat;
+	width:14px !important;
+}
+.left-panel .tree .tree-collapsed {
+	background-position: -43px 6px;
+}
+.left-panel .tree .tree-expanded {
+	background-position: -62px 6px;
+}
+.left-panel .tree .tree-node{
+	height:30px !important;
+	margin-top:0px !important;
+	padding-top:0px !important;
+	border-radius:3px;
+	margin-bottom:2px;
+	color:#000000;
+}
+.left-panel .tree .tree-node > span {
+	height:30px;
+	line-height:30px;
+}
+
+.left-panel .tree .tree-icon {
+	background-image: url("../images/portal/trans/help-menu-point.png");
+	background-repeat: no-repeat;
+	width:14px !important;
+	float:right;
+	margin-right:5px;
+	margin-top:-32px;
+	margin-top:0px\9;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.left-panel .tree .tree-icon {
+	margin-top:0px;
+}	
+}
+.left-panel .tree .tree-folder {
+	background-position: -43px 6px;
+}
+.left-panel .tree .tree-folder-open {
+	background-position: -62px 6px;
+}
+.left-panel .tree .tree-node .tree-file {
+	background:none;
+}
+.left-panel .tree .tree-node-selected .tree-file {
+	background: url("../images/portal/trans/help-menu-point.png") no-repeat scroll -4px 8px transparent;
+}
+.left-panel .tree li {
+	color:#FFFFFF !important;
+    white-space:nowrap !important;
+	border-bottom:none !important;
+}
+
+.left-panel .tree > li > .tree-node {
+	background:url(../images/portal/trans/help-tree-menu-normal-bg.png);
+	height:35px !important;
+	color:#000000;
+	border:1px solid #CDEAFF;
+}
+
+.left-panel .tree > li > .tree-node .tree-icon {
+	background:none;
+}
+
+.left-panel .tree > li > ul > li > .tree-node {
+	background-image: url("../images/portal/trans/help-secmenu-bg.png");
+	background-repeat:repeat-x;
+	background-position:0 bottom;
+	color:#000000;
+}
+
+.left-panel .tree > li > .tree-node-hover {
+	background: -webkit-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: -moz-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: -o-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: linear-gradient(to right, #1a6fc2 0, #369bd5 100%) !important;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#1a6fc2, endColorstr=#369bd5, GradientType=1) !important;
+	background-repeat: repeat-x !important;
+	color:#FFFFFF !important;
+	border: 1px solid #2b8ace;
+}
+.left-panel .tree > li > .tree-node-selected {
+	background: -webkit-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: -moz-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: -o-linear-gradient(left, #1a6fc2 0, #369bd5 100%) !important;
+	background: linear-gradient(to right, #1a6fc2 0, #369bd5 100%) !important;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#1a6fc2, endColorstr=#369bd5, GradientType=1) !important;
+	background-repeat: repeat-x !important;
+	color:#FFFFFF !important;
+	border: 1px solid #2b8ace;
+}
+
+.left-panel .tree > li > ul {
+	background-color: #F3FAFF;
+	border-radius:3px;
+}
+
+.left-panel .tree > li > .tree-node .tree-hit {
+	float:right;
+	background-image: url("../images/portal/trans/help-menu-point.png");
+	background-repeat: no-repeat;
+	display:none !important;
+	margin-right: 5px;
+}
+.left-panel .tree > li > .tree-node .tree-title {
+	margin-left:15px;
+	line-height:35px;
+}
+.left-panel .tree > li > .tree-node .tree-collapsed {
+	background-position: -43px 6px;
+}
+.left-panel .tree > li > .tree-node .tree-expanded {
+	background-position: -62px 6px;
+}
+.left-panel .tree-indent {
+	width:14px !important;
+}
+
+.help-wrap {
+	margin: 20px 0 0 20px;
+	cursor: default;
+	font-family: "微软雅黑",arial,sans-serif;
+}
+
+.help-wrap .help-menu-title-wrap {
+	margin-bottom: 10px;
+}
+
+.help-wrap .help-menu-title-wrap .title {
+	padding-left: 10px;
+	height: 15px;
+	line-height: 15px;
+	font-weight: bold;
+	border-left: 3px solid #1F7AC8;
+	color: #1F7AC8;
+}
+
+.help-wrap .help-menu-title-wrap .description {
+	padding: 10px 15px;
+}
+
+.help-wrap .help-conent-arrow {
+	background: url("../images/portal/trans/help-arrow.png") no-repeat scroll 50px 0px transparent;
+	height: 10px;
+    margin-bottom: -3px;
+    position: relative;
+    z-index: 10;
+}
+
+.help-wrap .help-content-wrap {
+	border:2px solid #DEF1FF;
+	border-radius: 3px;
+	padding: 15px 30px 5px;
+	background-color: #FCFEFF;
+}
+
+.help-wrap .help-content-wrap .content-item {
+	margin-bottom: 10px;
+	border-bottom: 1px dashed #DEF1FF;
+}
+
+.help-wrap .help-content-wrap .content-item .title {
+	font-weight: bold;
+}
+.help-wrap .help-content-wrap .content-item .description {
+	padding: 5px 0 10px 0;
+	color: #909090;
+}
+</style>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript">
+var $ready = function() {
+using(["layout", "tree", "tabs"], function() {
+(function() {
+	var ui = {
+			layout: $("#layout"),	
+			tree: $("#left_tree"),
+			tabs: $("#right_tab"),
+			welcome: $("#welcome")
+		},
+		pWindow = window.parent,
+		mainFrame = pWindow.mainFrame;
+
+	initialize();
+	
+	function initialize() {
+		var treeOpts = {
+				conf: pWindow.sysConf["treeConf"]["conf"],
+				onClick: function(node) {
+					if(!node) {
+						return false;
+					}
+					var target = $(node.target),
+						ulTree = $(this);
+					if(node.children && node.children.length) {
+						target.parent().siblings().each(function() {
+							ulTree.tree("collapse", $(this).find(">.tree-node"));
+						});
+						ulTree.tree('toggle', target);
+						return false;
+					}
+					treeNodeClick.call(this, target, node);
+				}
+			},
+			
+			compData = mainFrame.data("comp_data"),
+			platData = mainFrame.data("plat_data"),
+			priMenuData = $.extend([], mainFrame.data("priMenuData")),
+			helpMenuData = mainFrame.data("helpMenuData");
+		
+		ui.layout.layout();
+		if(compData) {
+			render(platData, priMenuData, compData);
+		} else {
+			mainFrame.requestService({service: "P0004131"}, function(data) {
+				mainFrame.data("comp_data", data[0]);
+				render(platData, priMenuData, data[0]);
+			});
+		}
+		
+		function render(platData, priMenuData, compData) {
+			if(!helpMenuData) { 
+				helpMenuData = formatTreeData(platData, priMenuData, compData);
+				mainFrame.data("helpMenuData", helpMenuData);
+			}
+			treeOpts["data"] = helpMenuData;
+			ui.tree.tree(treeOpts);
+			ui.tabs.tabs();
+			ui.tabs.tabs("add", {
+				title: "欢迎页",
+				content: ui.welcome.show()
+			});
+			
+			var selectedTaskItem = mainFrame.taskBar.getSelectedTask(),
+				related = selectedTaskItem.length ? pWindow.$.data(selectedTaskItem[0], "related") || $() : $(),
+				isSelfLayoutWrap = related.find(">div").hasClass("layout-wrap"),
+				isLayoutWrap = related.hasClass("layout-wrap") || isSelfLayoutWrap,
+				lWrap = isLayoutWrap ? (isSelfLayoutWrap ? related.find(">div") : related) : $();
+				id = !isLayoutWrap ? related.attr("comp_id") || "" : lWrap.attr("menu_id") || "",
+				pId = !isLayoutWrap ? "comp_leaf_" + id : id,
+				node = ui.tree.find("li>div[node-id='" + pId+ "']");
+				
+			if(node.length) {
+				ui.tree.tree("expandTo", node);
+				node.click();
+			}
+		}
+	}
+	
+	function formatTreeData(platData, menuData, compData) {
+		var rootMenu = [{MENU_ID:"comp_root_0", MENU_NAME: "系统组件", PAR_MENU:"0"}, {MENU_ID:"menu_root_1", MENU_NAME: "系统菜单", PAR_MENU:"0"}],
+			
+			compTypeDict = getSysDict("COMP_TYPE"),
+			sysComp = [],
+			compLeaf = [],
+			
+			sysMenu = [];
+		
+		for(var i = 0, l = compTypeDict.length; i < l; i++) {
+			var sDict = compTypeDict[i],
+				tComps = $.grep(compData, function(sData) {
+					return sData["COMP_TYPE"] === sDict["dict_val"];
+				});
+			if(tComps.length) {
+				sysComp.push({MENU_ID: "comp_type_" + sDict["dict_val"], MENU_NAME: sDict["dict_des"], PAR_MENU: "comp_root_0"});
+			}
+		}
+		
+		for(var i = 0, l = compData.length; i < l; i++) {
+			var sComp = compData[i];
+			compLeaf.push({MENU_ID: "comp_leaf_" + sComp["COMP_ID"], MENU_NAME: sComp["COMP_NAME"], PAR_MENU: "comp_type_" + sComp["COMP_TYPE"]});
+		}
+		sysComp = sysComp.concat(compLeaf);	//构建组件菜单数据
+		rootMenu = rootMenu.concat(sysComp);	//组件菜单数据合并到菜单数据中
+		
+		
+		for(var i = 0, l = menuData.length; i < l; i++) {
+			var sMenuData = menuData[i],
+				menuLvl = sMenuData["MENU_LVL"].length;
+			
+			if(!platData[sMenuData["MENU_PLAT"]]) {
+				continue;
+			}
+			
+			if(8 === menuLvl) {
+				$.each(menuData, function(i, sData) {
+					if(sData["PAR_MENU"] === sMenuData["MENU_ID"]) {
+						sData["PAR_MENU"] = sMenuData["PAR_MENU"];
+					}
+				});
+				continue;	//过滤二级菜单（门户菜单，主题菜单，流程菜单这一级固定菜单）
+			}
+			
+			if(menuLvl === 4 && "0" === sMenuData["PAR_MENU"]) {
+				sMenuData["PAR_MENU"] = "menu_root_1";
+			}
+			
+			sysMenu.push(sMenuData);
+		}
+		
+		rootMenu = rootMenu.concat(sysMenu);	//合并门户菜单数据到菜单数据中
+		return rootMenu;
+	}
+	
+	function treeNodeClick(target, node) {
+		var nodeId = node.id,
+			isCompLeaf = nodeId.indexOf("comp_leaf") === 0,
+			pId = isCompLeaf ? nodeId.split("_")[2] : nodeId,
+			openedPanel = ui.tabs.find("div[id='" + nodeId + "']");
+		
+		if(!isCompLeaf && isNaN(pId)) {
+			return;
+		}
+		if(openedPanel.length) {
+			ui.tabs.tabs("select", openedPanel.parent().prevAll(".panel").length);
+			return;
+		}
+		getHelpData(pId, function() {
+			var menuData = this[0][0].length ? this[0][0][0] : null,
+				detialData = this[1][0].length ? this[1][0] : null;
+				
+			if(!menuData && !detialData) {
+				alert("没有查询到[" + node.text + "]的帮助信息");
+				return;
+			}
+			
+			ui.tabs.tabs("add", {
+				closable:true,
+				id: nodeId,
+				title: node.text,
+				content: renderHelpContent(menuData, detialData)
+			});
+		});
+	}
+	
+	function getHelpData(queryId, callback) {
+		mainFrame.requestService([
+			{service: "P0000241", P_ID: queryId}, 
+			{service: "P0000251", P_ID: queryId}
+		], function(data) {
+			if($.isFunction(callback)) {
+				callback.call(this, data);
+			}
+		});
+	}
+	
+	function renderHelpContent(menuData, detialData) {
+		var wrap = $("<div class='help-wrap'></div>"),
+			
+			menuTitleWrap = $("<div class='help-menu-title-wrap'></div>"),
+			contentArrow = $("<div class='help-conent-arrow'></div>"),
+			contentWrap = $("<div class='help-content-wrap'></div>"),
+			contentItem = $("<div class='content-item'></div>"),
+			
+			titleDiv = $("<div class='title'></div>"),
+			desDiv = $("<div class='description'></div>");
+		
+		menuTitleWrap.append(titleDiv.clone().text(menuData["TITLE"])).append(desDiv.clone().html(menuData["DEPICTION"]));
+		wrap.append(menuTitleWrap);
+		
+		if(detialData && detialData.length) {
+			wrap.append(contentArrow).append(contentWrap);
+			for(var i = 0, l = detialData.length; i < l; i++) {
+				contentWrap.append(contentItem.clone().append(titleDiv.clone().text(detialData[i]["COL_TITLE"])).append(desDiv.clone().html(detialData[i]["COL_DEPICTION"])));
+			}
+		}
+		
+		return wrap;
+	}
+})();	
+});
+};
+</script>
+</head>
+<body>
+<div id="layout" kui-options="fit:true">
+	<div class="left-panel" kui-options="region:'west',split:false" style="width:180px;">
+		<ul id="left_tree" kui-options="animate:true"></ul>	
+	</div>
+	<div kui-options="region:'center'" style="overflow:hidden;" >
+		<div id="right_tab" fit="true" plain="true" border=false style="overflow:hidden;"></div>
+	</div>
+</div>
+
+<div id="welcome" style="display:none;">
+	<!-- 欢迎页在这里改 -->
+	<div class="help-wrap">
+		<div class="help-menu-title-wrap">
+			<div class="title">帮助与支持</div>
+			<div class="description">欢迎使用运行平台，您有任何疑问可以点击左侧菜单获取对应的帮助信息。</div>
+		</div>
+		<!--
+		<div class="help-conent-arrow"></div>
+		<div class="help-content-wrap">
+			<div class="content-item">
+				<div class="title">字段名字1</div>
+				<div class="description">字段名字1描述，我不知道写什么东东</div>
+			</div>
+			<div class="content-item">
+				<div class="title">字段名字2</div>
+				<div class="description">字段名字2描述，我不知道写什么东东</div>
+			</div>
+		</div>
+		-->
+	</div>
+</div>
+</body>
+</html>

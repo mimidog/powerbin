@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>交易员风控管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/validatebox.ext.js"></script>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+//持仓盈亏字体处理
+function holdProfitColor(value) {
+    if(parseFloat(value)<0){
+        return dataGrdidCol_fontRedColor(toThousands(parseFloat(value).toFixed(2)));
+    }else{
+        return toThousands(parseFloat(value).toFixed(2));
+    }
+}
+
+window.$ready=function () {
+    var conf = $.builder.format.datagrid($.parser.getConfigs(['mst_QueryUseTraderStockRisk_table']));
+    conf.req[0]=$.extend(conf.req[0],{QRY_HOLD_PROFIT_MINUS:$('#chkHoldProfit').attr('checked')=='checked' ? true:false});
+    using('datagrid',function () {
+        $('#mst_QueryUseTraderStockRisk_table').datagrid(conf);
+    })
+
+}
+
+var intervalId;
+function QueryUseTraderStockRisk_btn() {
+    if(!$('#refreshTime').validatebox('isValid')){
+        return;
+    }
+
+    var selRows=$('#mst_QueryUseTrader_table').datagrid('getSelections');
+
+     var opIdArray=new Array();
+    $.each(selRows,function (idx,item) {
+        opIdArray.push(item.USER_CODE);
+    });
+    var opIds=opIdArray.length !=0 ? opIdArray.toString():'';
+
+    $('#mst_QueryUseTraderStockRisk_table').datagrid('clean');
+    var conf = $.builder.format.datagrid($.parser.getConfigs(['mst_QueryUseTraderStockRisk_table']));
+    conf.req[0]=$.extend(conf.req[0],{OP_ID_IN:opIds,QRY_HOLD_PROFIT_MINUS:$('#chkHoldProfit').attr('checked')=='checked' ? true:false});
+    $('#mst_QueryUseTraderStockRisk_table').datagrid(conf);
+
+
+
+    clearInterval(intervalId);
+
+    intervalId = setInterval(function () {
+
+        var conf = $.builder.format.datagrid($.parser.getConfigs(['mst_QueryUseTraderStockRisk_table']));
+        conf.req[0]=$.extend(conf.req[0],{OP_ID_IN:opIds,QRY_HOLD_PROFIT_MINUS:$('#chkHoldProfit').attr('checked')=='checked' ? true:false});
+
+        var rs=commonRequest(conf.req[0]);
+
+        $('#mst_QueryUseTraderStockRisk_table').datagrid('loadData',{rows:rs,total:rs.length});
+
+    }, parseInt($('#refreshTime').val())*1000);
+}
+
+</script>
+</head>
+<body>
+<div class="kui-layout" kui-options="fit:true">
+    <div id="west_div" kui-options="region:'west',split:true" title="交易员信息"
+         style="width: 280px;border-top:1px solid #3bbcf0;border-left: 1px solid #3bbcf0;border-bottom: 1px solid #3bbcf0;">
+        <div  id="empInfoDiv" style="border-bottom: 1px solid #3bbcf0;height: 360px;">
+            <table id="mst_QueryUseTrader_table" class="kui-datagrid"></table>
+        </div>
+        <div id="optBtnDiv" style="height: 100px;padding-left: 40px;">
+            <br/>
+            <input id="chkHoldProfit" type="checkbox" checked disabled/><b>持仓盈亏为亏</b><br/>
+            <input type="checkbox"/><b>当日新买入持仓</b><br/>
+            <b>刷新时间:<input id="refreshTime" class="kui-validatebox" kui-options="required:true,validType:'int[2]'"
+                        style="width: 40px;" value="10">秒</b><br/><br/>
+            <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="QueryUseTraderStockRisk_btn()">启动</a><br/>
+        </div>
+    </div>
+    <div id="center_div" kui-options="region:'center'" style="border-top:1px solid #3bbcf0; border-left: 1px solid #3bbcf0;border-bottom: 1px solid #3bbcf0; border-right: 1px solid #3bbcf0;">
+      <table id="mst_QueryUseTraderStockRisk_table" ></table>
+    </div>
+</div>
+</body>
+</html>

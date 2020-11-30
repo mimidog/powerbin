@@ -1,0 +1,427 @@
+body,form{
+	margin:0;padding:0;
+}
+body.noneSelect{
+   -moz-user-select: none; /*火狐*/
+   -webkit-user-select: none;  /*webkit浏览器*/
+   -ms-user-select: none;   /*IE10*/
+   -khtml-user-select: none; /*早期浏览器*/
+   user-select: none;
+}
+.hide {
+    display: none;
+}
+.icon-front-edit{
+    background:url('icons/tool-front-edit.png') no-repeat center center;	
+}
+.ui-tool-icons{
+	background:transparent url('icons/ui-tool-icons.png') no-repeat;
+	width:16px;
+	height:16px;
+	float:left;
+	margin:0 3px;
+}
+.icon-grid-menu{
+	background-position: -64px -80px;
+}
+.icon-blank{
+	background:url('icons/blank.gif') no-repeat center center;
+}
+.icon-add{
+	background-position: 0 0;
+}
+.icon-edit{
+	background-position: -32px 0;
+}
+.icon-remove{
+	background-position: -16px 0;
+}
+.icon-save{
+	background-position: -64px 0;
+}
+.icon-cut{
+	background-position: -80px 0;
+}
+.icon-ok{
+	background-position: -80px -16px;
+}
+.icon-no{
+	background-position: -80px -32px;
+}
+.icon-cancel{
+	background-position: -64px -32px;
+}
+.icon-reload{
+	background-position: -48px -16px;
+}
+.icon-search{
+	background-position: -48px 0;
+}
+.icon-print{
+	background-position: 0 -48px;
+}
+.icon-help{
+	background-position: -48px -64px;
+}
+.icon-undo{
+	background-position: 0 -16px;
+}
+.icon-redo{
+	background-position: -16px -16px;
+}
+.icon-back{
+	background-position: -64px -64px;
+}
+.icon-sum{
+	background-position: -64px -64px;
+}
+.icon-tip{
+	background-position: -64px -16px;
+}
+.icon-execute{
+	background-position: -32px -16px;
+}
+.icon-up{
+	background-position: 0 -80px;
+}
+.icon-next{
+	background-position: -16px -80px;
+}
+
+.icon-mini-add{
+	background:url('icons/mini_add.png') no-repeat center center;
+}
+.icon-mini-edit{
+	background:url('icons/mini_edit.png') no-repeat center center;
+}
+.icon-mini-refresh{
+	background:url('icons/mini_refresh.png') no-repeat center center;
+}
+.icon-end{
+	background:url('icons/end.png') no-repeat center center;
+}
+.icon-unlock{
+	background:url('icons/unlock.png') no-repeat center center;
+}
+.icon-read{
+	background:url('icons/read.png') no-repeat center center;
+}
+.icon-acct{
+	background-position: 0 -32px;
+}
+.icon-money{
+	background-position: -16px -32px;
+}
+.icon-regist{
+	background-position: -32px -64px;
+	
+}
+.icon-agent-person{
+	background-position: 0px -96px;
+}
+.icon-select-client{
+	background-position: -32px -80px;
+}
+.icon-client-detail{
+	background-position: -16px -64px;
+}
+
+.icon-xls{
+	background-position: -32px -48px;
+}
+.icon-dbf{
+	background-position: -80px -80px;
+}
+.icon-pdf{
+	background-position: -16px -48px;
+}
+.icon-xml{
+	background-position: -64px -48px;
+}
+.icon-csv{
+	background-position: -48px -48px;
+}
+.icon-txt{
+	background-position: -80px -48px;
+}
+.icon-lock{
+	background-position: -48px -80px;
+}
+.icon-hidecol{
+	background-position: 0 -64px;
+}
+.icon-import{
+	background-position: -48px -32px;
+}
+.icon-export{
+	background-position: -32px -32px;
+}
+
+.ui-frame-icons{
+	background:transparent url('icons/ui-frame-icons.png') no-repeat;
+	width:20px;
+	height:20px;
+	float:right;
+	cursor:pointer;
+}
+.ui-frame-switch-close{
+	background-position:0 -20px;
+	margin-right:5px;
+}
+.icons-arrow-down{
+	margin-top:2px;
+}
+.icons-arrow-up{
+	margin-top:2px;
+	background-position:-20px 0;
+}
+
+.icons-collapse{
+	margin-top:8px;
+	margin-right:5px;
+	background-position:0 -100px;
+}
+.icons-expand{
+	margin-top:8px;
+	margin-right:5px;
+	background-position:-20px -100px;
+}
+.icons-arrow-close {
+	background-position:0px -20px;
+}
+.icons-arrow-right{
+	margin-top:2px;
+	background-position:-188px 0;
+}
+.icons-blue-box{
+	background-position:-160px 0;
+	float:left;
+	margin-left: 3px;
+    margin-top: 5px;
+}
+
+.frame-icon{
+	width: 20px;
+	height: 20px;
+	background: transparent url('icons/ui-frame-icons.png') no-repeat;
+	float: left;
+	cursor:pointer
+}
+
+.icon-red-flag{
+	background-position: 0px -60px;
+}
+.icon-smile-face{
+	background-position: -20px -60px;
+}
+.icon-sys-stat{
+	background-position: -40px -60px;
+}
+.icon-user-set{
+	background-position: -60px -60px;
+}
+.icon-post-set{
+	background-position: -80px -60px;
+}
+.icon-client-info{
+	background-position: -100px -60px;
+}
+.icon-honor-badge{
+	background-position: -120px -60px;
+}
+.icon-money-manage{
+	background-position: -140px -60px;
+}
+.icon-blue-flag{
+	background-position: -160px -60px;
+}
+.icon-money-box{
+	background-position: -180px -60px;
+}
+.icon-table-cell{
+	background-position: -200px -60px;
+}
+.icon-light-up{
+	background-position: -220px -60px;
+}
+.icon-buy-bag{
+	background-position: -240px -60px;
+}
+.icon-message-page{
+	background-position: -260px -60px;
+}
+.icon-target-set{
+	background-position: -280px -60px;
+}
+.icon-gift-list{
+	background-position: -300px -60px;
+}
+.icon-user-info{
+	background-position: -320px -60px;
+}
+
+.icon-user-detail{
+	background-position: 0 -80px;
+}
+.icon-menu-select{
+	background-position: -20px -80px;
+}
+.icon-protal-set{
+	background-position: -40px -80px;
+}
+.icon-data-stat{
+	background-position: -60px -80px;
+}
+.icon-gold-count{
+	background-position: -80px -80px;
+}
+.icon-notic{
+	background-position: -100px -80px;
+}
+.icon-metal-star{
+	background-position: -120px -80px;
+}
+.icon-gift{
+	background-position: -140px -80px;
+}
+.icon-money{
+	background-position: -180px -80px;
+}
+.icon-rmb{
+	background-position: -200px -80px;
+}
+.icon-user-stat{
+	background-position: -220px -80px;
+}
+.icon-metal-gold{
+	background-position: -240px -80px;
+}
+.icon-us-dollar{
+	background-position: -260px -80px;
+}
+.icon-gold-crown{
+	background-position: -280px -80px;
+}
+.icon-red-heart{
+	background-position: -300px -80px;
+}
+.icon-page-set{
+	background-position: -320px -80px;
+}
+
+.icon-flow-set{
+	background-position: 0 -100px;
+}
+.icon-earth{
+	background-position: -20px -100px;
+}
+.icon-buiness-bag{
+	background-position: -40px -100px;
+}
+.icon-title-pen{
+	background-position: -60px -100px;
+}
+.icon-page-detail{
+	background-position: -80px -100px;
+}
+.icon-yellow-flag{
+	background-position: -100px -100px;
+}
+.icon-gold-key{
+	background-position: -120px -100px;
+}
+.icon-tel-phone{
+	background-position: -140px -100px;
+}
+.icon-work-flow{
+	background-position: -160px -100px;
+}
+
+.icon-notic-bell{
+	background-position: 0 -120px;
+}
+.icon-hand-point{
+	background-position: -20px -120px;
+}
+.icon-link-url{
+	background-position: -40px -120px;
+}
+.icon-warning{
+	background-position: -60px -120px;
+}
+.icon-notic-small{
+	background-position: -80px -120px;
+}
+.icon-blue-pen{
+	background-position: -100px -120px;
+}
+.icon-yellow-pen{
+	background-position: -120px -120px;
+}
+.icon-yellow-add{
+	background-position: -140px -120px;
+}
+.icon-red-add{
+	background-position: -160px -120px;
+}
+.icon-copy{
+	background-position: -180px -120px;
+}
+.icon-green-block{
+	background-position: -200px -120px;
+}
+.icon-red-pen{
+	background-position: -220px -120px;
+}
+
+.icon-black-up{
+	background-position: 0px -20px;
+}
+.icon-black-down{
+	background-position: -20px -20px;
+}
+.icon-white-up{
+	background-position: -40px -20px; background-color:#dcdcdc;
+}
+.icon-white-down{
+	background-position: -60px -20px; background-color:#dcdcdc;
+}
+.icon-blue-right{
+	background-position: -80px -20px;
+}
+.icon-blue-down{
+	background-position: -100px -20px;
+}
+.icon-red-left{
+	background-position: -120px -20px;
+}
+.icon-red-right{
+	background-position: -140px -20px;
+}
+.icon-bluepoint-right{
+	background-position: -160px -20px;
+}
+.icon-bluepoint-down{
+	background-position: -180px -20px;
+}
+.icon-secmenu-normal{
+	background-position: -200px -20px;
+}
+.icon-secmenu-sel{
+	background-position: -220px -20px;
+}
+.icon-thirdmenu-normal{
+	background-position: -240px -20px;
+}
+.icon-red-point{
+	background-position: -260px -20px;
+}
+.icon-turn-left{
+	background-position: -280px -20px;
+}
+.icon-turn-right{
+	background-position: -300px -20px;
+}
+.icon-red-close{
+	background-position: -320px -20px;
+}

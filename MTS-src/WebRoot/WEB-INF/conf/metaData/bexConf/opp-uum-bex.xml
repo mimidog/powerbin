@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--人员信息bex设置   start-->
+    <bex bex_code="userInfoQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="userInfoQuery">
+        <param para_code="USER_CODE" para_name="客户编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CURRENT_USER_CODE" para_name="当前客户编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="QUERY_PARAM" para_name="查询参数" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="USER_NAME" para_name="姓名" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="USER_TYPE" para_name="类型" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="USER_STA" para_name="状态" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_ID" para_name="岗位" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ROLE_ID" para_name="角色" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="BESIDES_USER_CODE" para_name="除外人员" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CURRENT_USER_CODE" para_name="当前人员" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="HAS_USER_CODE" para_name="已分配人员" data_type="12" para_type="0" def_val="-1"/>
+        <!--<param para_code="QUERY_PARAM" para_name="模糊" data_type="12" para_type="0" def_val="-1"/>-->
+    </bex>
+
+    <bex bex_code="userInfoQueryforPage" bex_type="4" page_mode="1" bex_cate="1" attr1="userInfoQueryforPage">
+        <param para_code="USER_CODE" para_name="客户编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CURRENT_USER_CODE" para_name="当前客户编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="QUERY_PARAM" para_name="查询参数" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="USER_NAME" para_name="姓名" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="USER_TYPE" para_name="类型" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="USER_STA" para_name="状态" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_ID" para_name="岗位" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ROLE_ID" para_name="角色" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="BESIDES_USER_CODE" para_name="除外人员" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CURRENT_USER_CODE" para_name="当前人员" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="HAS_USER_CODE" para_name="已分配人员" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="USER_CODE_RIGHT_like" para_name="右匹配用户号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_CODE_IN" para_name="用户号IN操作" data_type="12" para_type="0" def_val="-1"/>
+        <!--<param para_code="QUERY_PARAM" para_name="模糊" data_type="12" para_type="0" def_val="-1"/>-->
+    </bex>
+	<bex bex_code="userCodeNameQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="userCodeNameQuery"></bex>
+	<bex bex_code="queryUserByUserCode" bex_type="4" page_mode="2" bex_cate="1" attr1="queryUserByUserCode"></bex>
+    
+    <bex bex_code="orgQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="orgQuery">
+        <param para_code="ORG_STA" para_name="机构状态" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!--查询所有的人员信息-->
+    <bex bex_code="userInfoInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="userInfoInsert">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_NAME" para_name="人员名称" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_PASS" para_name="登陆密码" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_TYPE" para_name="人员类型" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_STA" para_name="人员状态" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" nullable="true"/>
+        <param para_code="OFF_TEL" para_name="办公电话" data_type="12" para_type="0" nullable="true"/>
+        <param para_code="MOBILE" para_name="移动电话" data_type="12" para_type="0" nullable="true"/>
+        <param para_code="EMAIL" para_name="电子邮箱" data_type="12" para_type="0" nullable="true"/>
+    </bex>
+    <bex bex_code="userInfoUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="userInfoUpdate">
+        <param para_code="USER_CODE" para_name="用户代码" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_NAME" para_name="用户名称" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_TYPE" para_name="人员类型" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_STA" para_name="人员状态" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="userInfoDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="userInfoDelete">
+        <param para_code="USER_CODE" para_name="用户代码" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="userStatusUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="userStatusUpdate">
+        <param para_code="USER_CODE" para_name="用户代码" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_STA" para_name="用户状态" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="userPasswordRest" bex_type="4" page_mode="2" bex_cate="1" attr1="userPasswordRest">
+        <param para_code="USER_CODE" para_name="用户代码" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_PASS" para_name="登陆密码" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="userPasswordUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="userPasswordUpdate">
+        <param para_code="USER_CODE" para_name="用户代码" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="USER_PASS" para_name="登陆密码" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="NEW_PASS" para_name="用户新密码" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--人员信息bex设置   end-->
+    <!--角色信息管理bex   start-->
+    <bex bex_code="roleQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="roleQuery">
+        <param para_code="ROLE_ID" para_name="角色编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ROLE_NAME" para_name="角色名称" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ROLE_STA" para_name="角色状态" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="roleInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="roleInsert">
+        <param para_code="ROLE_NAME" para_name="角色名称" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="roleUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="roleUpdate">
+        <param para_code="ROLE_NAME" para_name="角色名称" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="roleDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="roleDelete">
+    </bex>
+    <bex bex_code="userInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="userInfo">
+        <param para_code="REQ_ROLE_ID" para_name="角色编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="NotInRoleUserInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="NotInRoleUserInfo">
+        <param para_code="SER_ROLE_ID" para_name="角色编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="roleInsertUser" bex_type="4" page_mode="2" bex_cate="1" attr1="roleInsertUser">
+        <param para_code="REQ_ROLE_ID" para_name="角色编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="REQ_USER_ID" para_name="用户编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="roleDeleteUser" bex_type="4" page_mode="2" bex_cate="1" attr1="roleDeleteUser">
+        <param para_code="REQ_ROLE_ID" para_name="角色编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="REQ_USER_ID" para_name="用户编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!--角色信息管理bex   end-->
+    <!--权限信息管理bex   start-->
+    <bex bex_code="permissionQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="permissionQuery">
+        <param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_NAME" para_name="权限名称" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PAR_PERM" para_name="父权限" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_TYPE" para_name="权限类型" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_STA" para_name="权限状态" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <bex bex_code="permissionInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="permissionInsert">
+        <param para_code="PERM_NAME" para_name="权限名称" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PAR_PERM" para_name="父权限" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_TYPE" para_name="权限类型" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_STA" para_name="权限状态" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="REMARK" para_name="备注" data_type="12" para_type="0" def_val="" nullable="true"/>
+    </bex>
+    <bex bex_code="permissionUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="permissionUpdate">
+        <param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_NAME" para_name="权限名称" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_VAL" para_name="权限值" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="REMARK" para_name="备注" data_type="12" para_type="0" def_val="" nullable="true"/>
+    </bex>
+    <bex bex_code="permissionDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="permissionDelete">
+        <param para_code="REQ_PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <bex bex_code="permConsInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="permConsInsert">
+        <param para_code="CONS_ID" para_name="" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <bex bex_code="consQueryData" bex_type="4" page_mode="2" bex_cate="1" attr1="consQueryData">
+        <param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <bex bex_code="permConsDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="permConsDelete">
+        <param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="CONS_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <bex bex_code="userpermConsDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="userpermConsDelete">
+        <param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+        <param para_code="CONS_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <bex bex_code="permConsQueryData" bex_type="4" page_mode="2" bex_cate="1" attr1="permConsQueryData">
+        <param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <bex bex_code="consDataQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="consDataQuery">
+    	<param para_code="PERM_ID" para_name="权限编号" data_type="12" para_type="0" def_val="-1" nullable="true"/>
+    </bex>
+    <!--权限信息管理bex end-->
+
+    <!-- 组织机构管理service start -->
+    <bex bex_code="orgMenuQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="orgMenuQuery">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="PAR_ORG" para_name="上级机构" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ORG_STA" para_name="机构状态" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="AUTH_TYPE" para_name="授权类型" data_type="12" para_type="0" def_val="1"/>
+    </bex>
+    <bex bex_code="orgMenuChildQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="orgMenuChildQuery">
+    </bex>
+    <bex bex_code="orgInfoUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="orgInfoUpdate">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="orgStaUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="orgStaUpdate">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="orgDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="orgDelete">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="orgChildDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="orgChildDelete">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="updateUserOrgCode" bex_type="4" page_mode="2" bex_cate="1" attr1="updateUserOrgCode">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="orgPermDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="orgPermDelete">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="orgInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="orgInsert">
+        <param para_code="ORG_CODE" para_name="机构代码" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="orgCascadeUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="orgCascadeUpdate">
+    </bex>
+    <bex bex_code="orgCascadeDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="orgCascadeDelete">
+    </bex>
+
+    <!--by  20160420 把attr1属性值orgCascadeInsert改为orgCascadeInsert_MSSQL-->
+    <bex bex_code="orgCascadeInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="orgCascadeInsert_MSSQL">
+    </bex>
+    
+    <!-- 组织机构管理service end -->
+
+    <!-- 岗位管理 start-->
+    <bex bex_code="jobsQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsQuery">
+        <param para_code="POST_NAME" para_name="岗位名称" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_STA" para_name="岗位状态" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="jobsQueryByPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsQueryByPerm">
+        <param para_code="POST_NAME" para_name="岗位名称" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_STA" para_name="岗位状态" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="AUTH_TYPE" para_name="权限类型" data_type="12" para_type="0" def_val="1"/>
+    </bex>
+    <bex bex_code="jobsInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsInsert">
+        <param para_code="POST_NAME" para_name="岗位名称" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="POST_STA" para_name="岗位状态" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="jobsUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsUpdate">
+        <param para_code="POST_NAME" para_name="岗位名称" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="POST_STA" para_name="岗位状态" data_type="12" para_type="0" nullable="false"/>
+        <param para_code="POST_ID" para_name="岗位ID" data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="jobsDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsDelete">
+    </bex>
+    <bex bex_code="jobsPermDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsPermDelete">
+    </bex>
+    <bex bex_code="jobsKptMenuContTabDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsKptMenuContTabDelete">
+    </bex>
+    <bex bex_code="jobsKptMenuContCompDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsKptMenuContCompDelete">
+    </bex>
+    <bex bex_code="jobsKptMenuCompParamDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsKptMenuCompParamDelete">
+    </bex>
+    <bex bex_code="jobsKptMenuCompDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsKptMenuCompDelete">
+    </bex>
+    <bex bex_code="jobsCascadeInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsCascadeInsert">
+    </bex>
+    <bex bex_code="userPermJobsInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermJobsInsert">
+    </bex>
+    <bex bex_code="jobsCascadeUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsCascadeUpdate">
+    </bex>
+    <bex bex_code="jobsCascadeDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="jobsCascadeDelete">
+    </bex>
+    <!-- 岗位管理 end-->
+    <!-- 人员岗位分配 start-->
+    <bex bex_code="jobInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="jobInfo">
+    </bex>
+    <bex bex_code="NotInOperJobInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="NotInOperJobInfo">
+        <param para_code="USER_CODE" para_name="USER_CODE" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_NAME" para_name="POST_NAME" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="operInsertJob" bex_type="4" page_mode="2" bex_cate="1" attr1="operInsertJob">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="operDeleteJob" bex_type="4" page_mode="2" bex_cate="1" attr1="operDeleteJob">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="operDeleteJobByUserCode" bex_type="4" page_mode="2" bex_cate="1" attr1="operDeleteJobByUserCode">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="setPrimaryJob" bex_type="4" page_mode="2" bex_cate="1" attr1="setPrimaryJob">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="setNoPrimaryJob" bex_type="4" page_mode="2" bex_cate="1" attr1="setNoPrimaryJob">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="selectPrimaryJob" bex_type="4" page_mode="2" bex_cate="1" attr1="selectPrimaryJob">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!--by  2016/04/21 把attr1属性值由oper_insertJob改为oper_insertJob_MSSQL-->
+    <bex bex_code="oper_insertJob" bex_type="4" page_mode="2" bex_cate="1" attr1="oper_insertJob_MSSQL">
+        <param para_code="USER_CODE" para_name="ID号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!-- 人员岗位分配 end-->
+    <!-- 人员角色分配 start-->
+    <bex bex_code="roleInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="roleInfo">
+        <param para_code="USER_CODE" para_name="USER_CODE" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="NotInOperRoleInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="NotInOperRoleInfo">
+        <param para_code="USER_CODE" para_name="USER_CODE" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="ROLE_NAME" para_name="ROLE_NAME" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="operInsertRole" bex_type="4" page_mode="2" bex_cate="1" attr1="operInsertRole">
+    </bex>
+    <bex bex_code="operInsertRoleDefault" bex_type="4" page_mode="2" bex_cate="1" attr1="operInsertRoleDefault">
+    </bex>
+    <bex bex_code="operDeleteRole" bex_type="4" page_mode="2" bex_cate="1" attr1="operDeleteRole">
+    </bex>
+    <!-- 人员角色分配 end-->
+    <!-- 特殊权限定义管理 start-->
+    <bex bex_code="spePermQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="spePermQuery">
+        <param para_code="PRE_PERM_ID" para_name="特殊权限定义编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="PRE_PERM_NAME" para_name="特殊权限名称" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!--by  20160420 把attr1属性值由spePermInsert改为spePermInsert_MSSQL-->
+    <bex bex_code="spePermInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="spePermInsert_MSSQL">
+        <param para_code="PRE_PERM_NAME" para_name="特殊权限名称" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!--by  20160420 把attr1属性值由spePermCascadeInsert改为spePermCascadeInsert_MSSQL-->
+    <bex bex_code="spePermCascadeInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="spePermCascadeInsert_MSSQL">
+        <param para_code="PRE_PERM_NAME" para_name="特殊权限名称" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="spePermUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="spePermUpdate">
+        <param para_code="PRE_PERM_ID" para_name="特殊权限定义编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="PRE_PERM_NAME" para_name="特殊权限名称" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="spePermCascadeUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="spePermCascadeUpdate">
+        <param para_code="PRE_PERM_ID" para_name="特殊权限定义编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="PRE_PERM_NAME" para_name="特殊权限名称" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="spePermDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="spePermDelete">
+        <param para_code="PRE_PERM_ID" para_name="特殊权限定义编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="speUserPermDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="speUserPermDelete">
+        <param para_code="PRE_PERM_ID" para_name="特殊权限定义编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="spePermCascadeDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="spePermCascadeDelete">
+        <param para_code="PRE_PERM_ID" para_name="特殊权限定义编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!-- 特殊权限定义管理 end-->
+    <!-- 约束限制管理 start-->
+    <bex bex_code="consQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="consQuery">
+        <param para_code="CONS_ID" para_name="约束编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_NAME" para_name="约束名称" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_TYPE" para_name="约束类型" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_STATE" para_name="约束状态" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="consInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="consInsert">
+        <param para_code="CONS_ID" para_name="约束编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_NAME" para_name="约束名称" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_TYPE" para_name="约束类型" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_STATE" para_name="约束状态" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="consUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="consUpdate">
+        <param para_code="CONS_ID" para_name="约束编号" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_NAME" para_name="约束名称" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_TYPE" para_name="约束类型" data_type="12" para_type="0" def_val="-1"/>
+        <param para_code="CONS_STATE" para_name="约束状态" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="consDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="consDelete">
+        <param para_code="CONS_ID" para_name="约束编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="deletePermConsBycons" bex_type="4" page_mode="2" bex_cate="1" attr1="deletePermConsBycons">
+        <param para_code="CONS_ID" para_name="约束编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="deleteUserPermConsByCons" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteUserPermConsByCons">
+        <param para_code="CONS_ID" para_name="约束编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <!-- 约束限制管理 start-->
+    <!-- 岗位互斥设置 start-->
+    <bex bex_code="searchExcluJob" bex_type="4" page_mode="2" bex_cate="1" attr1="searchExcluJob">
+    </bex>
+    <bex bex_code="excluJobInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="excluJobInfo">
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="NotExcluJobInfo" bex_type="4" page_mode="2" bex_cate="1" attr1="NotExcluJobInfo">
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="addExcluJob" bex_type="4" page_mode="2" bex_cate="1" attr1="addExcluJob">
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" />
+        <param para_code="POST_EXCLU_ID" para_name="互斥岗位编号" data_type="12" para_type="0" />
+    </bex>
+    <bex bex_code="addCascadeExcluJob" bex_type="4" page_mode="2" bex_cate="1" attr1="addCascadeExcluJob">
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" />
+        <param para_code="POST_EXCLU_ID" para_name="互斥岗位编号" data_type="12" para_type="0" />
+    </bex>
+    <bex bex_code="delExcluJob" bex_type="4" page_mode="2" bex_cate="1" attr1="delExcluJob">
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" />
+        <param para_code="POST_EXCLU_ID" para_name="互斥岗位编号" data_type="12" para_type="0" />
+    </bex>
+    <bex bex_code="delCascadeExcluJob" bex_type="4" page_mode="2" bex_cate="1" attr1="delCascadeExcluJob">
+        <param para_code="POST_ID" para_name="岗位编号" data_type="12" para_type="0" />
+        <param para_code="POST_EXCLU_ID" para_name="互斥岗位编号" data_type="12" para_type="0" />
+    </bex>
+    <!-- 岗位互斥设置 end-->
+    <!--人员模糊查询 start-->
+    <bex bex_code="userInfoVagueQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="userInfoVagueQuery">
+    </bex>
+    <!--人员模糊查询 start-->
+</bexs>
+ 

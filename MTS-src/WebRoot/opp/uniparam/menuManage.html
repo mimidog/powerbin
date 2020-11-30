@@ -1,0 +1,441 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>菜单管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../frame/js/combo-icon.js"></script>
+<script type="text/javascript">
+/**
+ * 重写菜单管理模块，通过url的isfront参数将运行平台菜单和管理平台菜单分开
+ * @author liuqing 2014-4-25
+ */
+(function (window, $, undefined) {
+    var FrontMenu = function (context) {
+        this.context = context;
+        this.cache = {};
+        this.urlParam = getParamObj();
+        this.isfront = !!this.urlParam["isfront"];
+
+        function getParamObj(url) {
+            var urlStr = url || window.location.href.toString(),
+                    bidx = urlStr.indexOf("?"),
+                    obj = {};
+
+            if (bidx != -1) {
+                var pArr = urlStr.substring(bidx + 1).split("&");
+                for (var i = 0, l = pArr.length; i < l; i++) {
+                    var arr = pArr[i].split("=");
+                    obj[arr[0]] = (function (v) {
+                        try {
+                            return JSON.parse(v);
+                        }
+                        catch (ex) {
+                        }
+                        return v
+                    })(decodeURI(arr[1], "utf-8"));
+                }
+            }
+            return obj;
+        }
+    }
+
+    var fn = FrontMenu.prototype;
+
+    fn.data = function (key, value) {
+        if ("undefined" === $.type(value)) {
+            return this.cache[key];
+        }
+        this.cache[key] = value;
+    }
+
+    fn.removeData = function (key) {
+        delete this.cache[key];
+    }
+
+    fn.ajaxRequest = function (param, success, error) {
+        return ajaxRequest({
+            async:true,
+            req:[param],
+            func:function (data) {
+                if ($.isFunction(success)) {
+                    success.apply(data, [data]);
+                }
+            },
+            error:function () {
+                if ($.isFunction(error)) {
+                    error.apply(this, arguments);
+                }
+            }
+        });
+    }
+
+    fn.queryMenu = function (success) {
+        var context = this,
+        	qryParam = {service:"P0000041"};
+
+        if (this.isfront) {
+            qryParam["FRONT_MENU"] = "1";
+        }
+        context.ajaxRequest(qryParam, function (data) {
+            if (data[0] && data[0].length) {
+                context.data("menuData", data[0]);
+                success.call(context, data[0]);
+            }
+            else {
+                alert("未能获取到菜单数据");
+            }
+        }, function () {
+            alert("未能获取到菜单数据");
+        });
+    }
+
+    fn.createMenuTree = function (menuData) {
+        var context = this,
+            tree = $("#menu_tree").empty(),
+            tObj = {
+                conf:{
+                    nodeId:'MENU_ID',
+                    nodeName:'MENU_NAME',
+                    treeType:'1',
+                    parNode:'PAR_MENU'
+                },
+                data:menuData,
+                onClick:function (node) {
+                    if (!node) {
+                        return false;
+                    }
+                    var sMenuData = $.grep(menuData, function (sData, i) {
+                        return sData["MENU_ID"] === node.id;
+                    })[0];
+
+                    if (sMenuData) {
+                    	tree.data("node", node);
+                        treeNodeClick.call(this, context, node, sMenuData);
+                    } else {
+                        alert("获取菜单数据失败");
+                    }
+                }
+            };
+        
+        if (!context.isfront) {
+            tObj.dnd = true;
+            tObj.onDrop = function (target, source, point) {
+                var sid = source.id,
+                	tid = $('#menu_tree').tree('getNode', target).id;
+                context.ajaxRequest({service:'P0000045', P_MENU:sid, P_TARGET:tid, P_POINT:point},
+                function () {
+                	context.resetPage();
+                });
+            }
+        }
+        return tree.tree(tObj);
+    }
+
+    fn.createForm = function () {
+        var context = this,
+            formInfo = $("#menu_info"),
+            formAdd = $("#menu_add"),
+            formAddChild = $("#menu_add_child"),
+            formCfg = $.extend($.builder.format.form($.parser.getConfigs(["UPM_sysMenuForm"])), {
+                onInitSuccess: function() {
+                    var form = $(this),
+                        menuIcon = form.find("input[comboname='MENU_ICO']");
+                        //menuIcon.combo({editable:false}).combo("disable");
+                        //menuIcon.combo({editable:true});
+                    createIconPanel.call(menuIcon, context.isfront ? window.menuIcons[1] : window.menuIcons[0]);
+                    //context.resetUI();
+                }
+            }),
+            btns = {
+                modify:true,
+                toolbar:[
+                    {
+                        text:"保存",
+                        handler:function (e) {
+                            var form = this.target,
+                            	isMdf = form.attr("id") === "menu_info" ? true : false;
+                            menuSaveClick.call(this, e, context, form, isMdf);
+                        },
+                        iconCls:"icon-save",
+                        disabled:true
+                    }, {
+                        text:"删除",
+                        handler:function (e) {
+                            menuDelClick.call(this, e, context, $(this).parents("form"));
+                        },
+                        iconCls:"icon-remove",
+                        disabled:true
+                    }
+                ]
+            },
+            infoFormCfg;
+
+        if(!context.isfront) {  //系统菜单管理不需要显示MENU_BPM_FORM字段
+            $.each(formCfg.queryCols[0]["cols"] || [], function() {
+                if(this.field === "MENU_BPM_FORM") {
+                    this.hidden = true;
+                }
+            });
+        }
+
+        infoFormCfg = $.extend(true, {}, formCfg);
+        if(infoFormCfg.queryCols[0]["cols"] && infoFormCfg.queryCols[0]["cols"][1]) {
+            delete infoFormCfg.queryCols[0]["cols"][1]["hidden"];  //菜单信息表单需要显示菜单编号
+        }
+
+        formInfo.form($.extend({}, infoFormCfg, btns));
+        btns.toolbar.pop();
+        formAdd.form($.extend({}, formCfg, btns));
+        formAddChild.form($.extend({}, formCfg, btns));
+    }
+
+    fn.init = function () {
+        var context = this,
+        	layout = $("#main_layout");
+        context.queryMenu(function (menuData) {
+            layout.find(">div:first").attr("title", context.isfront ? "门户菜单" : "管理菜单");
+            layout.layout();
+            context.createMenuTree(menuData);
+            $("#menu_tabs").tabs();
+            context.createForm();
+        });
+        
+    }
+
+    fn.resetPage = function () {
+        var context = this,
+        	tree = $("#menu_tree");
+        context.queryMenu(function (menuData) {
+        	context.resetUI();
+        	var node = tree.data("node"), id;
+        	if(node && node.target) {
+        		id = $(node.target).parent().parent().prev().attr("node-id");
+        	}
+        	
+            tree.empty();
+            context.createMenuTree(menuData);
+            
+            if(id) {
+            	node = tree.find("div.tree-node[node-id='" + id + "']");
+            	if(node.length) {
+            		tree.tree("expandTo", node);
+            		tree.tree("expand", node);
+            	}
+            }
+        });
+    }
+    
+    fn.resetUI = function() {
+        var context = this,
+        
+        	tabs = $("#menu_tabs"),
+	    	formInfo = $("#menu_info"),
+	        formAdd = $("#menu_add"),
+	        formAddChild = $("#menu_add_child");
+        
+        tabs.tabs("enableTab", 0).tabs("enableTab", 1).tabs("enableTab", 2);
+	    	
+    	$.each([formInfo, formAdd, formAddChild], function () {
+        	$(this).form("clear").find(".form-buttons a").linkbutton({disabled:true});
+    	});
+    	
+    	setEditable.call([formInfo, formAdd, formAddChild], false);
+    }
+	
+    function setEditable(flag) {
+    	var forms = this,
+            method = flag ? "enable" : "disable";
+    	
+    	$.each(forms, function() {
+        	var form = $(this),
+                inputs = form.find("[class^='kui-']"), input;
+
+            inputs.each(function() {
+                input = $(this);
+
+                if(input.data("combo")) {
+                     if(input.attr("comboname") === "MENU_PLAT" || input.attr("comboname") === "MENU_PUR") {
+                        return true;
+                     }
+                    input.combobox(method);
+                } else if(input.data("textinput")) {
+                    if(input.attr("name") === "MENU_ID") {
+                        return true;
+                    }
+                    input.textinput(method);
+                } else if(input.data("linkbutton")) {
+                    input.linkbutton(method);
+                }
+            });
+        });
+    }
+    
+    function treeNodeClick(context, node, sMenuData) {
+        var menuLvl = sMenuData.MENU_LVL.length / 4;
+        if (context.isfront && 1 === menuLvl) { //门户第一级菜单不允许修改
+        	context.resetUI();
+            $(this).tree('toggle', node.target);
+            return false;
+        }
+
+        var tab = $("#menu_tabs"),
+            infoForm = $("#menu_info"),
+            addForm = $("#menu_add"),
+            addChildForm = $("#menu_add_child");
+
+        tab.tabs("select", 0).tabs("enableTab", 0).tabs("enableTab", 1).tabs("enableTab", 2);
+        
+        var forms = [infoForm, addForm, addChildForm];
+        $.each(forms, function() {
+            $(this).form("clear");
+        });
+        
+        setEditable.call(forms, true);
+
+        context.data("menuInfo", {menuData:sMenuData, nodeInfo:node});
+        infoForm.form("load", sMenuData);
+
+        var addObj = {};
+        addObj["PAR_MENU"] = sMenuData.PAR_MENU;
+        addObj["MENU_PUR"] = sMenuData.MENU_PUR;
+        addObj["MENU_PLAT"] = sMenuData.MENU_PLAT;
+        addForm.form("load", addObj);
+
+        addObj["PAR_MENU"] = sMenuData.MENU_ID;
+        addChildForm.form("load", addObj);
+
+        if(node.children && node.children.length) { //非叶子节点链接不可编辑
+            infoForm.find("input[name='MENU_LINK']").textinput("disable");
+        }
+
+        if (context.isfront) {
+            if(3 === menuLvl) { //第三级菜单, by
+                //不能新增同级菜单，并且不能修改
+               // tab.tabs("disableTab", 1);    //by  2016/04/25 注释
+                //setEditable.call([infoForm], false);
+                if("1" === sMenuData.MENU_PLAT) {   //账户系统)
+//                    addChildForm.find("input[name='MENU_LINK']").textinput("setValue", "").textinput("disable");    //链接不可编辑
+
+                    if("4" !== sMenuData.MENU_PUR) {    //非流程菜单表单模版字段不可编辑
+                        addChildForm.find("input[name='MENU_BPM_FORM']").textinput("setValue", "").textinput("disable");
+                    }
+                } else {    //其他平台
+                    if(sMenuData.MENU_PUR === "2") {    //门户菜单
+                        addChildForm.find("input[comboname='MENU_ICO']").combo("setValue", "").combo("disable");    //图标不可选
+                    }/* else {
+                        addChildForm.find("input[name='MENU_LINK']").textinput("setValue", "").textinput("disable");
+                    }*/
+
+                    if("4" !== sMenuData.MENU_PUR) {    //非流程菜单表单模版字段不可编辑
+                        addChildForm.find("input[name='MENU_BPM_FORM']").textinput("setValue", "").textinput("disable");
+                    }
+                }
+            }else if(5 === menuLvl){
+                tab.tabs("disableTab", 2);  //不可增加子菜单
+            } else {
+                if("1" === sMenuData.MENU_PLAT) {   //账户系统
+                    //tab.tabs("disableTab", 2);  //不可增加子菜单     by  2016/04/25
+//                    $.each(forms, function() {  //链接不可编辑
+//                        $(this).find("input[name='MENU_LINK']").textinput("setValue", "").textinput("disable");
+//                    });
+                } else {    //其他平台
+                    if(sMenuData.MENU_PUR === "2") {    //门户菜单
+                        $.each(forms, function() {  //图标不可选
+                            $(this).find("input[comboname='MENU_ICO']").combo("setValue", "").combo("disable");
+                        });
+                    } else {
+                        tab.tabs("disableTab", 2);  //不可增加子菜单
+//                        $.each(forms, function() {  //链接不可编辑
+//                            $(this).find("input[name='MENU_LINK']").textinput("setValue", "").textinput("disable");
+//                        });
+                    }
+                }
+
+                $.each(forms, function() {
+                    if("4" !== sMenuData.MENU_PUR) {    //非流程菜单表单模版字段不可编辑
+                        $(this).find("input[name='MENU_BPM_FORM']").textinput("setValue", "").textinput("disable");
+                    }
+                });
+            }
+        }
+    }
+
+    function menuSaveClick(e, context, form, isMdf) {
+        if (form.form("validate")) {
+            form.form("submit", {
+                onSubmit: function(data) {
+                    if(data[0]) {
+                        data[0]["MENU_ID"] = form.find("input[name='MENU_ID']").textinput("getValue");
+                    }
+                },
+                req:[
+                    {service:isMdf ? "P0000043" : "P0000042"}
+                ],
+                success:function () {
+                    alert("保存成功！");
+                    context.resetPage();
+
+                },
+                error:function(){
+                    alert("保存失败！");
+                    return;
+                }
+            });
+        }
+    }
+    
+
+    function menuDelClick(e, context, form) {
+        var node = context.data("menuInfo").nodeInfo,
+        	msg = ["确认要删除当前选中的菜单吗？"];
+        if (node.children) {
+            msg.unshift("菜单下的" + node.children.length + "个子菜单也会级联删除，");
+        }
+        confirm("提示", msg.join(""), function (flag) {
+            if (flag) {
+                context.ajaxRequest({service:"P0000044", MENU_ID:node.id}, function () {
+                    alert("删除成功！");
+                    context.resetPage();
+                },function(){
+                    alert("删除失败！");
+                    return;
+                });
+            }
+        });
+    }
+
+    window.frontMenuFrame = new FrontMenu($(window.document));
+})(window, jQuery);
+
+window.$ready = function () {
+    using(["layout", "tree", "tabs", "form"], function () {
+        frontMenuFrame.init();
+    });
+}
+</script>
+</head>
+<body>
+<div id="main_layout" kui-options="fit:true">
+    <div kui-options="region:'west'" style="width:200px;">
+        <ul id="menu_tree" kui-options="animate:true"></ul>
+    </div>
+    <div kui-options="region:'center'">
+        <div id="menu_tabs" kui-options="fit:true">
+            <div title="菜单信息">
+                <form id="menu_info"></form>
+            </div>
+            <div title="增加同级菜单">
+                <form id="menu_add"></form>
+            </div>
+            <div title="增加子菜单">
+                <form id="menu_add_child"></form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commonParam>
+	<sp>
+		<attr key="p_gybh" user-key="staffNumber" defaultVal="" />
+		<attr key="p_gymm" user-key="starffPassword" defaultVal="" />
+		<attr key="p_czzd" user-key="operateSite" defaultVal="" />
+		<attr key="p_gnbh" user-key="funNumber" defaultVal="10001" />
+		<attr key="p_kzcs" user-key="extendParam" defaultVal="" />
+	</sp>
+	<lbm>
+		<attr key="F_FUNCTION" user-key="F_FUNCTION" defaultVal="" />
+		<attr key="F_OP_USER" user-key="USER_CODE" defaultVal="" />
+		<attr key="F_OP_ROLE" user-key="USER_ROLE" defaultVal="" />
+		<attr key="F_OP_SITE" user-key="operateSite" defaultVal="" />
+		<attr key="F_CHANNEL" user-key="channel1" defaultVal="1" />
+		<attr key="F_SESSION" user-key="USER_TICKET_INFO" defaultVal="" />
+		<attr key="F_RUNTIME" user-key="rutime" defaultVal="" />	
+		<attr key="F_OP_SRC" user-key="channel" defaultVal="0" />
+	</lbm>
+
+	<ibatis>
+		<attr key="OP_CODE" user-key="USER_CODE" defaultVal="" />
+		<attr key="OP_POST" user-key="USER_POST" defaultVal="" />
+		<attr key="OP_ROLE" user-key="USER_ROLE" defaultVal="" />
+		<attr key="OP_BRANCH" user-key="ORG_CODE" defaultVal="" />
+		<attr key="OP_SITE" user-key="LOG_IP" defaultVal="0" />
+		<attr key="OP_WAY" user-key="WAY" defaultVal="" />
+		<attr key="OP_LANGUAGE" user-key="LANGUAGE" defaultVal="" />
+		<attr key="OP_PROGRAM" user-key="PROGRAM" defaultVal="0" />
+	</ibatis>
+</commonParam>

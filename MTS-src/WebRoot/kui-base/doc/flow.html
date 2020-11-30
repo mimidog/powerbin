@@ -1,0 +1,308 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>flow - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>流程组件</h3>
+
+<p>使用$.fn.flow.defaults重载默认值</p>
+
+<img src="images/flow.png"/>
+
+
+
+<h4>依赖关系</h4>
+
+<ul>
+
+	<li>无</li>
+
+</ul>
+
+
+
+<h4>使用方法</h4>
+
+<h5>创建微调器</h5>
+
+<p>使用html标签创建微调器，只须要对&lt;input&gt;标签引用'easyui-spinner'类。</p>
+
+
+<p>例子：</p>
+
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">class</span><span style="color:blue">="kui-panel"</span> <span style="color:red">title</span><span style="color:blue">="Flow Demo"</span> <span style="color:red">style</span><span style="color:blue">="width:1000px;"&gt;</span>
+		<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="aa"</span> <span style="color:red">class</span><span style="color:blue">="kui-flow"</span><span style="color:red">kui-options<span><span style="color:blue">='width:"1000",showIndex:2,panelHeight:100,stepNum:5,frameHeight:"100",
+		imgPath:"../../frame/images/steps/",
+		data:[{title:"第一步",url:"a1.html",img:"step-icon-pic1.png"},
+					         {title:"第二步",url:"a2.html",img:"step-icon-pic2.png"},
+					         {title:"第三步",url:"a3.html",img:"step-icon-pic3.png"},
+					         {title:"第四步",url:"a4.html",img:"step-icon-pic4.png"},
+					         {title:"第五步",url:"a5.html",img:"step-icon-pic5.png"},
+					         {title:"第六步",url:"a6.html",img:"step-icon-pic6.png"}],
+					         clickCallblack:callBack'></span>
+		<span style="color:blue">&lt;/div&gt;
+	&lt;/div&gt;</span>
+
+</pre>
+
+<p>回调函数：</p>
+
+<pre class="code">
+<span style="color:blue">
+		function callBack(){
+			var f = $("#aa").flow("getForm","#myForm");
+			//alert(f.find("input[name='userName']").val());
+			alert($("#aa").flow("getCurrStep"));
+		}	
+</span>
+</pre>
+
+
+
+<br/>
+
+
+
+<p>&nbsp;</p>
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>frameHeight</td>
+
+<td>number（数字）</td>
+
+<td>iframe框架的高度</td>
+
+
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>panelHeight</td>
+
+<td>number（数字）</td>
+
+<td>内容区域高度</td>
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>showIndex</td>
+
+<td></td>
+
+
+<td>初始化显示的流程，默认第一步</td>
+
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>showButtom</td>
+
+<td>boolean</td>
+
+<td>是否显示按钮</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>width</td>
+
+<td>number</td>
+
+<td>组件的宽度</td>
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>stepNum</td>
+
+<td>number</td>
+
+<td>总流程数量</td>
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>curStep</td>
+
+<td>number</td>
+
+<td>当前流程数量</td>
+
+<td> </td>
+
+</tr>
+
+<tr>
+
+<td>data</td>
+
+<td>number</td>
+
+<td>流程数据</td>
+
+<td> </td>
+
+</tr>
+
+<tr>
+
+<td>imgPath</td>
+
+<td>string</td>
+
+<td>流程图标的路径,如D://IMG/</td>
+
+<td> </td>
+
+</tr>
+
+</table>
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>clickCallBlack</td>
+
+<td> </td>
+
+<td>点击流程时的回调函数</td>
+
+</tr>
+
+
+<tr>
+
+<td>getForm</td>
+
+<td> </td>
+
+<td>获得流程页面的form表单</td>
+
+</tr>
+
+<tr>
+
+<td>resize</td>
+
+<td>width</td>
+
+<td>重设组件宽度
+
+</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>hideToolButtom</td>
+
+<td> </td>
+
+<td>隐藏按钮</td>
+
+</tr>
+
+<tr>
+
+<td>showToolButtom</td>
+
+<td> </td>
+
+<td>显示按钮</td>
+
+</tr>
+
+<tr>
+
+<td>disable</td>
+
+<td> index</td>
+
+<td>指第几步不可点击流程图标</td>
+
+</tr>
+
+<tr>
+
+<td>enable</td>
+
+<td> index</td>
+
+<td>指第几步可点击流程图标</td>
+
+</tr>
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

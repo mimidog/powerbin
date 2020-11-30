@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<typeAliases>
+        <typeAlias type="com.szkingdom.frame.bpm.engine.impl.persistence.ByteArrayRefTypeHandler" alias="ByteArrayRefTypeHandler"/>
+        <typeAlias type="com.szkingdom.frame.bpm.engine.impl.db.IbatisVariableTypeHandler" alias="VariableTypeTypeHandler"/>
+    </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="ByteArrayRefTypeHandler"
+                     javaType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ByteArrayRef"
+                     jdbcType="VARCHAR"/>
+        <typeHandler handler="VariableTypeTypeHandler"
+                     javaType="com.szkingdom.frame.bpm.engine.impl.variable.VariableType"
+                     jdbcType="VARCHAR"/>
+    </typeHandlers>
+	<mappers>
+		<mapper resource="../conf/mybatis/opp/mapper-kge_tabs.xml"/>
+        <mapper resource="../conf/mybatis/opp/mapper-kge_tab_cols.xml"/>
+		<mapper resource="../conf/mybatis/opp/mapper-frame.xml" />
+		<mapper resource="../conf/mybatis/opp/mapper-upm.xml" />
+		<mapper resource="../conf/mybatis/opp/mapper-uum.xml" />
+		<mapper resource="../conf/mybatis/opp/mapper-upt.xml" />
+		<mapper resource="../conf/mybatis/opp/mapper-uwk.xml" />
+		<mapper resource="../conf/mybatis/opp/mapper-auth.xml" />
+		<mapper resource="../conf/mybatis/opp/mapper-run-upt.xml" />
+		<mapper resource="../conf/mybatis/opp/mapper-review.xml"/>
+		<mapper resource="../conf/mybatis/bpm/mapper-workflow-variable.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-attachment.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-byteArray.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-comment.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-deployment.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-eventSubscription.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-execution.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-group.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-historicActivityInstance.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-historicDetail.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-historicIdentityLink.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-historicProcessInstance.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-historicTaskInstance.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-historicVariableInstance.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-tabledata.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-resources.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-property.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-membership.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-user.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-identity-info.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-identity-link.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-job.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-model.xml" />
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-process-definition.xml" />
+		<mapper resource="../conf/mybatis/bpm/mapper-workflow-statement.xml"/> 
+        <mapper resource="../conf/mybatis/bpm/mapper-workflow-task.xml" />
+		<mapper resource="../conf/mybatis/bpm/mapper-workflow-historicProcessInstanceDetail.xml" />
+		<mapper resource="../conf/mybatis/bpm/mapper-workflow-historicTaskDetail.xml" />
+
+
+	    <mapper resource="../conf/mybatis/mts/mapper-mts-syscfg.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-acctinfo.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-productinfo.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-rsikcontrol.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-oms.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-holdasset.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-statistics.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-serial-manage.xml"/>
+
+</mappers>
+</configuration>

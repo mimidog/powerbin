@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DynamicMapper.HistoricActivityInstance">
+
+  <!-- HISTORIC ACTIVITY INSTANCE INSERT -->
+  
+  <insert id="BpmHistoricActivityInstanceInsert" parameterType="hashmap">
+      insert into UWK_HI_ACTINST (
+        HI_ACTINST_ID,
+        PROC_DEF_ID,
+        PROC_INST_ID,
+        EXECUTION_ID,
+        ACT_ID,
+        TASK_ID,
+        CALL_PROC_INST_ID,
+        ACT_NAME,
+        ACT_TYPE,
+        ASSIGNEE,
+        START_TIME,
+        END_TIME,
+        DURATION,
+        CREATE_TIME,
+        NEXT_ACT
+      ) values (
+        #{historicActivityInstance.id ,jdbcType=VARCHAR},
+        #{historicActivityInstance.processDefinitionId, jdbcType=VARCHAR},
+        #{historicActivityInstance.processInstanceId, jdbcType=VARCHAR},
+        #{historicActivityInstance.executionId, jdbcType=VARCHAR},
+        #{historicActivityInstance.activityId ,jdbcType=VARCHAR},
+        #{historicActivityInstance.taskId ,jdbcType=VARCHAR},
+        #{historicActivityInstance.calledProcessInstanceId ,jdbcType=VARCHAR},
+        #{historicActivityInstance.activityName ,jdbcType=VARCHAR},
+        #{historicActivityInstance.activityType ,jdbcType=VARCHAR},
+        #{historicActivityInstance.assignee ,jdbcType=VARCHAR},
+        #{historicActivityInstance.startTime, jdbcType=TIMESTAMP},
+        #{historicActivityInstance.endTime, jdbcType=TIMESTAMP},
+        #{historicActivityInstance.durationInMillis ,jdbcType=BIGINT},
+        #{historicActivityInstance.createTime, jdbcType=TIMESTAMP},
+        #{historicActivityInstance.nextAct ,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!-- HISTORIC ACTIVITY INSTANCE UPDATE -->
+  
+  <update id="BpmHistoricActivityInstanceUpdate" parameterType="hashmap">
+    update UWK_HI_ACTINST set
+      EXECUTION_ID = #{historicActivityInstance.executionId, jdbcType=VARCHAR},
+      ASSIGNEE = #{historicActivityInstance.assignee, jdbcType=VARCHAR},
+      END_TIME = #{historicActivityInstance.endTime, jdbcType=TIMESTAMP},
+      DURATION = #{historicActivityInstance.durationInMillis ,jdbcType=BIGINT},
+      NEXT_ACT = #{historicActivityInstance.nextAct,jdbcType=VARCHAR}
+    where HI_ACTINST_ID = #{historicActivityInstance.id}
+  </update>
+
+  <!-- HISTORIC ACTIVITY INSTANCE DELETE -->
+  
+  <delete id="BpmHistoricActivityInstanceDeleteByProcessInstanceId">
+    delete from UWK_HI_ACTINST where PROC_INST_ID = #{processInstanceId}
+  </delete>
+  
+  <delete id="BpmHistoricActivityInstanceDelete" parameterType="hashmap">
+  	delete from UWK_HI_ACTINST where ACT_ID = #{historicActivityInstance.activityId} and EXECUTION_ID = #{historicActivityInstance.executionId}
+  </delete>
+
+  <!-- HISTORIC ACTIVITY INSTANCE RESULT MAP -->
+
+  <resultMap id="historicActivityInstanceResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricActivityInstanceEntity">
+    <id property="id" column="HI_ACTINST_ID" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+    <result property="calledProcessInstanceId" column="CALL_PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="activityName" column="ACT_NAME" jdbcType="VARCHAR" />
+    <result property="activityType" column="ACT_TYPE" jdbcType="VARCHAR" />
+    <result property="assignee" column="ASSIGNEE" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION" jdbcType="BIGINT" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+    <result property="nextAct" column="NEXT_ACT" jdbcType="VARCHAR" />
+    
+  </resultMap>
+
+  <!-- HISTORIC ACTIVITY INSTANCE SELECT -->
+  
+  <select id="BpmHistoricActivityInstanceSelect" resultMap="historicActivityInstanceResultMap">
+    select * from UWK_HI_ACTINST where ACT_ID = #{activityId} and PROC_INST_ID = #{processInstanceId}
+  </select>
+
+  <select id="BpmHistoricActivityInstanceSelectByQueryCriteria" parameterType="hashmap" resultMap="historicActivityInstanceResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectHistoricActivityInstancesByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmHistoricActivityInstanceSelectCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select count(RES.HI_ACTINST_ID)
+    <include refid="selectHistoricActivityInstancesByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectHistoricActivityInstancesByQueryCriteriaSql">
+    from UWK_HI_ACTINST RES
+    <where>
+      <if test="criteria.processInstanceId != null">
+        RES.PROC_INST_ID = #{criteria.processInstanceId}
+      </if>
+      <if test="criteria.activityInstanceId != null">
+        and RES.HI_ACTINST_ID= #{criteria.activityInstanceId}
+      </if>
+      <if test="criteria.executionId != null">
+        and RES.EXECUTION_ID = #{criteria.executionId}
+      </if>
+      <if test="criteria.processDefinitionId != null">
+        and RES.PROC_DEF_ID = #{criteria.processDefinitionId}
+      </if>
+      <if test="criteria.activityId != null">
+        and RES.ACT_ID = #{criteria.activityId}
+      </if>
+      <if test="criteria.activityName != null">
+        and RES.ACT_NAME = #{criteria.activityName}
+      </if>
+      <if test="criteria.activityType != null">
+        and RES.ACT_TYPE = #{criteria.activityType}
+      </if>
+      <if test="criteria.assignee != null">
+        and RES.ASSIGNEE = #{criteria.assignee}
+      </if>
+      <if test="criteria.unfinished">
+        and RES.END_TIME is null
+      </if>
+      <if test="criteria.finished">
+       and RES.END_TIME is not null
+      </if>
+      <if test="criteria.nextAct">
+       and RES.NEXT_ACT like '%${criteria.nextAct}%'  
+      </if>
+    </where>
+  </sql>
+  
+  <select id="BpmHistoricActivityInstanceSelectByNativeQuery" parameterType="java.util.Map" resultMap="historicActivityInstanceResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+       	<include refid="bpm.limitBefore"/> 
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+        <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+  
+  <select id="BpmHistoricActivityInstanceSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+</mapper>

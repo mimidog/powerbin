@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Tree Actions - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Tree Actions</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the buttons below to perform actions.</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="#" class="kui-linkbutton" onclick="collapseAll()">CollapseAll</a>
+		<a href="#" class="kui-linkbutton" onclick="expandAll()">ExpandAll</a>
+		<a href="#" class="kui-linkbutton" onclick="expandTo()">ExpandTo</a>
+		<a href="#" class="kui-linkbutton" onclick="getSelected()">GetSelected</a>
+	</div>
+	<ul id="tt" class="kui-tree" kui-options="url:'tree_data1Xml.json',animate:true"></ul>
+	<script type="text/javascript">
+		function collapseAll(){
+			$('#tt').tree('collapseAll');
+		}
+		function expandAll(){
+			$('#tt').tree('expandAll');
+		}
+		function expandTo(){
+			var node = $('#tt').tree('find',113);
+			$('#tt').tree('expandTo', node.target).tree('select', node.target);
+		}
+		function getSelected(){
+			var node = $('#tt').tree('getSelected');
+			if (node){
+				var s = node.text;
+				if (node.attributes){
+					s += ","+node.attributes.p1+","+node.attributes.p2;
+				}
+				alert(s);
+			}
+		}
+	</script>
+</body>
+</html>

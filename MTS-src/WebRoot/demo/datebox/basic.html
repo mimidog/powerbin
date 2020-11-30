@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Calendar - KINGDOM UI Demo</title>
+	  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+   
+	<script type="text/javascript">	
+	
+
+	
+	function setValue(){
+		  
+		  $('#cc').datebox('setValue', '20120601');	
+		}
+		
+	function getValue(){
+		alert($('#cc').datebox('getValue'))
+	}
+	
+	
+
+</script>
+</head>
+<body>
+	<h2>Basic Calendar</h2>
+	<div class="demo-info" style="margin-bottom:10px">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click to select date.</div>
+	</div>
+	
+	<!--<input id="cc" class="kui-datebox" required="required" type="text" panelWidth="600" panelHeight="600" style="width:600px"></input>-->
+  <input id="cc" style="width:600px;" class="kui-datebox" kui-options="required:'true',
+			okText:'OK',
+			format:'yyyymmdd'"></input>
+  
+  <div style="margin:10px 0;">
+		<a href="#" class="kui-linkbutton" onclick="setValue()">测试setValue方法</a>
+		<a href="#" class="kui-linkbutton" onclick="getValue()">通过getValue方法</a>
+	</div>
+</body>
+</html>

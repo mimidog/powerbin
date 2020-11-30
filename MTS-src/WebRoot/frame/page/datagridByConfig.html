@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TEST</title>
+  
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui-core.js"></script>
+  <script type="text/javascript" src="../../business/js/easyloader.js"></script>
+  <script type="text/javascript" src="../../business/js/kui-view.js"></script>
+ <script type="text/javascript">
+  	function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+    }
+    var service = getQueryString('service');
+    
+    $(function(){
+      var rows = [],totals = 0,config={};
+      config = getDatagridConfig()['config'];
+      if($.isEmptyObject(config)) return;
+      var render = config['render'];
+      var title = config.title||"";
+      var width = config.width||"";
+      var tt = $('<table id="'+config.id+'" title="'+title+'" width="'+width+'"  style="padding:10px 10px 10px 10px"></table>');
+      tt.appendTo($('body'));
+      using('datagrid',function(){
+        var opts = config;
+        opts.url = "../../ajax?returnType=json";
+        //createForm(config.queryCols,div,true);
+        opts.title='';
+        opts.singleSelect=true;
+        $(tt).datagrid(opts);
+      });
+      function getDatagridConfig(){
+        var rows = [],totals = 0,config={};
+        ajaxRequest({
+          type:'post',
+          async:false,
+          //url:'datagrid_data_con.json',
+          url:"../../ajax?returnType=json",
+          func:function(data){
+            //rows = data[0]['data'][0];
+            //totals = data[0]['message'][0]['rows'];
+            //第一次只请求配置文件，不请求数据
+             config = data[0]['config'];
+             config=kuiTrans(config);
+          },
+          req: [{
+              "service": service
+  				}],
+          error:function(){
+            alert("请求错误");
+          }
+        });
+        return {config:config};
+      }
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>

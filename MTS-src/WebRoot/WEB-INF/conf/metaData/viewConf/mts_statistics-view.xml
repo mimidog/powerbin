@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+
+    <view id="mts_operationLog_table"  render="datagrid" title="操作日志查询" >
+        <conf fit="true" service="M0000081" pagination="true" singleSelect="true"  fitColumns="true"
+              pageSize="100" pageList="[100,200,500]" fallParas="[{enable:true}]"/>
+        <qry_item field="OP_THEME" title="操作主题"  type="combobox"  edt_dict="OP_THEME"/>
+        <qry_item field="OP_TYPE" title="操作类型"  type="combobox"  edt_dict="OP_TYPE"/>
+        <qry_item field="OP_USER" title="操作用户" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+                  edt_textField="USER_NAME" edt_idField="USER_CODE"
+                  edt_fallParas="[{enable:true}]"
+                  edt_req="[{service:'P0001008',USER_STA:'1'}]"
+                  edt_columns="[[
+            {field:'USER_CODE',title:'ID号',width:70},
+            {field:'USER_NAME',title:'人员名称',width:70},
+            {field:'USER_TYPE',title:'人员类型',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_TYPE',value);
+              }
+            }
+            ]]"
+                  edt_queryCols="[
+            {
+              text:'查询',
+              cols:[{field:'USER_NAME',title:'人员名称',
+              editor:{
+                  type:'text',
+                  options:{
+                    validType:'val[1,64]'
+                  }
+                }
+              }]
+            }
+           ]"
+        />
+        <qry_item field="BEGIN_DATE" title="操作日期(起)" type="datebox" edt_defaultValue=":D0" edt_validType="begDate['END_DATE']"  />
+        <qry_item field="END_DATE" title="操作日期(止)" type="datebox" edt_defaultValue=":D0" edt_validType="endDate['BEGIN_DATE']"  />
+
+        <col_item field="LOG_ID" title="流水号" type="input" />
+        <col_item field="OP_THEME" title="操作主题"  type="combobox"  edt_dict="OP_THEME" edt_required="true"/>
+        <col_item field="OP_TYPE" title="操作类型"  type="combobox"  edt_dict="OP_TYPE" edt_required="true"/>
+        <col_item field="OP_USER" title="操作用户"  type="input" edt_required="true"/>
+        <col_item field="OP_NAME" title="操作员名称"  type="input" edt_required="true"/>
+        <col_item field="OP_ORG" title="操作机构" edt_required="true"
+                  type="combotree"
+                  edt_req="[{service:'P0001031'}]"
+                  edt_panelWidth="50"
+                  edt_panelHeight="50"
+                  edt_nodeId="ORG_CODE"
+                  edt_nodeName="ORG_CODE_NAME"
+                  edt_parNode="PAR_ORG"
+                  edt_treeType="1"
+        />
+        <col_item field="UP_DATE" title="操作日期" type="input" />
+        <col_item field="UP_TIME" title="操作时间" type="input" />
+    </view>
+
+</views>

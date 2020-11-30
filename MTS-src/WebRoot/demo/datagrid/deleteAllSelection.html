@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>DataGrid Delete - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>DataGrid delete</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>delete more rows.</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="#" class="kui-linkbutton" onclick="deleteSelected()">deleteSelected</a>
+		<a href="#" class="kui-linkbutton" onclick="deleteSelected(false)">deleteSelectedWithoutRefresh</a>
+		<!--a href="#" class="kui-linkbutton" onclick="getSelections()">GetSelections</a-->
+	</div>
+	<div style="margin:10px 0;">
+		<span>Selection Mode: </span>
+		<select onchange="$('#dg').datagrid({singleSelect:(this.value==0)})">
+			<option value="0">Single Row</option>
+			<option value="1">Multiple Rows</option>
+		</select>
+	</div>
+	<table id="dg" class="kui-datagrid" title="DataGrid Selection" style="width:700px;height:250px"
+			kui-options="singalSelection:false,url:'../datagrid/datagrid_data1.json'">
+		<thead>
+			<tr>
+				<th kui-options="field:'itemid',width:80">Item ID</th>
+				<th kui-options="field:'productid',width:100">Product</th>
+				<th kui-options="field:'listprice',width:80,align:'right'">List Price</th>
+				<th kui-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+				<th kui-options="field:'attr1',width:250">Attribute</th>
+				<th kui-options="field:'status',width:60,align:'center'">Status</th>
+			</tr>
+		</thead>
+	</table>
+
+
+	<script type="text/javascript">
+		function deleteSelected(flag){
+			$('#dg').datagrid('deleteAllSelections',flag);
+		}
+	</script>
+</body>
+</html>

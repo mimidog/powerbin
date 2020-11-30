@@ -1,0 +1,800 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>treegrid - jQuery kui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>树形表格</h3>
+
+<p>继承$.fn.datagrid.defaults，使用$.fn.treegrid.defaults重载默认值。</p>
+<img src="images/treegrid2.png"/>
+
+
+<h4>依赖关系</h4>
+
+<ul>
+
+	<li>数据表格</li>
+
+</ul>
+
+
+
+<h4>使用方法</h4>
+<h5>创建数据表格</h5>
+
+<p>使用HTML标签创建数据表格，只须要对&lt;div&gt;标签引用'kui-treegrid'类。</p>  
+<pre class="code">
+	<span style="color:blue">&lt;table</span> <span style="color:red">id</span><span style="color:blue">="tt"</span> <span style="color:red">class</span><span style="color:blue">="kui-treegrid"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">600px;</span><span style="color:blue">height:</span><span style="color:red">400px</span><span style="color:blue">"</span>  
+	        <span style="color:red">data-options</span><span style="color:blue">="url:</span><span style="color:red">'get_data.php'</span><span style="color:blue">,idField:</span><span style="color:red">'id'</span><span style="color:blue">,treeField:</span><span style="color:red">'name'</span><span style="color:blue">"&gt;</span>  
+	    <span style="color:blue">&lt;thead&gt;</span>
+	        <span style="color:blue">&lt;tr&gt;</span>
+	            <span style="color:blue">&lt;th</span> <span style="color:red">data-options</span><span style="color:blue">="field:</span><span style="color:red">'name'</span><span style="color:blue">,width:</span><span style="color:red">180</span><span style="color:blue">"&gt;</span>Task Name<span style="color:blue">&lt;/th&gt;</span>
+	            <span style="color:blue">&lt;th</span> <span style="color:red">data-options</span><span style="color:blue">="field:</span><span style="color:red">'persons'</span><span style="color:blue">,width:</span><span style="color:red">60</span><span style="color:blue">,align:</span><span style="color:red">'right'</span><span style="color:blue">"&gt;</span>Persons<span style="color:blue">&lt;/th&gt;</span>
+	            <span style="color:blue">&lt;th</span> <span style="color:red">data-options</span><span style="color:blue">="field:</span><span style="color:red">'begin'</span><span style="color:blue">,width:</span><span style="color:red">80</span><span style="color:blue">"&gt;</span>Begin Date<span style="color:blue">&lt;/th&gt;</span>
+	            <span style="color:blue">&lt;th</span> <span style="color:red">data-options</span><span style="color:blue">="field:</span><span style="color:red">'end'</span><span style="color:blue">,width:</span><span style="color:red">80</span><span style="color:blue">"&gt;</span>End Date<span style="color:blue">&lt;/th&gt;</span>
+	        <span style="color:blue">&lt;/tr&gt;</span> 
+	    <span style="color:blue">&lt;/thead&gt;</span> 
+	<span style="color:blue">&lt;/table&gt;</span>
+</pre>
+
+<p>使用javaScript创建数据表格</p>
+<pre class="code">
+	<span style="color:blue">&lt;table</span> <span style="color:red">id</span><span style="color:blue">="tt"&gt;&lt;/table&gt;</span>
+</pre>
+
+<pre class="code">
+	$(<span style="color:blue">'#tt'</span>).treegrid({
+		url:<span style="color:blue">'treegrid_data.json'</span>,
+		idField:<span style="color:blue">'id'</span>,
+		treeField:<span style="color:blue">'name'</span>,
+		columns:[[
+			{title:<span style="color:blue">'Task Name'</span>,field:<span style="color:blue">'name'</span>,width:<span style="color:red">180</span>},
+			{field:<span style="color:blue">'persons'</span>,title:<span style="color:blue">'Persons'</span>,width:<span style="color:red">60</span>,align:<span style="color:blue">'right'</span>},
+			{field:<span style="color:blue">'begin'</span>,title:<span style="color:blue">'Begin Date'</span>,width:<span style="color:red">80</span>},
+			{field:<span style="color:blue">'end'</span>,title:<span style="color:blue">'End Date'</span>,width:<span style="color:red">80</span>}
+		]]
+	});
+</pre>
+
+
+
+<h4>属性</h4>
+
+<p>属性继承数据表格，以下是树形表格独有的树形。</p>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>idfield</td>
+
+
+
+<td>string（字符串）</td>
+
+<td>定义了关键字段来确定一个树节点。<span style="color:red">必填</span></td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>treeField（树形字段）</td>
+
+
+
+<td>string（字符串）</td>
+
+<td>定义作为树节点的字段。<span style="color:red">必填</span></td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>loader</td>
+
+
+
+<td>function(param,success,error)</td>
+
+<td>定义如何从远程服务器加载数据。返回false可以中止这一行动。这个函数接受以下参数：<br>
+param: 这个参数对象传递到远程服务器.<br>
+success(data):这个回调函数,它将检索数据时调用成功.<br>
+error(): 这个回调函数,它将检索数据时调用失败. <br>
+</td>
+<td>json loader</td>
+
+</tr>
+
+<tr>
+
+<td>loadFilter</td>
+
+
+
+<td>function(data,parentId)</td>
+
+<td>返回过滤数据来显示</td>
+
+<td></td>
+
+</tr>
+
+
+<tr>
+
+<td>animate（动画）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义当打开或关闭节点时是否显示动画效果。</td>
+
+<td>false</td>
+
+</tr>
+<tr>
+
+<td>singleSelect（单选）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>为true时可以选中多行，false只能选中一行。</td>
+
+<td>true</td>
+
+</tr>
+
+
+</table>
+
+
+
+<h4>事件</h4>
+
+<p>事件继承数据表格，以下是树形表格的独有事件。</p>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>onClickRow</td>
+
+<td>row</td>
+
+<td>当用户点击节点时触发 。</td>
+
+</tr>
+
+<tr>
+
+<td>onDblClickRow</td>
+
+<td>row</td>
+
+<td>当用户双击节点时触发 。</td>
+
+
+
+</tr>
+
+</tr>
+
+<tr>
+
+<td>onClickCell</td>
+
+<td>field,row</td>
+
+<td>当用户点击一个单元格时触发 。</td>
+
+</tr>
+
+<tr>
+
+<td>onDblClickCell</td>
+
+<td>field,row</td>
+
+<td>当用户双击一个单元格时触发 。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>onBeforeLoad</td>
+
+<td>row, param</td>
+
+<td>在请求载入数据之前触发，返回false将取消载入。</td>
+
+</tr>
+
+<tr>
+
+<td>onLoadSuccess</td>
+
+<td>row, data</td>
+
+<td>当数据载入成功时触发。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>onLoadError</td>
+
+<td>arguments</td>
+
+<td>当数据载入失败时触发，arguments参数和jQuery.ajax的'error'函数一样。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeExpand</td>
+
+<td>row</td>
+
+<td>在节点打开之前触发 ，返回false将取消打开。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>onExpand</td>
+
+<td>row</td>
+
+<td>当节点打开时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeCollapse</td>
+
+<td>row</td>
+
+<td>在节点关闭之前触发，返回false将取消关闭。</td>
+
+</tr>
+
+<tr>
+
+<td>onCollapse</td>
+
+
+
+<td>row</td>
+
+<td>当节点关闭时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onContextMenu</td>
+
+<td>e, row</td>
+
+<td>当节点被鼠标右键点击时触发 。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeEdit</td>
+
+<td>row</td>
+
+
+
+<td>当用户开始编辑节点时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onAfterEdit</td>
+
+<td>row,changes</td>
+
+<td> 当用户结束编辑时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onCancelEdit</td>
+
+<td>row</td>
+
+<td>当用户取消编辑节点时触发。</td>
+
+
+
+</tr>
+
+</table>
+
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+
+
+</tr>
+
+<tr>
+
+<td>options</td>
+
+<td>none</td>
+
+<td>返回树形表格的属性对象。</td>
+
+</tr>
+
+<tr>
+
+<td>resize</td>
+
+<td>options</td>
+
+<td>设置树形表格的大小，options包含2个属性：<br />
+
+width：新的树形表格宽度<br />
+
+
+
+height：新的树形表格高度。</td>
+
+</tr>
+
+<tr>
+
+<td>fixRowHeight</td>
+
+<td>id</td>
+
+<td>固定特定行的高。</td>
+
+</tr>
+
+<tr>
+
+<td>loadData</td>
+
+<td>data</td>
+
+<td>载入树形表格数据。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>reload</td>
+
+<td>id</td>
+
+<td>重新载入树形表格数据。<br>
+<pre>
+<span style="color:green">
+$('#tt').treegrid('reload', 2);	// reload the row which value is equals to 2
+$('#tt').treegrid('reload');	// reload the all rows	
+</span>
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>reloadFooter</td>
+
+<td>footer</td>
+
+<td>重新载入树形表格的行底数据。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>getData</td>
+
+<td>none</td>
+
+<td>获取已载入的数据。</td>
+
+</tr>
+
+<tr>
+
+<td>getFooterRows</td>
+
+<td>none</td>
+
+<td>获取行底数据。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>getRoot</td>
+
+<td>none</td>
+
+<td>获取根节点，返回节点对象。</td>
+
+</tr>
+
+<tr>
+
+<td>getRoots</td>
+
+<td>none</td>
+
+<td>获取根节点，返回节点数组。</td>
+
+</tr>
+
+<tr>
+
+<td>getParent</td>
+
+
+
+<td>id</td>
+
+<td>获取父节点。</td>
+
+</tr>
+
+<tr>
+
+<td>getChildren</td>
+
+<td>id</td>
+
+<td>获取子节点。</td>
+
+</tr>
+
+<tr>
+
+<td>getSelected</td>
+
+<td>none</td>
+
+
+
+<td>获取被选择节点并返回，如果没有节点被选择则返回null。</td>
+
+</tr>
+
+<tr>
+
+<td>getSelections</td>
+
+<td>none</td>
+
+<td>获取所有被选择的节点。</td>
+
+</tr>
+
+<tr>
+
+<td>getLevel</td>
+
+<td>id</td>
+
+<td>获取指定的节点的层级。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>find</td>
+
+<td>id</td>
+
+<td>查找指定的节点并返回节点数据。</td>
+
+</tr>
+
+<tr>
+
+<td>select</td>
+
+<td>id</td>
+
+<td>选择一个节点。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>unselect</td>
+
+<td>id</td>
+
+<td>取消选择一个节点。</td>
+
+</tr>
+
+<tr>
+
+<td>selectAll</td>
+
+<td>none</td>
+
+<td>选择所有的节点。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>unselectAll</td>
+
+<td>none</td>
+
+<td>取消选择所有的节点。</td>
+
+</tr>
+
+<tr>
+
+<td>collapse</td>
+
+<td>id</td>
+
+<td>关闭节点。</td>
+
+</tr>
+
+<tr>
+
+<td>expand</td>
+
+
+
+<td>id</td>
+
+<td>打开节点。</td>
+
+</tr>
+
+<tr>
+
+<td>collapseAll</td>
+
+<td>id</td>
+
+<td>关闭所有节点。</td>
+
+</tr>
+
+<tr>
+
+<td>expandAll</td>
+
+<td>id</td>
+
+
+
+<td>打开所有节点。</td>
+
+</tr>
+
+<tr>
+
+<td>expandTo</td>
+
+<td>id</td>
+
+<td>打开从根节点到指定节点直接的所有节点。</td>
+
+</tr>
+
+<tr>
+
+<td>toggle</td>
+
+<td>id</td>
+
+<td>打开或关闭节点的触发器。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>append</td>
+
+<td>param</td>
+
+<td>添加若干子节点到一个父节点，'param'参数包含如下属性：<br />
+
+parent：DOM对象，将要被添加子节点的父节点，如果未指定，子节点将被添加至根节点。<br />
+
+data：数组，节点数据。<br>
+<pre>
+<span style="color:green">
+// append some nodes to the selected row
+var node = $('#tt').treegrid('getSelected');
+$('#tt').treegrid('append',{
+	parent: node.id,  // the node has a 'id' value that defined through 'idField' property
+	data: [{
+		id: '073',
+		name: 'name73'
+	}]
+});
+</span>
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>remove</td>
+
+<td>id</td>
+
+
+
+<td>移除一个节点和它的子节点。</td>
+
+</tr>
+
+<tr>
+
+<td>refresh</td>
+
+<td>id</td>
+
+<td>属性指定的节点。</td>
+
+</tr>
+
+<tr>
+
+<td>beginEdit</td>
+
+<td>id</td>
+
+<td>开始编辑节点。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>endEdit</td>
+
+<td>id</td>
+
+<td>结束编辑节点。</td>
+
+</tr>
+
+<tr>
+
+<td>cancelEdit</td>
+
+<td>id</td>
+
+<td>取消编辑节点。</td>
+
+</tr>
+
+<tr>
+
+<td>getEditors</td>
+
+<td>id</td>
+
+<td>获取指定行的编辑器，每个编辑器都有如下属性：<br />
+
+actions：编辑器可以做的行为。<br />
+
+target：目标编辑器jQuery对象。<br />
+
+
+
+field：字段名。<br />
+
+type：编辑类型。</td>
+
+</tr>
+
+<tr>
+
+<td>getEditor</td>
+
+<td>options</td>
+
+<td>获取指定的编辑器，options包含2个属性：<br />
+
+id：行节点 id。<br />
+
+field：字段名。</td>
+
+</tr>
+
+
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>人员权限管理</title>
+		<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+		<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+		<script type="text/javascript" src="js/authUtil.js"></script>
+		<script type="text/javascript" src="js/operPremManage.js"></script>
+		<script type="text/javascript">
+			window.$ready = function() {
+				using(["dialog", "treegrid", "autocomplete", "treegrid","combogrid"], function() {
+					$PermManage.init();
+				});
+			};
+			$(window).resize(function() {
+				$(".kui-layout").layout("resize");
+				$("#p").tabs("resize");
+				$("#operPanel").panel("resize");
+			});
+		</script>
+	</head>
+
+	<body>
+		<div class="kui-layout" kui-options="fit:true" style="overflow: hidden;">
+			<div id="northPanel" kui-options="region:'north',border:true" style="height: 70px;border: solid 1px #e6f5ff;overflow: hidden;">
+				<div class="kui-panel" title=" " kui-options="fit:true">
+					<div style="padding-left: 10px;padding-top: 8px;padding-bottom: 4px;">
+						<div style="width:450px;float: left;">
+							<form class="kui-form" id="operPremForm">
+								<span style="margin-left: 20px;">ID号：</span>
+								<!--<input type="text" id="txtUser" style="width:130px;" />-->
+								<input id="txtUser" style="width:125px;" ></input>
+							</form>
+						</div>
+						<div style="float: right;margin-right: 20px;overflow: hidden;">
+							<a class="kui-linkbutton" kui-options=" plain:true, iconCls:'icon-save'" onclick="$PermManage.saveOperPerm()">保存</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="westPanel" kui-options="region:'west',border:true" style="overflow:hidden;width: 600px;padding-top: 2px;">
+				<div style="float: left;width: 100%;height: 100%;">
+					<div id="p" class="kui-tabs" kui-options="onSelect:$PermManage.chooseIndex,fit:true">
+						<div title="使用权限">
+							<div id="useAuthTree"></div>
+						</div>
+						<div title="授权权限">
+							<div id="authTree"></div>
+						</div>
+						<div title="所有使用权限">
+							<div id="owerPermTree"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="centerPanel" kui-options="region:'center',border:true" style="padding-top: 2px;">
+				<div style="float: left;width: 100%;height: 100%;">
+					<div id="operPanel" class="kui-panel" title="人员基本信息" kui-options="fit:true" style="width: 100%;height: 100%;">
+						<div style="padding-top: 20px;padding-left: 10px;">ID号：<span id="userCode" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">人员姓名：<span id="userName" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">所属机构：<span id="org" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">岗&nbsp;&nbsp;&nbsp;&nbsp;位：<span id="post" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">电&nbsp;&nbsp;&nbsp;&nbsp;话：<span id="tel" style="padding-left: 10px;"></span>
+						</div>
+						<div style="padding-top: 20px;padding-left: 10px;">邮&nbsp;&nbsp;&nbsp;&nbsp;箱：<span id="mail" style="padding-left: 10px;"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="consPermDialog" style="display: none; ">
+			<form id='consForm'></form>
+		</div>
+		<input type="hidden" id="perm_id" />
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,51 @@
+﻿
+body {
+	color: #000;
+	background: #fff;
+}
+
+h3 {
+	/*background: url("/pics/topicbar.gif") no-repeat scroll right top transparent; */
+    font: 14px/150% Arial,Helvetica,sans-serif;
+    height: 26px;
+    margin-bottom: 1px;
+    margin-left: 4px;
+}
+
+a {
+    color: #3C8CC8;
+}
+
+.help {font-size: 14px}
+
+.menu {
+    font: 14px/100% Arial,Helvetica,sans-serif;
+	line-height:15pt;
+	position:fixed;
+	left:0px;
+	top: 0px;
+	background: #FFF;
+	width:100%;
+}
+
+.backToTop {
+    display: none;
+    width: 18px;
+    line-height: 1.2;
+    padding: 5px 0;
+    background-color: #000;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    position: fixed;
+    _position: absolute;
+    right: 10px;
+    bottom: 100px;
+    _bottom: "auto";
+    cursor: pointer;
+    opacity: .6;
+    filter: Alpha(opacity=60);
+}
+
+.search_form{position:absolute;right:0;}
+.header_otherpg a.imc_online{display:none;}

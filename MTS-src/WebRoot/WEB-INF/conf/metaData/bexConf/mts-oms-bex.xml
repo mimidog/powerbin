@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--查询订单管理信息-->
+    <bex bex_code="query_T_OMS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_OMS" attr2="mts"/>
+    <!--插入订单管理信息-->
+    <bex bex_code="insert_T_OMS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_OMS" attr2="mts"/>
+    <!--修改订单管理信息-->
+    <bex bex_code="update_T_OMS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_OMS" attr2="mts"/>
+    <!--修改订单管理状态信息-->
+    <bex bex_code="MOD_T_OMS_ORDER_LVL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="MOD_T_OMS_ORDER_LVL" attr2="mts"/>
+    <!--删除订单管理信息-->
+    <bex bex_code="delete_T_OMS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_OMS" attr2="mts"/>
+
+    <!--查询订单成交信息-->
+    <bex bex_code="query_T_MATCH_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_MATCH" attr2="mts"/>
+    <!--插入订单成交信息-->
+    <bex bex_code="insert_T_MATCH_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_MATCH" attr2="mts"/>
+    <!--修改订单成交信息-->
+    <bex bex_code="update_T_MATCH_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_MATCH" attr2="mts"/>
+    <!--删除订单成交信息-->
+    <bex bex_code="delete_T_MATCH_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_MATCH" attr2="mts"/>
+
+    <bex bex_code="delete_single_T_MATCH_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_single_T_MATCH" attr2="mts"/>
+
+    <!--买入建仓批量新增临时表-->
+    <bex bex_code="insertBatch_T_BUY_BUILD_POS_TEMP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insertBatch_T_BUY_BUILD_POS_TEMP" attr2="mts"/>
+    <!--清空买入建仓批量新增临时表-->
+    <bex bex_code="clear_T_BUY_BUILD_POS_TEMP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="clear_T_BUY_BUILD_POS_TEMP" attr2="mts"/>
+    <!--新增买入股票建仓信息-->
+    <bex bex_code="insert_T_STOK_BUILD_POS_BUY_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_STOK_BUILD_POS_BUY" attr2="mts"/>
+    <!--更新买方向股票建仓信息状态-->
+    <bex bex_code="update_T_STOK_BUILD_POS_BUY_STA_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_STOK_BUILD_POS_BUY_STA" attr2="mts"/>
+    <!--更新卖方向股票建仓信息状态-->
+    <bex bex_code="update_T_STOK_BUILD_POS_SELL_STA_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_STOK_BUILD_POS_SELL_STA" attr2="mts"/>
+    <!--根据买入建仓信息插入到订单信息-->
+    <bex bex_code="insert_OMS_BY_BUY_BUILD_POS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_OMS_BY_BUY_BUILD_POS" attr2="mts"/>
+    <!--根据买入建仓信息插入到订单信息-->
+    <bex bex_code="insert_OMS_BY_BUY_BUILD_POS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_OMS_BY_BUY_BUILD_POS" attr2="mts"/>
+
+    <!--卖出建仓批量新增临时表-->
+    <bex bex_code="insertBatch_T_SELL_BUILD_POS_TEMP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insertBatch_T_SELL_BUILD_POS_TEMP" attr2="mts"/>
+    <!--清空卖出建仓批量新增临时表-->
+    <bex bex_code="clear_T_sell_BUILD_POS_TEMP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="clear_T_sell_BUILD_POS_TEMP" attr2="mts"/>
+    <!--新增卖出股票建仓信息-->
+    <bex bex_code="insert_T_STOK_BUILD_POS_SELL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_STOK_BUILD_POS_SELL" attr2="mts"/>
+    <!--根据卖出建仓信息插入到订单信息-->
+    <bex bex_code="insert_OMS_BY_SELL_BUILD_POS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_OMS_BY_SELL_BUILD_POS" attr2="mts"/>
+
+    <!--查询订单管理历史信息-->
+    <bex bex_code="query_T_OMS_HIS_Bex" bex_type="4" page_mode="1" bex_cate="1" attr1="query_T_OMS_HIS" attr2="mts"/>
+    <!--订单信息归档到历史表-->
+    <bex bex_code="insert_T_OMS_HIS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_OMS_HIS" attr2="mts"/>
+    <!--查询成交信息-->
+    <bex bex_code="query_T_MATCH_HIS_Bex" bex_type="4" page_mode="1" bex_cate="1" attr1="query_T_MATCH_HIS" attr2="mts"/>
+    <!--成交信息归档到历史表-->
+    <bex bex_code="insert_T_MATCH_HIS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_MATCH_HIS" attr2="mts"/>
+
+    <!--查询客户费用设置信息-->
+    <bex bex_code="query_T_OUTLAY_SET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_OUTLAY_SET" attr2="mts"/>
+    <!--新增客户费用设置信息-->
+    <bex bex_code="insert_T_OUTLAY_SET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_OUTLAY_SET" attr2="mts"/>
+    <!--修改客户费用设置信息-->
+    <bex bex_code="update_T_OUTLAY_SET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_OUTLAY_SET" attr2="mts"/>
+    <!--修改客户费用设置信息-->
+    <bex bex_code="delete_T_OUTLAY_SET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_OUTLAY_SET" attr2="mts"/>
+
+    <!--手动新增股票建仓信息-->
+    <bex bex_code="insert_T_STOK_BUILD_POS_HAND_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_STOK_BUILD_POS_HAND" attr2="mts"/>
+    <!--查询股票建仓信息-->
+    <bex bex_code="query_T_STOK_BUILD_POS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_STOK_BUILD_POS" attr2="mts"/>
+
+    <!--更新手工信号的审核状态-->
+    <bex bex_code="update_HAND_SIGNAL_AUDIT_STA_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_HAND_SIGNAL_AUDIT_STA" attr2="mts"/>
+
+    <!--委托单股票未成交费用总计-->
+    <bex bex_code="SIGLE_STOCK_ENTRACT_UNMATCH_AMT_SUM_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="SIGLE_STOCK_ENTRACT_UNMATCH_AMT_SUM" attr2="mts"/>
+
+    <!--单股票当前持仓余额总计-->
+    <bex bex_code="SIGLE_STOCK_ENTRACT_HOLD_INST_MARKET_SUM_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="SIGLE_STOCK_ENTRACT_HOLD_INST_MARKET_SUM" attr2="mts"/>
+
+
+</bexs>
+ 

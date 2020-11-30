@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.PropertyEntity">
+
+  <!-- PROPERTY INSERT -->
+  
+  <insert id="BpmPropertyInsert" parameterType="map">
+      insert into UWK_RU_PROPERTY (
+      	PROPERTY_ID,
+        PRONAME,
+        VALUE,
+        REV
+      ) values (
+        #{property.id ,jdbcType=VARCHAR},
+        #{property.name ,jdbcType=VARCHAR},
+        #{property.value, jdbcType=VARCHAR},
+        1
+      )
+  </insert>
+
+  <!-- PROPERTY UPDATE -->
+  
+  <update id="BpmPropertyUpdate" parameterType="map">
+    update UWK_RU_PROPERTY
+    <set>
+      REV = #{property.revisionNext, jdbcType=INTEGER},
+      VALUE = #{property.value, jdbcType=VARCHAR}
+    </set>
+    where PRONAME = #{property.name, jdbcType=VARCHAR}
+      and REV = #{property.revision, jdbcType=INTEGER}
+  </update>
+
+  <!-- PROPERTY DELETE -->
+  
+  <delete id="BpmPropertyDelete" parameterType="map">
+    delete from UWK_RU_PROPERTY where PRONAME = #{property.propertyName} and rev = #{property.revision}
+  </delete>
+
+
+  <!-- PROPERTY SELECT -->
+  
+  <resultMap id="propertyResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.PropertyEntity">
+    <id property="name" column="PRONAME" jdbcType="VARCHAR" />
+    <result property="value" column="VALUE" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="BpmPropertySelectDbSchemaVersion" resultType="string">
+    select value from UWK_RU_PROPERTY where PRONAME = 'schema.version'
+  </select>
+
+  <select id="BpmPropertySelectByName" parameterType="map" resultMap="propertyResultMap">
+    select * from UWK_RU_PROPERTY where PRONAME = #{name}
+  </select>
+  
+  <select id="BpmPropertySelect" resultMap="propertyResultMap">
+    select * from UWK_RU_PROPERTY
+  </select>
+  
+</mapper>

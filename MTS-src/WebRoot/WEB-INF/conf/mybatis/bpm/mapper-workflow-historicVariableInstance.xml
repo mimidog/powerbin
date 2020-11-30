@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricVariableInstanceEntity">
+
+  <!-- HISTORIC PROCESS VARIABLE INSERT -->
+  
+  <insert id="BpmHistoricVariableInstanceInsert" parameterType="hashmap">
+    insert into UWK_HI_VARINST (
+	    HI_VARINST_ID,
+		PROC_INST_ID,
+		EXECUTION_ID,
+		TASK_ID,
+		HVNAME,
+		REV,
+		VAR_TYPE,
+		BYTEARRAY_ID,
+		DOUBLETYPE,
+		LONGTYPE,
+		TEXTTYPE,
+		TEXT2TYPE,
+		CREATE_TIME)
+    values (
+      #{variable.id, jdbcType=VARCHAR},
+      #{variable.processInstanceId, jdbcType=VARCHAR},
+      #{variable.executionId, jdbcType=VARCHAR},
+      #{variable.taskId, jdbcType=VARCHAR},
+      #{variable.variableName, jdbcType=VARCHAR},
+      #{variable.revision, jdbcType=VARCHAR},
+      #{variable.variableType, typeHandler=VariableTypeTypeHandler},
+      #{variable.byteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+      #{variable.doubleValue, jdbcType=DOUBLE},
+      #{variable.longValue, jdbcType=BIGINT},
+      #{variable.textValue, jdbcType=VARCHAR},
+      #{variable.textValue2, jdbcType=VARCHAR},
+      #{variable.createTime, jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <!-- HISTORIC PROCESS VARIABLE UPDATE -->
+  
+  <update id="BpmHistoricVariableInstanceUpdate" parameterType="hashmap">
+    update UWK_HI_VARINST set
+      REV = #{variable.revisionNext, jdbcType=INTEGER},
+      BYTEARRAY_ID = #{variable.byteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+      DOUBLETYPE = #{variable.doubleValue, jdbcType=DOUBLE},
+      LONGTYPE = #{variable.longValue, jdbcType=BIGINT},
+      TEXTTYPE = #{variable.textValue, jdbcType=VARCHAR},
+      TEXT2TYPE = #{variable.textValue2, jdbcType=VARCHAR},
+      VAR_TYPE = #{variable.variableType, typeHandler=VariableTypeTypeHandler}
+    where HI_VARINST_ID = #{variable.id, jdbcType=VARCHAR}
+      and REV = #{variable.revision, jdbcType=INTEGER}
+  </update>
+  
+  <!-- update TaskId -->
+  <update id="BpmHistoricVariableInstanceUpdateTaskId" parameterType="hashmap">
+    update UWK_HI_VARINST set TASK_ID = #{variable.taskId, jdbcType=VARCHAR} where HI_VARINST_ID = #{variable.id, jdbcType=VARCHAR}
+  </update>
+  
+  <!-- HISTORIC PROCESS VARIABLE DELETE -->
+
+  <delete id="BpmHistoricVariableInstanceDelete" parameterType="hashmap">
+    delete from UWK_HI_VARINST where HI_VARINST_ID = #{variable.id} and REV = #{variable.revision}
+  </delete>
+  
+  <!-- HISTORIC PROCESS VARIABLE RESULTMAP -->
+  <resultMap id="historicProcessVariableResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricVariableInstanceEntity">
+    <id property="id" column="HI_VARINST_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+    <result property="name" column="HVNAME" javaType="String" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+    <result property="variableType" column="VAR_TYPE" typeHandler="VariableTypeTypeHandler"/>
+    <result property="byteArrayRef" column="BYTEARRAY_ID" typeHandler="ByteArrayRefTypeHandler"/>
+    <result property="doubleValue" column="DOUBLETYPE" jdbcType="DOUBLE" />
+    <result property="textValue" column="TEXTTYPE" jdbcType="VARCHAR" />
+    <result property="textValue2" column="TEXT2TYPE" jdbcType="VARCHAR" />
+    <result property="longValue" column="LONGTYPE" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <!-- HISTORIC VARIABLE SELECT -->
+
+  <select id="BpmHistoricVariableInstanceSelectByQueryCriteria" parameterType="hashmap" resultMap="historicProcessVariableResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectHistoricVariableInstanceByQueryCriteriaSql"/>
+	<include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmHistoricVariableInstanceSelectCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select count(RES.HI_VARINST_ID)
+    <include refid="selectHistoricVariableInstanceByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectHistoricVariableInstanceByQueryCriteriaSql">
+    from UWK_HI_VARINST RES
+    <where>
+      <if test="criteria.id != null">
+        RES.HI_VARINST_ID = #{criteria.id}
+      </if>
+      <if test="criteria.processInstanceId != null">
+        RES.PROC_INST_ID = #{criteria.processInstanceId}
+      </if>
+      <if test="criteria.taskId != null">
+        and RES.TASK_ID = #{criteria.taskId}
+      </if>
+      <if test="criteria.excludeTaskRelated">
+        and RES.TASK_ID is NULL
+      </if>
+      <if test="criteria.variableName != null">
+        and RES.HVNAME = #{criteria.variableName}
+      </if>
+      <if test="criteria.variableNameLike != null">
+        and RES.HVNAME like '%${criteria.variableNameLike}%'
+      </if>
+      
+      <!-- PLEASE NOTE: If you change anything have a look into the Execution, the same query object is used there! -->
+      <if test="criteria.queryVariableValue != null" >
+        <if test="!criteria.queryVariableValue.type.equals('null')">
+        <!-- When operator is not-equals or type of value is null, type doesn't matter! -->
+          and RES.a = #{queryVariableValue.type}
+        </if>
+        <if test="criteria.queryVariableValue.textValue != null &amp;&amp; criteria.queryVariableValue.longValue == null &amp;&amp; criteria.queryVariableValue.doubleValue == null">
+        and RES.TEXTTYPE
+        <choose>
+          <when test="criteria.queryVariableValue.operator.equals('LIKE')">LIKE</when>
+          <otherwise><include refid="executionVariableOperator" /></otherwise>
+        </choose>
+          #{criteria.queryVariableValue.textValue}
+        </if>
+        <if test="criteria.queryVariableValue.textValue2 != null">
+        and RES.TEXT2TYPE
+        <choose>
+          <when test="criteria.queryVariableValue.operator.equals('LIKE')">LIKE</when>
+          <otherwise><include refid="executionVariableOperator" /></otherwise>
+        </choose>
+          #{criteria.queryVariableValue.textValue2}
+        </if>
+        <if test="criteria.queryVariableValue.longValue != null">
+        and RES.LONGTYPE
+        <include refid="executionVariableOperator" />
+        #{criteria.queryVariableValue.longValue}
+        </if>
+        <if test="criteria.queryVariableValue.doubleValue != null">
+        and RES.DOUBLETYPE
+        <include refid="executionVariableOperator" />
+        #{criteria.queryVariableValue.doubleValue}
+        </if>
+        <!-- Null variable type -->
+        <if test="criteria.queryVariableValue.textValue == null &amp;&amp; criteria.queryVariableValue.textValue2 == null &amp;&amp; criteria.queryVariableValue.longValue == null &amp;&amp; criteria.queryVariableValue.doubleValue == null">
+          <choose>
+          <when test="criteria.queryVariableValue.operator.equals('NOT_EQUALS')">
+            and (RES.TEXTTYPE is not null or RES.TEXT2TYPE is not null or RES.LONGTYPE is not null or RES.DOUBLETYPE is not null or RES.BYTEARRAY_ID is not null)
+          </when>
+          <otherwise>
+        and RES.TEXTTYPEis null and RES.TEXT2TYPE is null and RES.LONGTYPE is null and RES.DOUBLETYPE is null and RES.BYTEARRAY_ID is null
+          </otherwise>
+        </choose>
+        </if>
+      </if>
+    </where>
+  </sql>
+
+  <sql id="executionVariableOperator">
+    <choose>
+      <when test="queryVariableValue.operator.equals('EQUALS')">=</when>
+      <when test="queryVariableValue.operator.equals('NOT_EQUALS')">&lt;&gt;</when>
+      <when test="queryVariableValue.operator.equals('GREATER_THAN')">&gt;</when>
+      <when test="queryVariableValue.operator.equals('GREATER_THAN_OR_EQUAL')">&gt;=</when>
+      <when test="queryVariableValue.operator.equals('LESS_THAN')">&lt;</when>
+      <when test="queryVariableValue.operator.equals('LESS_THAN_OR_EQUAL')">&lt;=</when>
+   </choose>
+  </sql>
+  
+  <select id="BpmHistoricVariableInstanceSelectByVariableInstanceId" resultMap="historicProcessVariableResultMap">
+    select * from UWK_HI_VARINST where HI_VARINST_ID = #{variableInstanceId}
+  </select>
+
+  <select id="BpmHistoricVariableInstanceSelectByNativeQuery" parameterType="java.util.Map" resultMap="historicProcessVariableResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+      <include refid="bpm.limitBefore"/>  
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+      <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmHistoricVariableInstanceSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+  
+</mapper>

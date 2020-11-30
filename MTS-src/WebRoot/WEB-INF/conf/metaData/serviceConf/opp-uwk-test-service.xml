@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+
+    <service service_code="P0005901" service_name="General pojo service invoker" attr1="" >
+        <businesses>
+            <service_business business_code="sysParamInsert"
+                              business_method="" serial_no="1" business_name="sysParamInsert" />
+        </businesses>
+    </service>
+
+    <service service_code="P0005902" service_name="General pojo service invoker"
+             attr1="" service_cate="20">
+
+    </service>
+
+    <service service_code="P0005903" service_name="General pojo service invoker" attr1="" service_cate="20">
+    </service>
+	
+</services>

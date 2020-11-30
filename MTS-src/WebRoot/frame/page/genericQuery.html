@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta  http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>通用查询</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../js/kui-general-utils.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript">
+	function onClickMainTableRow(index,row){
+		var reqParam = {};
+		var mainTableOpts = $(this).data().datagrid.options;
+		var mainColumns = mainTableOpts.columns[0];
+        var mainFrozenColumns = mainTableOpts.frozenColumns[0];
+        mainColumns = mainColumns.concat(mainFrozenColumns);
+		for(var i=mainColumns.length-1; i>=0; i--){
+			if((mainColumns[i].primary_key=="1" && row[mainColumns[i].field] != "") || mainColumns[i].field == "SERIAL_NO" || mainColumns[i].field == "OCCUR_DATE"){
+				//清算日志查询特殊处理，lbm文档未按规范定义流水号，一个为SNO,一个为SETT_LOG_SNO,故需转义，auther:fengqifeng
+				if(mainColumns[i].field=="SNO"){
+					reqParam["SETT_LOG_SNO"]=row[mainColumns[i].field];
+				}else{
+				reqParam[mainColumns[i].field] = row[mainColumns[i].field];
+				}
+			}
+		}
+		var $second = $("#"+$.general().second);
+		$second.datagrid("loadData",{});
+		if(!$.isEmptyObject(reqParam)){
+			var secondOpts = $second.data().datagrid.options;
+			var bex = typeof secondOpts.req == "string" ? eval("("+secondOpts.req+")") : secondOpts.req;
+	    	secondOpts.req = [$.extend(bex[0],reqParam)];
+	    	$second.datagrid("reload");
+		}
+	}
+
+	function beforeLoadData(target, params){
+		//TODO do paging
+	}
+
+	function onMainLoadSuccess(target,data){
+		var $second = $("#"+$.general().second);
+		$second.datagrid("loadData",{});
+	}
+		//有逗号
+	function returnDictMultTextComma(value,row,index,col){
+		var arr = new Array();
+		if(col.editor.options.multiple){
+			if(typeof value == "string"){
+				arr=value.split(',');
+				return getEdtMutlDictText(arr,col);
+			} else {
+				return getEdtMutlDictText(arr,col);
+			}
+		} else {
+			return value;
+		}
+	}
+
+	//无逗号
+	function returnDictMultText (value,row,index,col){
+		var arr = new Array();
+		if(col.editor.options.multiple){
+			if(typeof value == "string"){
+				for(var i =0; i<value.length;i++){
+					arr.push(value.substring(i,i+1));
+					if(i == value.length-1){
+						break;
+					}
+				}
+				return getEdtMutlDictText(arr,col);
+			} else {
+				return getEdtMutlDictText(arr,col);
+			}
+		} else {
+			return value;
+		}
+	}
+
+    //构建复选文本串
+    function getEdtMutlDictText(arr,col){
+        if(arr && arr.length==0){
+            return ""
+        }
+        if(!col.editor.options.data || (col.editor.options.data && col.editor.options.data.length==0)){
+            return ""
+        }
+        var dictData = col.editor.options.data,
+                valueField = col.editor.options.valueField || "dict_val",
+                textField = col.editor.options.textField || "dict_des",
+                dictText = "";
+        if(arr.length==1 && arr[0]=="@"){
+            return "全部";
+        }else{
+            for(var i=0;i<dictData.length;i++){
+                for(var j=0;j<arr.length;j++){
+                    if(dictData[i][valueField]==arr[j]){
+                        dictText += dictData[i][textField]+',';
+                    }
+                }
+            }
+            return dictText.substring(0, dictText.length-1);
+        }
+    }
+
+    function onSelectInstType(record){
+        var $cls = $(this).closest("td").siblings().find("input[comboname='INST_CLS']");
+        var opts = $cls.combobox("options");
+        var onData = [];
+        if(opts.data && opts.data.length > 0){
+            for(var i=0,len=opts.data.length; i<len; i++){
+                if(opts.data[i]["dict_val"].substring(0,1) == record["dict_val"])
+                    onData.push(opts.data[i]);
+            }
+        }
+        $cls.combobox("clear");
+        $cls.combobox("loadData",onData);
+    }
+
+    function collapseInstOrg(node, data){
+        $(this).combotree('collapseAll');
+    }
+
+    function dataSort(data){
+        if(data.length > 0){
+            data.sort(function(a,b){
+				if(a.pid === b.pid)//兼容IE
+					return false;
+				else
+                return (Number(a.pid) > Number(b.pid) ? 1 : -1);
+            });
+        }
+        return data;
+    }
+
+    //格式化日期
+    function fmtDate(value,row,index){
+        if (row['CNTR_REG_DATE'] && row['CNTR_REG_DATE']=="0"){
+            return "";
+        } else {
+            return value;
+        }
+    }
+    function taCodeFilter(data) {
+  		for ( var i = 0, len = data.length; i < len; i++) {
+  			if (!data[i].EXT_TA_CODE || data[i].EXT_TA_CODE.indexOf(' ') != -1) {
+  				data.splice(i, 1);
+  				i--;
+  				len--;
+  			} else if(data[i].INST_ORG_SNAME.indexOf('-') == -1){
+  				data[i].INST_ORG_SNAME = $.trim(data[i].EXT_TA_CODE + '-' + data[i].INST_ORG_SNAME);
+  			}
+  		}
+  		data.sort(function(a,b){
+  			return a.EXT_TA_CODE < b.EXT_TA_CODE ? -1 : 1;
+  		});
+  		return data;
+  	}
+    function searchData(e){
+        e.data.target.datagrid('reload');
+    }
+</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
+<meta http-equiv="Content-Language" content="zh-CN"/>
+<title>机构管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript">
+    
+    window.$ready = function (){
+		using('form',function(){
+			var conf = $.builder.format.form($.parser.getConfigs(["uniParam_InnerOrgForm"]));
+			var infTools = {modify:true,toolbar:[{text:"保存",handler:"orgSave",iconCls:"icon-save",disabled:true},{text:"删除",handler:"orgDelete",iconCls:"icon-remove",disabled:true}]};
+			var samTools = {modify:true,toolbar:[{text:"保存",handler:"addSameLvlOrg",iconCls:"icon-save",disabled:true}]};
+			var chdTools = {modify:true,toolbar:[{text:"保存",handler:"addChildOrg",iconCls:"icon-save",disabled:true}]};
+			$("#uniParam_InnerOrgForm").form($.extend({},conf,infTools));
+			$("#uniParam_AddSameOrgForm").form($.extend({},conf,samTools));
+			$("#uniParam_AddChildOrgForm").form($.extend({},conf,chdTools));
+			$("#orgInfoForm1").form(conf);
+		});
+	}
+	//装载机构信息
+	function loadOrgInfo(data){		
+	    clearAllForm();
+		var orgInfo = getOrgInfo(data['id']);		 
+		$('#uniParam_InnerOrgForm').form('load',orgInfo);
+		$('input[name="ORG_CODE"]', '#uniParam_AddSameOrgForm,#uniParam_AddChildOrgForm').textinput("enable");
+		$('#uniParam_InnerOrgForm a.l-btn').linkbutton('enable');		
+		$('#uniParam_AddSameOrgForm a.l-btn').linkbutton('enable');
+		$('#uniParam_AddChildOrgForm a.l-btn').linkbutton('enable');
+	}
+	//获取机构信息
+	function getOrgInfo(orgCode){
+      var org = null;
+      ajaxRequest({
+        async:false,
+        req:[
+          {service:'P9999999',bex_codes:'uniParam_instOrgQuery',ORG_CODE:orgCode}
+        ],
+        func:function(data){
+          org = data[0]['data'][0][0];
+        },
+        error:function(){
+          org = null;
+        }
+      });
+      return org;
+    }
+	function clearAllForm(){
+		$('#uniParam_InnerOrgForm').form('reset');
+		$('#uniParam_AddSameOrgForm').form('reset');
+		$('#uniParam_AddChildOrgForm').form('reset');
+	}
+	
+	//修改机构信息
+	function orgSave(){
+	    var node = $('#innerOrgTree').tree('getSelected');
+		if(node==null) return false;
+		$('#uniParam_InnerOrgForm').form('submit',{
+        req:[{
+          service:'P9999999',
+		  bex_codes:'uniParam_instOrgUpdate'
+        }],
+        success:function(){
+          alert('机构修改成功');		 
+		  //$('#innerOrgTree').tree('reload');
+        }
+      });
+	}
+	//删除机构
+	function orgDelete(){
+	    var node = $('#innerOrgTree').tree('getSelected');
+		if(node==null) return false;
+		confirm('删除系统机构','确定要删除吗?',function(n){
+			if(n){
+				ajaxRequest({
+				async:false,
+				req:[{
+				  service:'P9999999',
+				  bex_codes:'uniParam_instOrgDelete',
+				  ORG_CODE:node['id']
+				  }],
+				func:function(data){
+				  if(data[0]['service']['flag'] == 0){
+					alert('机构删除成功');
+					clearAllForm();
+					$('#innerOrgTree').tree('reload');
+				  }
+				}
+			  });
+			}
+		  });
+	}
+	//添加同级机构
+    function addSameLvlOrg(){
+       var node = $('#innerOrgTree').tree('getSelected');
+      if(node == null){    return false; }	
+	  $('#uniParam_AddSameOrgForm').form('load',{PAR_ORG:node['pid']});
+      $('#uniParam_AddSameOrgForm').form('submit',{
+        req:[{
+          service:'P9999999',
+		  bex_codes:'uniParam_instOrgInsert'
+          
+        }],
+        success:function(){
+          alert('新增同级机构成功');
+		  clearAllForm();
+          $('#innerOrgTree').tree('reload');
+        }
+      });
+    }
+	//添加子机构
+    function addChildOrg(){
+
+      var node = $('#innerOrgTree').tree('getSelected');
+      if(node == null){
+        return;
+      }
+	  $('#uniParam_AddChildOrgForm').form('load',{PAR_ORG:node['id']});
+      $('#uniParam_AddChildOrgForm').form('submit',{
+        req:[{
+          service:'P9999999',
+		  bex_codes:'uniParam_instOrgInsert'
+          
+        }],
+        success:function(){
+          alert('新增子机构成功');
+		  clearAllForm();
+		  $('#innerOrgTree').tree('reload');
+        }
+      });
+    }
+	function dropOrgNode(target, source, point){
+		//$alert(target.outerHTML);
+		//$alert(source["id"]);
+		//$alert(point);
+		//$alert($.extend({aa:1,bb:2},{aa:'',bb:33,cc:44}).aa);
+	}
+	function selectOrg(title,index){
+		$(this).tabs('getTab',index).show();
+		var target = $(this).tabs('getTab',index);
+		if(index>0 && target.children().length==0){			
+			var viewId =  target.attr('viewid');
+			target.append('<table id="'+viewId+'" class="kui-datagrid"></table>');
+			$.parser.director(target);
+		}
+	}
+</script>
+</head>
+<body>
+
+<div id="orgTabs" class="kui-tabs" kui-options="onSelect:selectOrg,fit:true" >
+	<div title="0 内部机构" style="padding:5px;display:none;">
+		<div class="kui-layout" kui-options="fit:true">
+			<div kui-options="region:'west',title:''" style="width:300px" >
+				<ul id="innerOrgTree" class="kui-tree" kui-options="animate:true,dnd:true,req:[{service:'P9999999',bex_codes:'uniParam_instOrgQuery'}],
+				 conf:{
+					nodeId:'ORG_CODE',
+					nodeName:'ORG_NAME',
+					treeType:'1',
+					parNode:'PAR_ORG'
+				},
+				onClick:loadOrgInfo,
+				onDrop:dropOrgNode"></ul>
+			</div>
+			<div kui-options="region:'center',title:''">
+				<div id="innerOrgTabs" class="kui-tabs" kui-options="onSelect:function(title,index){$(this).tabs('getTab',index).show();},fit:true" >
+					<div title="机构信息" style="padding:5px;display:none;" >
+						<form id="uniParam_InnerOrgForm"  ></form>
+					</div>
+					<div title="新增同级机构" style="padding:5px;display:none;">
+						<form id="uniParam_AddSameOrgForm"  ></form>
+					</div>
+					<div title="新增下级机构" style="padding:5px;display:none;">
+						<form id="uniParam_AddChildOrgForm"  ></form>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	<div title="1 银行机构" style="padding:5px;display:none;" viewid="uniParam_finInstBankSetting"></div>
+	<div title="2 交易所/登记公司" style="padding:5px;display:none;" viewid="uniParam_finInstExchangeSetting"></div>
+	<div title="3 基金公司" style="padding:5px;display:none;" viewid="uniParam_finInstFundSetting"></div>
+	<div title="4 期货公司" style="padding:5px;display:none;" viewid="uniParam_finInstIBSetting"></div>
+	<div title="5 证券公司" style="padding:5px;display:none;" viewid="uniParam_finInstSecSetting"></div>
+</div>
+</body>
+</html>

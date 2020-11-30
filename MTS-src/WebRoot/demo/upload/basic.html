@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Basic Upload - KUI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    $(function(){
+      using('uploadify',function(){
+        $('input[att=bbb]').uploadify({
+          //width:200,
+          //height:50,
+          onlyView:false,
+          dir:'reportFiles',
+          multi:true,
+          onInit:function(){
+          }
+        });
+
+      });
+
+    });
+    function bbb(){
+      $('#ccc').append(',bbb');
+    }
+  </script>
+</head>
+<body>
+<h2>Basic UPLOAD</h2>
+<div class="demo-info">
+  <div class="demo-tip icon-tip"></div>
+  <div>TreeGrid allows you to expand or collapse group rows.</div>
+</div>
+
+<input type="file" att="bbb" id="bbb">
+  <a href="javascript:$('#aaa').uploadify('disable', true)">Disable the Button</a> |
+  <a href="javascript:$('#aaa').uploadify('disable', false)">Enable the Button</a><br>
+  <a href="javascript:$('#bbb').uploadify('disable', true)">Disable the Button</a> |
+  <a href="javascript:$('#bbb').uploadify('disable', false)">Enable the Button</a> <br>
+  <a href="javascript:$('#aaa').uploadify('destroy')">destory the Button</a> |
+  <a href="javascript:$('#bbb').uploadify('destroy', false)">destory the Button</a><br>
+  <div id="ccc"></div>
+</body>
+</html>

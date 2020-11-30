@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+    <service service_code="M0000053" service_title="查询客户股份二级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryfundAssetInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000054" service_title="查询客户资金一级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryFunInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000055" service_title="查询客户资金二级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryFunInfosubAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000056" service_title="修改客户资金一级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modFunInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000057" service_title="修改客户资金二级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modFunInfosubAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000058" service_title="新增客户股份一级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addMtsAssetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+    <service service_code="M0000059" service_title="查询客户股份一级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryMtsAssetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+    <service service_code="M0000060" service_title="修改客户股份一级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modMtsAssetAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000061" service_title="新增客户股份二级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addMtsAssetSubAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000062" service_title="修改客户股份二级持仓信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modMtsAssetSubAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000063" service_title="计算一个柜员持仓的总市值" arrange_type="1" service_type="1" service_cate="1"
+             result_position="2">
+        <businesses>
+            <service_business business_code="queryfundAssetInfoAtom" business_type="3" business_cat="1"/>
+            <service_business business_code="clacfundAssetInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000064" service_title="日切清算资金持仓信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="clearFundHolderAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000065" service_title="日切清算股份持仓信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="clearAssetHolderAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000076" service_title="查询易员日结汇总信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" >
+        <businesses>
+            <service_business business_code="queryTradeDayClearSumAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000077" service_title="查询交易员日结明细信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="queryTradeDayClearDetailAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000080" service_title="清算交易员日结信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="clearTraderDaySettleAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000086" service_title="清算前数据准备" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="clearBreforeDataReadyAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000087" service_title="回退资金持仓信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="regressClearFundInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000088" service_title="回退股份持仓信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="regressClearAssetInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000089" service_title="清空资金股份回退信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="4" attr1="mts">
+        <businesses>
+            <service_business business_code="delete_T_FUND_INFO_CLEAR_BAK_Bex" business_type="1" business_cat="1"/>
+            <service_business business_code="delete_T_FUND_INFO_SUB_CLEAR_BAK_Bex" business_type="1" business_cat="1"/>
+            <service_business business_code="delete_T_MTS_ASSET_CLEAR_BAK_Bex" business_type="1" business_cat="1"/>
+            <service_business business_code="delete_T_MTS_ASSET_SUB_CLEAR_BAK_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000090" service_title="交易费用清算" arrange_type="1" service_type="2" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="tradeCostClearAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000091" service_title="计算完结的二级持仓的成本价" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="overSecHold_CALC_COSTPRICE_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000094" service_title="计算交易员费用汇总信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="calcTraderTotalCostAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000095" service_title="新增交易员资金股份流水" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="addTraderFundAssetLogAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000096" service_title="新增交易员最早交易日期" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_trader_min_trdDate_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000097" service_title="查询交易员资金股份流水" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_T_TRADER_FUND_ASSET_LOG_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000098" service_title="查询交易员资金分类汇总信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_TRADER_FUND_GRP_SUM_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000099" service_title="查询交易员资金分类汇总信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_TRADER_ASSET_GRP_SUM_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000101" service_title="查询交易员资金分类汇总信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="queryTraderSurplusSumInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000102" service_title="查询客户盈亏明细信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_CUST_SURPLUS_DETAIL_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000103" service_title="账户盈亏汇总查询" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_CUST_SURPLUS_SUM_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000104" service_title="交易员盈亏图表查询" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_TRADE_SURPLUS_CHAR_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000106" service_title="新增客户资金股份流水" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="addCustFundAssetLogfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000107" service_title="客户盈亏图表查询" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_CUST_SURPLUS_CHAR_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000108" service_title="统计持仓产品的市值" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="queryHoldStockMaketTotalAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+</services>

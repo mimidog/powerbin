@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<view id="dimension_info" render="form" title="维度信息" colNumbers="2">
+		<conf colNumbers="3"/>
+		<col_item field="TRADE_ID" title="维度编号" type="input" edt_required="true" edt_validType="int[12]" hidden="true"/>
+		<col_item field="TRADE_NAME" title="维度名称" type="input" edt_required="true" edt_validType="val[1,32]"/>
+		<col_item field="TRADE_TYPE" title="维度类别" type="combobox" edt_dict="TRADE_TYPE" edt_required="true"
+				  edt_panelHeight="80" edt_autoFill="true"/>
+		<col_item field="TRADE_LVL" title="维度级别" type="input" hidden="true"/>
+		<col_item field="PAR_SUP_ID" title="上级序号" type="input" hidden="true"/>
+		<col_item field="TRADE_STATUS" title="维度状态" type="combobox" edt_dict="TRADE_STATUS" edt_required="true"
+				  edt_autoFill="true"/>
+		<col_item field="CALC_TYPE" title="计算方式" type="combobox" edt_dict="CALC_TYPE" />
+		<col_item field="CALC_ID" title="计算模型编号" type="input" edt_validType="val[1,2]"/>
+		<col_item field="CALC_CIRCLE" title="计算周期" type="combobox" edt_dict="CALC_CIRCLE" />
+		<col_item field="SHARE_FLAG" title="共用标志" type="combobox" edt_dict="SHARE_FLAG" />
+		<col_item field="TRADE_POWER" title="维度权重" type="input" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+		<col_item field="POOL_TYPE" title="股票池类别" type="combobox" edt_dict="POOL_TYPE" />
+		<col_item field="PARAM1_VALUE" title="参数1" type="input" edt_validType="val[1,60]"/>
+		<col_item field="PARAM2_VALUE" title="参数2" type="input" edt_validType="val[1,60]"/>
+		<col_item field="PARAM3_VALUE" title="参数3" type="input" edt_validType="val[1,60]"/>
+		<col_item field="PARAM1_NAME" title="参数1字段名 " type="input" edt_validType="val[1,30]"/>
+		<col_item field="PARAM2_NAME" title="参数2字段名 " type="input" edt_validType="val[1,30]"/>
+		<col_item field="PARAM3_NAME" title="参数3字段名 " type="input" edt_validType="val[1,30]"/>
+		<col_item field="MAX_QTY" title="证券最大数量 " type="input" edt_validType="int[18]"/>
+		<col_item field="LAST_DATE" title="最后计算日期" type="datebox" edt_defaultValue=""/>
+		<col_item field="SQL_DESC" title="动态维度SQL语句 " type="textarea" edt_validType="val[1,2000]" colspan="6"
+				  edt_width="620" edt_height="50"/>
+		<col_item field="FILE_PATH" title="导入文件路径 " type="input" edt_validType="val[1,2000]" colspan="6"
+				  edt_width="620"/>
+		<col_item field="REMARK" title="备注 " type="input" edt_validType="val[1,200]" colspan="6"
+				  edt_width="620"/>
+	</view>
+
+	<view id="mts_DimensionStockInfo_table"  render="datagrid" title="维度证券信息" >
+		<conf service="M0000024" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item   field="SET_DATE" title="设置日期" type="datebox" />
+		<qry_item field="STK_ID" title="证券代码" type="input"  edt_validType="val[1,8]"/>
+
+
+		<btn_item text="新增" service="M0000025" title="新增维度证券" handler="DimensionStockInfo_add" iconCls="icon-add" />
+		<btn_item text="修改" service="M0000026" title="修改维度证券" handler="commonModify" iconCls="icon-edit" width="550" height="330"/>
+		<btn_item text="删除" service="M0000027" title="删除维度证券"  handler="commonDelete" iconCls="icon-remove"  />
+		<btn_item text="模块下载"  title="模块下载"  handler="stockXlsTemplateDown" iconCls="icon-export"  />
+		<btn_item text="文件导入"  title="文件导入"  handler="stockXlsImport" iconCls="icon-xls"  />
+
+		<col_item field="TRADE_ID" title="维度名称"  width="100" edit_flag="1"
+				  type="combotree" edt_required="true"
+				  edt_req="[{service:'M0000020',TRADE_STATUS:'1'}]"
+				  edt_panelWidth="250"
+				  edt_panelHeight="300"
+				  edt_nodeId="TRADE_ID"
+				  edt_nodeName="TRADE_NAME"
+				  edt_parNode="PAR_SUP_ID"
+				  edt_treeType="1"
+		/>
+		<col_item field="STK_ID" title="证券代码" type="combogrid" edt_required="true"  edt_panelHeight="250" edit_flag="1"  edt_panelWidth="350"
+				  edt_textField="STK_NAME" edt_idField="STK_ID"
+				  edt_req="[{service:'M0000028'}]"
+				  edt_columns="[[
+								{field:'STK_ID',title:'证券代码',},
+								{field:'STK_NAME',title:'证券名称'},
+								{field:'MARKET_ID',title:'交易市场',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('MARKET',value);
+								  }},
+								  {field:'STKBD',title:'交易板块',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STKBD',value);
+								  }},
+								  {field:'STK_CLS',title:'证券类别',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STK_CLS',value);
+								  }},
+								  {field:'STK_SUB_CLS',title:'证券类别子类',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STK_SUB_CLS',value);
+								  }},
+								  {field:'STK_STATUS',title:'证券状态',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STK_STATUS',value);
+								  }}
+								]]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'STK_ID',title:'证券代码',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,8]'
+									  }
+									}
+						  },{field:'STK_NAME',title:'证券名称',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,16]'
+									  }
+									}
+						  }
+
+						  ]
+						}
+					   ]"
+		/>
+		<col_item field="STK_NAME" title="证券名称"  type="input" edit_flag="3"/>
+		<col_item field="STK_POWER" title="证券权重" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return parseFloat(value).toFixed(8);}" />
+		<col_item field="NEAR_AMT" title="参考股本"  type="input" edt_validType="numchar[1,12]" edt_required="true"/>
+		<col_item field="ADD_FLAG" title="增加标志"  type="combobox"   edt_dict="ADD_FLAG" />
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3"/>
+		<col_item field="OP_NAME" title="操作员名称"  width="100" edit_flag="3"/>
+		<col_item field="ADD_DATE" title="加入日期"  type="datebox" />
+		<col_item field="ADD_TIME" title="加入时间"  type="timespinner" edt_showSeconds="true"/>
+		<col_item field="BEGIN_DATE" title="有效开始日期" type="datebox" edt_validType="begDate['END_DATE']"  />
+		<col_item field="END_DATE" title="有效结束日期" type="datebox" edt_validType="endDate['BEGIN_DATE']"  />
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_DimensionStockInfoSearch_table"  render="datagrid" title="维度证券信息" >
+		<conf  req="[{service:'M0000024',TRADE_ID:'-1'}]" pageSize="10" colNumbers="4"
+			   gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" />
+
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="TRADE_ID" title="维度编号" type="input" hidden="true"/>
+		<col_item field="TRADE_NAME" title="维度名称" type="input" />
+		<col_item field="POOL_NAME" title="股票池名称" type="input" />
+		<col_item field="STK_POWER" title="证券权重" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return parseFloat(value).toFixed(8);}" />
+		<col_item field="NEAR_AMT" title="参考股本"  type="input" edt_validType="numchar[1,12]"/>
+		<col_item field="ADD_FLAG" title="增加标志"  type="combobox"   edt_dict="ADD_FLAG" />
+		<col_item field="OP_ID" title="操作员代码" type="combogrid"  edt_required="true" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="USER_NAME" edt_idField="USER_CODE"
+				  edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'P0001008',USER_STA:'1'}]"
+				  edt_columns="[[
+								{field:'USER_CODE',title:'操作员代码',width:70},
+								{field:'USER_NAME',title:'操作员名称',width:70},
+								{field:'USER_TYPE',title:'操作员类型',width:70,
+								  formatter: function(value,row,index){
+									return getSysDictOpt('USER_TYPE',value);
+								  }
+								}
+								]]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'USER_NAME',title:'人员名称',
+						  editor:{
+							  type:'text',
+							  options:{
+								validType:'val[1,64]'
+							  }
+							}
+						  }]
+						}
+					   ]"
+		/>
+		<col_item field="OP_NAME" title="操作员名称"  width="100" edit_flag="3"/>
+		<col_item field="ADD_DATE" title="加入日期"  type="datebox" />
+		<col_item field="ADD_TIME" title="加入时间"  type="timespinner" />
+		<col_item field="BEGIN_DATE" title="有效开始日期" type="datebox" edt_validType="begDate['END_DATE']"  />
+		<col_item field="END_DATE" title="有效结束日期" type="datebox" edt_validType="endDate['BEGIN_DATE']"  />
+		<col_item field="UP_DATE" title="更新日期" type="datebox" edt_required="true" />
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_stockPool_table"  render="datagrid" title="股票池产品信息" >
+		<conf service="M0000100" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<qry_item field="OP_ID" title="交易员代码" type="input" />
+		<qry_item field="POOL_ID" title="股票池编号" type="combobox" edt_req="[{service:'M0000033'}]"
+				edt_valueField="POOL_ID" edt_textField="POOL_NAME" edt_panelHeight="100"/>
+
+		<col_item field="REC_ID" title="记录编号"  type="input"  edit_flag="3"/>
+		<col_item field="POOL_ID" title="股票池编号" type="input"  hidden="true"/>
+		<col_item field="POOL_NAME" title="股票池名称" type="input" />
+		<col_item field="TRADE_ID" title="维度编号"  width="100" hidden="true"/>
+		<col_item field="TRADE_NAME" title="维度名称" type="input" />
+		<col_item field="STK_ID" title="证券代码"  type="input" />
+		<col_item field="STK_NAME" title="证券名称"  type="input" />
+		<col_item field="OP_ID" title="交易员代码" type="input"/>
+		<col_item field="OP_NAME" title="交易员名称" type="input" />
+		<col_item field="NEAR_AMT" title="参考股本" type="input" edt_validType="int[12]" />
+		<col_item field="STK_POWER" title="证券权重" type="input" edt_validType="numberex[10,15,4]" />
+		<col_item field="ADD_FLAG" title="增加标志"  type="combobox"   edt_dict="ADD_FLAG" />
+		<col_item field="ADD_DATE" title="加入日期"  type="datebox" edit_flag="2"/>
+		<col_item field="ADD_TIME" title="加入时间"  type="timespinner" edit_flag="2"/>
+		<col_item field="BEGIN_DATE" title="有效开始日期" type="datebox" edt_validType="begDate['END_DATE']"  edit_flag="2"/>
+		<col_item field="END_DATE" title="有效结束日期" type="datebox" edt_validType="endDate['BEGIN_DATE']"  edit_flag="2"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]" colspan="6"/>
+
+	</view>
+
+	<view id="mts_stockPoolCfg_table"  render="datagrid" title="股票池配置信息" >
+		<conf service="M0000033" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<qry_item field="POOL_TYPE" title="股票池类型"  type="combobox"  edt_dict="POOL_TYPE"  />
+		<qry_item field="POOL_SCOPE" title="股票池范围"  type="combobox"  edt_dict="POOL_SCOPE"  />
+		<qry_item field="TRADE_ID" title="维度名称"  edt_width="120" edt_isClear="true"
+				  type="combotree" edt_treeExpand="all"
+				  edt_req="[{service:'M0000020'}]"
+				  edt_panelWidth="200"
+				  edt_panelHeight="200"
+				  edt_nodeId="TRADE_ID"
+				  edt_nodeName="TRADE_NAME"
+				  edt_parNode="PAR_SUP_ID"
+				  edt_treeType="1"
+		/>
+		<btn_item text="新增" service="M0000034" title="新增股票池配置信息" handler="commonAdd" iconCls="icon-add"  width="300" height="300"/>
+		<btn_item text="修改" service="M0000035" title="修改股票池配置信息" handler="commonModify" iconCls="icon-edit"  width="300" height="300"/>
+		<btn_item text="删除" service="M0000036" title="删除股票池配置信息"  handler="commonDelete" iconCls="icon-remove"  />
+
+		<col_item field="POOL_ID" title="股票池编号" type="input"  edt_validType="int[18]" edit_flag="3"/>
+		<col_item field="POOL_NAME" title="股票池名称"  type="input"  edt_validType="val[1,60]" edt_required="true" colspan="4"/>
+		<col_item field="POOL_TYPE" title="股票池类型"  type="combobox"  edt_dict="POOL_TYPE" edt_required="true" colspan="4"/>
+		<col_item field="POOL_SCOPE" title="股票池范围"  type="combobox"  edt_dict="POOL_SCOPE" edt_required="true" colspan="4"/>
+		<col_item field="TRADE_ID" title="维度名称" edt_required="true" edt_width="120" edt_isClear="true"
+				  type="combotree" edt_treeExpand="all"
+				  edt_req="[{service:'M0000020'}]"
+				  edt_panelWidth="200"
+				  edt_panelHeight="200"
+				  edt_nodeId="TRADE_ID"
+				  edt_nodeName="TRADE_NAME"
+				  edt_parNode="PAR_SUP_ID"
+				  edt_treeType="1"
+		/>
+		<col_item field="UP_DATE" title="更新日期"  type="datebox" edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]" colspan="4"/>
+
+	</view>
+
+	<view id="mts_stcInfo_table"  render="datagrid" title="证券产品信息维护" script="../../business/productinfo/js/productInfoManage.js">
+		<conf service="M0000028" pageSize="100" pageList="[100,200,500]" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail="" fallParas="[{enable:true}]"
+			  onClickRow="stcInfoClickRow"/>
+		<qry_item field="STK_ID" title="证券代码"  type="input"/>
+		<qry_item field="STK_NAME" title="证券名称"  type="input"/>
+		<qry_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="SS_TYPE"/>
+		<qry_item field="STK_ISIN" title="是否在股票池" type="combobox"  edt_dict="YES_OR_NO" />
+		<qry_item field="STK_UNDL_CODE" title="是否黑名单"  type="combobox"  edt_dict="YES_OR_NO"  />
+
+		<btn_item id="joinPool"  text="加入股票池"  title="加入股票池"  handler="stockProductSet" iconCls="icon-execute"/>
+		<btn_item id="joinBlackList"  text="加入黑名单"  title="加入黑名单"  handler="blackListSet" iconCls="icon-tip"/>
+		<btn_item text="新增" service="M0000082" title="新增证券产品信息" handler="commonAdd" iconCls="icon-add"  width="700" height="480"/>
+		<btn_item text="修改" service="M0000083" title="修改证券产品信息" handler="commonModify" iconCls="icon-edit"  width="700" height="480"/>
+		<btn_item text="删除" service="M0000084" title="删除证券产品信息"  handler="commonDelete" iconCls="icon-remove"/>
+
+
+		<col_item field="STK_ID" title="证券代码" type="input" edit_flag="1" edt_validType="val[1,6]" edt_required="true"/>
+		<col_item field="STK_NAME" title="证券名称"  type="input" edt_required="true"/>
+		<col_item field="MARKET_ID" title="证券交易所"  type="combobox" edt_dict="MARKET" edt_validType="val[1,60]" edt_required="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="SS_TYPE" edt_required="true" />
+		<col_item field="STK_ISIN" title="是否在股票池" type="combobox"  edt_dict="YES_OR_NO" edt_autoFill="true" edit_flag="3"/>
+		<col_item field="STK_UNDL_CODE" title="是否黑名单"  type="combobox"  edt_dict="YES_OR_NO"  edt_autoFill="true"  edit_flag="3"/>
+		<col_item field="STK_CLS" title="证券类别" type="combobox"  edt_dict="STK_CLS"  edt_validType="val[1,200]" edt_required="true"/>
+		<col_item field="STK_SUB_CLS" title="证券类别子类" type="combobox"  edt_dict="STK_SUB_CLS" edt_required="true"/>
+		<col_item field="STK_STATUS" title="证券状态" type="combobox"  edt_dict="STK_PRO_STA" edt_required="true"/>
+		<col_item field="CURRENCY" title="货币代码" type="combobox"  edt_dict="CURRENCY" />
+		<col_item field="STK_UPLMT_RATIO" title="涨停比例"  type="input" align="right"/>
+		<col_item field="STK_LWLMT_RATIO" title="跌停比例"  type="input" align="right"/>
+		<col_item field="STK_UPLMT_PRICE" title="涨停价格"  type="input" formatter="function(value){return parseFloat(value).toFixed(2);}" align="right"/>
+		<col_item field="STK_LWLMT_PRICE" title="跌停价格"  type="input" formatter="function(value){return parseFloat(value).toFixed(2);}" align="right"/>
+		<col_item field="STK_UPLMT_QTY" title="总额度"  type="input" align="right"/>
+		<col_item field="STK_LWLMT_QTY" title="标准额度"  type="input" align="right"/>
+		<col_item field="STK_LOT_SIZE" title="每手数量"  type="input" edt_validType="int[6]" align="right"/>
+		<col_item field="STK_LOT_FLAG" title="单位标志"  type="combobox" edt_dict="STK_LOT_FLAG" />
+		<col_item field="STK_SPREAD" title="价格价差（价位）"  type="input" formatter="function(value){return parseFloat(value).toFixed(2);}" align="right"/>
+		<col_item field="STK_FACE_VAL" title="证券面值"  type="input" formatter="function(value){return parseFloat(value).toFixed(2);}" align="right"/>
+		<col_item field="STK_CAL_MKTVAL" title="市值标志"  type="combobox" edt_dict="STK_CAL_MKTVAL" />
+		<col_item field="STK_SUSPENDED" title="停牌标志"  type="combobox" edt_dict="STK_SUSPENDED" />
+		<col_item field="STK_CUSTODY_MODE" title="托管模式"  type="combobox" edt_dict="STK_SUSPENDED" />
+		<col_item field="UPD_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="STK_LEVEL" title="证券级别"  type="combobox" edt_dict="STK_LEVEL" />
+		<col_item field="STK_DEADLINE" title="交易截止日期"  type="datebox" />
+		<col_item field="REMIND_MESSAGE" title="退市提示信息"  type="input" edt_validType="val[100]"/>
+	</view>
+
+</views>

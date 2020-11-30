@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><requests><![CDATA[
+[
+    {
+        "service": {
+            "flag": "1",
+            "serialNo": ""
+        },
+        "message": [
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            },
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            }
+        ],
+        "config": {},
+        "data": [
+            [
+               {
+								"name":"easyui",
+								"email":"easyui@gmail.com",
+								"subject":"Subject Title",
+								"message":"Message Content",
+								"selecttree":"123",
+								"language":"en"
+							} 
+            ],
+            [
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                },
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                }
+            ]
+        ]
+    },
+    {
+        "service": {
+            "flag": "1",
+            "serialNo": ""
+        },
+        "message": [
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            },
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            }
+        ],
+        "config": {},
+        "data": [
+            [
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                },
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                }
+            ],
+            [
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                },
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                }
+            ]
+        ]
+    }
+]
+]]></requests>

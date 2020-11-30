@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>人员密码重置</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    window.$ready=function(){
+      initTable();
+    }
+    function initTable(){
+      using('combogrid',function(){
+        $('#USER_CODE').combogrid({
+          panelHeight:280,
+          panelWidth:600,
+          idField:'USER_CODE',
+          textField:'USER_NAME',
+		  required:'true',
+		  fallParas:[{enable:true}],
+          req:[{
+            service:'P0001008'
+          }],
+          columns:[[
+            {field:'USER_CODE',title:'ID号',width:70,sortable:true,sortType:"number"},
+            {field:'USER_NAME',title:'人员名称',width:70},
+            {field:'USER_TYPE',title:'人员类型',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_TYPE',value);
+              }
+            },
+            {field:'USER_STA',title:'人员状态',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_STA',value);
+              }},
+            {field:'OPEN_DATE',title:'开户日期',width:70},
+            {field:'OFF_TEL',title:'办公电话',width:70},
+            {field:'MOBILE',title:'手机号',width:70},
+            {field:'EMAIL',title:'电子邮箱',width:120}
+          ]],
+          queryCols:[{
+            text:'查询',
+            cols:[{field:'USER_CODE',title:'ID号',
+            editor:{
+              type:'text',
+              options:{
+                validType:'int[18]'
+              }
+            }
+            },{field:'USER_NAME',title:'人员名称',
+            editor:{
+              type:'text',
+              options:{
+                validType:'val[0,64]'
+              }
+            }
+            },{field:'MOBILE',title:'手机号',
+                    editor:{
+                        type:'text',
+                        options:{
+                            validType:'val[0,32]'
+                        }
+                    }
+                }]
+          }],
+          onClear:function(){
+        	  $('#USER_CODE').combogrid("grid").datagrid("clearSelections");
+          }
+        })
+      })
+    }
+    function OperInfoClear(){
+      $('#operResetPassForm').form('clear');
+    }
+    function operResetPass(){
+      var result = $('#operResetPassForm').form('validate');
+      var USER_CODE = $('#USER_CODE').combogrid('getValue');
+      if(result && USER_CODE){
+        if($('#USER_PASS').val() != $('#AGAIN_USER_PASS').val()){
+          alert("登录密码与确认密码不一致!");
+          return;
+        }
+          $(".l-btn").linkbutton("disable");
+        var PASS = $('#USER_PASS').val();
+        PASS = encrypt(PASS, USER_CODE);
+        ajaxRequest({
+          req:[
+            {
+              service:'P0001006',
+              USER_CODE:USER_CODE,
+              USER_PASS:PASS
+            }
+          ],
+          func:function(data){
+              OperInfoClear();
+              alert('重置密码成功！');
+              $(".l-btn").linkbutton("enable");
+          },
+          error:function(){
+            alert('重置密码失败！');
+              $(".l-btn").linkbutton("enable");
+          }
+        })
+
+      }else if(!USER_CODE){
+        alert('人员名称不能为空！');
+      }
+    }
+  </script>
+</head>
+<body style="margin-top:20px;">
+	<div class="kui-panel">
+    <form id="operResetPassForm" class="kui-form" >
+      <table style="width:300px;margin-top: 15px">
+        <tr>
+          <td align='right' >人员选择:</td>
+          <td style="width:120px">
+            <select id="USER_CODE" style="width:125px;" ></select>
+          </td>
+        </tr>
+        <tr>
+          <td align='right'>登录密码:</td>
+          <td >
+            <input id="USER_PASS" type="password" class="kui-validatebox" kui-options="required:'true',validType:'numchar[6,25]'"/>
+          </td>
+        </tr>
+        <tr>
+          <td align='right'>再输一次:</td>
+          <td>
+            <input id="AGAIN_USER_PASS" type="password" class="kui-validatebox" kui-options="required:'true',validType:'numchar[6,25]'"/>
+          </td>
+        </tr>
+		<tr>
+			<td colspan="2">
+				<div style="margin-top: 20px;margin-bottom: 10px;" align='right'>
+					<a class="kui-linkbutton" align='left' kui-options="iconCls:'icon-save'" onclick="operResetPass()">重置密码</a>
+					<a class="kui-linkbutton" align='left' kui-options="iconCls:'icon-remove'" onclick="OperInfoClear()">清空</a>
+				</div>
+			</td>
+		</tr>
+      </table>
+      
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

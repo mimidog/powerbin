@@ -1,0 +1,115 @@
+.obviousbox{
+	position:relative;
+}
+.ovs-box-options{
+	float:left;
+	padding:4px 2px;
+	border:1px solid #95B8E7;
+	width: 99.5%;
+	overflow:hidden;
+}
+
+.ovs-box-options a{
+	text-decoration: none;
+	cursor:pointer;
+}
+.ovs-box-options p{
+	marign: 0;
+	padding: 0;
+}
+.ovs-box-options .ovs-item-clear{
+	position:absolute;
+	right: 20px;
+    top: 25px;
+	
+}
+
+.ovs-box-options .ovs-item-more{
+	position:absolute;
+	top:4px;
+	right:20px;	
+}
+.ovs-box-options b{
+	height: 14px;
+    overflow: hidden;
+    position: absolute;
+    right: 3px;
+    top: 2px;
+    width: 14px;
+}
+
+.ovs-box-options .more-expand b{
+	background: url('images/spinner_arrows.png') no-repeat 1px center;
+}
+
+.ovs-box-options .more-close b{
+	background: url('images/spinner_arrows.png') no-repeat -15px center;
+}
+
+.ovs-box-options .ovs-item-more .ovs-more-button, .ovs-box-options .ovs-item-clear .ovs-clear-button{
+	background-color:#E0ECFF;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    padding: 2px 3px;
+    text-decoration: none;
+    width: 2em;
+    color:#2164A1;
+}
+
+.ovs-box-options .ovs-item-more .ovs-more-button{
+	 width: 2.8em;
+}
+
+.ovs-box-options .ovs-item-more .ovs-more-button:hover, .ovs-box-options .ovs-item-clear .ovs-clear-button:hover{
+	background-color:#C4D5E9;
+}
+
+.obviousbox .ovs-box-title{
+	float: left;
+    font-weight: bold;
+    height: 100%;
+    padding: 2px 10px 0 3px;
+}
+
+.ovs-box-options .ovs-item{
+	float:left;
+	width:160px;
+}
+
+.ovs-box-options .ovs-item .item-change-deleted{
+	color:red;
+}
+
+.ovs-box-options .ovs-item .item-change-added{
+	color:green;
+}
+
+.ovs-box-options .ovs-item .ovs-item-a-on{
+	background: none repeat scroll 0 0 #03A2DC;
+	color: #FFFFFF;
+}
+
+.ovs-box-options .ovs-item .ovs-item-a-on:hover {
+	text-decoration: none !important;
+	color: #FFFFFF;
+}
+
+.ovs-box-options .ovs-item input {
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+.ovs-box-options .ovs-item a {
+	display: inline;
+	padding: 2px 4px;
+	margin-left:1px;
+	vertical-align:middle;
+	white-space: nowrap;
+	font-weight: normal;
+}
+
+.ovs-box-options .ovs-item a:hover {
+	color:#02A1D9;
+	text-decoration:underline !important;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>password Task - KINGDOM UI Demo</title>
+   <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+     <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+   <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<style type="text/css">
+	.form-label{
+		padding-left:5px;
+		text-align:right;
+		height: 19px;
+	}
+	.form-box{
+		padding: 6px 12px 6px 0;
+	}
+	.form-box .form-group-inline{
+		display:inline-block;
+		line-height: 19px;
+		padding:4px 0;
+	}
+	.form-box .form-label{
+		display:inline-block;
+		text-align: right;
+	}	
+	#submit{
+		margin-left: 100px;
+	}
+	
+</style>
+<body>
+	<h2>password verify</h2>	
+	<div class="outer-scroll" style="overflow: auto;height: 100px;">	
+		<div class= "inner" style="overflow: auto;height: 150px;">
+			<form id="testForm" class="kui-form" >
+				<div class="form-box" style="padding-bottom:0;">
+					<div class="form-group-inline">
+				        <span class="form-label">证件类型：</span>
+				        <input name="ID_TYPE" style="width: 160px;" class="kui-combobox" kui-options="panelHeight:200,required:'true',dict:'ID_TYPE',sort:changeIdType,onSelect:checkIdType" />
+			        </div>
+			        <div class="form-group-inline">
+				        <span class="form-label">证件号码：</span>
+				        <input name="ID_CODE" style="width:160px;" type="text" class="kui-password" kui-options="required:'true'"/>
+			        </div>			    
+			    </div>
+			    <a href="javascript:void(0)" class="kui-linkbutton" id="submit" onclick="submitForm()">提交</a><br/>		
+			</form>
+		</div>		
+	</div>	
+</body>
+<script type="text/javascript">
+	function changeIdType(cdata) {
+      var ndata = [];
+      for (i in cdata) {
+        item = cdata[i];
+        if (item.dict_val.charAt(0) == 0) {
+          ndata.push(item);
+        }
+      }
+      return ndata;
+    };
+    function checkIdType(item) {
+      var dictVal = item['dict_val'];
+      var obj = $(this).parents('#testForm').find('input[name=ID_CODE]');
+      var preV = $(obj).password("getValue");
+      $(obj).password("clear").val(preV);     
+      $(obj).password("changeValid", '00' == dictVal ?  'cardno[true]': 'numchar[1,32]');
+    }
+    function submitForm(){
+    	if ($("#testForm").form("validate")){
+    		var idType = $("#testForm").find("input[comboname=ID_TYPE]").combobox("getText");
+    		//var _ID_TYPE = $("#testForm").find("input[comboname=ID_TYPE]").combobox("getText");
+    		var _ID_TYPE = idType.substr(idType.indexOf("-")+1);
+            var _ID_CODE = $("#testForm").find("input[name=ID_CODE]").val();
+    		alert("证件类型:"+_ID_TYPE+"<br/>证件号码:"+_ID_CODE);
+    	}
+    }  
+</script>
+</html>

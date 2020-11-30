@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+    <!--系统参数管理view   start-->
+    <view id="UPM_sysParamManage" render="datagrid" title=" " script="../../opp/js/general-util.js">
+        <conf service="P0000001" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'" onSelect="maintainControl" fit="true" showRowDetail="true" isShowDetail=""/>
+        <qry_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="1" hidden="true"/>
+        <qry_item field="PAR_CODE" title="参数代码" type="input" edt_validType="val[1,32]"/>
+        <qry_item field="PAR_NAME" title="参数名称" type="input" edt_validType="val[1,64]"/>
+        <qry_item field="PAR_CLS" title="参数类型" type="combobox" edt_dict="PAR_CLS"  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" service="P0000002" title="系统参数新增" handler="commonAdd" iconCls="icon-add" />
+        <btn_item text="修改" service="P0000003" title="系统参数修改" handler="commonModify" iconCls="icon-edit" />
+        <btn_item text="删除" service="P0000004" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="PAR_CODE" title="参数代码" width="100" type="input" edit_flag="1" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="PAR_NAME" title="参数名称" width="150" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="PAR_CLS" title="参数类型" width="120" type="combobox" edt_dict="PAR_CLS" edt_required="true"/>
+        <col_item field="MAINTAIN_FLAG" title="维护标识" width="120" type="combobox" edit_flag="1" edt_dict="MAINTAIN_FLAG" edt_required="true" />
+		<col_item field="PAR_VAL" title="参数值" width="200" type="input" edt_validType="val[1,32]" edt_required="true" colspan="4"/>
+		<col_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="1" listHidden="true" edit_flag="3"/>
+	</view>
+	<!--系统参数管理view   start-->
+    <view id="UPM_sysParamManage_bessniss" render="datagrid" title="业务参数管理" script="../../opp/js/general-util.js">
+        <conf service="P0000001" pageSize="10" colNumbers="4"  onSelect="maintainControl" fit="true" showRowDetail="true" isShowDetail=""/>
+        <qry_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="2" hidden="true"/>
+        <qry_item field="PAR_CODE" title="参数代码" type="input" edt_validType="val[1,32]"/>
+        <qry_item field="PAR_NAME" title="参数名称" type="input" edt_validType="val[1,64]"/>
+        <qry_item field="PAR_CLS" title="参数类型" type="combobox" edt_dict="PAR_CLS"  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" service="P0000002" title="系统参数新增" handler="commonAdd" iconCls="icon-add" />
+        <btn_item text="修改" service="P0000003" title="系统参数修改" handler="commonModify" iconCls="icon-edit" />
+        <btn_item text="删除" service="P0000004" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="PAR_CODE" title="参数代码" width="100" type="input" edit_flag="1" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="PAR_NAME" title="参数名称" width="150" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="PAR_CLS" title="参数类型" width="120" type="combobox" edt_dict="PAR_CLS" edt_required="true"/>
+        <col_item field="MAINTAIN_FLAG" title="维护标识" width="120" type="combobox" edit_flag="1" edt_dict="MAINTAIN_FLAG" edt_required="true" />
+		<col_item field="PAR_VAL" title="参数值" width="200" type="input" edt_required="true" edt_validType="val[1,32]"/>
+		<col_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="2" listHidden="true" edit_flag="3"/>
+	</view>
+    <!--系统参数管理view   end-->
+    
+    <!--数据字典管理view   start-->
+    <view id="UPM_dictionaryManage" render="datagrid" title="" script="../../opp/js/general-util.js">
+        <conf service="P0000011" idField="DICT_CODE" onClickRow="onClickMainTableRow" onLoadSuccess="dataLoad" pageSize="10" colNumbers="2" border="false" noheader="true" onSelect="maintainControl" fit="true"/>
+        <qry_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="1" hidden="true"/>
+        <qry_item field="DICT_CODE" title="字典代码" type="input" edt_validType="val[1,32]"/>
+        <qry_item field="DICT_NAME" title="字典名称" type="input" edt_validType="val[1,64]"/>
+        <qry_item field="MAINTAIN_FLAG" title="维护标识" type="combobox" edt_dict="MAINTAIN_FLAG" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" service="P0000012" title="新增" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000013" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000014" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" primary_key="1" edit_flag="1" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="DICT_NAME" title="字典名称" width="120" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="MAINTAIN_FLAG" title="维护标识" width="120" type="combobox" edit_flag="1" edt_dict="MAINTAIN_FLAG" edt_required="true"/>
+    	<col_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="1" hidden="true"/>
+    </view>
+    <!--数据字典管理view   end-->
+    
+    <!--数据字典管理view   start-->
+    <view id="UPM_dictionaryManage_bessniss" render="datagrid" title="业务数据字典管理" script="../../opp/js/general-util.js">
+        <conf service="P0000011" idField="DICT_CODE" onClickRow="onClickMainTableRow" onLoadSuccess="dataLoad" pageSize="10" colNumbers="2" border="false" noheader="true" onSelect="maintainControl" fit="true"/>
+        <qry_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="2" hidden="true"/>
+        <qry_item field="DICT_CODE" title="字典代码" type="input" edt_validType="val[1,32]"/>
+        <qry_item field="DICT_NAME" title="字典名称" type="input" edt_validType="val[1,64]"/>
+        <qry_item field="MAINTAIN_FLAG" title="维护标识" type="combobox" edt_dict="MAINTAIN_FLAG" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" service="P0000012" title="新增" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000013" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000014" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" primary_key="1" edit_flag="1" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="DICT_NAME" title="字典名称" width="120" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="MAINTAIN_FLAG" title="维护标识" width="120" type="combobox" edit_flag="1" edt_dict="MAINTAIN_FLAG" edt_required="true"/>
+    	<col_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="2" hidden="true"/>
+    </view>
+    <!--数据字典管理view   end-->
+
+    <!--字典项管理view   start-->
+    <view id="UPM_dicItemsManage" title="" render="datagrid" script="../../opp/js/general-util.js">
+        <conf service="P0000021"  onClickRow="onClickItemTableRow" colNumbers="2" required="true" border="false" noheader="true" onSelect="childrenControl" fit="true"/>
+        <btn_item text="新增" service="P0000022" title="新增" handler="addRow" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000023" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000024" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="ITEM_ID" title="字典项编号" width="120" type="input" hidden="true" />
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" listHidden="true" edit_flag="2" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM" title="字典项" width="120" type="input" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM_NAME" title="字典项名称" width="120" type="input" edt_validType="val[1,32]" edt_required="true"/>
+        <col_item field="DICT_ORD" title="取值顺序" width="120" sortType="number" type="input" edt_validType="zint[4]"/>
+        <col_item field="MAINTAIN_FLAG" title="维护标识" width="120" type="combobox" edit_flag="1" edt_dict="MAINTAIN_FLAG" edt_required="true"/>
+    </view>
+    <!--字典项管理view   end-->
+	
+	    <!--字典项管理view   start-->
+    <view id="UPM_dicItemsManage_bessniss" title="业务字典项管理" render="datagrid" script="../../opp/js/general-util.js">
+        <conf service="P0000021"  onClickRow="onClickItemTableRow" colNumbers="2" required="true" border="false" noheader="true" onSelect="childrenControl" fit="true"/>
+        <btn_item text="新增" service="P0000022" title="新增" handler="addRow" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000023" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000024" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="ITEM_ID" title="字典项编号" width="120" type="input" hidden="true" />
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" listHidden="true" edit_flag="2" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM" title="字典项" width="120" type="input" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM_NAME" title="字典项名称" width="120" type="input" edt_validType="val[1,32]" edt_required="true"/>
+        <col_item field="DICT_ORD" title="取值顺序" width="120" sortType="number" type="input" edt_validType="zint[4]"/>
+        <col_item field="MAINTAIN_FLAG" title="维护标识" width="120" type="combobox" edit_flag="1" edt_dict="MAINTAIN_FLAG" edt_required="true"/>
+    </view>
+    <!--字典项管理view   end-->
+    
+    <!--机构数据字典管理view   start-->
+    <view id="UPM_orgDictionary" render="datagrid" title="" script="../../opp/js/general-util.js">
+        <qry_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="1" hidden="true"/>
+        <qry_item field="DICT_CODE" title="字典代码" type="input" edt_validType="val[1,32]"/>
+        <qry_item field="DICT_NAME" title="字典名称" type="input" edt_validType="val[1,64]"/>
+        <qry_item field="ORG_CODE" title="机构名称"  width="100"
+              type="combotree" edt_required="true"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_CODE_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+        <conf service="P0000026" idField="DICT_CODE" onClickRow="onClickMainTableRow" required="true" onLoadSuccess="dataLoad" pageSize="10" colNumbers="2" border="false" noheader="true" onSelect="maintainControl"/>
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" primary_key="1" edit_flag="1" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="DICT_NAME" title="字典名称" width="120" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="BLONG_TYPE" title="所属类型" type="input" edt_value="1" hidden="true"/>
+    </view>
+    <!--机构数据字典管理view   end-->
+
+    <!--机构字典项管理view  addRowOrgDicItems start-->
+    <view id="UPM_orgDicItems" render="datagrid" title="" script="../../opp/js/general-util.js">
+        <conf service="P0000031" onClickRow="onClickItemTableRow" colNumbers="2" required="true" border="false" noheader="true" />
+        <btn_item text="新增" service="P0000032" title="新增" handler="addRowOrgDicItems" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000033" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000034" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="ITEM_ID" title="字典项编号" width="120" type="input" hidden="true" />
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" listHidden="true" edit_flag="2" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM" title="字典项" width="100" type="input" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM_NAME" title="字典项名称" width="100" type="input" edt_validType="val[1,32]" edt_required="true"/>
+        <col_item field="DICT_ORD" title="取值顺序" width="100" type="input" edt_validType="zint[4]" sortType="number"/>
+        <col_item field="ORG_CODE" edit_flag="2" title="机构名称" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"  
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_CODE_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    </view>
+    <!--机构字典项管理view   end-->
+
+    <!--机构数据字典管理view   start-->
+    <view id="UPM_orgDictionaryManage" render="datagrid" title="机构数据字典管理" script="../../opp/js/general-util.js">
+        <conf service="P0000026" idField="DICT_CODE" onClickRow="onClickMainTableRow" onLoadSuccess="dataLoad" pageSize="10" colNumbers="2" border="false" noheader="true" onSelect="maintainControl"/>
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" primary_key="1" edit_flag="1" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="DICT_NAME" title="字典名称" width="120" type="input" edt_required="true" edt_validType="val[1,64]"/>
+    </view>
+    <!--机构数据字典管理view   end-->
+
+    <!--机构字典项管理view   start-->
+    <view id="UPM_orgDicItemsManage" title="机构字典项管理" render="datagrid" script="../../opp/js/general-util.js">
+        <conf service="P0000031" onClickRow="onClickItemTableRow" colNumbers="2" required="true" border="false" />
+        <btn_item text="新增" service="P0000032" title="新增" handler="addRow" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000033" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000034" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="ITEM_ID" title="字典项编号" width="120" type="input" hidden="true" />
+        <col_item field="DICT_CODE" title="字典代码" width="120" type="input" listHidden="true" edit_flag="2" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM" title="字典项" width="100" type="input" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="DICT_ITEM_NAME" title="字典项名称" width="100" type="input" edt_validType="val[1,32]" edt_required="true"/>
+        <col_item field="DICT_ORD" title="取值顺序" width="100" sortType="number" type="input" edt_validType="zint[4]"/>
+    </view>
+    <!--机构字典项管理view   end-->
+
+	<!--系统菜单管理view   start-->
+    <view id="UPM_sysMenuForm" render="form" title="系统菜单信息" colNumbers="2" >
+		<conf colNumbers="2" />
+		<col_item field="PAR_MENU" title="上级菜单"  type="input" hidden="true" />
+		<col_item field="MENU_ID" title="菜单编号"  type="input" edit_flag="2" hidden="true" edt_width="200" edt_readonly="true"/>
+		<col_item field="MENU_PLAT" title="适用平台" edt_disabled="true" type="combobox" edt_width="200" edt_panelHeight="200"
+                  edt_req="[{service:'P0000181',STATUS:'1'}]" edt_valueField="ID"
+                  edt_textField="PLAT_NAME" edt_required="true" />
+		<col_item field="MENU_PUR" title="菜单用途"   type="combobox" edt_width="200" edit_flag="2" edt_dict="MENU_PUR" edt_required="true" edt_onSelect="checkMenuPur" />
+        <col_item field="MENU_BPM_FORM" title="表单模版"  type="input" edt_width="200" edt_validType="length[0,256]"/>
+        <col_item field="MENU_NAME" title="菜单名称" edt_width="195" edt_validType="val[1,64]" type="input" edt_required="true" />
+		<col_item field="MENU_STA" title="菜单状态"  edt_width="200" type="combobox" edt_dict="COMM_STA" edt_required="true"/>
+		<col_item field="MENU_ICO" title="快捷图标"  edt_width="200" type="combo" edt_editable="true" edt_acceptInput="true" edt_validType="val[1,128]" edt_onBlur="validateMenuIcon"/>
+		<col_item field="MENU_LINK" title="菜单链接" type="input" edt_width="485" edt_validType="length[0,512]" colspan="4"/>
+	</view>
+	<!--系统菜单管理view   end-->
+
+	 <!--国际化管理view   start-->
+    <view id="UPM_sysLocaleManage" render="datagrid" title="国际化管理" >
+        <conf service="P0000051" onClickRow="onClickMainTableRow" onLoadSuccess="dataLoad" pageSize="10" colNumbers="2" border="false" noheader="true" />
+        <qry_item field="LOC_CODE" title="国际化代码" type="input" edt_validType="val[1,32]"/>
+        <!--qry_item field="LOC_NAME" title="国际化名称" type="input"/-->
+        <btn_item text="新增" service="P0000052" title="新增" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000053" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000054" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="LOC_CODE" title="国际化代码" width="120" type="input" primary_key="1" edit_flag="1" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="LOC_NAME" title="国际化名称" width="120" type="input" edt_required="true" edt_validType="val[1,64]"/>
+     </view>
+    <!--国际化管理view   end-->
+
+    <!--国际化语言管理view   start-->
+    <view id="UPM_sysLocLangManage" title="国际化语言管理" render="datagrid">
+        <conf service="P0000061" colNumbers="2" required="true" border="false" noheader="true"/>
+        <btn_item text="新增" service="P0000062" title="新增" handler="addRow" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000063" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000064" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="LOC_CODE" title="国际化代码" width="120" type="input" listHidden="true" edit_flag="2" colspan="4"/>
+        <col_item field="LANG_TYPE" title="语言类型" width="120" type="combobox" edt_dict="LANG_TYPE" edit_flag="1" edt_required="true" />
+        <col_item field="LOC_VAL" title="语言值" width="120" type="input" edt_validType="val[1,128]" edt_required="true"/>
+    </view>
+    <!--国际化语言管理view   end-->
+
+	<!--系统服务管理view   start-->
+    <view id="UPM_sysServiceManage" title="系统服务管理" render="datagrid">
+        <conf service="P0000071" colNumbers="2" showRowDetail="true" fit="true"/>
+		<qry_item field="SERVICE_CODE" title="服务代码" type="input" edt_validType="val[1,32]"/>
+		<qry_item field="SERVICE_NAME" title="服务名称" type="input" edt_validType="val[1,64]"/>
+        <btn_item text="新增" service="P0000072" title="新增"  handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000073" title="修改" handler="commonModify" iconCls="icon-edit"/>
+		<btn_item text="服务参数" view="UPM_sysSerParManage" title="服务参数管理" handler="commonView" iconCls="icon-list"/>
+        <btn_item text="删除" service="P0000074" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="SERVICE_CODE" title="服务代码" width="120" type="input" edt_validType="val[1,32]" edt_required="true" edit_flag="1"/>
+		<col_item field="SERVICE_NAME" title="服务名称" width="120" type="input" edt_validType="val[1,64]" edt_required="true"/>
+        <col_item field="SERVICE_TYPE" title="服务类型" width="120" type="combobox" edt_dict="SERVICE_TYPE" edt_required="true"/>
+        <col_item field="ENABLE_SOAP" title="接口支持" width="120" type="combobox" edt_dict="ENABLE_SOAP" edt_required="true"/>
+		<col_item field="REC_FLAG" title="记录流水" width="120" type="combobox" edt_dict="REC_FLAG" edt_required="true"/>
+		<col_item field="ACCESS_CONTROL" title="控制权限" width="120" type="combobox" edt_dict="ACCESS_CONTROL" edt_required="true"/>
+    	<!--col_item field="USER_STA" title="人员状态" type="combobox" edt_dict="USER_STA"
+                   edt_multiple="true"/-->
+    </view>
+    <!--系统服务管理view   end-->
+
+	<!--服务参数管理view   start-->
+    <view id="UPM_sysSerParManage" title="服务参数管理"  render="datagrid">
+        <conf service="P0000076" colNumbers="2" fit="true"/>
+		    <qry_item field="SERVICE_CODE" title="服务代码" type="input" hidden="true" />
+        <btn_item text="新增" service="P0000077" title="新增" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000078" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000079" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="SERVICE_CODE" title="服务代码" width="100" type="input" edt_validType="val[1,32]" edt_required="true" edit_flag="2"/>
+		    <col_item field="PAR_CODE" title="参数代码" width="80" type="input" edt_validType="val[1,32]" edt_required="true"  edit_flag="1"/>
+        <col_item field="PAR_NAME" title="参数名称" width="100" type="input" edt_validType="val[1,64]" edt_required="true"/>
+        <col_item field="PAR_TYPE" title="参数类型" width="80" type="combobox" edt_dict="PAR_TYPE" edt_required="true"/>
+		    <col_item field="DATA_TYPE" title="数据类型" width="80" type="combobox" edt_dict="DATA_TYPE" edt_required="true"/>
+		    <col_item field="NULLABLE" title="允许空值" width="60" type="combobox" edt_dict="NULLABLE"/>
+        <col_item field="DEF_VAL" title="默认值" width="100" type="input" edt_validType="val[1,64]"/>
+    </view>
+    <!--服务参数管理view   end-->
+
+	<!--系统错误速查表view   start-->
+    <view id="UPM_sysErrorQuery" title="系统错误速查表查询" render="datagrid" script="../../opp/js/manage-platform-func.js">
+        <conf service="P0000081" colNumbers="2" fit="true"/>
+		<qry_item field="ERR_CODE" title="错误代码" type="input" edt_validType="val[1,32]"/>
+        <btn_item text="查看详情" title="系统错误速查表详情" handler="upm_sysErrorDetail" iconCls="icon-client-detail"/>
+        <col_item field="ERR_CODE" title="错误代码" width="100" type="input" />
+		<col_item field="ERR_LVL" title="错误级别" width="80" type="combobox" edt_dict="ERR_LVL" />
+		<col_item field="ERR_MSG" title="错误消息" width="250"  colspan="4" type="textarea" />
+		<col_item field="REMARK" title="错误说明" width="350"  colspan="4" type="textarea" />
+    </view>
+    <!--系统错误速查表view   end-->
+
+	<!--系统服务流水查询   start-->
+    <view id="UPM_sysSerRecQuery" title="系统服务流水查询" render="datagrid" script="../../opp/js/manage-platform-func.js">
+        <conf service="P0000091" colNumbers="3" fit="true" fallParas="[{enable:true}]" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"/>
+		<btn_item text="查看详情" title="系统服务流水详情" handler="upm_sysSerRecDetail" iconCls="icon-client-detail"/>
+		<qry_item field="REC_NO" title="流水号" type="input" edt_validType="zint[10]"/>
+		<qry_item field="SERVICE_CODE" title="服务代码" type="input" edt_validType="val[1,80]"/>
+        <qry_item field="SERVICE_NAME" title="服务名称" type="input" edt_validType="val[1,64]"/>
+    	<qry_item field="OP_USER" title="操作用户" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+              edt_textField="USER_NAME" edt_idField="USER_CODE"
+              edt_fallParas="[{enable:true}]"
+              edt_req="[{service:'P0001008',USER_STA:'1'}]"
+              edt_columns="[[
+            {field:'USER_CODE',title:'ID号',width:70},
+            {field:'USER_NAME',title:'人员名称',width:70},
+            {field:'USER_TYPE',title:'人员类型',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_TYPE',value);
+              }
+            }
+            ]]"
+              edt_queryCols="[
+            {
+              text:'查询',
+              cols:[{field:'USER_NAME',title:'人员名称',
+              editor:{
+                  type:'text',
+                  options:{
+                    validType:'val[1,64]'
+                  }
+                }
+              }]
+            }
+           ]"
+            />
+		<qry_item field="BEGIN_DATE" title="开始日期" type="datebox" edt_validType="begDate['END_DATE']" edt_defaultValue=":D-7"  />
+		<qry_item field="END_DATE" title="截止日期" type="datebox" edt_validType="endDate['BEGIN_DATE']" edt_defaultValue=":D0" />
+
+		<col_item field="REC_NO" title="流水号" width="60" type="input" />
+		<col_item field="SERVICE_CODE" title="服务代码" width="100" type="input" />
+		<col_item field="SERVICE_NAME" title="服务名称" width="80" type="input" />
+        <col_item field="EXEC_DATE" title="操作时间" width="120" type="input" />
+		<col_item field="OP_USER" title="操作用户编号" width="80" type="input"/>
+		<col_item field="OP_SITE" title="操作站点" width="100" type="input" />
+		<col_item field="OPT_PAR" title="操作参数" width="280" type="input" />
+    </view>
+    <!--系统服务流水查询view   end-->
+
+	<!--系统序号管理view   start-->
+    <view id="UPM_sysSeqManage" title=" " render="datagrid">
+        <conf service="P0000111" colNumbers="2" fit="true"/>
+        <btn_item text="修改" service="P0000113" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <col_item field="USER_CODE" title="用户代码" width="120" type="input" edt_validType="zint[10]" edt_required="true" />
+    </view>
+    <!--系统序号管理理view   end-->
+
+	<!--系统利率设置view   start-->
+    <view id="UPM_rateSetting" render="datagrid" title="利率设置">
+        <conf service="P0000121" pageSize="10" colNumbers="4" fit="true"/>
+
+        <qry_item field="INT_RATE_CLS" title="利息类别" type="combobox" edt_dict="INT_RATE_CLS" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="CURRENCY" title="货币代码" type="combobox" edt_dict="CURRENCY" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="ID_RATE_TYPE" title="种率类型" type="combobox" edt_dict="ID_RATE_TYPE" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="ORG" title="机构" type="combotree" edt_req="[{service:'P0001031',ORG_STA:'1'}]" edt_nodeId="ORG_CODE" edt_nodeName="ORG_CODE_NAME" edt_parNode="PAR_ORG" edt_treeType="1" edt_panelWidth="250" edt_panelHeight="300"/>
+
+        <btn_item text="新增" service="P0000122" title="系统利率新增" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000123" title="系统利率修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000124" handler="commonDelete" iconCls="icon-remove"/>
+
+        <col_item field="INT_RATE_SN" title="利率编码"  width="80" type="input" edit_flag="3"/>
+        <col_item field="INT_RATE_NAME" title="利率名称" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="ORG" title="机构" edt_width="120" width="150" type="combotree" edt_req="[{service:'P0001031',ORG_STA:'1'}]" edt_nodeId="ORG_CODE" edt_nodeName="ORG_CODE_NAME" edt_parNode="PAR_ORG" edt_treeType="1" edt_panelWidth="250" edt_panelHeight="300"/>
+        <col_item field="INT_RATE_CLS" title="利息类别" width="120" type="combobox" edt_dict="INT_RATE_CLS" edt_required="true"/>
+        <col_item field="CURRENCY" title="货币代码" width="80" type="combobox" edt_dict="CURRENCY" edt_required="true"/>
+        <col_item field="ID_RATE_TYPE" title="种率类型" width="80" type="combobox" edt_dict="ID_RATE_TYPE" edt_required="true"/>
+        <col_item field="DEPOSIT_RATE" title="活期利率(%)" width="80"  type="numberbox" edt_precision="4"  edt_validType="numberex[1,2,4]" edt_setThousandChar="false" edt_invalidMessage="请输入大于0小于100且保留小数点后4位的非负数" formatter="function(value){return parseFloat(value).toFixed(4);}" edt_required="true"/>
+        <col_item field="DEPOSIT_TAX_RATE" title="利息税率(%)" width="80"  type="numberbox" edt_precision="4" edt_validType="numberex[1,2,4]" edt_setThousandChar="false" edt_invalidMessage="请输入大于0小于100且保留小数点后4位的非负数" formatter="function(value){return parseFloat(value).toFixed(4);}" edt_required="true"/>
+        <col_item field="LIABILITY_RATE" title="透支利率(%)" width="80"  type="numberbox" edt_precision="4" edt_validType="numberex[1,2,4]" edt_setThousandChar="false"  edt_invalidMessage="请输入大于0小于100且保留小数点后4位的非负数" formatter="function(value){return parseFloat(value).toFixed(4);}" edt_required="true"/>
+    </view>
+    <!--系统利率设置view   end-->
+    <!--佣金名称设置view    start-->
+    <view id="UPM_commission" title="佣金名称设置" render="datagrid">
+      <conf service="P0000131" pageSize="10" colNumbers="2" pagination="true" fit="true"/>
+      <qry_item field="COMMISSION_NAME" title="佣金名称" type="input" edt_validType="val[1,32]"/>
+      <qry_item field="COMMISSION_TYPE" title="佣金类型" type="combobox" edt_dict="COMMISSION_TYPE" edt_extItems="[{'dict_des':'全部','dict_val':'-1'}]"/>
+      <btn_item text="新增" service="P0000132" title="新增佣金信息" handler="commonAdd" iconCls="icon-add"/>
+      <btn_item text="修改" service="P0000133" title="修改佣金信息" handler="commonModify" iconCls="icon-edit"/>
+      <btn_item text="删除" service="P0000134"  handler="commonDelete" iconCls="icon-remove"/>
+      <col_item field="COMMISSION_CODE" title="佣金编码" width="120" type="input" edt_required="true" edt_validType="val[1,16]" edit_flag="1"/>
+      <col_item field="COMMISSION_NAME" title="佣金名称" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+      <col_item field="COMMISSION_TYPE" title="佣金类型" width="120" type="combobox" edt_required="true" edt_dict="COMMISSION_TYPE"
+                 formatter="function(value){ return getSysDictOpt('COMMISSION_TYPE',value); }"/>
+      <col_item field="RANGE" title="使用范围" edt_required="true" edt_width="120" width="120"
+                type="combotree"
+                edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+                edt_panelWidth="250"
+                edt_panelHeight="200"
+                edt_nodeId="ORG_CODE"
+                edt_nodeName="ORG_NAME"
+                edt_parNode="PAR_ORG"
+                edt_treeType="1"
+              />
+      <col_item field="REMARK" title="备注" width="350" colspan="4" type="input" edt_validType="val[1,64]"/>
+    </view>
+    <!--佣金名称设置view end-->
+
+  <!--标准佣金设置view    start-->
+  <view id="UPM_commissionStaQuery" title="标准佣金设置" render="datagrid" script="../../opp/js/bus-func.js">
+    <conf service="P0000141" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+    <qry_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200"
+                  edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME"/>
+    <qry_item field="SYS_CODE" title="系统编码" type="combobox" edt_dict="SYS_CODE" edt_validType="val[1,32]" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+    <qry_item field="BRANCH_ORG" title="分支机构"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1" 
+            />
+    <btn_item text="新增" service="P0000142" title="新增标准佣金信息" handler="staAdd" iconCls="icon-add"/>
+    <btn_item text="修改" service="P0000143" title="修改标准佣金信息" handler="staModify" iconCls="icon-edit"/>
+    <btn_item text="删除" service="P0000144"  handler="commonDelete" iconCls="icon-remove"/>
+    <col_item field="ID" title="流水号"  width="60" type="input" edit_flag="3"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200" edt_required="true" width="100"
+                  edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME"/>
+    <col_item field="SYS_CODE" title="系统编码" width="80"  type="combobox" edt_required="true" edt_dict="SYS_CODE" edt_validType="val[1,32]"/>
+    <col_item field="BRANCH_ORG" title="分支机构" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    <col_item field="CURRENCY_CODE" title="货币代码" width="80" type="combobox" edt_required="true" edt_dict="CURRENCY_CODE"/>
+    <col_item field="MARKET" title="市场板块" width="80" type="combobox" edt_required="true" edt_dict="MARKET"/>
+    <col_item field="TRENCH" title="渠道" width="80" type="combobox" edt_required="true" edt_dict="TRENCH"/>
+    <col_item field="TRAN_BEHAVIOR" title="交易行为" width="80" type="combobox" edt_required="true" edt_dict="TRAN_BEHAVIOR"/>
+    <col_item field="STOCK_TYPE" title="证券类别" width="80" type="combobox" edt_required="true" edt_dict="STOCK_TYPE"/>
+    <col_item field="STOCK_CODE" title="证券代码" width="80" type="input" edt_required="true" edt_validType="val[1,8]"/>
+    <col_item field="MONEY_LOWER" title="金额下限" width="80" type="numberbox" sortType="number" edt_setThousandChar="false" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_RATE" title="佣金比例" width="80"  type="numberbox" sortType="number" edt_setThousandChar="false" edt_required="true" edt_precision="2" edt_validType="numberex[6,2,4]" edt_invalidMessage="请输入不大于100且保留小数点后4位的非负数" formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+    <col_item field="COMMISSION_UPPER" title="佣金上限(‰)"  width="80" edt_min = "0" sortType="number" edt_max = "1000" type="numberbox" edt_setThousandChar="false" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_LOWER" title="佣金下限(‰)"  width="80" edt_min = "0" sortType="number" edt_max = "1000" type="numberbox" edt_setThousandChar="false" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+  </view>
+  <view id="UPM_staAddForm" render="form" title="标准佣金新增" >
+    <conf colNumbers="2" service="P0000142" />
+    <col_item field="ID" title="流水号" width="60" type="input" edit_flag="3"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200" edt_required="true"
+              edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+              edt_textField="COMMISSION_NAME"/>
+    <col_item field="SYS_CODE" title="系统编码" width="80" type="combobox" edt_required="true" edt_dict="SYS_CODE" edt_validType="val[1,32]"/>
+    <col_item field="BRANCH_ORG" title="分支机构" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    <col_item field="CURRENCY_CODE" title="货币代码" width="80" type="combobox" edt_required="true" edt_dict="CURRENCY_CODE"/>
+    <col_item field="MARKET" title="市场板块" width="80" type="combobox" edt_required="true" edt_dict="MARKET"/>
+    <col_item field="TRENCH" title="渠道" width="80" type="combobox" edt_required="true" edt_dict="TRENCH"/>
+    <col_item field="TRAN_BEHAVIOR" title="交易行为" width="80" type="combobox" edt_required="true" edt_dict="TRAN_BEHAVIOR"/>
+    <col_item field="STOCK_TYPE" title="证券类别" width="80" type="combobox" edt_required="true" edt_dict="STOCK_TYPE"/>
+    <col_item field="STOCK_CODE" title="证券代码" width="80" type="input" edt_required="true" edt_validType="val[1,8]"/>
+    <col_item field="MONEY_LOWER" title="金额下限" width="80" type="numberbox" edt_setThousandChar="false" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_RATE" title="佣金比例" width="80" type="numberbox" edt_setThousandChar="false" edt_required="true" edt_precision="4" edt_validType="numberex[1,2,4]" edt_invalidMessage="请输入小于100且保留小数点后4位的正整数" formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+    <col_item field="COMMISSION_UPPER" title="佣金上限(‰)" width="80" edt_min = "0" edt_max = "1000" type="numberbox" edt_setThousandChar="false" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_LOWER" title="佣金下限(‰)" width="80" edt_min = "0" edt_max = "1000" type="numberbox" edt_setThousandChar="false" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+  </view>
+  <view id="UPM_staModForm" render="form" title="标准佣金修改" >
+    <conf colNumbers="2" service="P0000143" />
+    <col_item field="ID" title="流水号" width="60" type="input" edit_flag="3"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200" edt_required="true"
+              edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+              edt_textField="COMMISSION_NAME"/>
+    <col_item field="SYS_CODE" title="系统编码" width="80" type="combobox" edt_required="true" edt_dict="SYS_CODE" edt_validType="val[1,32]"/>
+    <col_item field="BRANCH_ORG" title="分支机构" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    <col_item field="CURRENCY_CODE" title="货币代码" width="80" type="combobox" edt_required="true" edt_dict="CURRENCY_CODE"/>
+    <col_item field="MARKET" title="市场板块" width="80" type="combobox" edt_required="true" edt_dict="MARKET"/>
+    <col_item field="TRENCH" title="渠道" width="80" type="combobox" edt_required="true" edt_dict="TRENCH"/>
+    <col_item field="TRAN_BEHAVIOR" title="交易行为" width="80" type="combobox" edt_required="true" edt_dict="TRAN_BEHAVIOR"/>
+    <col_item field="STOCK_TYPE" title="证券类别" width="80" type="combobox" edt_required="true" edt_dict="STOCK_TYPE"/>
+    <col_item field="STOCK_CODE" title="证券代码" width="80" type="input" edt_required="true" edt_validType="val[1,8]"/>
+    <col_item field="MONEY_LOWER" title="金额下限" width="80" type="numberbox" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_RATE" title="佣金比例" width="80" type="numberbox" edt_required="true" edt_precision="4" edt_setThousandChar="false" edt_validType="numberex[1,2,4]" edt_invalidMessage="请输入小于100且保留小数点后4位的正整数" formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+    <col_item field="COMMISSION_UPPER" title="佣金上限(‰)" width="80" edt_min = "0" edt_max = "1000" type="numberbox" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_LOWER" title="佣金下限(‰)" width="80" edt_min = "0" edt_max = "1000" type="numberbox" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+  </view>
+  <!--标准佣金设置view end-->
+
+  <!--特殊佣金设置view    start-->
+  <view id="UPM_commissionSpeQuery" title="特殊佣金设置" render="datagrid" script="../../opp/js/bus-func.js">
+    <conf service="P0000151" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+    <qry_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200"
+                  edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+    <qry_item field="SYS_CODE" title="系统编码" type="combobox" edt_dict="SYS_CODE" edt_validType="val[1,32]" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+    <qry_item field="BRANCH_ORG" title="分支机构" edt_width="140" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    <btn_item text="新增" service="P0000152" title="新增特殊佣金信息" handler="speAdd" iconCls="icon-add"/>
+    <btn_item text="修改" service="P0000153" title="修改特殊佣金信息" handler="speModify" iconCls="icon-edit"/>
+    <btn_item text="删除" service="P0000154"  handler="commonDelete" iconCls="icon-remove"/>
+    <col_item field="ID" title="流水号" width="60"  type="input" edit_flag="3"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200" edt_required="true"
+                  edt_req="[{service:'P0000131',COMMISSION_TYPE:'2'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME"/>
+    <col_item field="SYS_CODE" title="系统编码" width="80"  type="combobox" edt_dict="SYS_CODE" edt_required="true" edt_validType="val[1,32]"/>
+    <col_item field="BRANCH_ORG" title="分支机构" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    <col_item field="COMMISSION_VARIETIES" title="佣金品种" width="80" type="combobox" edt_required="true" edt_dict="COMMISSION_VARIETIES"/>
+    <col_item field="PERIOD_TYPE" title="周期类型" width="80" type="combobox" edt_required="true" edt_dict="PERIOD_TYPE"/>
+    <col_item field="PERIOD_RANGE" title="周期范围" width="80" sortType="number" type="input" edt_required="true" edt_validType="int[8]"/>
+    <col_item field="MARKET" title="市场板块" width="80" type="combobox" edt_required="true" edt_dict="MARKET"/>
+    <col_item field="TRENCH" title="渠道" width="80" type="combobox" edt_required="true" edt_dict="TRENCH"/>
+    <col_item field="TRAN_BEHAVIOR" title="交易行为" width="80" type="combobox" edt_required="true" edt_dict="TRAN_BEHAVIOR"/>
+    <col_item field="STOCK_TYPE" title="证券类别" width="80" type="combobox" edt_required="true" edt_dict="STOCK_TYPE"/>
+    <col_item field="STOCK_CODE" title="证券代码" width="80" type="input" edt_required="true" edt_validType="val[1,8]"/>
+    <col_item field="ASSET_LIMIT" title="资产额度" width="80"  sortType="number"  type="numberbox" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="MONEY_LOWER" title="金额下限" width="80"  type="numberbox" sortType="number" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_RATE" title="佣金比例" width="80"  type="numberbox" sortType="number" edt_required="true" edt_precision="4" edt_validType="numberex[1,2,4]" edt_setThousandChar="false" edt_invalidMessage="请输入不大于100且保留小数点后4位的非负数" formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+    <col_item field="COMMISSION_UPPER" title="佣金上限(‰)" sortType="number"  width="80" edt_min = "0" edt_max = "1000" type="numberbox" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_LOWER" title="佣金下限(‰)" sortType="number"  width="80"  edt_min = "0" edt_max = "1000" type="numberbox" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+  </view>
+
+  <view id="UPM_speAddForm" render="form" title="特殊佣金新增" >
+    <conf colNumbers="2" service="P0000152" />
+    <col_item field="ID" title="流水号" width="60" type="input" edit_flag="3"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200" edt_required="true"
+              edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+              edt_textField="COMMISSION_NAME"/>
+    <col_item field="SYS_CODE" title="系统编码" width="80" type="combobox" edt_dict="SYS_CODE" edt_required="true" edt_validType="val[1,32]"/>
+    <col_item field="BRANCH_ORG" title="分支机构" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    <col_item field="COMMISSION_VARIETIES" title="佣金品种" width="80" type="combobox" edt_required="true" edt_dict="COMMISSION_VARIETIES"/>
+    <col_item field="PERIOD_TYPE" title="周期类型" width="80" type="combobox" edt_required="true" edt_dict="PERIOD_TYPE"/>
+    <col_item field="PERIOD_RANGE" title="周期范围" width="80" type="input" edt_required="true" edt_validType="int[8]"/>
+    <col_item field="MARKET" title="市场板块" width="80" type="combobox" edt_required="true" edt_dict="MARKET"/>
+    <col_item field="TRENCH" title="渠道" width="80" type="combobox" edt_required="true" edt_dict="TRENCH"/>
+    <col_item field="TRAN_BEHAVIOR" title="交易行为" width="80" type="combobox" edt_required="true" edt_dict="TRAN_BEHAVIOR"/>
+    <col_item field="STOCK_TYPE" title="证券类别" width="80" type="combobox" edt_required="true" edt_dict="STOCK_TYPE"/>
+    <col_item field="STOCK_CODE" title="证券代码" width="80" type="input" edt_required="true" edt_validType="val[1,8]"/>
+    <col_item field="ASSET_LIMIT" title="资产额度" width="80" type="numberbox" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="MONEY_LOWER" title="金额下限" width="80" type="numberbox" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_RATE" title="佣金比例" width="80" type="numberbox" edt_required="true" edt_precision="4" edt_validType="numberex[1,2,4]" edt_setThousandChar="false" edt_invalidMessage="请输入小于100且保留小数点后4位的正整数" formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+    <col_item field="COMMISSION_UPPER" title="佣金上限(‰)" width="80" edt_min = "0" edt_max = "1000" type="numberbox" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_LOWER" title="佣金下限(‰)" width="80" edt_min = "0" edt_max = "1000" type="numberbox" edt_required="true" edt_precision="2" edt_validType="numberex[10,8,2]" edt_setThousandChar="false" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+  </view>
+  <view id="UPM_speModForm" render="form" title="特殊佣金修改" >
+    <conf colNumbers="2" service="P0000153" />
+    <col_item field="ID" title="流水号" width="60" type="input" edit_flag="3"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200" edt_required="true"
+              edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+              edt_textField="COMMISSION_NAME"/>
+    <col_item field="SYS_CODE" title="系统编码" width="80" type="combobox" edt_dict="SYS_CODE" edt_required="true" edt_validType="val[1,32]"/>
+    <col_item field="BRANCH_ORG" title="分支机构" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+    <col_item field="COMMISSION_VARIETIES" title="佣金品种" width="80" type="combobox" edt_required="true" edt_dict="COMMISSION_VARIETIES"/>
+    <col_item field="PERIOD_TYPE" title="周期类型" width="80" type="combobox" edt_required="true" edt_dict="PERIOD_TYPE"/>
+    <col_item field="PERIOD_RANGE" title="周期范围" width="80" type="input" edt_required="true" edt_validType="int[8]"/>
+    <col_item field="MARKET" title="市场板块" width="80" type="combobox" edt_required="true" edt_dict="MARKET"/>
+    <col_item field="TRENCH" title="渠道" width="80" type="combobox" edt_required="true" edt_dict="TRENCH"/>
+    <col_item field="TRAN_BEHAVIOR" title="交易行为" width="80" type="combobox" edt_required="true" edt_dict="TRAN_BEHAVIOR"/>
+    <col_item field="STOCK_TYPE" title="证券类别" width="80" type="combobox" edt_required="true" edt_dict="STOCK_TYPE"/>
+    <col_item field="STOCK_CODE" title="证券代码" width="80" type="input" edt_required="true" edt_validType="val[1,8]"/>
+    <col_item field="ASSET_LIMIT" title="资产额度" width="80" type="numberbox" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="MONEY_LOWER" title="金额下限" width="80" type="numberbox" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_RATE" title="佣金比例" width="80" type="numberbox" edt_required="true" edt_precision="4" edt_setThousandChar="false" edt_validType="numberex[1,2,4]" edt_invalidMessage="请输入小于100且保留小数点后4位的正整数" formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+    <col_item field="COMMISSION_UPPER" title="佣金上限(‰)" width="80" type="numberbox" edt_required="true" edt_min = "0" edt_max = "1000" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_LOWER" title="佣金下限(‰)" width="80" type="numberbox" edt_required="true" edt_min = "0" edt_max = "1000" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+  </view>
+  <!--特殊佣金设置view end-->
+
+  <!--机构特殊佣金设置view    start-->
+  <view id="UPM_commissionSpeQuery_org" title="特殊佣金设置" render="datagrid">
+    <conf service="P0000151" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+    <qry_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200"
+                  edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME" edt_extItems="[{'COMMISSION_NAME':'全部','COMMISSION_CODE':'-1'}]"/>
+    <qry_item field="SYS_CODE" title="系统编码" type="combobox" edt_dict="SYS_CODE" edt_validType="val[1,32]"/>
+    <btn_item text="新增" service="P0000152" title="新增特殊佣金信息" handler="commonAdd" iconCls="icon-add"/>
+    <btn_item text="修改" service="P0000153" title="修改特殊佣金信息" handler="commonModify" iconCls="icon-edit"/>
+    <btn_item text="删除" service="P0000154"  handler="commonDelete" iconCls="icon-remove"/>
+    <col_item field="ID" title="流水号" width="60" type="input" hidden="true"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200"
+                  edt_req="[{service:'P0000131',COMMISSION_TYPE:'2'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME"/>
+    <col_item field="SYS_CODE" title="系统编码" width="80"  type="combobox" edt_dict="SYS_CODE" edt_required="true" edt_validType="val[1,32]"/>
+    <col_item field="COMMISSION_VARIETIES" title="佣金品种" width="80" type="combobox" edt_required="true" edt_dict="COMMISSION_VARIETIES"/>
+    <col_item field="PERIOD_TYPE" title="周期类型" width="80" type="combobox" edt_required="true" edt_dict="PERIOD_TYPE"/>
+    <col_item field="PERIOD_RANGE" title="周期范围" width="80" type="input" edt_required="true" edt_validType="int[8]"/>
+    <col_item field="MARKET" title="市场板块" width="80" type="combobox" edt_required="true" edt_dict="MARKET"/>
+    <col_item field="TRENCH" title="渠道" width="80" type="combobox" edt_required="true" edt_dict="TRENCH"/>
+    <col_item field="TRAN_BEHAVIOR" title="交易行为" width="80" type="combobox" edt_required="true" edt_dict="TRAN_BEHAVIOR"/>
+    <col_item field="STOCK_TYPE" title="证券类别" width="80" type="combobox" edt_required="true" edt_dict="STOCK_TYPE"/>
+    <col_item field="STOCK_CODE" title="证券代码" width="80" type="input" edt_required="true" edt_validType="val[1,8]"/>
+    <col_item field="ASSET_LIMIT" title="资产额度" width="80" type="numberbox" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="MONEY_LOWER" title="金额下限" width="80"  type="numberbox" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_RATE" title="佣金比例" width="80"  type="numberbox" edt_required="true" edt_precision="4" edt_setThousandChar="false" edt_validType="numberex[1,2,4]" edt_invalidMessage="请输入不大于100且保留小数点后4位的非负数" formatter="function(value){return parseFloat(value).toFixed(4);}"/>
+    <col_item field="COMMISSION_UPPER" title="佣金上限(‰)"  width="80" type="numberbox" edt_min = "0" edt_max = "1000" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+    <col_item field="COMMISSION_LOWER" title="佣金下限(‰)"  width="80" type="numberbox" edt_min = "0" edt_max = "1000" edt_required="true" edt_precision="2" edt_setThousandChar="false" edt_validType="numberex[10,8,2]" edt_invalidMessage="请输入10位以内且保留小数点后2位的非负数" formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+  </view>
+  <!--机构特殊佣金设置view end-->
+
+  <!--默认佣金设置view start-->
+  <view id="UPM_commissionDefQuery" title="默认佣金设置" render="datagrid">
+    <conf service="P0000161" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+    <qry_item field="TRENCH" title="操作渠道" width="80" type="combobox" edt_dict="TRENCH" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+    <qry_item field="BUSINESS_TYPE" title="业务类型" width="80" type="combobox" edt_dict="BUSINESS_TYPE" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+    <qry_item field="COMMISSION_CODE" title="佣金名称" type="combobox" edt_panelHeight="200"
+                  edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+    <btn_item text="新增" service="P0000162" title="新增默认佣金信息" handler="commonAdd" iconCls="icon-add"/>
+    <btn_item text="修改" service="P0000163" title="修改默认佣金信息" handler="commonModify" iconCls="icon-edit"/>
+    <btn_item text="删除" service="P0000164"  handler="commonDelete" iconCls="icon-remove"/>
+    <col_item field="ID" title="流水号" width="60" type="input" hidden="true"/>
+    <col_item field="TRENCH" title="操作渠道" width="80" type="combobox" edt_dict="TRENCH" edt_required="true" />
+    <col_item field="BUSINESS_TYPE" title="业务类型" width="80" type="combobox" edt_dict="BUSINESS_TYPE" edt_required="true"/>
+    <col_item field="COMMISSION_CODE" title="佣金名称" type="combobox" width="120" edt_panelHeight="200" edt_required="true"
+                  edt_req="[{service:'P0000135'}]" edt_valueField="COMMISSION_CODE"
+                  edt_textField="COMMISSION_NAME"/>
+    <col_item field="REMARK" title="备注" width="350" edt_width="350" edt_height="50" colspan="4" type="textarea" edt_validType="val[1,64]"/>
+  </view>
+  <!--默认佣金设置view end-->
+
+  <!-- 平台管理设置view start-->
+  <view id="UPM_platform" title="关联平台管理" render="datagrid">
+    <conf service="P0000181" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+    <qry_item field="PLAT_NAME" title="平台名称" width="80" type="input" edt_validType="val[1,32]"/>
+    <qry_item field="STATUS" title="状态" width="80" type="combobox" edt_dict="COMM_STA" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+    <btn_item text="新增" service="" title="新增平台信息" handler="platAdd" iconCls="icon-add"/>
+    <btn_item text="修改" service="" title="修改平台信息" handler="platModify" iconCls="icon-edit"/>
+    <btn_item text="删除" service=""  handler="platDelete" iconCls="icon-remove"/>
+    <col_item field="ID" title="平台编号" type="input" width="120" sortType="number" edit_flag="3"/>
+    <col_item field="PLAT_NAME" title="平台名称" type="input" width="240" edt_validType="val[1,32]" edt_required="true"/>
+    <col_item field="STATUS" title="状态" type="combobox" width="120" edt_dict="COMM_STA" edt_required="true"/>
+    <col_item field="IS_VALIDATE" title="是否验证" type="combobox" width="120" edt_dict="TRUE_FALSE" edt_required="true"/>
+    <col_item field="AUTH_MODE" title="验证方式" type="combobox" width="120" edt_dict="OPP_AUTH_MODE"/>
+    <col_item field="VALIDATE_CODE" title="服务号" type="input" width="120" edt_validType="val[1,32]"/>
+    <col_item field="SEQ" title="显示顺序" type="input" sortType="number" width="120" edt_validType="zint[4]" edt_required="true" />
+    <!--by  2016/04/22,添加【是否主平台】列-->
+    <col_item field="IS_MAIN" title="是否主平台" type="combobox" width="120" edt_dict="YES_OR_NO" />
+  </view>
+  <!--平台管理设置view end-->
+  
+  <!-- 帮助 -->
+  <view id="UPM_helpManage" render="datagrid" title="帮助信息管理" script="../../opp/js/general-util.js">
+        <conf service="P0000241" onClickRow="onClickMainTableRow" onLoadSuccess="dataLoad" pageSize="10" colNumbers="1" border="false" noheader="true" onSelect="maintainControl" fit="true"/>
+        <qry_item field="TITLE" title="标题" type="input" edt_validType="val[1,32]"/>
+        <qry_item field="MENU_ID" title="关联菜单"  type="combotree"
+              edt_req="[{service:'P0000041',FRONT_MENU:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="MENU_ID"
+              edt_nodeName="CODE_NAME"
+              edt_parNode="PAR_MENU"
+              edt_treeType="1"/>      
+        <btn_item text="新增" service="P0000242" title="新增" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000243" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000244" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="HELP_ID" title="编号" width="120" type="input" primary_key="1" edit_flag="1" hidden="true"/>
+        <col_item field="TITLE" title="标题" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="MENU_ID" title="关联菜单" width="120" type="combotree"
+              edt_req="[{service:'P0000041',MENU_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="MENU_ID"
+              edt_nodeName="CODE_NAME"
+              edt_parNode="PAR_MENU"
+              edt_treeType="1"/>
+        <col_item colspan="4" field="COMP_ID" width="120" title="关联组件" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+              edt_textField="COMP_NAME" edt_idField="COMP_ID"
+              edt_req="[{service:'P0004135'}]"  
+              edt_queryCols="[{
+                     text:'查询', 
+                     cols:[{field:'COMP_NAME',title:'组件名称', 
+                      editor:{ 
+			            type:'text', 
+		                options:{ 
+		                 validType:'val[1,64]' 
+		             } 
+		             }
+                    }] 
+                 }]"
+              edt_columns="[[{field:'COMP_ID',title:'组件编号',sortType:'number',width:70},
+                             {field:'COMP_NAME',title:'组件名称',width:70},
+                             {field:'COMP_TYPE',title:'组件类型',width:'100',
+                             formatter: function(value, row, index) {
+			                	return getSysDictOpt('COMP_TYPE', value);
+			        		}}]]"
+        /> 
+        
+           
+        <col_item field="DEPICTION" title="描述" width="500" edt_width="340" edt_height="60" colspan="4" type="textarea" edt_encode="true" edt_validType="length[0,2000]"/>
+  </view>
+  <view id="UPM_helpDetailManage" title="帮助详细信息管理" render="datagrid" script="../../opp/js/general-util.js">
+        <conf service="P0000245" colNumbers="2" required="true" border="false" noheader="true" onSelect="childrenControl" fit="true"/>
+        <btn_item text="新增" service="P0000246" title="新增" handler="addRow" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000247" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000248" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="COL_ID" title="详细信息编号" width="120" type="input" hidden="true" />
+        <col_item field="HELP_ID" title="帮助ID" width="120" type="input" listHidden="true" edit_flag="2" edt_required="true" hidden="true"/>
+        <col_item field="COL_CODE" title="字段代码" width="120" type="input" edt_required="true" edt_validType="val[1,16]"/>
+        <col_item field="COL_TITLE" title="字段名" width="120" type="input" edt_validType="val[1,32]" edt_required="true"/>
+        <col_item field="COL_DEPICTION" title="字段描述" width="500" edt_width="340" edt_height="50"  colspan="4" type="textarea" edt_validType="length[0,2000]"/>
+    </view>
+    
+  <!-- 帮助 -->
+  <!-- 操作站点 -->
+  <view id="UPM_opChannel" title="人员操作站点管理" render="datagrid"  script="../../opp/js/general-util.js">
+        <conf service="P0000255" pageSize="10" colNumbers="4" fit="true" />
+        <!--qry_item field="ORG_CODE" edt_flag="2" title="机构"  width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            /-->
+        <qry_item field="USER_CODE" edt_flag="2" title="ID号" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+              edt_textField="USER_CODE" edt_idField="USER_CODE"
+              edt_fallParas="[{enable:true}]"
+              edt_req="[{service:'P0001008',USER_STA:'1'}]"
+              edt_columns="[[
+            {field:'USER_CODE',title:'ID号',width:70,sortable:true,sortType:'number'},
+            {field:'USER_NAME',title:'人员名称',width:70},
+            {field:'USER_TYPE',title:'人员类型',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_TYPE',value);
+              }
+            }
+            ]]"
+              edt_queryCols="[
+            {
+              text:'查询',
+              cols:[{field:'USER_NAME',title:'人员名称',
+              editor:{
+                  type:'text',
+                  options:{
+                    validType:'val[1,64]'
+                  }
+                }
+              }]
+            }
+           ]"
+            />
+        <btn_item text="新增" service="P0000252" title="新增" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0000253" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0000254" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="SID" title="编号" width="120" type="input" hidden="true" />
+        <!--col_item field="ORG_CODE" edit_flag="1" title="机构" edt_required="true" width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            /-->
+        <col_item field="USER_CODE" sortType="number" width="100" edit_flag="1" title="ID号" edt_required="true" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+              edt_textField="USER_CODE" edt_idField="USER_CODE"
+              edt_fallParas="[{enable:true}]"
+              edt_req="[{service:'P0001008',USER_STA:'1'}]"
+              edt_columns="[[
+            {field:'USER_CODE',title:'ID号',width:70,sortable:true,sortType:'number'},
+            {field:'USER_NAME',title:'人员名称',width:70},
+            {field:'USER_TYPE',title:'人员类型',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_TYPE',value);
+              }
+            }
+            ]]"
+              edt_queryCols="[
+            {
+              text:'查询',
+              cols:[{field:'USER_NAME',title:'人员名称',
+              editor:{
+                  type:'text',
+                  options:{
+                    validType:'val[1,64]'
+                  }
+                }
+              }]
+            }
+           ]"
+            />
+        <col_item field="USER_SITE" title="操作站点" width="120" type="input" edt_validType="mac" edt_required="true" />
+        <!--col_item field="CHANNELS" title="操作渠道" width="200" type="combobox" edt_height="200" edt_dict="CHANNELS" edt_multiple="true" formatter="returnDictMultText"/-->
+      <col_item field="START_TIME" title="开始时间" width="120" type="datetimebox" edt_validType="begDate['END_TIME']"/>
+      <col_item field="END_TIME" title="结束时间" width="120" type="datetimebox" edt_validType="endDate['START_TIME']"/>
+    </view>
+    <!-- 操作站点 -->
+</views>

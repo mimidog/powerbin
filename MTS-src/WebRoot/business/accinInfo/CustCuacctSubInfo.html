@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>资金子账号设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.cust-form-table{
+  border: 0px;
+  line-height: 20px;
+}
+.cust-form-table tr{
+    height: 35px;
+    vertical-align: bottom;
+}
+.cust-form-label {
+  text-align: right;
+  vertical-align: text-bottom;
+  font-weight: bold;
+  font-size: 12px;
+  vertical-align: bottom;
+
+}
+</style>
+<script type="text/javascript">
+var curselCustBase=[];
+//查询资金账号信息
+function queryCuacctInfo(rowIndex, rowData) {
+    $('#cuacctId').combobox('clear');
+  if(rowData['CUST_ID'] !=undefined || $.trim(rowData['CUST_ID']) !=''){
+      $('#cuacctId').combobox({
+         req:[{
+             service:'M0000001',
+             CUST_ID:rowData['CUST_ID'],
+             CUACCT_STATUS:'0'
+         }]
+      });
+  }
+    curselCustBase=rowData;
+    $('#opid').combogrid('clear').combogrid('hidePanel').combogrid('grid').datagrid('clean');
+}
+function opIdClickShow() {
+    $('#opid').combogrid({
+        req:[{
+            service: 'P0001008',
+            USER_STA:'1',
+            POST_ID:getSysParamValuebyCode('TRADER_POST_ID'),
+            ORG_CODE:curselCustBase['ORG_CODE']
+        }]
+    }).combogrid('grid').datagrid('reload');
+}
+//交易账户新增
+function custCuacctSubInfo_add() {
+    $('#CustCuacctSubInfo_form').form('clear');
+    using('dialog',function () {
+        $("#CustCuacctSubInfo_Dialog").dialog({
+            title: '新增资金子账号',
+            width: 540,
+            height: 240,
+            modal: true,
+            resizable: true,
+            onOpen: function() {
+
+            },
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function () {
+                    $('#CustCuacctSubInfo_form').form('submit',{
+                        req:[{
+                            service:'M0000014'
+                        }],
+                        success:function(){
+                            alert('资金子账号新增成功！');
+                            $("#CustCuacctSubInfo_Dialog").dialog('close');
+                            $('#mts_CustCuacctSubInfo_table').datagrid('reload');
+                            curselCustBase=[];
+                        }
+                    });
+
+
+                }
+            },
+                {
+                    text: '取消',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        $("#CustCuacctSubInfo_Dialog").dialog('close');
+                        curselCustBase=[];
+                    }
+                }
+            ]
+        });
+    })
+}
+//检查交易员二级资金持仓是否数据
+function chkCuacctsubData(selRow) {
+    var flag=true;
+    var cuaSubRs=commonRequest({
+        service:'M0000055',
+        OP_ID:selRow['OP_ID'],
+        CUST_ID:selRow['CUST_ID'],
+        CUACCT_ID:selRow['CUACCT_ID']
+    });
+   if(cuaSubRs.length>0 && parseFloat(cuaSubRs[0].FUND_BAL)>0){
+       flag=false;
+   }
+   return flag;
+}
+//检查交易员二级股份持仓是否数据
+function chkAssetSubData(selRow) {
+    var flag=true;
+    var assetSubRs=commonRequest({
+        service:'M0000055',
+        OP_ID:selRow['OP_ID'],
+        CUST_ID:selRow['CUST_ID']
+    });
+    if(assetSubRs.length>0 ){
+        flag=false;
+
+    }
+    return flag;
+}
+
+function custCuacctSubInfo_del() {
+    var selRow = $("#mts_CustCuacctSubInfo_table").datagrid("getSelected");
+    if (selRow == null) {
+        alert("请选中表格中的一条数据！");
+        return;
+    }
+    //检查交易员二级资金持仓是否数据
+    if(chkCuacctsubData(selRow)==false){
+        alert('该交易员资金持仓有数据，不能进行删除！')
+        return;
+    }
+    //检查交易员二级股份持仓是否数据
+    if(chkAssetSubData(selRow)==false){
+        alert('该交易员股份持仓有数据，不能进行删除！')
+        return;
+    }
+
+    confirm('是否确认删除?','确认删除吗?',function(isOK){
+        if(isOK){
+            ajaxRequest({
+                req:[{
+                    service:'M0000016',
+                    CUST_ID:selRow['CUST_ID'],
+                    CUACCT_ID:selRow['CUACCT_ID'],
+                    OP_ID:selRow['OP_ID']
+                }],
+                func:function(data){
+                    alert('资金子账号删除成功！');
+                    $('#mts_CustCuacctSubInfo_table').datagrid('reload');
+                }
+            });
+        }
+    });
+}
+</script>
+</head>
+<body>
+<table id="mts_CustCuacctSubInfo_table" class="kui-datagrid"></table>
+<!--子资金账号新增对话框 -->
+<div id="CustCuacctSubInfo_Dialog" style="display: none;">
+  <form id="CustCuacctSubInfo_form" class="kui-form">
+    <table class="cust-form-table" style="width:100%;">
+      <tr>
+          <td class="cust-form-label" style="width: 100px;">客户代码：</td>
+          <td>
+              <input name="CUST_ID" class="kui-combogrid"  kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 280,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'CUST_ID',
+                                    textField: 'CUST_NAME',
+                                    req: [{
+                                        service: 'M0000009',
+                                        CUST_STATUS:'0'
+                                    }],
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '客户代码', field: 'CUST_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                title: '客户简称', field: 'CUST_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field:'CUST_ID',title:'客户代码',sortable:true,sortType:'number'},
+                                        {field:'CUST_NAME',title:'客户简称'},
+                                          {field:'ORG_CODE',title:'机构代码'},
+                                        {field:'ORG_NAME',title:'机构名称'},
+                                        {field:'CUST_TYPE',title:'客户类型',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_TYPE',value);
+                                          }
+                                        },
+                                        {field:'CUST_LVL',title:'客户级别',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_LVL',value);
+                                          }
+                                        },
+                                        {field:'CUST_STATUS',title:'客户状态',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_STATUS',value);
+                                          }
+                                        }
+                                    ]],onClickRow:queryCuacctInfo"/>
+
+          </td>
+          <td class="cust-form-label" style="width: 100px;">资金账号：</td>
+          <td>
+            <input id="cuacctId" name="CUACCT_ID" class="kui-combobox" kui-options="required:true,valueField:'CUACCT_ID',textField:'CUACCT_ID'" />
+          </td>
+      </tr>
+        <tr>
+            <td class="cust-form-label" style="width: 100px;">交易员编号：</td>
+            <td>
+                <input  id="opid" name="OP_ID"  class="kui-combogrid" kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 250,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'USER_CODE',
+                                    textField: 'USER_CODE',
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '交易员名称', field: 'USER_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                       {field:'USER_CODE',title:'交易员代码',sortable:true,sortType:'number'},
+                                        {field:'USER_NAME',title:'交易员名称'},
+                                        {field:'USER_TYPE',title:'交易员类型',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('USER_TYPE',value);
+                                          }
+                                        },
+                                        {field:'ORG_CODE',title:'机构代码'},
+                                        {field:'ORG_NAME',title:'机构名称'}
+                                    ]],onShowPanel:opIdClickShow"/>
+
+            </td>
+            <td class="cust-form-label" style="width: 100px;">开始日期：</td>
+            <td>
+                <input name="EFT_DATE" class="kui-datebox"  kui-options="required:true"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="cust-form-label" style="width: 100px;">失效日期：</td>
+            <td>
+                <input name="EXP_DATE" class="kui-datebox"  />
+            </td>
+            <td class="cust-form-label" style="width: 100px;">备注：</td>
+            <td >
+                <input name="REMARK"
+                       class="kui-validatebox" kui-options="validType:'val[1,120]'" />
+            </td>
+        </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

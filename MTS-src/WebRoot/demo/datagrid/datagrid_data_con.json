@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><requests><![CDATA[
+[
+{"service":{"flag":"0","serialNo":""},
+"message":[{"flag":"0","prompt":"成功","rows":"14","times":"100ms"}],
+"config":[{
+            "render": "datagrid",
+            "id": "",
+            "queryCols": [
+                {
+                    "text": "分组1",
+                    "collapsed": false,
+                    "cols": [
+                        {
+                            "field": "khxb",
+                            "title": "客户性别:",
+                            "width": "120",
+                            "rowspan": 1,
+                            "colspan": 1,
+                            "editor": {
+                                "type": "combobox",
+                                "options": {
+                                    "valueField": "sex",
+                                    "textField": "sex_text",
+                                    "req": [],
+                                    "required": false
+                                }
+                            }
+                        },
+                        {
+                            "field": "email",
+                            "title": " 电子邮箱",
+                            "width": "120",
+                            "rowspan": 1,
+                            "colspan": 1,
+                            "editor": {
+                                "type": "validatebox",
+                                "options": {
+                                    "required": true,
+                                    "validType": "email",
+                                    "disabled": false,
+                                    "showMessage": true,
+                                    "missingMessage": "必须输入！",
+                                    "invalidMessage": "格式必须email格式!"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "text": "分组2",
+                    "collapsed": true,
+                    "cols": [
+                        {
+                            "field": "khxb",
+                            "title": "客户性别:",
+                            "width": "120",
+                            "rowspan": 1,
+                            "colspan": 1,
+                            "editor": {
+                                "type": "combobox",
+                                "options": {
+                                    "valueField": "sex",
+                                    "textField": "sex_text",
+                                    "req": [],
+                                    "required": false
+                                }
+                            }
+                        },
+                        {
+                            "field": "email",
+                            "title": " 电子邮箱",
+                            "width": "120",
+                            "rowspan": 1,
+                            "colspan": 1,
+                            "editor": {
+                                "type": "validatebox",
+                                "options": {
+                                    "required": true,
+                                    "validType": "email",
+                                    "disabled": false,
+                                    "showMessage": true,
+                                    "missingMessage": "必须输入！",
+                                    "invalidMessage": "格式必须email格式!"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "queryParams": {
+                "khbh": " 1101",
+                "khxm": " 杜甫"
+            },
+            "frozenColumns": null,
+            "toolbar": [
+                {
+                    "text": "新增",
+                    "iconCls": "icon-add"
+                },
+                {
+                    "text": "修改",
+                    "iconCls": "icon-edit"
+                }
+            ],
+            "columns": [
+                [
+                    {
+                        "field": "productid",
+                        "title": " productid",
+                        "width": "120",
+                        "sortable": true,
+                        "hidden": false,
+                        "checkbox": true,
+                        "editor": {
+                            "type": "combobox",
+                            "options": {
+                                "valueField": "productid",
+                                "textField": "productid",
+                                "req": [],
+                                "required": true
+                            }
+                        }
+                    },
+                    {
+                        "field": "unitcost",
+                        "title": " unitcost",
+                        "width": "120",
+                        "sortable": true,
+                        "hidden": false,
+                        "checkbox": false
+                    },
+                    {
+                        "field": "listprice",
+                        "title": " listprice",
+                        "width": "120",
+                        "sortable": true,
+                        "hidden": false,
+                        "checkbox": false
+                    },
+                    {
+                        "field": "unitcost",
+                        "title": " unitcost",
+                        "width": "120",
+                        "sortable": true,
+                        "hidden": false,
+                        "checkbox": false
+                    },
+                    {
+                        "field": "attr1",
+                        "title": " attr1",
+                        "width": "120",
+                        "sortable": true,
+                        "hidden": false,
+                        "checkbox": false
+                    },
+                    {
+                        "field": "itemid",
+                        "title": " itemid",
+                        "width": "120",
+                        "sortable": true,
+                        "hidden": false,
+                        "checkbox": false
+                    },
+                    {
+                        "field": "status",
+                        "title": " status",
+                        "width": "120",
+                        "sortable": true,
+                        "hidden": false,
+                        "checkbox": false
+                    }
+                ]
+            ]
+        }],
+"data":[
+[
+  {"productid":"FI-SW-01","unitcost":10.00,"status":"P","listprice":36.50,"attr1":"Large","itemid":"EST-1"},
+	{"productid":"K9-DL-01","unitcost":1.00,"status":"P","listprice":18.50,"attr1":"Spotted Adult Female","itemid":"EST-2"},
+	{"productid":"RP-SN-01","unitcost":2.00,"status":"P","listprice":28.50,"attr1":"Venomless","itemid":"EST-3"},
+	{"productid":"RP-SN-01","unitcost":21.00,"status":"P","listprice":26.50,"attr1":"Rattleless","itemid":"EST-4"},
+	{"productid":"RP-LI-02","unitcost":12.00,"status":"P","listprice":35.50,"attr1":"Green Adult","itemid":"EST-5"},
+	{"productid":"FL-DSH-01","unitcost":12.00,"status":"P","listprice":158.50,"attr1":"Tailless","itemid":"EST-6"},
+	{"productid":"FL-DSH-01","unitcost":12.00,"status":"P","listprice":83.50,"attr1":"With tail","itemid":"EST-7"},
+	{"productid":"FL-DLH-02","unitcost":12.00,"status":"P","listprice":63.50,"attr1":"Adult Female","itemid":"EST-8"},
+	{"productid":"FL-DLH-02","unitcost":12.00,"status":"P","listprice":89.50,"attr1":"Adult Male","itemid":"EST-9"},
+	{"productid":"AV-CB-01","unitcost":92.00,"status":"P","listprice":63.50,"attr1":"Adult Male","itemid":"EST-10"},
+	{"productid":"FL-aaa-02","unitcost":12.00,"status":"P","listprice":83.50,"attr1":"With tail","itemid":"EST-11"},
+	{"productid":"FL-bbb-02","unitcost":12.00,"status":"P","listprice":63.50,"attr1":"Adult Female","itemid":"EST-12"},
+	{"productid":"FL-ccc-02","unitcost":12.00,"status":"P","listprice":89.50,"attr1":"Adult Male","itemid":"EST-13"},
+	{"productid":"AV-ddd-01","unitcost":92.00,"status":"P","listprice":63.50,"attr1":"Adult Male","itemid":"EST-14"}
+
+]
+]
+}
+]
+]]></requests>

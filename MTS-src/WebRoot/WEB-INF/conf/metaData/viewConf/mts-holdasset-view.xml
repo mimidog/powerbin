@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<view id="mts_MTS_ASSET_SUB_table"  render="datagrid" title="查询客户股份二级持仓信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000053',CUST_ID:'-1'}]" />
+		<col_item field="CUST_ID" title="客户代码" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="OP_NAME" title="操作员代码" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="操作员名称"   edit_flag="3"/>
+		<col_item field="TRDACCT" title="交易账号" type="input"  edt_validType="val[1,10]"/>
+		<col_item field="INST_ID" title="产品代码" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="INST_LAST_BAL" title="产品昨日余额"  type="input" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL" title="产品余额"  type="input" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="产品可用额"  type="input" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_TRD_FRZ" title="产品交易冻结数"  type="input" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_LONG_FRZ" title="产品长期冻结数"  type="input" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_OTD" title="产品在途数"  type="input" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MKT_VALUE" title="产品市值"  type="input" edt_validType="numberex[10,15,4]" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_IN_ASSET" title="转入股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="CALLOT_OUT_ASSET" title="转出股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_FUND_AMOUNT_INFO_table"  render="datagrid" title="查询客户资金" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000054'}]" onSelect="queryFundDownEmp"/>
+		<qry_item field="CUST_ID" title="客户代码" type="input"  edt_validType="val[1,32]"/>
+		<qry_item field="CUACCT_ID" title="资金账号" type="input"  edt_validType="val[1,32]"/>
+
+		<col_item field="CUST_ID" title="客户代码" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="CUST_NAME" title="客户简称" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="CUACCT_ID" title="资金账号" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="FUND_BAL" title="资金余额" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_AVL" title="资金可用余额" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UNUSE_AMOUNT" title="未分配额度" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_IN_FUND" title="调入资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_OUT_FUND" title="调出资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" />
+
+	</view>
+	<view id="mts_FUND_SUB_EMP_INFO_table"  render="datagrid" title="查询资金二级持仓柜员信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000055',CUACCT_ID:'-1'}]" />
+		<btn_item text="额度设置"  handler="empAmount_set" iconCls="icon-tip" />
+
+		<col_item field="CUST_ID" title="客户代码" type="input"  hidden="true"/>
+		<col_item field="CUACCT_ID" title="资金账号" type="input"  hidden="true"/>
+		<col_item field="OP_ID" title="交易员代码" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="OP_NAME" title="交易员名称" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="FUND_BAL" title="资金余额" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_AVL" title="资金可用" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_IN_FUND" title="调入资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CALLOT_OUT_FUND" title="调出资金" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" />
+	</view>
+
+	<view id="mts_AESSET_AMOUNT_INFO_table"  render="datagrid" title="查询客户一级股份" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000059'}]" onSelect="queryStockDownEmp"/>
+		<qry_item field="CUST_ID" title="客户代码" type="input"  edt_validType="val[1,32]"/>
+		<qry_item field="TRDACCT" title="交易账号" type="input"  edt_validType="val[1,32]"/>
+
+		<col_item field="CUST_ID" title="客户代码" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="CUST_NAME" title="客户简称" type="input"  edt_validType="val[1,32]"/>
+        <col_item field="CUACCT_ID" title="资金账号"  type="input" />
+        <col_item field="TRDACCT" title="交易账号" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="INST_ID" title="产品代码" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="INST_BAL" title="股份余额" type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="股份可用余额" type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UNUSE_AMOUNT" title="未分配额度" type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="COST_PRICE" title="成本价" type="input" align="right"
+				 formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="INST_NAME" title="产品名称" type="input"  />
+	</view>
+	<view id="mts_AESSET_SUB_EMP_INFO_table"  render="datagrid" title="查询股份二级持仓柜员信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000053',TRDACCT:'-1'}]" />
+
+		<btn_item text="额度设置"  handler="empAessetAmount_set" iconCls="icon-tip" />
+		<col_item field="CUST_ID" title="客户代码" type="input"  hidden="true"/>
+		<col_item field="CUACCT_ID" title="资金账号" type="input"  hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号" type="input"  hidden="true"/>
+		<col_item field="INST_ID" title="产品代码" type="input"  />
+		<col_item field="INST_NAME" title="产品名称" type="input"  />
+		<col_item field="OP_ID" title="交易员代码" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="OP_NAME" title="交易员名称" type="input"  edt_validType="val[1,32]"/>
+		<col_item field="INST_BAL" title="股份余额" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="股份可用" type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="CALLOT_IN_ASSET" title="转入股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="CALLOT_OUT_ASSET" title="转出股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+	</view>
+
+	<view id="mts_AESSET_SUB_EMP_INFO_1_table"  render="datagrid" title="查询股份二级持仓柜员信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000053',OP_ID:g_user.userId}]"
+			edt_isShowLoading="false" sortName="HOLD_PROFIT" />
+
+		<col_item field="INST_NAME" title="产品名称" type="input"  />
+		<col_item field="STK_PRICE" title="当前价" type="input" align="right"
+				  formatter="function(value){ return toThousands(parseFloat(value).toFixed(4)); }"/>
+		<col_item field="COST_PRICE" title="成本价" type="input" align="right" sortType="number"
+				  formatter="function(value){ return toThousands(parseFloat(value).toFixed(4)); }" />
+		<col_item field="HOLD_PROFIT" title="持仓盈亏" type="input" align="right" sortType="number"
+				  formatter="function(value){ return toThousands(parseFloat(value).toFixed(2)); }"/>
+		<col_item field="PROFIT_RATIO" title="盈亏比例" type="input" align="right"
+				  formatter="function(value,row,index){
+						return fontRedBoldGreenThinColor(value,row,index);
+				  }"/>
+
+		<col_item field="INST_BAL" title="余额" type="input"  align="right" sortType="number"
+				  formatter="function(value){ return toThousands(parseFloat(value)); }"/>
+		<col_item field="INST_AVL" title="可用数" type="input"  align="right" sortType="number"
+				  formatter="function(value){ return toThousands(parseFloat(value)); }"/>
+		<col_item field="INST_TRD_FRZ" title="冻结数" type="input"  align="right" sortType="number"
+				  formatter="function(value){ return toThousands(parseFloat(value)); }"/>
+		<col_item field="INST_LAST_BAL" title="昨日余额" type="input" align="right" sortType="number"
+				  formatter="function(value){ return toThousands(parseFloat(value)); }"/>
+		<col_item field="INST_ID" title="产品代码" type="input"  />
+		<col_item field="CALLOT_IN_ASSET" title="转入股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="CALLOT_OUT_ASSET" title="转出股份" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+
+	</view>
+
+	<view id="mts_Trade_Day_Clear_Sum_table"  render="datagrid" title="查询易员日结汇总信息" script="../../common/js/common.js">
+		<conf   pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000076'}]"
+			   onSelect="queryTradeDayClearDetail"/>
+		<qry_item field="CUST_ID"   title="客户代码" type="input"  edt_validType="val[1,32]"/>
+		<qry_item field="TRADE_ID"  title="交易员代码" type="input"  edt_validType="val[1,32]"/>
+		<qry_item field="UP_DATE"  title="更新日期" type="datebox"  edt_defaultValue="getLastSysDate()" edt_required="true"/>
+		<col_item field="TRADE_ID" title="交易员代码" type="input"  />
+		<col_item field="TRADE_NAME" title="交易员名称" type="input"  />
+		<col_item field="CUST_ID" title="客户代码" type="input"  />
+		<col_item field="CUST_NAME" title="客户名称" type="input"  />
+		<col_item field="INIT_FUND" title="初始资金" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TRADE_CNT" title="交易笔数" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="TOTAL_ASSET" title="总资产" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_MARKET_VAL" title="总市值" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_BAL" title="资金余额" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="FUND_AVL" title="资金可用" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="MAX_BUY_AMOUNT" title="最大买入额度" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_BUY_COST" title="买入费用汇总" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_SELL_COST" title="卖出费用汇总" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_COST" title="费用汇总" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_PROFIT" title="利润汇总" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_LOSS" title="亏损汇总" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_SURPLUS" title="总盈余" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="SURPLUS_RATE" title="盈亏比例" type="input"  align="right"
+				  formatter="function(value){return parseFloat(value).toFixed(6);}"/>
+		<col_item field="TRADE_DAY" title="交易日" type="input"  />
+		<col_item field="TRADE_STA_DATE" title="起始日" type="input"  />
+		<col_item field="TRADE_END_DATE" title="截止日" type="input"  />
+		<col_item field="WIN_RATE" title="胜率" type="input"  align="right"/>
+		<col_item field="SUBJECT_CNT" title="标的个数" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DO_HAND_CNT" title="成功次数" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="LOSS_HAND_CNT" title="失败次数" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="HOLD_STOCK_SUM" title="持股汇总" type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+	</view>
+
+	<view id="mts_Trade_Day_Clear_Detail_table"  render="datagrid" title="查询易员日结明细信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000077',TRADE_ID:'-1'}]"/>
+		<col_item field="TRADE_ID" title="交易员代码" type="input"  hidden="true"/>
+		<col_item field="TRADE_NAME" title="交易员名称" type="input"   hidden="true"/>
+		<col_item field="CUST_ID" title="客户代码" type="input"  />
+		<col_item field="CUST_NAME" title="客户名称" type="input"  />
+		<col_item field="INST_ID" title="产品代码" type="input"  />
+		<col_item field="INST_NAME" title="产品名称" type="input"  />
+		<col_item field="HOLD_CNT" title="持仓数" type="input" align="right"
+				  formatter="function(value){return toThousands(parseInt(value));}"/>
+		<col_item field="STK_PRICE" title="最新价" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="TODAY_MARKET_VAL" title="最新市值" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="COST_PRICE" title="成本价" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="HOLD_PROFIT" title="持仓利润" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="BUY_COST" title="买入费用" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="SELL_COST" title="卖出费用" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="TOTAL_COST" title="总费用" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="CREATE_DATE" title="创建日期" type="input"  />
+		<col_item field="IS_FINISH" title="是否完结"  type="combobox"  edt_dict="YES_OR_NO" />
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+	</view>
+
+	<view id="mts_TRADER_SURPLUS_SUM_INFO_table"  render="datagrid" title="查询交易员盈亏汇总信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000101',LOGIN_OP_ID:g_user.userId }]"/>
+		<qry_item field="ORG_CODE" title="机构名称"  width="100"
+				  type="combotree" edt_multiple="true"
+				  edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+				  edt_panelWidth="250"
+				  edt_panelHeight="200"
+				  edt_nodeId="ORG_CODE"
+				  edt_nodeName="ORG_CODE_NAME"
+				  edt_parNode="PAR_ORG"
+				  edt_treeType="1"   edt_onChange="orgCodeChg"
+		/>
+		<qry_item id="qryOpId" field="OP_ID" title="人员名称" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+				  edt_textField="USER_NAME" edt_idField="USER_CODE"
+				  edt_fallParas="[{enable:true}]" edt_onShowPanel="initOpInfo"
+				  edt_req="[{service:'P0001008',USER_STA:'1'}]"
+				  edt_columns="[[
+								{field:'USER_CODE',title:'人员ID'},
+								{field:'USER_NAME',title:'人员名称'},
+								{field:'USER_TYPE',title:'人员类型',
+								  formatter: function(value,row,index){
+									return getSysDictOpt('USER_TYPE',value);
+								  }
+								},
+								{field:'ORG_CODE',title:'机构代码'},
+								{field:'ORG_NAME',title:'机构名称'}
+								]]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'USER_NAME',title:'人员名称',
+						  editor:{
+							  type:'text',
+							  options:{
+								validType:'val[1,64]'
+							  }
+							}
+						  }]
+						}
+					   ]"
+		/>
+		<qry_item field="CUST_ID" title="客户代码" type="input" edt_validType="val[1,30]" />
+		<qry_item field="CUACCT_ID" title="资金账号" type="input" edt_validType="val[1,30]" />
+
+		<col_item field="TRADE_ID" title="交易员代码" type="input"  frozen="true"/>
+		<col_item field="TRADE_NAME" title="交易员名称" type="input"  frozen="true"/>
+		<col_item field="CUST_ID" title="客户代码" type="input"   frozen="true"/>
+		<col_item field="CUST_NAME" title="客户名称" type="input"   frozen="true"/>
+		<col_item field="CUACCT_ID" title="资金账号" type="input"  frozen="true"/>
+		<col_item field="HAVE_CFG_FUND" title="已配置资产" type="input"
+				  formatter="datagirdCellbakColor" align="right"/>
+		<col_item field="TOTAL_FUND" title="资产汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="HOLD_MAKET_VAL" title="持仓市值" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="YEST_PROFIT" title="前日盈亏" type="input"
+				  formatter="negNumDisRed" align="right"/>
+		<col_item field="FUND_BAL" title="现金余额" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TODAY_SALE_PROFIT" title="当日买卖盈亏" type="input"
+				  formatter="negNumDisRed" align="right"/>
+		<col_item field="TODAY_FLOAT_PROFIT" title="当日浮动盈亏" type="input"
+				  formatter="negNumDisRed" align="right"/>
+		<col_item field="TODAY_SUM_PROFIT" title="当日盈亏汇总" type="input"
+				  formatter="negNumDisRed" align="right"/>
+		<col_item field="BUY_INST_AMT_SUM" title="买入金额汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="SELL_INST_AMT_SUM" title="卖出金额汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="PROC_COST_SUM" title="佣金汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="STAMP_TAX_SUM" title="印花税汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="CALLOT_IN_AMT" title="入金汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="CALLOT_OUT_AMT" title="出金汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+	</view>
+
+	<view id="mts_CUST_SURPLUS_DETAIL_INFO_table"  render="datagrid" title="查询客户盈亏明细信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000102',LOGIN_OP_ID:g_user.userId }]"/>
+		<col_item field="CUST_ID" title="客户代码" type="input"  frozen="true"/>
+		<col_item field="CUST_NAME" title="客户名称" type="input"  frozen="true"/>
+		<col_item field="CUACCT_ID" title="资金账号" type="input" frozen="true" />
+		<col_item field="CALLOT_AMT" title="入金总额" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="HAVE_CFG_FUND" title="已配置资产" type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UNHAVE_CFG_FUND" title="未配置资产" type="input"
+				  formatter="gdCellbakColor_negNumDisRed" align="right"/>
+		<col_item field="ACCT_NUM" title="账户数量" type="input"  align="right"/>
+		<col_item field="TOTAL_FUND" title="资产汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="HOLD_MAKET_VAL" title="持仓市值" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="YEST_PROFIT" title="前日盈亏" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="FUND_BAL" title="现金余额" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TODAY_SALE_PROFIT" title="当日买卖盈亏" type="input"
+				  formatter="negNumDisRed" align="right"/>
+		<col_item field="TODAY_FLOAT_PROFIT" title="当日浮动盈亏" type="input"
+				  formatter="negNumDisRed" align="right"/>
+		<col_item field="TODAY_SUM_PROFIT" title="当日盈亏汇总" type="input"
+				  formatter="negNumDisRed" align="right"/>
+		<col_item field="BUY_INST_AMT_SUM" title="买入金额汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="SELL_INST_AMT_SUM" title="卖出金额汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="PROC_COST_SUM" title="佣金汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="STAMP_TAX_SUM" title="印花税汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="CALLOT_IN_AMT" title="入金汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="CALLOT_OUT_AMT" title="出金汇总" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+	</view>
+
+</views>

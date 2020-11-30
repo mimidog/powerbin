@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<!-- 人员信息管理 start -->
+	<service service_code="P0001001" service_name="用户信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userInfoQuery" business_method="" serial_no="1" business_name="用户信息查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 查询所有的人员信息 -->
+	<service service_code="P0001002" service_name="人员开户" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userInfoInsert" business_method="" serial_no="1" business_name="人员开户" business_type="3" business_cate="1" attr1="1"  attr2="1" />
+			<!--service_business business_code="operInsertRoleDefault" business_method="" serial_no="1" business_name="人员默认角色分配" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="operInsertJob" business_method="" serial_no="1" business_name="人员岗位分配" business_type="1" business_cate="1" attr1=""  attr4="1"/-->
+
+             <!--注释掉发布功能 by  20160614-->
+            <!--<service_business business_code="userInfoPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>
+			<service_business business_code="userPostPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0001003" service_name="用户信息修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userInfoUpdate" business_method="" serial_no="1" business_name="用户信息修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+			<!--<service_business business_code="operDeleteJobByUserCode" business_method="" serial_no="1" business_name="用户信息修改" business_type="1" business_cate="1" attr1="" />-->
+			<!--service_business business_code="operInsertJob" business_method="" serial_no="1" business_name="人员岗位分配" business_type="1" business_cate="1" attr1="" /-->
+
+            <!--注释掉发布功能 by  20160614-->
+		    <!-- <service_business business_code="userInfoPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0001004" service_name="用户信息删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userInfoDelete" business_method="" serial_no="1" business_name="用户信息删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+          <!--注释掉发布功能 by  20160614-->
+		   <!-- <service_business business_code="userInfoPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0001005" service_name="用户状态修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userStatusUpdate" business_method="" serial_no="1" business_name="用户状态修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="userInfoPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="3"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0001006" service_name="用户密码重置" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userPasswordRest" business_method="" serial_no="1" business_name="用户密码重置" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+		    <!--<service_business business_code="userInfoPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0001007" service_name="用户密码修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userPasswordUpdate" business_method="" serial_no="1" business_name="用户密码修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+           <!--注释掉发布功能 by  20160614-->
+           <!--service_business business_code="userInfoPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/-->
+		</businesses>
+	</service>
+
+	<service service_code="P0001008" service_name="用户信息分页查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="userInfoQueryforPage" business_method="" serial_no="1" business_name="用户信息查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0001009" service_name="用户密码批量修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="batchUpdateUserPassword" business_method="" serial_no="1" business_name="用户密码批量修改" business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0001010" service_name="根据用户代码查询用户" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="queryUserByUserCode" business_method="" serial_no="1" business_name="根据用户代码查询用户" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 人员信息管理 end -->
+
+  <!-- 角色信息管理service start -->
+  <service service_code="P0001011" service_name="角色信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="roleQuery" business_method="" serial_no="1" business_name="角色信息查询" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001012" service_name="角色新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="seqRoleId" business_method="" serial_no="1" business_name="获取角色序列" business_type="3" business_cate="1" attr1="" /> 	
+      <service_business business_code="roleInsert" business_method="" serial_no="1" business_name="角色新增" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="rolePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001013" service_name="角色修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="roleUpdate" business_method="" serial_no="1" business_name="角色修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="rolePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>   -->
+    </businesses>
+  </service>
+  <service service_code="P0001014" service_name="角色删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="roleDelete" business_method="" serial_no="1" business_name="角色删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="rolePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001015" service_name="角色没有的用户信息" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="NotInRoleUserInfo" business_method="" serial_no="1" business_name="用户信息" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001016" service_name="角色插入用户" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="roleInsertUser" business_method="" serial_no="1" business_name="角色插入用户" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001017" service_name="角色删除用户" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="roleDeleteUser" business_method="" serial_no="1" business_name="角色删除用户" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <!-- 角色信息管理service end -->
+
+  <!-- 权限信息管理service start -->
+  <service service_code="P0002255" service_name="权限信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="permissionQuery" business_method="" serial_no="1" business_name="权限信息查询" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002256" service_name="权限信息新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+	<service_business business_code="seqPermissionId" business_method="" serial_no="1" business_name="获取权限序列" business_type="3"
+                      business_cate="1" attr1="" />
+
+	<service_business business_code="permLvl" business_method="" serial_no="1" business_name="获取权限级别" business_type="3" business_cate="1" attr1="" />
+      <service_business business_code="permissionInsert" business_method="" serial_no="1" business_name="权限信息新增" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002257" service_name="权限信息修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="permissionUpdate" business_method="" serial_no="1" business_name="权限信息修改" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002258" service_name="权限信息删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="permissionDelete" business_method="" serial_no="1" business_name="权限信息删除" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002259" service_name="" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="permConsInsert" business_method="" serial_no="1" business_name="" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002260" service_name="" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="consQueryData" business_method="" serial_no="1" business_name="" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002261" service_name="" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="permConsDelete" business_method="" serial_no="1" business_name="" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="userpermConsDelete" business_method="" serial_no="1" business_name="" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002266" service_name="" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="permConsQueryData" business_method="" serial_no="1" business_name="" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002267" service_name="" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="consDataQuery" business_method="" serial_no="1" business_name="" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <!-- 权限信息管理service end -->
+
+  <!-- 组织机构管理service start -->
+  <service service_code="P0001031" service_name="机构信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="orgMenuQuery" business_method="" serial_no="1" business_name="机构信息查询" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001035" service_name="机构信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="orgMenuChildQuery" business_method="" serial_no="1" business_name="机构信息查询" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001033" service_name="机构信息修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="orgInfoUpdate" business_method="" serial_no="1" business_name="机构信息修改" business_type="1" business_cate="1" attr1=""/>
+      <!--service_business business_code="orgStaUpdate" business_method="" serial_no="1" business_name="机构信息修改" business_type="1" business_cate="1" attr1="" attr4="1"/-->
+      <service_business business_code="orgCascadeUpdate" business_method="" serial_no="1" business_name="修改机构权限信息" business_type="1" business_cate="1" attr1="" attr4="1"/>
+      <!--注释掉发布功能 by  20160614-->
+     <!-- <service_business business_code="orgPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001034" service_name="删除机构" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="updateUserOrgCode" business_method="" serial_no="1" business_name="更新用户机构" business_type="1" business_cate="1" attr1="" />	
+      <service_business business_code="orgPermDelete" business_method="" serial_no="1" business_name="删除机构权限" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="orgCascadeDelete" business_method="" serial_no="1" business_name="删除机构权限信息" business_type="1" business_cate="1" attr1=""/>
+      <service_business business_code="orgChildDelete" business_method="" serial_no="1" business_name="删除机构" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="orgDelete" business_method="" serial_no="1" business_name="删除机构" business_type="1" business_cate="1" attr1="" attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="orgPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001032" service_name="新增机构" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+    	<service_business business_code="orgLvl" business_method="" serial_no="1" business_name="获取机构级别" business_type="3" business_cate="1" attr1="" />
+
+      <!--by 越帅军 20160420 添加权限信息序列器-->
+      <service_business business_code="seqPermissionId" business_method="" serial_no="1" business_name="获权限信息序列号" business_type="3" business_cate="1" attr1="" />
+
+      <service_business business_code="orgInsert" business_method="" serial_no="1" business_name="新增机构" business_type="1" business_cate="1" attr1=""/>
+      <service_business business_code="orgCascadeInsert" business_method="" serial_no="1" business_name="新增机构权限信息" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="orgPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <!-- 组织机构管理service end -->
+
+  <!-- 岗位管理service start-->
+   <service service_code="P0001041" service_name="岗位信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="jobsQuery" business_method="" serial_no="1" business_name="岗位信息查询" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001042" service_name="新增岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="seqPostId" business_method="" serial_no="1" business_name="获取岗位序列" business_type="3" business_cate="1" attr1="" /> 	
+      <service_business business_code="jobsInsert" business_method="" serial_no="1" business_name="新增岗位" business_type="1" business_cate="1" attr1=""  />
+      <!--获取添加权限序列，by  2016/07/14-->
+      <service_business business_code="seqPermissionId" business_method="" serial_no="1" business_name="获取权限序列产生" business_type="3" business_cate="1" attr1=""  />
+      <service_business business_code="jobsCascadeInsert" business_method="" serial_no="1" business_name="新增岗位权限" business_type="1" business_cate="1" attr1=""  />
+      <!--获取添加用户权限序列，by  2016/07/14-->
+      <service_business business_code="seqUserPermId" business_method="" serial_no="1" business_name="获取用户权限序列产生" business_type="3" business_cate="1" attr1=""  />
+      <service_business business_code="userPermJobsInsert" business_method="" serial_no="1" business_name="新增岗位权限" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="postPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001043" service_name="修改岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="jobsUpdate" business_method="" serial_no="1" business_name="修改岗位" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+      <service_business business_code="jobsCascadeUpdate" business_method="" serial_no="1" business_name="修改岗位权限" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="postPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001044" service_name="删除岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="jobsDelete" business_method="" serial_no="1" business_name="删除岗位" business_type="1" business_cate="1" attr1=""  />
+      <service_business business_code="jobsPermDelete" business_method="" serial_no="1" business_name="删除岗位相关权限信息" business_type="1" business_cate="1" attr1=""  />
+      <service_business business_code="jobsCascadeDelete" business_method="" serial_no="1" business_name="删除岗位权限" business_type="1" business_cate="1" attr1=""  />
+      <service_business business_code="jobsKptMenuContTabDelete" business_method="" serial_no="1" business_name="删除岗位权限" business_type="1" business_cate="1" attr1=""  />
+      <service_business business_code="jobsKptMenuContCompDelete" business_method="" serial_no="1" business_name="删除岗位权限" business_type="1" business_cate="1" attr1=""  />
+      <service_business business_code="jobsKptMenuCompParamDelete" business_method="" serial_no="1" business_name="删除岗位权限" business_type="1" business_cate="1" attr1=""  />
+      <service_business business_code="jobsKptMenuCompDelete" business_method="" serial_no="1" business_name="删除岗位权限" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="postPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001045" service_name="岗位信息查询带权限信息" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="jobsQueryByPerm" business_method="" serial_no="1" business_name="岗位信息查询带权限信息" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <!-- 岗位管理service end-->
+  <!-- 人员岗位分配service start-->
+  <service service_code="P0001051" service_name="人员对应岗位信息" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="jobInfo" business_method="" serial_no="1" business_name="人员对应岗位信息" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001052" service_name="人员没有的岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="NotInOperJobInfo" business_method="" serial_no="1" business_name="人员没有的岗位" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001053" service_name="人员添加岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="operInsertJob" business_method="" serial_no="1" business_name="人员添加岗位" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="userPostPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001054" service_name="人员删除岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="operDeleteJob" business_method="" serial_no="1" business_name="人员删除岗位" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="userPostPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001059" service_name="设置对应人员的主岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="setNoPrimaryJob" business_method="" serial_no="1" business_name="修改主岗位" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="setPrimaryJob" business_method="" serial_no="1" business_name="设置对应人员的主岗位" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="userMainPostPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001060" service_name="修改主岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="setNoPrimaryJob" business_method="" serial_no="1" business_name="修改主岗位" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="userMainPostPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001061" service_name="查询是否设置主岗位的功能" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="selectPrimaryJob" business_method="" serial_no="1" business_name="查询是否设置主岗位的功能" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001063" service_name="人员岗位分配" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="oper_insertJob" business_method="" serial_no="1" business_name="" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="userPostPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <!-- 人员岗位分配service end-->
+  <!-- 人员角色分配service start-->
+  <service service_code="P0001055" service_name="人员对应角色信息" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="roleInfo" business_method="" serial_no="1" business_name="人员对应角色信息" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001056" service_name="人员没有的角色" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="NotInOperRoleInfo" business_method="" serial_no="1" business_name="人员没有的角色" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001057" service_name="人员插入新的角色" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="operInsertRole" business_method="" serial_no="1" business_name="人员插入新的角色" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="userRolePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <service service_code="P0001058" service_name="人员删除角色" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="operDeleteRole" business_method="" serial_no="1" business_name="人员删除角色" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+      <!--注释掉发布功能 by  20160614-->
+      <!--<service_business business_code="userRolePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+    </businesses>
+  </service>
+  <!-- 人员角色分配service end-->
+  <!-- 特殊权限定义管理service start-->
+  <service service_code="P0002211" service_name="特殊权限查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="spePermQuery" business_method="" serial_no="1" business_name="特殊权限查询" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002212" service_name="特殊权限新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+
+      <!--by 越帅军 20160420 添加“特殊权限定义表”序列器-->
+      <service_business business_code="seqSpePermId" business_method="" serial_no="1" business_name="获取特殊权限定义序列"
+                        business_type="3" business_cate="1" attr1="" />
+
+      <service_business business_code="spePermInsert" business_method="" serial_no="1" business_name="特殊权限新增" business_type="1" business_cate="1" attr1="" />
+      <!--by 越帅军 20160420 添加“特殊权限定义表”序列器-->
+      <service_business business_code="seqPermissionId" business_method="" serial_no="1" business_name="获取权限序列"
+                        business_type="3" business_cate="1" attr1="" />
+      <service_business business_code="spePermCascadeInsert" business_method="" serial_no="1" business_name="特殊权限级联新增" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002213" service_name="特殊权限修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="spePermUpdate" business_method="" serial_no="1" business_name="特殊权限修改" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="spePermCascadeUpdate" business_method="" serial_no="1" business_name="特殊权限级联修改" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002214" service_name="特殊权限删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="spePermDelete" business_method="" serial_no="1" business_name="特殊权限删除" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="speUserPermDelete" business_method="" serial_no="1" business_name="特殊授权删除" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="spePermCascadeDelete" business_method="" serial_no="1" business_name="特殊权限级联删除" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <!-- 特殊权限定义管理service end-->
+  <!-- 约束限制管理service start-->
+  <service service_code="P0002201" service_name="约束限制查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="consQuery" business_method="" serial_no="1" business_name="约束限制查询" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002202" service_name="约束限制新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="consInsert" business_method="" serial_no="1" business_name="约束限制新增" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0002203" service_name="约束限制更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="consUpdate" business_method="" serial_no="1" business_name="约束限制更新" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  
+  <service service_code="P0002204" service_name="约束限制删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="deleteUserPermConsByCons" business_method="" serial_no="1" business_name="约束限制删除" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="deletePermConsBycons" business_method="" serial_no="1" business_name="约束限制删除" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="consDelete" business_method="" serial_no="1" business_name="约束限制删除" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <!-- 约束限制管理service end-->
+  <!-- 岗位互斥设置service start-->
+  <service service_code="P0001067" service_name="互斥岗位列表查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="searchExcluJob" business_method="" serial_no="1" business_name="互斥岗位" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001065" service_name="互斥岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="excluJobInfo" business_method="" serial_no="1" business_name="互斥岗位" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001066" service_name="不是互斥的岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="NotExcluJobInfo" business_method="" serial_no="1" business_name="不是互斥的岗位" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001062" service_name="添加互斥岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="addExcluJob" business_method="" serial_no="1" business_name="添加互斥岗位" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="addCascadeExcluJob" business_method="" serial_no="1" business_name="添加互斥岗位" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <service service_code="P0001064" service_name="删除互斥岗位" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="delExcluJob" business_method="" serial_no="1" business_name="删除互斥岗位" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="delCascadeExcluJob" business_method="" serial_no="1" business_name="删除互斥岗位" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+  <!-- 岗位互斥设置service end-->
+</services>

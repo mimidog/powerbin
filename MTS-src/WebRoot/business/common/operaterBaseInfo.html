@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>客户基本信息</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="../../business/common/css/front-window.css" />
+<link type="text/css" rel="stylesheet" href="../../kui-base/themes/trans/form.css">
+<link rel="stylesheet" type="text/css" href="../../business/common/css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../business/common/css/common.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../common/js/common.js?ver=1"></script>
+<script type="text/javascript">
+window.onload = function(){
+  initCustBaseInfo(window.parent.identifyInfo);
+  // 执行父页面的业务操作回调
+  var segArr = window.location.href.split("?");
+  var urlParams = {};
+  if(segArr.length > 1) {
+    var paramArr = segArr[1].split("&");
+    for(var i = 0, len = paramArr.length; i < len; i++) {
+      var temp = paramArr[i].split("=");
+      urlParams[temp[0]] = temp[1];
+    }
+  }
+  if(urlParams.isParentCallback == "true") {
+    window.parent.businessCallback();
+  }
+};
+/**
+ * 初始化
+ * @param identifyInfo
+ */
+function initCustBaseInfo(identifyInfo){
+  $("#personalGeneralInfo").show().find("td[name]").each(function(){
+    var name = $(this).attr("name"),
+            dict = $(this).attr("dict"),
+            formatter = $(this).attr("formatter");
+    if(formatter) {
+        $(this).empty().append(window.parent[formatter](identifyInfo[name]));//子页面，减少外部文件引用
+    } else if(dict) {
+        $(this).empty().append(window.parent.getSysDict(dict, identifyInfo[name]));//子页面，减少外部文件引用
+    } else {
+        $(this).empty().append(identifyInfo[name]);
+    }
+  })
+};
+</script>
+</head>
+<body>
+<div style="border:1px solid #ddf0ff;">
+  <div id="personalGeneralInfo" class="hide" style="font-size: 14px;margin: 10px;">
+    <table style="width: 100%;" class="table-body">
+      <tr>
+        <td class="form-label" style="width: 15%">人员ID：</td>
+        <td name="USER_CODE" style="width: 18%"></td>
+        <td class="form-label" style="width: 15%">人员名称：</td>
+        <td name="USER_NAME" style="width: 18%"></td>
+        <td class="form-label" style="width: 15%">人员类型：</td>
+        <td name="USER_TYPE" dict="USER_TYPE" style="width: 19%"></td>
+      </tr>
+      <tr>
+        <td class="form-label" style="width: 15%">人员状态：</td>
+        <td name="USER_STA" dict="USER_STA" ></td>
+        <td class="form-label" >所属机构：</td>
+        <td name="ORG_CODE" formatter="getOrgName"></td>
+        <td class="form-label" >主岗位：</td>
+        <td name="MAIN_POST_NAME"></td>
+      </tr>
+      <tr>
+        <td class="form-label">人员岗位：</td>
+        <td name="POST_NAME"></td>
+        <td class="form-label">岗位级别：</td>
+        <td name="POST_LVL" dict="POST_LVL" ></td>
+        <td class="form-label">开户日期：</td>
+        <td name="OPEN_DATE"></td>
+
+      </tr>
+      <tr>
+        <td class="form-label">移动电话：</td>
+        <td name="MOBILE"></td>
+        <td class="form-label">办公电话：</td>
+        <td name="OFF_TEL"></td>
+        <td class="form-label">邮箱：</td>
+        <td name="EMAIL"></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

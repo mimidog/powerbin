@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>linkbutton - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>链接按钮</h3>
+
+<p>使用$.fn.linkbutton.defaults重载默认值</p>
+
+<img src="images/linkbutton.png"/>
+
+
+
+<h4>使用方法</h4>
+<h5>创建链接按钮</h5>
+
+<p>使用HTML标签创建链接按钮，只须要对&lt;div&gt;标签引用'kjaxui-linkbutton'类。</p>
+<pre class="code">
+	<span style="color:blue">&lt;a</span> <span style="color:red">href</span><span style="color:blue">="#"</span> <span style="color:red">class</span><span style="color:blue">="kjaxui-linkbutton"</span> <span style="color:red">data-options</span><span style="color:blue">="iconCls:</span><span style="color:red">'icon-search'</span><span style="color:blue">"&gt;</span>kjaxui<span style="color:blue">&lt;/a&gt;</span> 
+</pre>
+<p>在&lt;div&gt;标签上创建链接按钮。</p>
+<pre class="code">
+	<span style="color:blue">&lt;a</span> <span style="color:red">href</span><span style="color:blue">="#"</span> <span style="color:red">id</span><span style="color:blue">="btn"</span> <span style="color:red">iconCls</span><span style="color:blue">="icon-search"&gt;kjaxui&lt;/a&gt;</span>
+</pre>
+
+<pre class="code">
+	$(<span style="color:blue">'#btn'</span>).linkbutton({
+		plain:<span style="color:red">true</span>
+	});
+	$(<span style="color:blue">'#btn'</span>).linkbutton(<span style="color:blue">'disable'</span>);	<span style="color:green">//禁用按钮</span>
+	$(<span style="color:blue">'#btn'</span>).linkbutton(<span style="color:blue">'enable'</span>);		<span style="color:green">//启用按钮</span>
+</pre>
+
+
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>id（ID）</td>
+
+<td>string（字符串）</td>
+
+<td>分配给该组件的ID。</td>
+
+<td>null</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>disabled（禁用）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>设置为true将禁用按钮。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>plain（简洁模式）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>设置为true将显示简洁效果。</td>
+
+
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>text（文本）</td>
+
+<td>string（字符串）</td>
+
+<td>显示在按钮上的文本。</td>
+
+<td>''</td>
+
+</tr>
+
+<tr>
+
+<td>iconCls（图标CSS类）</td>
+
+<td>string（字符串）</td>
+
+
+
+<td>用来在左边显示一个16x16大小图标的css类。</td>
+
+<td>null</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>options</td>
+
+<td>none</td>
+
+<td>返回属性对象。</td>
+
+</tr>
+
+<tr>
+
+<td>disable</td>
+
+<td>none</td>
+
+
+
+<td>禁用按钮。
+<pre>
+<span style="color:green">
+$('#btn').linkbutton('disable');
+</span>
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>enable</td>
+
+<td>none</td>
+
+<td>启用按钮。
+<pre>
+<span style="color:green">
+$('#btn').linkbutton('enable');
+</span>
+</pre>
+</td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>股份额度设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.cust-form-table{
+  border: 0px;
+}
+.cust-form-label {
+  text-align: right;
+  vertical-align: text-bottom;
+  font-weight: bold;
+  font-size: 12px;
+  vertical-align: bottom;
+}
+
+</style>
+<script type="text/javascript">
+//额度计算是否校验通过
+var amountValid=true;
+//查询查询股份二级持仓下的柜员
+function queryStockDownEmp(rowIndex,rowData) {
+
+  $('#mts_AESSET_SUB_EMP_INFO_table').datagrid({
+      req:[{
+          service:'M0000053',
+          CUST_ID:rowData['CUST_ID'],
+          CUACCT_ID:rowData['CUACCT_ID'],
+          TRDACCT:rowData['TRDACCT'],
+          INST_ID:rowData['INST_ID']
+      }]
+  });
+}
+
+//调拨方向改变事件
+function callotDirect_chg(newVal) {
+    var fFundVal=Number(thousandsToString($('#emp_aesset_amount_form').find('td[cont=F_UNUSE_AMOUNT]').text()));
+    //分配额度
+    var newUAmount=Number(thousandsToString($('#allotAmount').val()));
+
+    var calcAmount=0;
+    //调拨方式：2-调出
+    if(newVal=='2'){
+        calcAmount=fFundVal=parseFloat(fFundVal)-parseFloat(newUAmount);
+        $('#directArrow').attr('src','../images/right-Arrow.jpg');
+        //调拨方式：2-调入
+    }else if(newVal=='1'){
+        calcAmount=parseFloat(fFundVal)+parseFloat(newUAmount);
+        $('#directArrow').attr('src','../images/left-Arrow.jpg');
+        amountValid=true;
+    }
+
+    $('#emp_aesset_amount_form').find('td[cont=F_SPARE_AMOUNT]').text(toThousands(calcAmount));
+
+}
+
+//交易员选择框
+function opIdSel_chg(rowIndex, rowData) {
+
+  var selRow = $("#mts_AESSET_AMOUNT_INFO_table").datagrid("getSelected");
+  $('#sAessetBal').val('0.0000');
+
+  var rs=commonRequest({
+      service:'M0000053',
+      PARAM_OP_ID:rowData['USER_CODE'],
+      CUST_ID:selRow['CUST_ID'],
+      TRDACCT:selRow['TRDACCT'],
+      INST_ID:selRow['INST_ID'],
+      CUACCT_ID:selRow['CUACCT_ID']
+  })
+  if(rs.length>0){
+      $('#sAessetBal').val(rs[0].INST_BAL);
+  }
+
+}
+//计算未分配置的酸度
+function  calc_UnUseAmount(obj) {
+
+    $('#sAessetBal').validatebox('validate');
+    //得到股份一级持仓未分配额度
+    var fFundVal=Number(thousandsToString($('#emp_aesset_amount_form').find('td[cont=F_UNUSE_AMOUNT]').text()));
+    //分配额度
+    var newUAmount=Number(thousandsToString(obj.value));
+
+
+    if($('#callotDirect').combobox('getValue')=='2' && fFundVal-newUAmount<0){
+        alert('提示信息','额度调出时，分配额度不能大于未分配额度','warning');
+        amountValid=false;
+        return;
+    }
+    amountValid=true;
+
+    var calcAmount=0;
+    //调拨方式：2-调出
+    if($('#callotDirect').combobox('getValue')=='2'){
+        calcAmount=fFundVal-newUAmount;
+        //调拨方式：1-调入
+    }else if($('#callotDirect').combobox('getValue')=='1'){
+        calcAmount=fFundVal+newUAmount;
+    }
+
+    $('#emp_aesset_amount_form').find('td[cont=F_SPARE_AMOUNT]').text(toThousands(calcAmount));
+
+
+}
+
+//计算使用额度
+function calcUseAmount() {
+    var calcAmount=0;
+    if($('#callotDirect').combobox('getValue')=='2'){
+        calcAmount=Number(thousandsToString($('#sAessetBal').val()))+Number(thousandsToString($('#allotAmount').val()))
+    }else if($('#callotDirect').combobox('getValue')=='1'){
+        calcAmount=Number(thousandsToString($('#sAessetBal').val()))-Number(thousandsToString($('#allotAmount').val()))
+    }
+    return calcAmount;
+}
+
+//额度设置
+function empAessetAmount_set() {
+   var selRow = $("#mts_AESSET_AMOUNT_INFO_table").datagrid("getSelected");
+    if (selRow == null) {
+        alert("请在左边表格选中一条数据！");
+        return;
+    }
+
+
+    $('#emp_aesset_amount_form').form('clear');
+
+    $('#allotAmount').val('0');
+    $('#sAessetBal').val('0');
+
+    $('#emp_aesset_amount_form').find('td[cont=F_INST_BAL]').text(toThousands(selRow['INST_BAL']));
+    $('#emp_aesset_amount_form').find('td[cont=F_UNUSE_AMOUNT]').text(toThousands(selRow['UNUSE_AMOUNT']));
+
+    $('#emp_aesset_amount_form').find('td[cont=F_SPARE_AMOUNT]').text(Number(0));
+
+    //查询客户基本信息
+    var custBaseInfoRs=commonRequest({
+        service: 'M0000009',
+        CUST_ID:selRow['CUST_ID']
+    });
+    if(custBaseInfoRs.length==0){
+        alert('客户资料不存在！');
+        return;
+    }
+    $('#opId').combogrid({
+        req:[{
+             service:'P0001008',
+             USER_STA:'1',
+             POST_ID:getSysParamValuebyCode('TRADER_POST_ID'),
+             ORG_CODE:custBaseInfoRs[0].ORG_CODE
+
+        }]
+    })
+
+    using('dialog',function () {
+        $("#emp_aesset_amount_Dialog").dialog({
+            title: '资金账号额度设置',
+            width: 700,
+            height: 240,
+            modal: true,
+            resizable: true,
+            onOpen: function() {
+                //调拨方向默认2-调出
+                $('#callotDirect').combobox('setValue','2');
+            },
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function () {
+
+                    if($('#emp_aesset_amount_form').form('validate')==false){
+                        return;
+                    }
+                    if(Number(thousandsToString($('#allotAmount').val()))<=0){
+                        alert('分配额度不能小于或等于0');
+                        return;
+                    }
+                    if($('#callotDirect').combobox('getValue')=='2' && selRow['UNUSE_AMOUNT'] ==0){
+                        alert('【未分配额度】是0，不允许额度调出！');
+                        return;
+                    }
+
+                     if(amountValid==true){
+                         //未分配额度=剩余额度
+                         var uUseAmount=thousandsToString($('#emp_aesset_amount_form').find('td[cont=F_SPARE_AMOUNT]').text());
+                         //分配额度
+                         var useAmount=calcUseAmount();
+
+                         if(Number(useAmount)<0){
+                             alert('股份二级持仓可用股份不足');
+                             return;
+                         }
+
+                         var aessetQeq=[ {service:'M0000060',CUST_ID:selRow['CUST_ID'],TRDACCT:selRow['TRDACCT'],
+                             CUACCT_ID:selRow['CUACCT_ID'],INST_ID:selRow['INST_ID'],UNUSE_AMOUNT:uUseAmount}];
+                         //修改客户股份一级持仓中的未分配额度
+                         if(modAssetUnuseAmount(aessetQeq)==false){
+                             return;
+                         }
+                          delete selRow.CALLOT_IN_ASSET;
+                          delete selRow.CALLOT_OUT_ASSET;
+
+                         var aessetSubParam=$.extend({},selRow,
+                             {service:'M0000061',
+                                 OP_ID:$('#opId').combogrid('getValue'),INST_BAL:useAmount,INST_AVL:useAmount,
+                                 ALLOT_AMOUNT:thousandsToString($('#allotAmount').val()),
+                                 CALLOT_DIRECT:$('#callotDirect').combobox('getValue')});
+
+                         //新增客户股份二级持仓信息
+                         if(addAssetSubInfo(aessetSubParam)==false){
+                             return ;
+                         }
+
+
+                         alert('交易员额度设置成功！');
+                         $("#emp_aesset_amount_Dialog").dialog('close');
+                         //股份一级持仓查询
+                         $('#mts_AESSET_AMOUNT_INFO_table').datagrid('reload');
+                         //股份一级持仓查询
+                         $('#mts_AESSET_SUB_EMP_INFO_table').datagrid('reload');
+                         writeTraderAssetLog(selRow);
+                     }
+
+
+                }
+            },
+                {
+                    text: '取消',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        $("#emp_aesset_amount_Dialog").dialog('close');
+                    }
+                }
+            ]
+        });
+    })
+}
+//修改客户股份一级持仓中的未分配额度
+function modAssetUnuseAmount(req) {
+    var flag=true;
+    ajaxRequest({
+        async:false,
+        req:req,
+        func:function(data){
+            flag=true;
+        },
+        error:function () {
+            flag=false
+        }
+    });
+    return flag;
+}
+
+/**
+ * 根据证券类别查出相应费用
+ */
+function stockOutlayByStkCls(tradeParam) {
+    //存储股票费用记录
+    var OutLayRec={MIN_PROC_COST:0,PROC_COST:0,TRANSFER_COST:0,OTHER_COST:0,STAMP_TAX:0};
+
+    //客户号头的对应的费率
+    var rsCustStockCost=commonRequest({
+        service: 'M0000069',
+        CUST_ID:tradeParam['CUST_ID'],
+        TRADE_DIRECT:tradeParam['TRADE_DIRECT'] //交易方向
+    });
+    if(rsCustStockCost.length>0){
+        //最低手续费
+        OutLayRec['MIN_PROC_COST']=parseInt(rsCustStockCost[0].MIN_PROC_COST);
+        //手续费率
+        OutLayRec['PROC_COST']=parseFloat(rsCustStockCost[0].PROC_COST);
+        //过户费率
+        OutLayRec['TRANSFER_COST']=parseFloat(rsCustStockCost[0].TRANSFER_COST);
+        //其它费率
+        OutLayRec['OTHER_COST']=parseFloat(rsCustStockCost[0].OTHER_COST);
+        //印花税率
+        OutLayRec['STAMP_TAX']=parseFloat(rsCustStockCost[0].STAMP_TAX);
+    }else{
+        //资金账号级别头上对应的费用
+        var cuacctLvlCost=commonRequest({
+            service: 'M0000069',
+            CUACCT_LVL:tradeParam['CUACCT_LVL'],
+            TRADE_DIRECT:tradeParam['TRADE_DIRECT'], //交易方向
+        });
+        if(cuacctLvlCost.length>0){
+            //最低手续费
+            OutLayRec['MIN_PROC_COST']=parseInt(cuacctLvlCost[0].MIN_PROC_COST);
+            //手续费率
+            OutLayRec['PROC_COST']=parseFloat(cuacctLvlCost[0].PROC_COST);
+            //过户费率
+            OutLayRec['TRANSFER_COST']=parseFloat(cuacctLvlCost[0].TRANSFER_COST);
+            //其它费率
+            OutLayRec['OTHER_COST']=parseFloat(cuacctLvlCost[0].OTHER_COST);
+            //印花税率
+            OutLayRec['STAMP_TAX']=parseFloat(cuacctLvlCost[0].STAMP_TAX);
+        }
+    }
+    return OutLayRec;
+}
+//新增客户股份二级持仓信息
+function addAssetSubInfo(req) {
+
+    var trdacctRs=commonRequest({
+        service:'M0000005',
+        TRDACCT:req['TRDACCT']
+    });
+    if(trdacctRs.length==0){
+        alert('该客户没有对应交易账号信息！');
+        return;
+    }
+    var fundRs=commonRequest({
+        service:'M0000001',
+        CUACCT_ID:trdacctRs[0].CUACCT_ID
+    });
+
+    //存储股票费用比率
+    var OutLayRec=stockOutlayByStkCls({CUST_ID:fundRs[0].CUST_ID,CUACCT_LVL:fundRs[0].CUACCT_LVL,
+                                        TRADE_DIRECT:'1'});
+    //股票总价
+    var totalPriceCalc=parseFloat(req['COST_PRICE'])*parseInt(req['INST_BAL']);
+    //手续费用
+    var procCost=parseFloat((totalPriceCalc * OutLayRec['PROC_COST']).toFixed(4));
+    procCost=procCost>OutLayRec['MIN_PROC_COST'] ? procCost : OutLayRec['MIN_PROC_COST'];
+
+    //过户费用
+    var transferCost=parseFloat((totalPriceCalc * OutLayRec['TRANSFER_COST']).toFixed(4));
+    //其它费
+    var otherCost=parseFloat((totalPriceCalc * OutLayRec['OTHER_COST']).toFixed(4));
+    //印花税
+    var stampTax=parseFloat((totalPriceCalc * OutLayRec['STAMP_TAX']).toFixed(4));
+    //买入成本金额=总成交价+手续费+过户费+其它费+印花锐
+    var buyCostAmt=totalPriceCalc+procCost+transferCost+otherCost+stampTax;
+
+
+    var flag=true;
+    ajaxRequest({
+        async:false,
+        req:[$.extend({},req,{BUY_COST_AMT:buyCostAmt})],
+        func:function(data){
+            flag=true;
+        },error:function () {
+            flag=false
+        }
+    });
+    return flag;
+}
+
+//写入交易员资金流水信息
+function writeTraderAssetLog(selRow) {
+    commonRequest({
+        service:'M0000095',
+        FLOW_TYPE:'2',      //1-资金流水，2-股份流水
+        CALLOT_DIRECT:$('#callotDirect').combobox('getValue'),
+        USE_AMOUNT:thousandsToString($('#allotAmount').val()),
+        OP_ID:$('#opId').combogrid('getValue'),
+        TRDACCT:selRow['TRDACCT'],
+        STK_ID:selRow['INST_ID']
+    })
+}
+//操作员初始化事件
+function initOpInfo() {
+    $('#opId').combogrid('grid').datagrid('reload');
+}
+</script>
+
+</head>
+<body>
+<div class="kui-layout" kui-options="fit:true" style="overflow: hidden;">
+  <div  kui-options="region:'west',border:true" style="width:530px">
+        <table id="mts_AESSET_AMOUNT_INFO_table" class="kui-datagrid"></table>
+  </div>
+  <div  kui-options="region:'center',border:true">
+       <table id="mts_AESSET_SUB_EMP_INFO_table" class="kui-datagrid"></table>
+  </div>
+</div>
+<div id="emp_aesset_amount_Dialog" style="display: none;">
+  <form id="emp_aesset_amount_form" class="kui-form">
+     <table class="cust-form-table" style="width:100%;">
+        <tr>
+          <td class="cust-form-label" style="width: 85px;">调拨方向：</td>
+          <td style="width: 240px;">
+            <input id="callotDirect" name="CALLOT_DIRECT" class="kui-combobox" kui-options="required:true,
+             autoFill:'true',dict:'CALLOT_DIRECT',isClear:false,onChange:callotDirect_chg"/>
+          </td>
+          <td class="cust-form-label">交易员名称：</td>
+          <td >
+              <input name="OP_ID" id="opId" required="true" class="kui-combogrid" width="350px"
+                      kui-options="panelWidth:350,panelHeight:300,required:true,
+                      idField: 'USER_CODE',
+                      textField: 'USER_NAME',
+                      onClickRow:opIdSel_chg,
+                      onShowPanel:initOpInfo,
+                      columns: [[
+                                {field:'USER_CODE',title:'交易员代码',sortable:true,sortType:'number'},
+                                        {field:'USER_NAME',title:'交易员名称'},
+                                        {field:'USER_TYPE',title:'交易员类型',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('USER_TYPE',value);
+                                          }
+                                        },
+                                        {field:'ORG_CODE',title:'机构代码'},
+                                        {field:'ORG_NAME',title:'机构名称'}
+                        ]],
+                      queryCols:[{
+                                    'text':'查询',
+                                    colNumbers:5,
+                                    cols:[{title:'员工名称',field:'USER_NAME'}]
+                                  }]"/>
+          </td>
+        </tr>
+    </table>
+      <table>
+          <tr>
+              <td style="width: 330px;">
+                  <fieldset class="kui-fieldset" kui-options="title:'客户股份一级持仓信息',collapsed:false,animation:true"
+                            style="height: 80px;">
+                      <table class="cust-form-table" style="width:100%;">
+                          <tr>
+                              <td class="cust-form-label">总的股份余额：</td>
+                              <td cont="F_INST_BAL">
+
+                              </td>
+                          </tr>
+                          <tr>
+                              <td class="cust-form-label">未分配额度：</td>
+                              <td cont="F_UNUSE_AMOUNT">
+
+                              </td>
+                          </tr>
+                          <tr>
+                              <td class="cust-form-label">剩余额度：</td>
+                              <td cont="F_SPARE_AMOUNT">0.0000</td>
+                          </tr>
+                      </table>
+                  </fieldset>
+              </td>
+              <td width="40" style="text-align: center">
+                  <img id="directArrow" src="../images/right-Arrow.jpg" height="25" width="35"/>
+              </td>
+              <td style="width: 330px;">
+                  <fieldset class="kui-fieldset" kui-options="title:'客户股份二级持仓信息',collapsed:false,animation:true"
+                            style="height: 80px;">
+                      <table class="cust-form-table" style="width:100%;">
+                          <tr>
+                              <td class="cust-form-label">分配额度：</td>
+                              <td colspan="2">
+                                  <input id="allotAmount" name="ALLOT_AMOUNT" class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                     invalidMessage:'请入不要起过15位整数位的数字'" autocomplete="off"
+                                         onkeyup="calc_UnUseAmount(this)"
+                                         onblur="this.value=toThousands(this.value)"
+                                         onfocus="this.value=thousandsToString(this.value)"/>
+                              </td>
+
+                          </tr>
+                          <tr>
+                              <td class="cust-form-label">股份余额：</td>
+                              <td >
+                                  <input id="sAessetBal" name="INST_BAL" class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                            invalidMessage:'请入不要起过15位整数位的数字',disabled:true"/>
+                              </td>
+                          </tr>
+                      </table>
+                  </fieldset>
+              </td>
+          </tr>
+      </table>
+  </form>
+</div>
+</body>
+</html>

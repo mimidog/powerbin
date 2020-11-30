@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>用户授权管理</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    var userCode='';
+    window.$ready=function(){
+      initTable();
+      initTree();
+    }
+
+    function initTable(){
+      using('combogrid',function(){
+        $('#USER_ID').combogrid({
+          panelHeight:280,
+          panelWidth:700,
+          idField:'USER_CODE',
+          textField:'USER_NAME',
+          fallParas:[{enable:true}],
+          req:[{
+            service:'P0001008'
+          }],
+          columns:[[
+            {field:'USER_CODE',title:'用户代码',width:70},
+            {field:'USER_NAME',title:'用户名称',width:70},
+            {field:'USER_TYPE',title:'用户类型',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_TYPE',value);
+              }
+            },
+            {field:'USER_STA',title:'用户状态',width:70,
+              formatter: function(value,row,index){
+                return getSysDictOpt('USER_STA',value);
+              }},
+            {field:'OPEN_DATE',title:'开户日期',width:70},
+            {field:'OFF_TEL',title:'办公电话',width:70},
+            {field:'MOBILE',title:'移动电话',width:70},
+            {field:'EMAIL',title:'电子邮箱',width:120}
+          ]],
+          queryCols:[{
+            text:'查询',
+            cols:[{field:'USER_NAME',title:'用户名称'}]
+          }],
+          onClickRow:showUserInfo
+        })
+      })
+    }
+    function initTree(){
+      setTimeout(function(){
+        using('tree',function(){
+          $('#priPermTree').tree({
+            checkbox:true,
+            conf:{nodeId:'MENU_ID', nodeName:'MENU_NAME', treeType:'1', parNode:'PAR_MENU'},
+            req:[{service:'P0000041',MENU_STA:'1'}],
+            onLoadSuccess:function(){$('#priPermTree').tree('collapseAll');}
+          })
+        })
+      },100);
+    }
+    function showUserInfo(rowIndex, rowData){
+      unAllSelect($('#priPermTree'));
+      clearUserInfo();
+      userCode = rowData['USER_CODE'];
+      readUserPerm(userCode,$('#priPermTree'));
+      readUserAllPerm(userCode,$('#pubPermTree'));
+      readUserInfo(userCode);
+    }
+    function unAllSelect(treeObj){
+      var roots = treeObj.tree('getRoots');
+      for(var i=0;i<roots.length;i++){
+        var node=treeObj.tree('find',roots[i].id);  //分别获取单个节点
+        treeObj.tree('uncheck',node.target);    //设置节点的未选中状态。
+      }
+    }
+    function readUserPerm(userCode,treeObj){
+      var rs = request({
+        service:'P0002232',
+        OBJ_ID:userCode,
+        OBJ_TYPE:'2'
+      },'');
+
+      if(rs.length>0){
+        for(var i=0;i<rs.length;i++){
+          var node = treeObj.tree('find', rs[i].PERM_ID); //根据权节点的ID值得到节点对象
+          if(node && node['pid']=='0'){
+            continue;
+          }
+          if(node != null)
+            treeObj.tree('check', node.target);//设置节点的选中状态
+        }
+      }
+    }
+    function readUserAllPerm(userCode,treeObj){
+      using('tree',function(){
+        $('#pubPermTree').tree({
+          conf:{nodeId:'PERM_ID', nodeName:'PERM_NAME', treeType:'1', parNode:'PAR_PERM'},
+          req:[
+            {
+              service:'P0002232',
+              OBJ_ID:userCode,
+              OBJ_TYPE:'2'
+            }
+          ],
+          onLoadSuccess:function(){$('#pubPermTree').tree('collapseAll');}
+        })
+      })
+    }
+    function request(opts,message){
+      var data = [];
+      opts = $.extend({},{},opts);
+      ajaxRequest({
+        async:(typeof(opts.async) == 'undefined') || String(opts.async) == 'false' ? false : true,
+        req:[opts],
+        func:function(res){
+          if(message!=''){
+            alert(message+'成功！');
+          }
+          data = typeof(opts.msg) == 'undefined' ? res[0]['data'][0] : res;
+        },
+        error:function(){
+          if(message!=''){
+            alert(message+'失败！');
+          }
+        }
+      });
+      return data;
+    }
+    function readUserInfo(userCode){
+      ajaxRequest({
+        req:[{
+          service:'P0001001',
+          REQ_USER_CODE:userCode,
+          USER_STA:'1'
+        }],
+        error:function(){
+          alert('查询用户信息失败！');
+        },
+        func:function(data){
+          if(data[0]['service']['flag']=='0'){
+            $('#userId').text(data[0]['data'][0][0]['USER_CODE']);
+            $('#userName').text(data[0]['data'][0][0]['USER_NAME']);
+            $('#userType').text(getSysDictOpt('USER_TYPE',data[0]['data'][0][0]['USER_TYPE']));
+            $('#userSta').text(getSysDictOpt('USER_STA',data[0]['data'][0][0]['USER_STA']));
+            $('#openDate').text(data[0]['data'][0][0]['OPEN_DATE']);
+            $('#officeTel').text(data[0]['data'][0][0]['OFF_TEL']);
+            $('#mobile').text(data[0]['data'][0][0]['MOBILE']);
+            $('#email').text(data[0]['data'][0][0]['EMAIL']);
+            if(data[0]['data'][0][0]['USER_ICON'] != undefined){
+              $('#userImg').attr({src:'../../' + data[0]['data'][0][0]['USER_ICON']});
+            }else{
+              $('#userImg').attr({src:'../../frame/images/frame/user-head-big.png'});
+            }
+          }
+        }
+      })
+    }
+    function saveUserPerm(treeObj){
+      userCode = $('#USER_ID').combogrid('getValue');
+      if(userCode==''){
+        alert('请选择用户！');
+        return;
+      }
+      var checkNode = treeObj.tree('getChecked');
+      var  permIDs='';
+      var req=[];
+      for(var i=0; i<checkNode.length; i++){
+        permIDs += checkNode[i].id+',';
+      }
+      //把实心节点加进去
+      var nodes = [];
+      treeObj.find('.tree-checkbox2').each(function(){
+        var node = $(this).parent();
+        nodes.push($.extend({}, $.data(node[0], 'tree-node'), {
+          target: node[0],
+          checked: node.find('.tree-checkbox').hasClass('tree-checkbox2')
+        }));
+      });
+      for(var i=0; i<nodes.length;i++){
+        var tmp = nodes[i]['target']['attributes'][0]['nodeValue'];
+        permIDs += tmp+',';
+      }
+
+      permIDs = permIDs.substring(0,permIDs.length-1);
+      var res=request({
+        service:'P0002265',
+        REQ_USER_CODE:userCode,
+        REQ_PERM_IDS:permIDs
+      },'权限设置');
+      unAllSelect($('#priPermTree'));
+      $('#USER_ID').combogrid('clear');
+      clearUserInfo();
+      $('#priPermTree').tree('collapseAll');
+    }
+    function clearUserInfo(){
+      $('#userId').text('');
+      $('#userName').text('');
+      $('#userType').text('');
+      $('#userSta').text('');
+      $('#openDate').text('');
+      $('#officeTel').text('');
+      $('#mobile').text('');
+      $('#email').text('');
+      $('#userImg').attr({src:'../../frame/images/frame/user-head-big.png'});
+    }
+  </script>
+</head>
+<body>
+<div class="kui-layout" kui-options="fit:true" style="padding:0px">
+  <div kui-options="region:'north'" title="用户授权管理" style="height:75px;">
+    <table style="margin-top:5px">
+      <tr>
+        <td class="form-label" style="width:100px">用户名称：</td>
+        <td>
+          <select id="USER_ID" style="width:150px"></select>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div kui-options="region:'center'">
+    <div class="kui-layout" kui-options="fit:true">
+      <div kui-options="region:'west'" title="用户权限信息" style="border:1px #CAE3F9 solid;height: auto;width:420px">
+        <div class="kui-tabs" kui-options="border:false">
+          <div title="权限设置">
+            <div style="overflow-y: auto;">
+              <ul id="priPermTree" style="height: 245px;"></ul>
+            </div>
+            <div style="text-align: right;padding: 5px">
+              <a class="kui-linkbutton"
+                 kui-options="iconCls:'icon-save'" onclick="saveUserPerm($('#priPermTree'))">提交</a>
+            </div>
+          </div>
+          <div title="已有权限" style="height: 300px;overflow-y: auto;">
+            <ul id="pubPermTree" style="height: 245px;"></ul>
+          </div>
+        </div>
+
+      </div>
+      <div kui-options="region:'center'" title="用户信息" style="border:1px #CAE3F9 solid;padding-left: 25px;padding-top: 20px;height: auto">
+        <table style="font-size: 13px">
+          <tr style="height: 45px">
+            <td>用户编号：</td>
+            <td id="userId" style="width: 140px"></td>
+            <td colspan="2" rowspan="2">
+              <div style="border: 1px solid #ccc;height: 80px;width: 76px;line-height: 80px;text-align: center">
+                <img height="80px" width="76px" id="userImg" alt="用户头像" src="../../frame/images/frame/user-head-big.png" />
+              </div>
+            </td>
+          </tr>
+          <tr style="height: 45px">
+            <td>用户名称：</td>
+            <td id="userName"></td>
+          </tr>
+          <tr style="height: 45px">
+            <td>用户类型：</td>
+            <td id="userType"></td>
+            <td>用户状态：</td>
+            <td id="userSta"></td>
+          </tr>
+          <tr style="height: 45px">
+            <td>开户日期：</td>
+            <td id="openDate"></td>
+            <td>办公电话：</td>
+            <td id="officeTel"></td>
+          </tr>
+          <tr style="height: 45px">
+            <td>移动电话：</td>
+            <td id="mobile"></td>
+            <td>电子邮箱：</td>
+            <td id="email"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+</div>
+
+</body>
+</html>

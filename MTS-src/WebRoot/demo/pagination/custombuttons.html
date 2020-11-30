@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Custom Pagination Buttons - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Custom Pagination Buttons</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>The customized buttons can be append to page bar.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<div class="kui-pagination" kui-options="total:114,buttons:buttons" style="border:1px solid #ddd;"></div>
+	<script>
+		var buttons = [{
+			iconCls:'icon-add',
+			handler:function(){
+				alert('add');
+			}
+		},{
+			iconCls:'icon-cut',
+			handler:function(){
+				alert('cut');
+			}
+		},{
+			iconCls:'icon-save',
+			handler:function(){
+				alert('save');
+			}
+		}];
+	</script>
+</body>
+</html>

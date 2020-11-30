@@ -1,0 +1,306 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>window - jQuery kjaxUI帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>窗口</h3>
+
+<p>继承$.fn.panel.defaults，使用$.fn.window.defaults重载默认值。</p>
+
+<img src="images/window_ex.png"/>
+
+
+
+<h4>依赖关系</h4>
+
+<ul>
+
+	<li>一般拖动</li>
+
+	<li>缩放</li>
+
+	<li>控制面板</li>
+
+</ul>
+
+
+
+<h4>使用方法</h4>
+
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="win"</span> <span style="color:red">iconCls</span><span style="color:blue">="icon-save"</span> <span style="color:red">title</span><span style="color:blue">="My Window"&gt;</span>
+	  Window Content
+	<span style="color:blue">&lt;/div&gt;</span>
+</pre>
+
+<pre class="code">
+	$(<span style="color:blue">'#win'</span>).window({
+		width:<span style="color:red">600</span>,
+		height:<span style="color:red">400</span>,
+		modal:true
+	});
+	$(<span style="color:blue">'#win'</span>).window(<span style="color:blue">'close'</span>);	<span style="color:green">//关闭窗口</span>
+
+</pre>
+<xmp class="code" >
+你也可以对窗口进行布局，下面的例子将窗口分成两部分：北部和中部
+	<div id="win" class="kui-window" title="My Window" style="width:600px;height:400px"  
+			data-options="iconCls:'icon-save',modal:true">  
+		<div class="kui-layout" data-options="fit:true">  
+			<div data-options="region:'north',split:true" style="height:100px"></div>  
+			<div data-options="region:'center'">  
+				The Content.  
+			</div>  
+		</div>  
+	</div> 
+</xmp>
+
+<h4>属性</h4>
+
+<p>继承控制面板，以下是窗口独有的或者重载控制面板的方法。</p>
+
+<table class="doc-table">
+
+<tr>
+
+<th style="width:140px"><strong>名称</strong></th>
+<th style="width:110px"><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+
+
+
+</tr>
+
+<tr>
+
+<td>title（标题）</td>
+
+<td>string（字符串）</td>
+
+<td>窗口的标题。</td>
+
+
+
+<td>New Window</td>
+
+</tr>
+
+<tr>
+
+<td>collapsible（可折叠）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否显示折叠按钮。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>minimizable（最小化）</td>
+
+<td>boolean（布尔型）</td>
+
+
+
+<td>定义是否显示最小化按钮。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>maximizable（最大化）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否显示最大化按钮。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>closable（关闭）</td>
+
+
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否显示关闭按钮。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>closed（已关闭）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否在初始化组件时关闭（隐藏）窗口</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>zIndex（堆叠顺序）</td>
+
+<td>number（数字）</td>
+
+<td>窗口的堆叠顺序，从第一个窗口的zIndex值开始递增。</td>
+
+<td>9000</td>
+
+</tr>
+
+<tr>
+
+<td>draggable（可拖放）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义窗口是否可以被拖放。</td>
+
+
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>resizable（可缩放）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义窗口是否可以被缩放。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>shadow（阴影）</td>
+
+<td>boolean（布尔型）</td>
+
+
+
+<td>如果设置为true，显示窗口的时候将显示阴影。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>inline（行内显示）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义如何布局窗口，如果设置为true，窗口将显示在它的父容器中，否则将显示在所有元素的上面。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>modal（遮罩）</td>
+
+
+
+<td>boolean（布尔型）</td>
+
+<td>定义窗口是否带有遮罩效果。</td>
+
+<td>false</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>事件</h4>
+
+<p>事件继承控制面板。</p>
+
+
+
+<h4>方法</h4>
+
+<p>方法继承控制面板，以下是窗口独有的方法。</p>
+
+<table class="doc-table">
+
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+
+<tr>
+
+<td>window</td>
+
+<td>none</td>
+
+<td>返回窗口对象。</td>
+
+</tr>
+<tr>
+
+<td>resize</td>
+
+<td>param</td>
+
+<td>设置窗口大小。</td>
+
+</tr>
+<tr>
+
+<td>move</td>
+
+<td>param</td>
+
+<td>移动窗口位置。</td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>jquery.autocomplete自动完成插件</title>
+<style>
+html,body{font-size:13px; font-family:Arial,宋体;}
+pre{background:#ccc; line-height:20px;font-family:Arial,宋体;}
+xmp{line-height:20px;font-family:Arial,宋体;}
+span{font-weight:bold;}
+.mydiv{ width:300px; height:200px; background:#ccc;padding:20px;}
+</style>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript">
+	
+	function dis(){
+		$("#txtUser").autocomplete('enable');
+		}
+		
+			function diss(){
+		$("#txtUser").autocomplete('disable');
+		}
+		
+     $(document).ready(function()
+	 {
+     kuiload('autocomplete',function(){
+     	  		$("#txtUser").autocomplete({
+			selectFirst:true,
+			minLength:2,
+			max: 12,
+			source:'/ajax?returnType=json',
+			sourceFiled:'code',
+			req:[{'service': 'service1',
+            'name':""}],
+			autoFill: false,
+			mustMatch: false,
+			matchContains: false,
+			scrollHeight: 500,
+		})
+     	})
+
+		
+	 });
+</script>
+
+</head>
+
+<body>
+   <p><span>输入姓名：</span> <span><input type="text" id="txtUser" style="width:300px;"/></span></p>
+   
+   	 <div id="c">
+		<a  id="c1" class="kui-linkbutton" onclick=dis()>Save</a>
+		<a  class="kui-linkbutton" onclick=diss()>Close</a>
+	</div>
+</body>
+</html>

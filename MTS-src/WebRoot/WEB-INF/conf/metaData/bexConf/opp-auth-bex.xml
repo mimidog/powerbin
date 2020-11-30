@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+  <!-- 人员功能授权 start-->
+  <bex bex_code="userPermissionQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermissionQuery">
+  	<param para_code="OBJ_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="consPermQuer" bex_type="4" page_mode="2" bex_cate="1" attr1="consPermQuer">
+  	<param para_code="PERM_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="consQuer" bex_type="4" page_mode="2" bex_cate="1" attr1="consQuer">
+  	<param para_code="CONS_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="permConsQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="permConsQuery">
+  	<param para_code="PERM_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="consPermQueryData" bex_type="4" page_mode="2" bex_cate="1" attr1="consPermQueryData">
+  	<param para_code="PERM_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	<param para_code="OBJ_TYPE" para_name="对象类型"  data_type="12" para_type="0" def_val="-1"/>
+  	<param para_code="OBJ_ID" para_name="对象编号"  data_type="12" para_type="0" def_val="-1"/>
+  	<param para_code="ASS_TYPE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	<param para_code="AUTH_TYPE" para_name="授权类型"  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="rolePremQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="rolePremQuery">
+  	<param para_code="PERM_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="operPremQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="operPremQuery">
+  	<param para_code="PERM_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="postPremQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="postPremQuery">
+  	<param para_code="PERM_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="orgPremQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="orgPremQuery">
+  	<param para_code="PERM_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  
+  <bex bex_code="premQueryAll" bex_type="4" page_mode="2" bex_cate="1" attr1="premQueryAll">
+  	<param para_code="PERM_TYPE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="owerPremQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="owerPremQuery">
+  	<param para_code="OBJ_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	<param para_code="OBJ_TYPE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  </bex>
+  <bex bex_code="insertAuthorize" bex_type="4" page_mode="2" bex_cate="1" attr1="insertAuthorize"> 
+  </bex>
+  <bex bex_code="consUpdateData" bex_type="4" page_mode="2" bex_cate="1" attr1="consUpdateData">
+  </bex>
+  <bex bex_code="updateObjPrem" bex_type="4" page_mode="2" bex_cate="1" attr1="updateObjPrem">
+  	</bex>
+  <!-- 人员功能授权 end-->
+  
+  <!-- 临时权限授权 start -->
+  	<bex bex_code="agentPermQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="agentPermQuery">
+  		<param para_code="USER_CODE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  		<param para_code="AGENT_USER_CODE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	</bex>
+  	<bex bex_code="frameAgentPermQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="frameAgentPermQuery">
+  		<param para_code="MENU_PUR" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	</bex>
+  	<bex bex_code="agentPermInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="agentPermInsert">
+  	</bex>
+  	<bex bex_code="agentPermDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="agentPermDelete">
+  	</bex>
+  	<bex bex_code="agentUserPermDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="agentUserPermDelete">
+  	</bex>
+
+	<!-- 临时权限授权 end -->
+	
+	<!-- 人员数据授权 start -->
+	<bex bex_code="sysServiceFunQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysServiceFunQuery">
+  	</bex>
+  	<bex bex_code="dictItemQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="dictItemQuery">
+  		<param para_code="ROLE_NAME" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	</bex>
+  	<bex bex_code="detDataPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="detDataPerm">
+  	</bex>
+  	<bex bex_code="insertDataPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="insertDataPerm">
+  	</bex>
+  	<bex bex_code="selectDataPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="selectDataPerm">
+  		<param para_code="EMPOWER_TYPE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  		<param para_code="EMPOWER_OBJ_TYPE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  		<param para_code="PERM_SET_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	</bex>
+  	<bex bex_code="deleteDataPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="deleteDataPerm">
+  	</bex>
+  	<bex bex_code="dataPremSelectQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="dataPremSelectQuery">
+  		<param para_code="OBJ_TYPE" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  		<param para_code="OBJ_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+  	</bex>
+	<!-- 人员数据授权 end -->
+	<!-- 人员特殊授权 start -->
+	<bex bex_code="specialPremQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="specialPremQuery">
+  		<param para_code="USER_CODE" para_name="人员名称"  data_type="12" para_type="0" def_val="-1"/>
+  	</bex>
+	<!-- 人员特殊授权 end -->
+	<bex bex_code="menuAuthQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="menuAuthQuery">
+		<param para_code="MENU_ID" para_name="菜单编号"  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="buttonRowPermQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="buttonRowPermQuery">
+	</bex>
+	
+	<!-- 权限集设置 -->
+	<bex bex_code="permisionSetQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="permisionSetQuery">
+		<param para_code="PERM_SET_NAME" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+	
+	<bex bex_code="funSetQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="funSetQuery">
+		<param para_code="PERM_SET_ID" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    
+    <bex bex_code="permSetDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="permSetDelete">
+	</bex>
+    
+    <bex bex_code="sysServDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="sysServDelete">
+	</bex>
+	<bex bex_code="sysServiceListQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="sysServiceListQuery">
+	</bex>
+    
+    <bex bex_code="permSetInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="permSetInsert">
+	</bex>
+    
+    <bex bex_code="funSetInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="funSetInsert">
+	</bex>
+    
+    <bex bex_code="funSetDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="funSetDelete">
+	</bex>
+    
+    <bex bex_code="permSetUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="permSetUpdate">
+	</bex>
+    
+    <!-- 数据权限管理对象 -->
+    <bex bex_code="dataPermMrgObjQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="dataPermMrgObjQuery">
+		<param para_code="CTRL_OBJ_NAME" para_name=""  data_type="12" para_type="0" def_val="-1"/>
+    </bex>
+    <bex bex_code="delDataPermMrgObj" bex_type="4" page_mode="2" bex_cate="1" attr1="delDataPermMrgObj">
+	</bex>
+    <bex bex_code="insertDataPermMrgObj" bex_type="4" page_mode="2" bex_cate="1" attr1="insertDataPermMrgObj">
+	</bex>
+    <bex bex_code="updateDataPermMrgObj" bex_type="4" page_mode="2" bex_cate="1" attr1="updateDataPermMrgObj">
+	</bex>
+    <bex bex_code="premQueryAllByUser" bex_type="4" page_mode="2" bex_cate="1" attr1="premQueryAllByUser">
+	</bex>
+	<bex bex_code="userPermInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermInsert">
+	</bex>
+	<bex bex_code="userPermDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermDelete">
+	</bex>
+	<!-- by  20160420 把attr1的属性由userPermInsertBatch改为userPermInsertBatch_MSSQL-->
+	<bex bex_code="userPermInsertBatch" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermInsertBatch_MSSQL">
+	</bex>
+	<bex bex_code="userPermConQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermConQuery">
+	</bex>
+	<bex bex_code="userPermConDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermConDelete">
+	</bex>
+	<bex bex_code="userPermConInsertBatch" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermConInsertBatch">
+	</bex>
+	<bex bex_code="userPermConInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermConInsert">
+	</bex>
+	
+	<bex bex_code="userPermConInsertByDefault" bex_type="4" page_mode="2" bex_cate="1" attr1="userPermConInsertByDefault">
+	</bex>
+	<bex bex_code="getUserCompPerm" bex_type="4" page_mode="2" bex_cate="1" attr1="getUserCompPerm">
+	</bex>
+</bexs>
+ 

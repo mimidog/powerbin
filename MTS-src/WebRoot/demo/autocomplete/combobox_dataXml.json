@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><requests><![CDATA[
+[
+{"service":{"flag":"1","serialNo":""},
+"message":[{"flag":"1","prompt":"成功","rows":"2","times":"100ms"},{"flag":"1","prompt":"成功","rows":"2","times":"100ms"}],
+"config":{},
+"data":[[{"text":"heyz1","id":"1234","desc":"Write once, run anywhere"},{"text":"heyz2","id":"12345","desc":"One of the programming languages designed for the Common Language Infrastructure"}],[{"text":"heyz","id":"123"},{"text":"heyz","id":"123"}]]
+},
+{"service":{"flag":"1","serialNo":""},
+"message":[{"flag":"1","prompt":"成功","rows":"2","times":"100ms"},{"flag":"1","prompt":"成功","rows":"2","times":"100ms"}],
+"config":{},
+"data":[[{"text":"heyz","id":"123"},{"text":"heyz","id":"123"}],[{"text":"heyz","id":"123"},{"text":"heyz","id":"123"}]]
+}
+]
+]]></requests>

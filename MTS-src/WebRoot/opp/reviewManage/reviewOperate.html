@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>待办任务管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../opp/js/general-util.js"></script>
+<script type="text/javascript">
+var rs;
+window.$ready=function () {
+    using(["datagrid", "combobox"], function () {
+        var conf = $.builder.format.datagrid($.parser.getConfigs(["UWK_ruTaskMrg"]));
+        conf['columns'][0].push({ title:'操作', field:'showPicture', formatter:'function(value,row,index){return set_optCol(row);}'});
+        $("#UWK_ruTaskMrg").datagrid(conf);
+        ajaxRequest({
+            async:false,
+            req:[
+                {
+                	service:'P0001001',
+                    USER_STA:'1'
+                }
+            ],
+            func:function (data) {
+                var flagSta = data[0]['message'][0].flag;
+                if (flagSta == '0') {
+                    rs = data[0]['data'][0];
+                }else{
+                    $.message.alert('获取用户列表错误');
+                    return;
+                }
+            },
+            error:function () {
+                $.message.alert('获取用户列表错误');
+                return;
+            }
+        });
+
+        if (rs.length > 0) {
+            $("#touser").combobox({
+                width:'140',
+                editable:false,
+                valueField:'USER_CODE',
+                textField:'USER_NAME',
+                data:rs
+            });
+        }
+
+    });
+
+}
+
+function set_optCol(row) {
+    var picCol = '&nbsp;<a href="javascript:void(0)" onclick="showFlowPicture(\'' + row.processInstanceId + '\');" >查看监控流程图</a>';
+    return picCol;
+}
+function showFlowPicture(value) {
+    using('dialog', function () {
+        $('#flowPicture_showDiv').attr('src', '../../kjdp_modeler?method=graphHistoryProcessInstance&processInstanceId=' + value);
+        $('#flowPicture_showDialog').dialog({
+            title:'流程图',
+            width:850,
+            height:420,
+            modal:true,
+            buttons:[
+                {text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#flowPicture_showDialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    });
+}
+function filterBpmData(data) {
+    if (data.length > 0 && data[0].bpmData.length > 0) {
+        var tempdata = [];
+        tempdata[0] = data[0].bpmData;
+        data[0].data = tempdata;
+        data[0].message = data[0].bpmMessage;
+
+        return  {
+            total:data[0]['message'][0]['rows'],
+            rows:data[0]['data'][0]
+        };
+    } else {
+        return  {
+            total:[],
+            rows:0
+        }
+
+    }
+}
+
+function dueTask() {
+    var row = $('#UWK_ruTaskMrg').datagrid('getSelected');
+    if (row == null) {
+        $.message.alert('请选择一条记录！');
+        return;
+    } else {
+        var taskId = row['taskId'];
+        var processDefinitionId = row['processDefinitionId'];
+        var PROCESS_KEY = processDefinitionId.substring(0, processDefinitionId.indexOf(':'));
+        ajaxRequest({
+                    async:false,
+                    req:[
+                        {
+                            service:'P0005001',
+                            BPM_OP:'getFormKey',
+                            PROCESS_KEY:PROCESS_KEY,
+                            taskId:taskId
+                        }
+                    ],
+                    func:function (data) {
+                        var viewId = data[0]["BPM_DATA"][0].formKey;
+                        $('#formDiv').empty();
+                        var ipt = $('<form class="kui-form" id=' + viewId + '></form>');
+                        $('#formDiv').append(ipt);
+                        $.parser.director($("#formDiv"));
+                        $("#" + viewId).find('input[name=taskId]').val(taskId);
+                        $("#" + viewId).find('input[name=BPM_OP]').val("completeTask");
+                        $('#formDialog').dialog({
+                            title:'填写表单',
+                            modal:true,
+                            draggable:true,
+                            width:500,
+                            height:300,
+                            buttons:[
+                                {
+                                    text:'提交',
+                                    iconCls:'icon-save',
+                                    handler:function () {
+                                        $("#" + viewId).form('submit', {
+                                            success:function (data) {
+                                                var flagSta = data[0]['bpmMessage'][0].flag;
+                                                if (flagSta == '0') {
+                                                    $.message.alert('处理成功');
+                                                    $('#UWK_ruTaskMrg').datagrid('reload');
+                                                    $('#formDialog').dialog('close');
+                                                } else {
+                                                    $.message.alert("处理失败");
+                                                    return;
+                                                }
+                                            },
+                                            error:function () {
+                                                $.message.alert('处理失败');
+                                                return;
+                                            }
+                                        });
+                                    }
+                                },
+                                {
+                                    text:'取消',
+                                    iconCls:'icon-cancel',
+                                    handler:function () {
+                                        $('#formDialog').dialog('close');
+                                    }
+                                }
+                            ]
+                        });
+                        $("#formDiv").show();
+                    },
+            error:function () {
+                $.message.alert("获取表单错误");
+            }
+        });
+    }
+}
+
+function claimTask() {
+    var row = $('#UWK_ruTaskMrg').datagrid('getSelected');
+    if (row == null) {
+        $.message.alert('请选择一条记录！');
+        return;
+    } else {
+        var taskId = row['taskId'];
+        var processDefinitionId = row['processDefinitionId'];
+        var PROCESS_KEY = processDefinitionId.substring(0, processDefinitionId.indexOf(':'));
+        ajaxRequest({
+            async:false,
+            req:[
+                {
+                    service:'P0005001',
+                    BPM_OP:'claimTask',
+                    PROCESS_KEY:PROCESS_KEY,
+                    taskId:taskId
+                }
+            ],
+            func:function (data) {
+                var flagSta = data[0]['bpmMessage'][0].flag;
+                if (flagSta == '0') {
+                    $.message.alert('认领成功');
+                    $('#UWK_ruTaskMrg').datagrid('reload');
+                } else {
+                    $.message.alert("认领失败");
+                    return;
+                }
+            },
+            error:function () {
+                $.message.alert('认领失败')
+                return;
+            }
+        });
+    }
+}
+
+function showProcessDetail() {
+    using(["flow"], function () {
+        $('#step').empty();
+        var titles = '报销申请，二级部门审批，财务审批';//这里的逗号要跟下面split的逗号格式一致
+        var titleStr = titles.split("，");
+        var dataArray = [];
+        var src = "formTest.html";  //需要传回来动态解析
+        for (var i = 0; i < titleStr.length; i++) {
+            dataArray.push({title:titleStr[i], url:src, img:"step-icon-pic" + (i + 1) + ".png"});
+        }
+        $('#step').flow({
+            stepNum:titleStr.length,
+            panelHeight:"200", //修改的是外面的框
+            frameHeight:"190", //修改的是form表单内容的高度
+            showIndex:2,
+            imgPath:"../../frame/images/steps/",
+            data:dataArray
+        });
+        $('#step').flow("resize", 780);
+        $('#step').flow("hideToolButtom");   //hideToolButtom showToolButtom
+        $('#flow_showDetailWindow').window('open');
+    });
+}
+</script>
+</head>
+<body>
+<table id="CHK_log" func="getView"></table>
+<div id="delegateTaskDialog" style="display: none;">
+    <div id="delegateForm"></div>
+    </form>
+</div>
+<div id="flowPicture_showDialog" style="display:none;">
+    <iframe id="flowPicture_showDiv" scrolling="auto" frameborder="0" allowtransparency="true"
+            style="width:100%;height:99%;"></iframe>
+</div>
+<div id="formDialog">
+    <div id="formDiv" style="display: none"></div>
+</div>
+<div id="flow_showDetailWindow" class="kui-window" style=" width:800px;height:450px;padding:0px"
+     kui-options=" title:'流程步骤',modal:true,closed:true,collapsible:false">
+    <div id="step"></div>
+</div>
+</body>
+</html>

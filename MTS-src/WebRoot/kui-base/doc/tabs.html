@@ -1,0 +1,727 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>tabs - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>选项卡切换</h3>
+
+<p>使用$.fn.tabs.defaults重载默认值。</p>
+
+<img src="images/tabs.png"/>
+
+
+
+<h4>依赖关系</h4>
+
+<ul>
+
+	<li>控制面板</li>
+
+	<li>链接按钮</li>
+
+</ul>
+
+
+
+<h4>使用方法</h4>
+
+<h5>创建选项卡</h5>
+
+<p>1. 使用HTML标签创建选项卡</p>
+
+<p>
+
+使用HTML标签创建选项卡十分简单，不需要写任何javascript代码，只需要&lt;div&gt;标签引用'kjaxui-panel'类。每个选项卡面板都可以使用闭合的&lt;div&gt;标签对创建，使用方法跟创建控制面板一样。
+
+</p>
+
+<pre class="code">
+	<span style="color:blue;">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="tt"</span> <span style="color:red">class</span><span style="color:blue">="kjaxui-tabs"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red;">500px;</span><span style="color:blue">height:</span><span style="color:red">250px;</span><span style="color:blue;">"&gt;</span>
+		<span style="color:blue;">&lt;div</span> <span style="color:red">title</span><span style="color:blue">="Tab1"</span> <span style="color:red">style</span><span style="color:blue">="padding:</span><span style="color:red;">20px;</span><span style="color:blue;">display:none;"&gt;</span>
+			tab1
+		<span style="color:blue;">&lt;/div&gt;</span>
+		<span style="color:blue;">&lt;div</span> <span style="color:red">title</span><span style="color:blue">="Tab2"</span> <span style="color:red">closable</span><span style="color:blue">="true"</span> <span style="color:red">style</span><span style="color:blue">="overflow:auto;padding:</span><span style="color:red;">20px;</span><span style="color:blue">display:none;"&gt;</span>
+			tab2
+		<span style="color:blue;">&lt;/div&gt;</span>
+		<span style="color:blue;">&lt;div</span> <span style="color:red">title</span><span style="color:blue">="Tab3" iconCls="icon-reload"</span> <span style="color:red">closable</span><span style="color:blue">="true"</span> <span style="color:red">style</span><span style="color:blue">="padding:</span><span style="color:red">20px;</span><span style="color:blue;">display:none;"&gt;</span>
+			tab3
+		<span style="color:blue;">&lt;div&gt;</span>
+	<span style="color:blue;">&lt;/div&gt;</span>
+</pre>
+
+
+
+<p>2. 使用脚本创建选项卡</p>
+
+<p>下面的代码演示如何使用脚本创建选项卡，当该选项卡被选择时将会触发'onSelect'事件。</p>
+
+<pre class="code">
+	$(<span style="color:blue;">'#tt'</span>).tabs({
+		border:<span style="color:red;">false</span>,
+		onSelect:function(title){
+			alert(title+' is selected');
+		}
+	});
+</pre>
+
+
+
+<h5>添加一个选项卡面板</h5>
+
+<pre class="code">
+	<span style="color:green">//添加一个选项卡面板</span>
+	$(<span style="color:blue;">'#tt'</span>).tabs(<span style="color:blue;">'add'</span>,{
+		title:<span style="color:blue;">'New Tab'</span>,
+		content:<span style="color:blue;">'Tab Body'</span>,
+		closable:<span style="color:red">true</span>
+	});
+</pre>
+
+<h5>获取当前被选择的选项卡</h5>
+
+<pre class="code">
+	<span style="color:green;">//获取当前被选择的选项卡以及相应的选项卡对象</span>
+	<span style="color:blue;">var</span> pp = $(<span style="color:blue;">'#tt'</span>).tabs(<span style="color:blue;">'getSelected'</span>);
+	<span style="color:blue">var</span> tab = pp.panel(<span style="color:blue">'options'</span>).tab;    <span style="color:green;">//相应的选项卡对象</span>
+</pre>
+
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>width（宽度）</td>
+
+
+
+<td>number（数字）</td>
+
+<td>选项卡所在容器（控制面板）的宽度。</td>
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>height（高度）</td>
+
+<td>number（数字）</td>
+
+<td>选项卡所在容器（控制面板）的高度。</td>
+
+<td>auto</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>plain（简洁模式）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>如果设置为true，将不显示控制面板背景。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>fit（铺满浏览器）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>设置为true时，选项卡的大小将铺满它所在的容器（浏览器）。</td>
+
+
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>border（边框）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>如果设置true，将显示选项卡所在容器（控制面板）的边框。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>scrollIncrement（滚动增量）</td>
+
+<td>number（数字）</td>
+
+
+
+<td>选项卡滚动条每次滚动的像素值。</td>
+
+<td>100</td>
+
+</tr>
+
+<tr>
+
+<td>scrollDuration（滚动时间）</td>
+
+<td>number（数字）</td>
+
+<td>每次滚动持续的时间，单位为毫秒。</td>
+
+<td>400</td>
+
+</tr>
+
+<tr>
+
+<td>tools（工具栏）</td>
+
+
+
+<td>array（数组）,selector</td>
+
+<td>控制面板右侧的工具栏，每个工具选项都跟链接按钮一样。<br>
+	工具栏放在array（数组）中。
+<pre>
+<span style="color:green">
+$('#tt').tabs({
+  tools:[{
+    iconCls:'icon-add',
+    handler:function(){
+      alert('add')
+    }
+  },{
+   iconCls:'icon-save',
+   handler:function(){
+     alert('save')
+   }
+  }]
+});
+</span>
+</pre>
+
+定义工具栏在已经存在的&lt;div&gt; 标签上。
+
+<pre>
+<span style="color:green">
+$('#tt').tabs({
+  tools:'#tab-tools'
+});
+&lt;div id="tab-tools"&gt;
+  &lt;a href="#" class="kjaxui-linkbutton" plain="true" iconCls="icon-add"&gt;&lt;/a&gt;
+  &lt;a href="#" class="kjaxui-linkbutton" plain="true" iconCls="icon-save"&gt;&lt;/a&gt;
+&lt;/div&gt;
+</span>
+</pre>
+</td>
+
+<td>null</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>事件</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>onLoad</td>
+
+<td>panel</td>
+
+<td>当一个选项卡完成ajax远程载入对象时触发。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>onSelect</td>
+
+<td>title,index</td>
+
+<td>当用户选择一个选项卡时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeClose</td>
+
+<td>title,index</td>
+
+<td>在一个选项卡被关闭之前触发，返回false将取消关闭。</td>
+
+</tr>
+
+<tr>
+
+<td>onClose</td>
+
+
+
+<td>title,index</td>
+
+<td>在用户关闭一个选项卡面板后触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onAdd</td>
+
+<td>title,index</td>
+
+<td>在一个选项卡面板被添加后触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onUpdate</td>
+
+
+
+
+
+<td>title,index</td><td>在一个选项卡面板被更新后触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onContextMenu</td>
+
+<td>e,title,index</td>
+
+<td>在一个选项卡面板被鼠标右键单击后触发。</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>options</td>
+
+<td>none</td>
+
+
+
+<td>返回选项卡属性对象。</td>
+
+</tr>
+
+<tr>
+
+<td>tabs</td>
+
+<td>none</td>
+
+<td>返回所有的选项卡面板。</td>
+
+</tr>
+
+<tr>
+
+<td>resize</td>
+
+<td>none</td>
+
+<td>重置选项卡容器（控制面板）大小并且自动布局。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>add</td>
+
+<td>options</td>
+
+<td>添加一个新的选项卡面板，options参数是一个可以配置的对象，查看选项卡控制面板属性获取更多信息。<br>
+	<span style="color:green">$('#tt').tabs('add',{<br>
+	  title: 'new tab',<br>
+	  selected: false<br>
+	  //...<br>
+	});</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td>close</td>
+
+<td>which</td>
+
+<td>关闭一个选项卡面板，which包括title或index参数，表示哪个选项卡将被关闭。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>getTab</td>
+
+<td>which</td>
+
+<td>获取特定的选项卡面板名称。which包括title或index。</td>
+
+</tr>
+
+<tr>
+
+<td>getTabIndex</td>
+
+<td>which</td>
+
+<td>获取特定的选项卡面板索引。which包括title或index。</td>
+
+</tr>
+
+<tr>
+
+<td>getSelected</td>
+
+<td>none</td>
+
+<td>获取被选择的选项卡面板名称。<br>
+	<span style="color:green">
+	var tab = $('#tt').tabs('getSelected');<br>
+	var index = $('#tt').tabs('getTabIndex',tab);<br>
+	alert(index);	<br>
+	</span>
+	</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>select</td>
+
+<td>which</td>
+
+<td>选择一个选项卡面板。which包括title或index。</td>
+
+</tr>
+
+<tr>
+
+<td>exists</td>
+
+<td>which</td>
+
+<td>验证一个特定的选项卡面板是否存在。which包括title或index。</td>
+
+</tr>
+
+<tr>
+
+<td>update</td>
+
+
+
+<td>param</td>
+
+<td>更新特定的选项卡面板，param参数包含2个属性:<br />
+
+tab: 将被更新的选项卡。<br />
+<br>
+options: 选项卡相关配置项。<br/>
+	<span style="color:green">
+		var tab = $('#tt').tabs('getSelected');  // 获取选中的tab<br/>
+		$('#tt').tabs('update', {<br>
+			tab: tab,<br>
+			options: {<br>
+				title: 'New Title',<br>
+				href: 'get_content.php'<br>  
+			}<br>
+		});<br>
+		<br>
+		var tab = $('#tt').tabs('getSelected');  <br>
+		tab.panel('refresh', 'get_content.php');<br>
+	
+	</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>enableTab</td>
+
+
+
+<td>which</td>
+
+<td>启用选项卡，which 指选项卡的index或title <br>
+  <span style="color:green">$('#tt').tabs('enableTab', 1);	// 禁用第二个选项卡<br></span>
+  <span style="color:green">$('#tt').tabs('enableTab', 'Tab2');	//禁用标题Tab2的选项</span></td>
+
+</tr>
+
+<tr>
+
+<td>disableTab</td>
+
+
+
+<td>which</td>
+
+<td>禁用选项卡，which 指选项卡的index或title <br>
+  <span style="color:green">$('#tt').tabs('enableTab', 1);	// 禁用第二个选项卡<br></span>
+  <span style="color:green">$('#tt').tabs('enableTab', 'Tab2');	//禁用标题Tab2的选项</span></td>
+
+</tr>
+
+</table>
+
+
+
+<h4>选项卡面板</h4>
+
+<p>选项卡面板属性在控制面板组件中定义，以下是一些常用属性。</p>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>id</td>
+
+
+
+<td>string（字符串）</td>
+
+<td>选项卡面板的id属性。</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>title（标题）</td>
+
+
+
+<td>string（字符串）</td>
+
+<td>选项卡面板的标题。</td>
+
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>content（内容）</td>
+
+<td>string（字符串）</td>
+
+<td>选项卡面板的内容。</td>
+
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>href（超链接）</td>
+
+
+
+<td>string（字符串）</td>
+
+<td>从超链接载入远程内容到选项卡 面板。</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>cache（缓存）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>设置为true将缓存选项卡面板，当href（超链接）属性被设置时有效。</td>
+
+<td>true</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>iconCls（图标CSS类）</td>
+
+<td>string（字符串）</td>
+
+<td>一个显示选项卡面板标题图标的CSS类。</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>width（宽度）</td>
+
+<td>number（数字）</td>
+
+<td>选项卡面板的宽度。</td>
+
+
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>height（高度）</td>
+
+<td>number（数字）</td>
+
+<td>选项卡面板的高度。</td>
+
+<td>auto</td>
+
+</tr>
+
+</table>
+
+
+
+<p>一些额外属性</p>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+
+
+<td>closable（可关闭）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>当这是为true时，选项卡面板将会显示一个关闭按钮，点击该按钮将关闭选项卡。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>selected（默认选项卡）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>当设置为true时，将会默认显示该选项卡下的内容。</td>
+
+<td>false</td>
+
+
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

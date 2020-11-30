@@ -1,0 +1,534 @@
+﻿<script language="javascript">
+$(function(){
+	$('div.ui-frame-title-ch').html(frameConfig.sysName);
+    $('div.ui-frame-title-en').html(frameConfig.engName);
+    $('div.ui-frame-title-split').html("/");
+	$("body").removeClass('ui-body-background');
+	initLayout();
+    initMenus();
+    $(window).resize(initLayout);
+});
+function initLayout() {   
+    var w = $(window).width();
+    var h = $(window).height();	
+    var ct = h - 131;
+	if($('div.ui-frame-top','#layout-h').is(":hidden")){
+		ct += 94;
+	}
+    var sw = $("div.ui-frame-search").width();	
+    if (w < frameConfig.minWidth) {
+        $("div.ui-frame-menu-container").width(frameConfig.minWidth - sw - 65);
+        $("div.ui-frame-content").width(frameConfig.minWidth-1); 
+		$("div.ui-frame-top,div.ui-frame-menu,div.ui-frame-sub-menu,iframe:visible").width(900);
+    } else {
+        $("div.ui-frame-menu-container").width(w - sw - 65);
+ 		$("div.ui-frame-content").width(w-1);
+        $("div.ui-frame-top,div.ui-frame-menu,div.ui-frame-sub-menu,iframe:visible").width('100%');
+    }
+    if (ct < frameConfig.minHeight) {
+        ct = frameConfig.minHeight;
+        $('html').css({
+            "overflow-y": "auto"
+        });
+    } else {
+        $('html').css({
+            "overflow-y": "hidden"
+        });
+    }
+    $("div.ui-frame-content,div.ui-frame-other-menus").height(ct);
+}
+
+function initMenus() {
+    //------------@author 朱庭乐 解决菜单重复加载问题
+    /*if(typeof menuData != 'undefined'){
+        drawMenus(menuData);
+        bindMenusEvent();
+        return;
+    }*/
+	//--------------------------------------
+    ajaxRequest({
+    	url:'ajax?returnType=json',
+        //是否将返回结果进行转换, 默认'xml',不转化，直接返回服务器返回的xml 对象，如设置为'json', 将把xml 对象转换为json		 
+        func: function(data) {
+            drawMenus(processData(data));
+            bindMenusEvent();
+        },
+        //回调函数
+        req: [{
+            "service": "frameSelectMenu",
+            "MENU_STA": "1"
+        }]
+    });
+};
+
+function processData(data) {
+    var menuData = {
+        firMenus: [],
+        secMenus: [],
+        othMenus: []
+    };
+    var tmp = data[0]['data'][0];
+    for (var i = 0; i < tmp.length; i++) {
+        var menuLvl = tmp[i]['MENU_LVL'];
+        var menu = {
+            menuId: tmp[i]['MENU_ID'],
+            parId: tmp[i]['PAR_MENU'],
+            menuName: tmp[i]['MENU_NAME'],
+            menuLvl: menuLvl,
+            menuIco: tmp[i]['MENU_ICO'],
+            menuLink: tmp[i]['MENU_LINK']
+        }
+        if (menuLvl.length == 2) {
+			menuData.firMenus.push(menu);
+		}
+        else if(menuLvl.length == 4) {
+			menuData.secMenus.push(menu);
+		}
+        else{
+			menu["other"] = true; 
+			menuData.othMenus.push(menu);		
+		}
+    }
+    return menuData;
+}
+
+function drawMenus(data) {
+    drawFirMenus(data.firMenus);
+    drawSecMenus(data.secMenus);
+	$.data(document.body, 'frame-othMenus',data.othMenus);
+}
+
+function drawFirMenus(data) {
+    var menus = ["<ul>"];
+    for (var i = 0; i < data.length; i++) {
+        menus.push("<li class=\"ui-frame-menu-node\" id=\"sys-menu-");
+        menus.push(data[i].menuId);
+        menus.push("\" nodeId=\"");
+        menus.push(data[i].menuId);
+        menus.push("\" parNode=\"");
+        menus.push(data[i].parId);
+		menus.push("\" link=\"");
+        menus.push(data[i].menuLink);
+        menus.push("\"><div class=\" ui-frame-menu-left\"></div><div class=\"ui-frame-menu-center\"><span class=\"ui-frame-menu-ico ");
+        menus.push(data[i].menuIco);
+        menus.push("\"></span>");
+        menus.push(data[i].menuName);
+        menus.push("</div><div class=\"ui-frame-menu-right\"></div><div class=\"ui-frame-menu-split\"></div></li>");
+    }
+    menus.push("</ul>");
+    $(menus.join('')).prependTo("div.ui-frame-menu-container");
+}
+
+function drawSecMenus(data) {
+    var menus = ["<ul>"];
+    for (var i = 0; i < data.length; i++) {
+        menus.push("<li class=\"ui-frame-submenu-node\" id=\"sys-menu-");
+        menus.push(data[i].menuId);
+        menus.push("\" nodeId=\"");
+        menus.push(data[i].menuId);
+        menus.push("\" parNode=\"");
+        menus.push(data[i].parId);
+        menus.push("\" link=\"");
+        menus.push(data[i].menuLink);
+        menus.push("\"><div class=\"ui-frame-submenu\" >");
+        menus.push(data[i].menuName);
+        menus.push("</div>");
+        if(!data[i].menuLink){
+        	menus.push("<div class=\"ui-frame-submenu-other\"></div>");
+        }
+        menus.push("<div class=\"ui-frame-submenu-split\"></div></li>");
+    }
+    menus.push("</ul>");
+    $(menus.join('')).prependTo("div.ui-frame-sub-menu");
+}
+
+function bindMenusEvent() {
+    $("div.ui-frame-menu-container ul").on("click",
+    function(e, dom) {
+        menuClick(e, dom)
+    });
+    $("div.ui-frame-menu-container li:eq(0)").trigger("click", ['div.ui-frame-menu-container li:eq(0)']);
+    $("div.ui-frame-sub-menu ul").on("click",
+    function(e, dom) {
+        subMenuClick(e, dom)
+    });
+    $("div.ui-frame-switch").on("click",
+    function(e) {
+        toggleSwitchPage(e)
+    });
+    var s = $(".ui-frame-menu-container li").length;
+    var c = $(".ui-frame-menu-container").width();
+    if (s * 148 > c) {
+        $("<div class=\"ui-frame-menu-ico ui-frame-menu-next\"></div>").appendTo("div.ui-frame-menu").on('click', menuNext);
+        $("<div class=\"ui-frame-menu-ico ui-frame-menu-prev\"></div>").appendTo("div.ui-frame-menu").on('click', menuPrev).hide();
+    }
+    
+    //给三级菜单添加弹出特效，在这里将参数固定好，在其它地方要实现时只需要触发其mouseenter或mouseleave事件即可
+    var timeout;
+    var $otherMenus = $('div.ui-frame-other-menus').mouseenter(function(){
+        $otherMenus.show().stop().animate({left : 0}, 200);
+        if(timeout){
+        	clearTimeout(timeout);
+        }
+        timeout = setTimeout(function(){
+        	$otherMenus.mouseleave();
+        	timeout = undefined;
+        },1800);
+    }).mousemove(function(){
+    	if(timeout){
+    		clearTimeout(timeout);
+    		timeout = undefined;
+    	}
+    }).mouseleave(function(){
+    	$otherMenus.stop().animate({left : -179}, 200);
+    }).animate({opacity:0.88}, 0);
+}
+function menuClick(e, dom) {
+    var t = dom || e.target;
+    var jqD = $(t);
+    if (!jqD.is("li")) {
+        jqD = jqD.parentsUntil("ul", "li");
+    }
+    if (!jqD.hasClass("ui-frame-menu-selected")) {
+        $("div.ui-frame-menu-container li").removeClass("ui-frame-menu-selected");
+        $("div.ui-frame-sub-menu li").hide();
+        jqD.addClass("ui-frame-menu-selected");
+		if(jqD.attr("link")){
+		     var data = {
+				menuId: jqD.attr('nodeId'),
+				menuLink: jqD.attr('link'),
+				parId: jqD.attr('parNode'),
+				menuName: jqD.text()
+			};
+			openTabPage(data);
+			return ;
+		}
+        $("div.ui-frame-sub-menu li[parNode='" + jqD.attr("nodeId") + "']").show();
+		$('div.ui-frame-other-menus').hide();
+		$('div.ui-frame-content').width($(window).width());
+		$("iframe:visible", "div.ui-frame-content").hide();
+    }
+}
+function subMenuClick(e, dom) {
+    var t = dom || e.target;
+    var jqD = $(t);
+    if (!jqD.is("li")) {
+        jqD = jqD.parentsUntil("ul", "li");
+    }
+    if (!jqD.hasClass("ui-frame-submenu-selected")) {
+        var data = {
+            menuId: jqD.attr('nodeId'),
+            menuLink: jqD.attr('link'),
+            parId: jqD.attr('parNode'),
+            menuName: jqD.text()
+        };
+		$('div.ui-frame-other-menus').width(0).hide();
+		$('div.ui-frame-content').width($(window).width());
+		if(!data.menuLink){
+			addOtherMenus(data);
+		}else{
+			openTabPage(data);
+			$("div.ui-frame-sub-menu li").removeClass("ui-frame-submenu-selected");
+			$("div.ui-frame-sub-menu li[nodeId=\"" + data.menuId + "\"]").addClass("ui-frame-submenu-selected");
+		}
+    }
+    //二级菜单点击时如果已经处于点击状态，需要将他的三级子菜单动态展示出来
+    else {
+    	var parnode = $('div.ui-frame-other-menus').find('.ui-frame-othmenu-node:first').attr('parnode');
+    	if(parnode == $(t).parent().attr('nodeid')){
+    		$('div.ui-frame-other-menus').mouseenter();
+    	}
+    }
+}
+
+function addOtherMenus(options){
+	var othDom = $("div.ui-frame-other-menus").show();
+	othDom.width(180);
+	othDom.children().remove();
+// 	$("div.ui-frame-content").width($(window).width()-181);
+	$("div.ui-frame-content").width($(window).width()); //@author 朱庭乐 @function 重置宽度时不需要减去三级子菜单的宽度
+	$("iframe:visible", "div.ui-frame-content").hide();
+	$("div.ui-frame-sub-menu li").removeClass("ui-frame-submenu-selected");
+    $("div.ui-frame-sub-menu li[nodeId=\"" + options.menuId + "\"]").addClass("ui-frame-submenu-selected");
+	var data = $.data(document.body, "frame-othMenus");
+	
+// 	var domArr = ["<div style=\"width:16px;height:16px;margin:1px 0 0 181px;background:url(kui-base/themes/icons/left.png);position:absolute;\"></div><ul>"]; //@author 朱庭乐 菜单隐藏之后添加小图标
+	var domArr = ["<ul>"];
+	var ct = 0;
+	for(var i = 0; i < data.length;i++){	    
+		if(data[i]["parId"]==options["menuId"]){
+		    
+			domArr.push("<li class=\"ui-frame-othmenu-node ");
+			if(ct%2==1){
+				domArr.push("ui-frame-othmenu-node-alt");
+			}
+			domArr.push("\" id=\"sys-menu-");
+			domArr.push(data[i].menuId);
+			domArr.push("\" nodeId=\"");
+			domArr.push(data[i].menuId);
+			domArr.push("\" parNode=\"");
+			domArr.push(data[i].parId);
+			domArr.push("\" link=\"");
+			domArr.push(data[i].menuLink);
+			domArr.push("\"><div class=\"ui-frame-icons icons-arrow-right\" style=\"float:left;width:10px;\"></div><div class=\"ui-frame-othmenu\" >");
+			domArr.push(data[i].menuName);
+			domArr.push("</div><div style=\"clear:both\"></div></li>");
+			ct++;
+		}
+	}
+	domArr.push("</ul>");
+	$("div.ui-frame-other-menus").append(domArr.join('')).mouseenter();//触发弹出事件 @author 朱庭乐
+	$("div.ui-frame-other-menus ul").on("click",
+    function(e, dom) {
+        othMenuClick(e, dom)
+    });
+}
+function othMenuClick(e, dom){
+	var t = dom || e.target;
+    var jqD = $(t);
+	if (!jqD.is("li")) {
+        jqD = jqD.parentsUntil("ul", "li");
+    }
+    if (jqD.is("li")) {
+        if (!jqD.hasClass("ui-frame-othmenu-node-selected")) {
+			var data = {
+				menuId: jqD.attr('nodeId'),
+				menuLink: jqD.attr('link'),
+				parId: jqD.attr('parNode'),
+				menuName: jqD.text(),
+				other: true
+			};
+			if(data.menuLink){
+				openTabPage(data);
+				$("div.ui-frame-other-menus li").removeClass("ui-frame-othmenu-node-selected");
+				$("div.ui-frame-other-menus li[nodeId=\"" + data.menuId + "\"]").addClass("ui-frame-othmenu-node-selected");
+			}
+		}
+    }
+}
+
+function menuNext(e) {
+    var l = $("div.ui-frame-menu-container ul").offset().left;
+    var w = 148;
+    var s = $("div.ui-frame-menu-container li").length;
+    var c = $("div.ui-frame-menu-container").width();
+    if (c > (s * 148 + l - c)) {
+        $("div.ui-frame-menu-next").hide();
+    }
+    $("div.ui-frame-menu-container ul").animate({
+        left: (l - c) + 'px',
+        top: '0px'
+    },
+    300);
+    $("div.ui-frame-menu-prev").show();
+}
+function menuPrev(e) {
+    var l = $("div.ui-frame-menu-container ul").offset().left;
+    var w = 148;
+	var c = $("div.ui-frame-menu-container").width();
+    if (l + c >= 0) {
+        if (l + c >= 0) $("div.ui-frame-menu-prev").hide();
+        c = -l;
+    }
+    $("div.ui-frame-menu-container ul").animate({
+        left: (l + c) + 'px',
+        top: '0px'
+    },
+    500);
+    $("div.ui-frame-menu-next").show();
+}
+
+function openTabPage(options) {
+    if (!options || !options.menuLink) return false;
+    var pages = $.data(document.body, 'frame-pages');
+    var pageId = 'sys-menu-' + options.menuId;
+    var container = $("div.ui-frame-content");
+    if (!pages) pages = {};
+    if (!pages[pageId]) {
+        pages[pageId] = options;
+        var content = "<iframe id=\"" + pageId + "\" nodeId=\"" + options.menuId + "\" scrolling=\"auto\" frameborder=\"0\" allowtransparency=\"true\"  style=\"width:100%;height:100%;overflow:auto;\"></iframe>";
+        container.append(content);
+        $("iframe#" + pageId, container).attr("src", options.menuLink);
+    }
+    $("iframe:visible", container).hide();
+    $("iframe#" + pageId, container).show();
+    
+    $.data(document.body, 'frame-pages', pages);
+}
+function closeTabPage(nodeId) {
+    var pageId = 'sys-menu-' + nodeId;
+    var container = $("div.ui-frame-content");
+    $("iframe#" + pageId, container).attr('src', '').remove();
+    var pages = $.data(document.body, 'frame-pages');
+	$("div.ui-frame-sub-menu li[nodeId=\"" + nodeId + "\"]").removeClass("ui-frame-submenu-selected");
+    delete pages[pageId];
+    $.data(document.body, 'frame-pages', pages);
+}
+function toggleSwitchPage(e) {
+    var target = $("div.ui-frame-switch");
+    var offset = target.offset();
+    var pages = $.data(document.body, 'frame-pages');
+    var pos = {
+        top: offset.top + 26,
+        left: offset.left
+    }
+    if (!pages) return;
+    var container = $("div.ui-frame-switch-list");
+    var wrapList = function(data, ct) {
+        var list = ["<ul>"]
+        for (i in data) {
+            list.push("<li nodeId=\"");
+            list.push(data[i].menuId);
+            list.push("\"");
+            list.push("><div class=\"ui-frame-switch-list-text\">");
+            list.push(data[i].menuName);
+            list.push("</div><div class=\"ui-frame-icons ui-frame-switch-close\"></div></li>");
+        }
+        list.push("</ul>");
+        $(list.join('')).appendTo(ct);
+
+    }
+    if (container.is(":visible")) {
+        container.hide();
+        $("div.ui-frame-icons", "div.ui-frame-switch").removeClass("icons-arrow-up");
+    } else {
+        $("div.ui-frame-icons", "div.ui-frame-switch").addClass("icons-arrow-up");
+        if (container.length == 0) {
+            container = $("<div class=\"ui-frame-switch-list\"></div>");
+            container.css(pos).appendTo("body");
+            wrapList(pages, container);
+            var ctInterVal = null;
+            container.on('click',
+            function(e) {
+                var tar = $(e.target);
+				if(tar.hasClass('ui-frame-switch-close')){
+					tar = tar.parent('li');
+					closeTabPage(tar.attr('nodeId'));
+					container.find("ul").remove();
+					wrapList(pages, container);
+					tar = $('li:eq(0)', container);
+					
+					tar.addClass("selected");	
+					var data = pages['sys-menu-' + tar.attr('nodeId')];
+                    openTabPage(data);					
+					$("div.ui-frame-sub-menu li").removeClass("ui-frame-submenu-selected");
+					if(data){
+						$("div.ui-frame-sub-menu li[nodeId=\"" + data.menuId + "\"]").addClass("ui-frame-submenu-selected");
+					}
+					if(tar.length==0){
+						$('div.ui-frame-other-menus').width(0).hide();
+						$('div.ui-frame-content').width($(window).width());
+					}
+				}else{
+					tar = tar.is("li")?tar:tar.parent('li');
+				}
+                if (tar.is("li")) {
+                    $('li', container).removeClass("selected");
+                    tar.addClass("selected");
+					var data = pages['sys-menu-' + tar.attr('nodeId')];
+					if(data["other"]){
+						var pData = {menuId:data.parId};
+						addOtherMenus(pData);
+						$("div.ui-frame-sub-menu li").removeClass("ui-frame-submenu-selected");
+						$("div.ui-frame-sub-menu li[nodeId=\"" + data.parId + "\"]").addClass("ui-frame-submenu-selected");
+						$("div.ui-frame-other-menus li[nodeId=\"" + data.menuId + "\"]").addClass("ui-frame-othmenu-node-selected");
+					}else{						
+						$('div.ui-frame-other-menus').width(0).hide();
+						$('div.ui-frame-content').width($(window).width());
+						$("div.ui-frame-sub-menu li").removeClass("ui-frame-submenu-selected");
+						$("div.ui-frame-sub-menu li[nodeId=\"" + data.menuId + "\"]").addClass("ui-frame-submenu-selected");
+					}
+                    openTabPage(data);
+					container.hide();
+                }
+            }).on('mouseleave',
+            function(e) {
+                if (ctInterVal == null) {
+                    ctInterVal = window.setInterval(function() {
+                        container.hide();
+                        $("div.ui-frame-icons", "div.ui-frame-switch").removeClass("icons-arrow-up");
+                        window.clearInterval(ctInterVal);
+                        ctInterVal = null;
+                    },
+                    1000);
+                }
+            }).on('mouseenter',
+            function(e) {
+                if (ctInterVal != null) {
+                    window.clearInterval(ctInterVal);
+                    ctInterVal = null;
+                }
+            });
+        } else {
+            container.find("ul").remove();
+			container.css(pos);
+            wrapList(pages, container);
+            container.show();
+        }
+        var selectedId = $("iframe:visible", "div.ui-frame-content").attr("nodeId");
+        $("li[nodeId=\"" + selectedId + "\"]", container).addClass("selected");
+    }
+
+}
+function toggleExpand(){
+	var handle = $("#frameTopExpand");
+	if(handle.hasClass("icons-expand")){
+		$('div.ui-frame-top,div.ui-frame-menu','#layout-h').show();
+		initLayout();
+		handle.removeClass("icons-expand");
+	}else{
+		$('div.ui-frame-top,div.ui-frame-menu','#layout-h').hide();	
+		initLayout();		
+		handle.addClass("icons-expand");
+	}
+}
+</script>
+<div id="layout-h" class="ui-frame-layout-h">
+	<div class="ui-frame-background ui-frame-top">
+		<div class="ui-frame-logo">
+			<div class="ui-frame-logo-img"></div>
+			<div class="ui-frame-title-ch"></div>
+			<div class="ui-frame-title-split"></div>
+			<div class="ui-frame-title-en"></div>
+		</div>
+		<div class="ui-frame-tools">
+			<div class="ui-frame-tools-ico ui-frame-homepage"  onclick="">返回首页</div>
+			<div class="ui-frame-tools-ico ui-frame-user"></div>
+			<div class="ui-frame-tools-ico ui-frame-help">帮助</div>
+			<div class="ui-frame-tools-ico ui-frame-message">消息</div>
+			<div class="ui-frame-tools-ico ui-frame-style" onclick="setThemes()">风格</div>
+			<div class="ui-frame-tools-ico ui-frame-setting" onclick="setting()">设置</div>
+			<div class="ui-frame-tools-ico ui-frame-lock" onclick="lock()">锁定</div>
+			<div class="ui-frame-tools-ico ui-frame-exit" onclick="logout()">退出</div>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+	<div>
+		<div class="ui-frame-background ui-frame-menu">
+			<div class="ui-frame-menu-container"></div>
+			<div class="ui-frame-search">
+				<div class="ui-frame-background ui-frame-search-left"></div>
+				<div class="ui-frame-background ui-frame-search-center">
+					<input type="text" name="frame-search" value="请输入关键字...">
+					<div class="ui-frame-tools-ico ui-frame-ico-search"></div>
+				</div>
+				<div class="ui-frame-background ui-frame-search-right"></div>
+			</div>
+		</div>
+		<div class="ui-frame-background ui-frame-sub-menu">		
+			<div id="frameTopExpand" class="ui-frame-icons icons-collapse" onclick="toggleExpand()"></div>
+			<div class="ui-frame-switch">
+				<div class="ui-frame-background ui-frame-switch-left"></div>
+				<div class="ui-frame-background ui-frame-switch-center">
+					<div class="ui-frame-switch-text">工作区切换</div>
+					<div class="ui-frame-icons icons-arrow-down"></div>
+				</div>
+				<div class="ui-frame-background ui-frame-switch-right"></div>				
+			</div>			
+		</div>
+		
+	</div>
+	<div class="ui-frame-other-menus" style="position: absolute;left: -180px;"></div>
+	<!-- 主界面 工作区内容 -->
+	<div class="ui-frame-content"></div>
+</div>

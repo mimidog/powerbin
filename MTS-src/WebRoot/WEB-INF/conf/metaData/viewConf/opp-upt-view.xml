@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<!--布局管理view start  -->
+    <view id="UPT_layoutMrg" render="datagrid" title="布局管理">
+        <conf service="P0004105" noheader="true"  pageSize="10" colNumbers="2" onLoadSuccess="dataLoad" onClickRow="onClickMainTableRow" script="../../frame/js/combo-icon.js"/>
+        <qry_item field="LAYOUT_ID" title="布局编号" type="input" edt_validType="zint[8]"/>
+        <qry_item field="LAYOUT_NAME" title="布局名称" type="input" edt_validType="val[0,64]"/>
+		<!--
+        <btn_item text="新增" service="P0004102" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0004103" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0004104" handler="commonDelete" iconCls="icon-remove"/>
+		-->
+        <col_item field="LAYOUT_ID" title="布局编号" sortType="number" width="80" type="input" primary_key="1" edit_flag="3" edt_validType="number[8,0]"/>
+		<col_item field="LAYOUT_NAME" title="布局名称" width="100" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="ICON" title="布局图标" width="120" type="combo"/>               
+    </view>
+    
+    <view id="UPT_boardMrg" render="datagrid" title="板块管理">
+        <conf service="P0004111" noheader="true"  pageSize="10" colNumbers="2"/>
+		<!--
+        <btn_item text="新增" service="P0004112" handler="addRow" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0004113" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0004114" handler="commonDelete" iconCls="icon-remove"/>
+		-->
+        <col_item field="BOARD_ID" title="板块编号" width="80" type="input" primary_key="1" edit_flag="3" edt_validType="number[8,0]"/>
+		<col_item field="LAYOUT_ID" title="布局编号" width="80" type="input" edt_required="true" edit_flag="2"/>
+        <col_item field="BOARD_CLASS" title="板块样式" width="120" type="input" edt_required="true" edt_validType="length[1,256]"/>                  
+        <col_item field="BOARD_ORD" title="取值顺序" width="80" type="input" edt_required="true" edt_validType="zint[4]"/>                  
+    </view>
+    <!--布局管理view end  -->
+    
+    <!--容器管理view start  -->
+    <view id="UPT_contMrg" render="datagrid" title="容器管理">
+        <conf service="P0004125"  pageSize="10" colNumbers="2" fit="true"/>
+        <qry_item field="CONT_ID" title="容器编号" type="input" edt_validType="zint[8]"/>
+        <qry_item field="CONT_NAME" title="容器名称" type="input" edt_validType="val[0,64]"/>
+		
+		<!--
+        <btn_item text="新增" service="P0004122" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="删除" service="P0004124" handler="commonDelete" iconCls="icon-remove"/>
+        <btn_item text="修改" service="P0004123" handler="commonModify" iconCls="icon-edit"/>
+		-->
+		 
+        <col_item field="CONT_ID" title="容器编号" sortType="number" width="80" type="input" primary_key="1" edit_flag="3"/>
+        <col_item field="CONT_TYPE" title="容器类型" width="150" type="combobox" edit_flag="1" edt_dict="CONT_TYPE" edt_required="true"/>
+        <col_item field="CONT_NAME" title="容器名称" width="300" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <!-- 
+        <col_item field="DEF_WIDTH" title="初始宽度" width="80" type="input" edt_required="true" edt_validType="zint[8]"/>                  
+        <col_item field="DEF_HEIGHT" title="初始高度" width="80" type="input" edt_required="true" edt_validType="zint[8]"/>  
+        -->                
+    </view>
+    <!--容器管理view end  -->
+    
+    <!--组件管理view start  -->
+    <view id="UPT_compMrg" render="datagrid" title="组件管理" script="../../frame/js/combo-icon.js,../../opp/js/comp-manage.js">
+        <conf service="P0004135"  onClickRow="onClickMainTableRow" onLoadSuccess="dataLoad" pageSize="10" colNumbers="2" noheader="true" border="false"/>
+        <qry_item field="COMP_ID" title="组件编号" type="input" edt_validType="zint[8]"/>
+        <qry_item field="COMP_TYPE" title="组件类型" type="combobox" edt_dict="COMP_TYPE" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="COMP_NAME" title="组件名称" type="input" edt_validType="val[0,64]"/>
+
+        <btn_item text="新增" service="P0004132" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" handler="g_comp.compModifyClick" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0004134" handler="commonDelete" iconCls="icon-remove"/>
+
+        <col_item field="COMP_ID" title="组件编号" sortType="number" width="80" type="input" primary_key="1" edit_flag="3" edt_validType="val[1,32]"/>
+        <col_item field="COMP_TYPE" title="组件类型" width="100" edt_width="132" type="combobox" edt_dict="COMP_TYPE" edt_required="true"/>
+        <col_item field="COMP_NAME" title="组件名称" width="100" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="ICON" title="组件图标" width="150" type="combo"/>
+        
+        <!--
+        <col_item field="DEF_WIDTH" title="初始宽度" sortType="number" width="80" type="input" edt_required="true" edt_validType="zint[8]"/>                  
+        <col_item field="DEF_HEIGHT" title="初始高度" sortType="number" width="80" edt_width="130" type="input" edt_required="true" edt_validType="zint[8]"/>
+        <col_item field="WIN_WIDTH" title="窗口宽度" width="80" type="input" edt_required="true" edt_validType="zint[8]"/>                  
+        <col_item field="WIN_HEIGHT" title="窗口高度" width="80" edt_width="130" type="input" edt_required="true" edt_validType="zint[8]"/>
+        -->
+        <col_item field="LINK_PAGE" title="链接页面" width="300" type="input" colspan="4" edt_width="300" edt_required="true" edt_validType="len[1,256]"/> 
+    </view>
+    
+    <view id="UPT_compParamMrg" render="datagrid" title="组件参数管理">
+        <conf service="P0004141"  pageSize="10" colNumbers="4" noheader="true" border="false"/>
+        <btn_item text="新增" service="P0004142" handler="addRow" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0004143" handler="commonModify" onFormInitSuccess="g_comp.compParamFormInitSuccess" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0004144" handler="commonDelete" iconCls="icon-remove"/>
+
+		<col_item field="COMP_ID" title="组件编号" width="80" type="input" edit_flag="2" edt_required="true"/>
+        <col_item field="PARAM_CODE" title="参数代码" width="100" type="input" edit_flag="1" edt_required="true" edt_validType="numchar[1,64]"/>
+        <col_item field="PARAM_NAME" title="参数名称" width="100" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="INPUT_TYPE" title="输入类型" width="100" type="combobox" edt_dict="INPUT_TYPE" edt_required="true" edt_onClear="g_comp.inputTypeClear" edt_onSelect="g_comp.inputTypeSelect"/>
+        <col_item field="VAL_TYPE" title="取值类型" width="100" type="combobox" edt_dict="OPP_VAL_TYPE" edt_onClear="g_comp.valTypeClear" edt_onSelect="g_comp.valTypeSelect"/>
+        <col_item field="VAL_PARAM" title="取值参数" width="120" type="input" edt_validType="val[0,128]"/>
+        <col_item field="VAL_FIELD" title="取值标识" width="100" type="input" edt_validType="val[0,128]"/>
+        <col_item field="TEXT_FIELD" title="文本标识" width="100" type="input" edt_validType="val[0,128]"/>
+    </view>
+    <!--组件管理view end  -->
+</views>

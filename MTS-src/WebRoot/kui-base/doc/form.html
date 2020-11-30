@@ -1,0 +1,356 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>form - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>表单</h3>
+
+<h4>使用方法</h4>
+
+<pre class="code">
+  <span style="color:blue">&lt;form</span> <span style="color:red">id</span><span style="color:blue">="ff"</span> <span style="color:red">method</span><span style="color:blue">="post"&gt;</span>
+    ...
+  <span style="color:blue">&lt;/form&gt;</span>
+</pre>
+
+<p>使用ajax方式提交表单</p>
+
+<pre class="code">
+
+  $(<span style="color:blue">'#ff'</span>).form("ajaxSubmit",{
+  	bex:...,
+  	onSubmit: function(){
+  		<span style="color:green">//进行表单验证</span>
+  		<span style="color:green">//如果返回false阻止提交</span>
+  	},
+  	success:function(data){
+  		alert(data)
+  	}
+  });
+</pre>
+
+<p>普通方式提交</p>
+
+<pre class="code">
+  <span style="color:green">//调用表单插件的'htmlSubmit'方法提交</span>
+  $(<span style="color:blue">'#ff'</span>).form(<span style="color:blue">'htmlSubmit'</span>, {
+  	bex(url):...,
+  	onSubmit: function(){
+  		<span style="color:green">//进行表单验证</span>
+  		<span style="color:green">//如果返回false阻止提交</span>
+  	},
+  	success:function(data){
+  		alert(data)
+  	}
+  });
+</pre>
+
+
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+</tr>
+
+<tr>
+
+<td>url（目标网址）</td>
+
+<td>string（字符串）</td>
+
+<td>表单提交的目标网址，在调用提交表单的方法时，请传入一个url。</td>
+
+<td>null</td>
+
+</tr>
+<tr>
+
+<td>bex</td>
+
+<td>string（字符串）</td>
+
+<td>表单提交的目标bex，在调用提交表单的方法时，请传入一个bex。</td>
+
+<td>null</td>
+
+</tr>
+<tr>
+
+<td>loadUrl（请求加载表单数据url）</td>
+
+<td>string（字符串）</td>
+
+<td>请求加载表单数据url</td>
+
+<td>null</td>
+
+</tr>
+<tr>
+
+<td>loadBex（请求加载表单数据bex）</td>
+
+<td>string（字符串）</td>
+
+<td>请求加载表单数据bex</td>
+
+<td>null</td>
+
+</tr>
+<tr>
+
+<td>queryParam</td>
+
+<td>object(对象)</td>
+
+<td>传入加载表单数据bex的参数</td>
+
+<td>{}</td>
+
+</tr>
+<tr>
+
+<td>preload</td>
+
+<td>boolean</td>
+
+<td>form表单是否需要初始化表单数据，需要配置true，反之false</td>
+
+<td>false</td>
+
+</tr>
+</table>
+
+
+
+<h4>事件</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>onSubmit</td>
+
+<td>none</td>
+
+
+
+<td>在表单提交之前触发，返回false将阻止表单提交。</td>
+
+</tr>
+
+<tr>
+
+<td>success</td>
+
+<td>data</td>
+
+<td>当表单成功提交时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeLoad</td>
+
+<td>param</td>
+
+<td>在发送载入远程数据请求之前触发，返回false将取消请求。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>onLoadSuccess</td>
+
+<td>data</td>
+
+<td>在表单数据被载入时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onLoadError</td>
+
+<td>none</td>
+
+<td>在载入表单数据发生错误时触发。</td>
+
+</tr>
+
+
+
+</table>
+
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+
+
+</tr>
+
+<tr>
+
+<td>htmlSubmit</td>
+
+<td>options</td>
+
+<td>执行表单提交，options参数是一个包含以下属性的对象：<br />
+
+url：表单提交的目标网址<br />
+bex: 表单提交的目标bex<br />
+onSubmit：在表单提交之前执行的回调函数<br />
+
+success: 在表单成功提交后执行的回调函数<br />
+<br/>
+下面这个例子展示了如何提交一个有效的表单以及避免重复提交表单。
+<pre style="color:green">
+$.messager.progress();	// 显示进度条
+$('#ff').form('htmlSubmit', {
+	bex: ...,
+	onSubmit: function(){
+		var isValid = $(this).form('validate');
+		if (!isValid){
+			$.messager.progress('close');	// hide progress bar while the form is invalid
+		}
+		return isValid;	// 返回false将停止表单的提交
+	},
+	success: function(){
+		$.messager.progress('close');	// 表单提交成功时隐藏进度条。
+	}
+});
+</pre>
+
+</td>
+
+</tr>
+<tr>
+
+<td>ajaxSubmit</td>
+
+<td>options</td>
+
+<td>执行表单提交，options参数是一个包含以下属性的对象：<br />
+
+url：表单提交的目标网址<br />
+bex: 表单提交的目标bex<br />
+onSubmit：在表单提交之前执行的回调函数<br />
+
+success: 在表单成功提交后执行的回调函数<br />
+<br/>
+下面这个例子展示了如何提交一个有效的表单以及避免重复提交表单。
+<pre style="color:green">
+$.messager.progress();	// 显示进度条
+$('#ff').form('ajaxSubmit', {
+	bex: ...,
+	onSubmit: function(){
+		var isValid = $(this).form('validate');
+		if (!isValid){
+			$.messager.progress('close');	// hide progress bar while the form is invalid
+		}
+		return isValid;	// 返回false将停止表单的提交
+	},
+	success: function(){
+		$.messager.progress('close');	// 表单提交成功时隐藏进度条。
+	}
+});
+</pre>
+
+</td>
+
+</tr>
+<tr>
+
+<td>load</td>
+
+
+
+<td>data</td>
+
+<td>载入记录填充表单。<br />
+从配置的loadUrl或loadBex加载表单数据，后面不带参数默认为配置的queryParam参数，如果后面带参数则会覆盖queryParam中的参数。<br/>
+<pre style="color:green">
+$('#ff').form('load');	// load from loadurl or bex
+
+$('#ff').form('load',{id:1});
+
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>clear</td>
+
+<td>none</td>
+
+<td>清除表单数据</td>
+
+</tr>
+
+<tr>
+
+<td>validate</td>
+
+
+
+<td>none</td>
+
+<td>执行表单域验证，如果全部表单域有效返回true，该方法与表单验证插件一起使用。</td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+	<atom atom_code="setNextTrdDayAtom" atom_name="设置下一个交易"
+		  atom_method="setNextTrdDay"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		   attr1="" attr2=""/>
+
+	<atom atom_code="mtsclearBDBBackupAtom" atom_name="执行mts数据库清算前的备份"
+		  atom_method="mtsclearBDBBackup"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="mtsSyscutBDBBackupAtom" atom_name="执行mts数据库日切前的备份"
+		  atom_method="mtsSyscutBDBBackup"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryOperaterPostLvlChgAtom" atom_name="查询操作员岗位变更申请信息"
+		  atom_method="queryOperaterPostLvlChg"  atom_class="com.szkingdom.business.mts.OperaterInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addOperaterPostLvlChgAppAtom" atom_name="新增操作员岗位变更申请信息"
+		  atom_method="addOperaterPostLvlChgApp"  atom_class="com.szkingdom.business.mts.OperaterInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="auditOperaterPostLvlChgAtom" atom_name="审核操作员岗位变更申请信息"
+		  atom_method="auditOperaterPostLvlChg"  atom_class="com.szkingdom.business.mts.OperaterInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryMtsSubscrbieInfoAtom" atom_name="查询行情订阅信息"
+		  atom_method="queryMtsSubscrbieInfo"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addMtsSubscrbieInfoAtom" atom_name="新增行情订阅信息"
+		  atom_method="addMtsSubscrbieInfo"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modMtsSubscrbieInfoAtom" atom_name="修改行情订阅信息"
+		  atom_method="modMtsSubscrbieInfo"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delMtsSubscrbieInfoAtom" atom_name="删除行情订阅信息"
+		  atom_method="delMtsSubscrbieInfo"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryMtsSerialAtom" atom_name="查询序列号配置信息"
+		  atom_method="queryMtsSerial"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addMtsSerialAtom" atom_name="新增序列号配置信息"
+		  atom_method="addMtsSerial"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modMtsSerialAtom" atom_name="修改序列号配置信息"
+		  atom_method="modMtsSerial"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delMtsSerialAtom" atom_name="删除序列号配置信息"
+		  atom_method="delMtsSerial"  atom_class="com.szkingdom.business.mts.SysConfigManager"
+		  attr1="" attr2=""/>
+</atoms>
+ 

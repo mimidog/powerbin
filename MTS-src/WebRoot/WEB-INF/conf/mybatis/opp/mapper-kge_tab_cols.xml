@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="generator.dao.KgeTabColsMapper">
+	<insert id="KGE_TAB_COLSInsert" parameterType="map">
+		insert into KGE_TAB_COLS (COL_ID, TAB_NAME, COL_NAME,
+		COL_CNAME, DATA_TYPE, DATA_LENGTH,
+		CREATED, ISNULL, COL_DEFAULT,
+		ISPK,INPUTTYPE,REQ_DICT,ISQRYITEM,ORDERNO )
+		values (#{colId,jdbcType=VARCHAR}, UPPER('${tabName}'),
+		UPPER('${colName}'),
+		#{colCname,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{dataLength,jdbcType=DECIMAL},
+		GETDATE(), #{isnull,jdbcType=DECIMAL},
+		#{colDefault,jdbcType=VARCHAR},
+		#{ispk,jdbcType=DECIMAL}, #{inputType,jdbcType=VARCHAR}, #{reqDict,jdbcType=VARCHAR},
+		#{isQryItem,jdbcType=VARCHAR},#{orderNo,jdbcType=DECIMAL})
+	</insert>
+	<update id="KGE_TAB_COLSUpdate" parameterType="hashmap">
+		update KGE_TAB_COLS
+		<set>
+			<if test="tabName != null">
+				TAB_NAME = UPPER('${tabName}'),
+			</if>
+			<if test="colName != null">
+				COL_NAME = UPPER('${colName}'),
+			</if>
+			<if test="colCname != null">
+				COL_CNAME = #{colCname,jdbcType=VARCHAR},
+			</if>
+			<if test="dataType != null">
+				DATA_TYPE = #{dataType,jdbcType=VARCHAR},
+			</if>
+			<if test="dataLength != null">
+				DATA_LENGTH = #{dataLength,jdbcType=DECIMAL},
+			</if>
+			<if test="created != null">
+				CREATED =  CONVERT(DATE,#{created}),
+			</if>
+			<if test="isnull != null">
+				ISNULL = #{isnull,jdbcType=DECIMAL},
+			</if>
+			<if test="colDefault != null">
+				COL_DEFAULT = #{colDefault,jdbcType=VARCHAR},
+			</if>
+			<if test="ispk != null">
+				ISPK = #{ispk,jdbcType=DECIMAL},
+			</if>
+			<if test="inputType != null">
+				INPUTTYPE = #{inputType,jdbcType=DECIMAL},
+			</if>
+			<if test="reqDict != null">
+				REQ_DICT = #{reqDict,jdbcType=DECIMAL},
+			</if>
+			<if test="isQryItem != null">
+				ISQRYITEM = #{isQryItem,jdbcType=DECIMAL},
+			</if>
+			<if test="orderNo != null">
+                ORDERNO = #{orderNo,jdbcType=DECIMAL},
+            </if>
+		</set>
+		where COL_ID = '${colId}'
+	</update>
+	
+	<update id="KGE_TAB_COLSTnameUpdate" parameterType="hashmap">
+        update KGE_TAB_COLS
+        <set>
+            <if test="tabName != null">
+                TAB_NAME = UPPER('${tabName}'),
+            </if>
+        </set>
+        where TAB_NAME = UPPER('${oldTabName}')
+    </update>
+    
+	<select id="KGE_TAB_COLSQuery" parameterType="hashmap"
+		resultType="hashmap">
+		select COL_ID "colId", TAB_NAME "tabName", COL_NAME "colName",
+		COL_CNAME "colCname", DATA_TYPE "dataType",
+		DATA_LENGTH "dataLength", CONVERT(VARCHAR,CREATED, 112) "created", ISNULL "isnull",
+		COL_DEFAULT "colDefault", ISPK "ispk", INPUTTYPE "inputType", REQ_DICT "reqDict",
+		ISQRYITEM "isQryItem", ORDERNO "orderNo"
+		from KGE_TAB_COLS c where 1=1
+		<if test="colId != '' and colId != null">
+           AND COL_ID = #{colId,jdbcType=VARCHAR}
+        </if>
+		<if test="tabName != '' and tabName != null">
+			AND UPPER(TAB_NAME) = UPPER('${tabName}')
+		</if>
+		<if test="colName != '' and colName != null">
+			AND COL_NAME LIKE '%${colName}%'
+		</if>
+		<if test="colNameCheck != '' and colNameCheck != null">
+            AND COL_NAME = UPPER('${colNameCheck}')
+        </if>
+		<if test="colCname != null">
+			AND COL_CNAME = #{colCname,jdbcType=VARCHAR}
+		</if>
+		<if test="dataType != null">
+			AND DATA_TYPE = #{dataType,jdbcType=VARCHAR}
+		</if>
+		<if test="dataLength != null">
+			AND DATA_LENGTH = #{dataLength,jdbcType=DECIMAL}
+		</if>
+		<if test="created != null">
+			AND CREATED =  CONVERT(DATE,#{created})
+		</if>
+		<if test="isnull != null">
+			AND ISNULL = #{isnull,jdbcType=DECIMAL}
+		</if>
+		<if test="colDefault != null">
+			AND COL_DEFAULT = #{colDefault,jdbcType=VARCHAR}
+		</if>
+		<if test="ispk != null">
+			AND ISPK = #{ispk,jdbcType=DECIMAL}
+		</if>
+		<if test="inputType != null">
+			INPUTTYPE = #{inputType,jdbcType=DECIMAL},
+		</if>
+		<if test="reqDict != null">
+			REQ_DICT = #{reqDict,jdbcType=DECIMAL},
+		</if>
+		<if test="isQryItem != null">
+			ISQRYITEM = #{isQryItem,jdbcType=DECIMAL},
+		</if>     
+		<if test="orderNo != null">
+            ORDERNO = #{orderNo,jdbcType=DECIMAL},
+        </if>
+        order by c.ORDERNO,c.CREATED
+	</select>
+	<delete id="KGE_TAB_COLSDelete" parameterType="map">
+		delete from KGE_TAB_COLS
+		where UPPER(COL_ID) = UPPER('${colId}')
+	</delete>
+	<delete id="KGE_TAB_COLSDeleteAll" parameterType="map">
+        delete from KGE_TAB_COLS
+        where UPPER(TAB_NAME) = UPPER('${tabName}')
+    </delete>
+</mapper>

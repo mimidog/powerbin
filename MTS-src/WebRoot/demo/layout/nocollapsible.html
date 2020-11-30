@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>No collapsible button in Layout - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>No collapsible button in Layout</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>The layout region panel has no collapsible button.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<div class="kui-layout" style="width:700px;height:350px;">
+		<div kui-options="region:'north'" style="height:50px"></div>
+		<div kui-options="region:'south',split:true" style="height:50px;"></div>
+		<div kui-options="region:'east',split:true" style="width:250px;">
+			<div class="kui-panel" title="East" kui-options="fit:true,border:false">
+				<table id="tt" class="kui-propertygrid"
+						kui-options="
+							url: '../layout/propertygrid_data1.json',
+							showGroup: true,
+							fit: true,
+							border: false
+						">
+				</table>
+			
+			</div>
+		</div>
+		<div kui-options="region:'center',title:'Main Title',iconCls:'icon-ok',href:'../layout/_content.html'" style="padding:10px">
+		</div>
+	</div>
+
+</body>
+</html>

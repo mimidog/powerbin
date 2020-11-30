@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project name="MTS" basedir="." default="dev">
+  <!-- set properties name -->
+  <property name="build.dir" value="./build" />
+  <property name="browser.dir" value="./Browser" />
+  <property name="src.dir" value="src" />
+  <property name="compile.dir" value="./compile" />
+  <property name="webRoot.dir" value="WebRoot" />
+  <property name="web-inf.dir" value="./WEB-INF" />
+  <property name="classes.dir" value="./WEB-INF/classes" />
+  <property name="lib.dir" value="./WebRoot/WEB-INF/lib" />
+  <target name="clean">
+    <delete dir="${build.dir}" />
+  </target>
+ 
+  <target name="init" depends="copy2src">
+    <echo message ="创建相关目录"/>
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${build.dir}/${compile.dir}" />
+    <mkdir dir="${build.dir}/${web-inf.dir}" />
+    <mkdir dir="${build.dir}/${classes.dir}" />
+  </target>
+  
+  <target name="copy2src">
+    <echo message ="将classs目录下的资源文件复制到src"/>
+    <mkdir dir="${webRoot.dir}/WEB-INF/classes" />
+	<copy todir="${src.dir}">
+      <fileset dir="${webRoot.dir}/WEB-INF/classes">
+        <include name="**/*.dat" />
+        <include name="**/*.jar" />
+		<include name="**/*.h" />
+		<include name="**/*.js" />
+		<include name="**/*.lib" />
+		<include name="**/*.properties" />
+		<include name="**/*.ini" />
+		<include name="**/*.dll" />
+		<include name="**/*.DLL" />
+      </fileset>
+    </copy>
+    <delete dir="${webRoot.dir}/WEB-INF/classes" />
+  </target>
+
+  <path id="classpath">
+    <fileset dir="${webRoot.dir}/WEB-INF/lib">
+      <include name="**/*.jar" />
+    </fileset>
+    <pathelement location="${build.dir}/WEB-INF/classes" />
+  </path>
+  
+  <target name="compile">
+    <echo message ="编译程序to ${build.dir}/${compile.dir}"/>
+    <javac encoding="utf-8" srcdir="${src.dir}/com"  destdir="${build.dir}/${compile.dir}" classpathref="classpath" includeantruntime="on" bootclasspath="${java.home}/lib/rt.jar"/>
+    <echo message ="将配置文件复制到${build.dir}/${classes.dir}"/>
+	<copy todir="${build.dir}/${classes.dir}">	  
+      <fileset dir="${src.dir}">
+        <include name="**/*.xml" />
+		<include name="**/*.htm" />
+		<include name="**/*.html" />
+		<include name="**/*.dat" />
+        <include name="**/*.jar" />
+		<include name="**/*.h" />
+		<include name="**/*.js" />
+		<include name="**/*.lib" />
+		<include name="**/*.properties" />
+		<include name="**/*.ini" />
+		<include name="**/*.dll" />
+		<include name="**/*.DLL" />
+		<exclude name="**/*.java*" />
+      </fileset>
+    </copy>
+    
+    <copy todir="${build.dir}/${classes.dir}">
+      <fileset dir="${build.dir}/${compile.dir}">
+        <include name="**/com/**" />
+        <exclude name="**/*.java*" />
+        <exclude name="**/test/**" />
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="tmptarget">
+    <copy todir="${webRoot.dir}/WEB-INF/classes">
+      <fileset dir="${build.dir}/${classes.dir}">
+		<include name="**/com/**" />
+		<include name="**/*.dat" />
+        <include name="**/*.jar" />
+		<include name="**/*.h" />
+		<include name="**/*.js" />
+		<include name="**/*.lib" />
+		<include name="**/*.properties" />
+		<include name="**/*.ini" />
+		<include name="**/*.dll" />
+		<include name="**/*.DLL" />
+		<exclude name="**/test/**" />
+      </fileset>
+    </copy>
+    <delete dir="${build.dir}" />
+  </target>
+	
+	<target name="war">
+			<war destfile="kjdp3.5.war" webxml="WebRoot/WEB-INF/web.xml">
+				<fileset dir="WebRoot" includes="**/*.*" />
+				<lib dir="${lib.dir}" />
+	           <classes dir="${webRoot.dir}/WEB-INF/classes"/>  
+			</war>
+   </target>
+
+  <target name="dev" depends="clean,init,compile,tmptarget" />
+  
+
+  
+</project>

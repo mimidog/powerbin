@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript">
+	window.$ready = function(){
+		using("uploadify",function () {
+		            $('#fileUpload').empty();
+		            var ipt = $('<input name="fileName" id="fileName" type="file" />');
+		            $('#fileUpload').append(ipt);
+		            ipt.uploadify({
+		                dir:'upload',
+		                fileTypeDesc:'请选择文件',
+		                fileTypeExts:'*.sql;*.csv;*.txt',
+		                fileNumLimit:3
+		            });
+		});
+	}
+	
+	function exportFile(e){
+		var fileName = $(".uploadify-queue-item").attr("filecon");
+		if(!fileName){ alert("请选择要导入的文件！"); return false};
+		ajaxRequest({
+            req:[{ service:'P0000047',FILENAME:fileName}],
+            func:function(data){
+            	alert("成功导入菜单！");
+            }
+        });
+	}
+</script>
+</head>
+<body>
+<div style="margin-top: 30px;margin-left: 50px;">
+	<form id="importForm" class="kui-form">
+        <table>
+            <tr>
+                <td class="form-label">请选择导入文件：</td>
+                <td id="fileUpload"></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="right">
+                	<a href="#" class="kui-linkbutton" onclick="exportFile()">导入</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

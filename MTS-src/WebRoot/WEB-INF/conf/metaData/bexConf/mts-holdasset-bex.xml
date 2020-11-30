@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+
+    <!--查询客户股份二级持仓信息-->
+    <bex bex_code="query_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+
+    <!--查询客户资金一级持仓信息-->
+    <bex bex_code="query_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_FUND_INFO"
+         attr2="mts"/>
+    <!--新增客户资金一级持仓信息-->
+    <bex bex_code="insert_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_FUND_INFO"
+         attr2="mts"/>
+    <!--修改客户资金一级持仓信息-->
+    <bex bex_code="update_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_FUND_INFO"
+         attr2="mts"/>
+
+    <!--查询客户资金二级持仓信息-->
+    <bex bex_code="query_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_FUND_INFO_SUB"
+         attr2="mts"/>
+    <!--新增客户资金二级持仓信息-->
+    <bex bex_code="insert_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_FUND_INFO_SUB"
+         attr2="mts"/>
+    <!--修改客户资金二级持仓信息-->
+    <bex bex_code="update_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_FUND_INFO_SUB"
+         attr2="mts"/>
+
+    <!--新增客户股份一级持仓信息-->
+    <bex bex_code="insert_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_MTS_ASSET"
+         attr2="mts"/>
+    <!--查询客户股份一级持仓信息-->
+    <bex bex_code="query_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_MTS_ASSET"
+         attr2="mts"/>
+    <!--修改客户股份一级持仓信息-->
+    <bex bex_code="update_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_MTS_ASSET"
+         attr2="mts"/>
+
+    <!--新增客户股份二级持仓信息-->
+    <bex bex_code="insert_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+    <!--修改客户股份二级持仓信息-->
+    <bex bex_code="update_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+
+    <!--日切清算一级资金持仓可用资金-->
+    <bex bex_code="clear_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="clear_T_FUND_INFO"
+         attr2="mts"/>
+    <!--日切清算二级资金持仓可用资金-->
+    <bex bex_code="clear_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="clear_T_FUND_INFO_SUB"
+         attr2="mts"/>
+    <!--日切清算一级股份持仓可用股份-->
+    <bex bex_code="clear_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="clear_T_MTS_ASSET"
+         attr2="mts"/>
+    <!--日切清算一级股份持仓可用股份-->
+    <bex bex_code="clear_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="clear_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+    <!--日切清空一级股份持仓空股份数据-->
+    <bex bex_code="del_emptyStock_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="del_emptyStock_T_MTS_ASSET"
+         attr2="mts"/>
+    <!--日切清空二级股份持仓空股份数据-->
+    <bex bex_code="del_emptyStock_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="del_emptyStock_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+
+    <!--交易员日结汇总信息-->
+    <bex bex_code="query_T_TRADE_DAY_CLEAR_SUM_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_TRADE_DAY_CLEAR_SUM"
+         attr2="mts"/>
+    <!--清空交易员日结汇总信息-->
+    <bex bex_code="delete_T_TRADE_DAY_CLEAR_SUM_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_TRADE_DAY_CLEAR_SUM"
+         attr2="mts"/>
+    <!--新增交易员日结汇总信息-->
+    <bex bex_code="insert_T_TRADE_DAY_CLEAR_SUM_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_TRADE_DAY_CLEAR_SUM"
+         attr2="mts"/>
+
+    <!--交易员日结明细信息-->
+    <bex bex_code="query_T_TRADE_DAY_CLEAR_DETAIL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_TRADE_DAY_CLEAR_DETAIL"
+         attr2="mts"/>
+    <!--清空交易员日结明细信息-->
+    <bex bex_code="delete_T_TRADE_DAY_CLEAR_DETAIL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_TRADE_DAY_CLEAR_DETAIL"
+         attr2="mts"/>
+    <!--新增交易员日结汇总信息-->
+    <bex bex_code="insert_T_TRADE_DAY_CLEAR_DETAIL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_TRADE_DAY_CLEAR_DETAIL"
+         attr2="mts"/>
+
+    <!--更新二级股份收盘价信息-->
+    <bex bex_code="update_MTS_ASSET_SUB_STK_PRICE_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_MTS_ASSET_SUB_STK_PRICE"
+         attr2="mts"/>
+
+    <!--新增客户二级费用信息-->
+    <bex bex_code="insert_T_MTS_FEE_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_MTS_FEE_SUB"
+         attr2="mts"/>
+    <!--删除客户二级费用信息-->
+    <bex bex_code="delete_T_MTS_FEE_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_MTS_FEE_SUB"
+         attr2="mts"/>
+
+    <!--查询客户股份一级持仓信息清算备份信息-->
+    <bex bex_code="query_T_FUND_INFO_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_FUND_INFO_CLEAR_BAK"
+         attr2="mts"/>
+    <!--插入客户股份一级持仓信息清算备份信息-->
+    <bex bex_code="insert_T_FUND_INFO_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_FUND_INFO_CLEAR_BAK"
+         attr2="mts"/>
+    <!--删除客户股份一级持仓信息清算备份信息-->
+    <bex bex_code="delete_T_FUND_INFO_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_FUND_INFO_CLEAR_BAK"
+         attr2="mts"/>
+
+    <!--删除客户股份一级持仓信息-->
+    <bex bex_code="delete_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_FUND_INFO"
+         attr2="mts"/>
+    <!--还原客户股份一级持仓信息信息-->
+    <bex bex_code="restore_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="restore_T_FUND_INFO"
+         attr2="mts"/>
+
+    <!--查询客户资金二级持仓信息清算备份信息-->
+    <bex bex_code="query_T_FUND_INFO_SUB_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_FUND_INFO_SUB_CLEAR_BAK"
+         attr2="mts"/>
+    <!--插入客户资金二级持仓信息清算备份信息-->
+    <bex bex_code="insert_T_FUND_INFO_SUB_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_FUND_INFO_SUB_CLEAR_BAK"
+         attr2="mts"/>
+    <!--删除客户资金二级持仓信息清算备份信息-->
+    <bex bex_code="delete_T_FUND_INFO_SUB_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_FUND_INFO_SUB_CLEAR_BAK"
+         attr2="mts"/>
+
+    <!--删除客户资金二级持仓信息信息-->
+    <bex bex_code="delete_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_FUND_INFO_SUB"
+         attr2="mts"/>
+    <!--还原客户资金二级持仓信息信息-->
+    <bex bex_code="restore_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="restore_T_FUND_INFO_SUB"
+         attr2="mts"/>
+
+    <!--查询客户股份一级持仓信息清算备份信息-->
+    <bex bex_code="query_T_MTS_ASSET_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_MTS_ASSET_CLEAR_BAK"
+         attr2="mts"/>
+    <!--插入客户股份一级持仓信息清算备份信息-->
+    <bex bex_code="insert_T_MTS_ASSET_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_MTS_ASSET_CLEAR_BAK"
+         attr2="mts"/>
+    <!--删除客户股份一级持仓信息清算备份信息-->
+    <bex bex_code="delete_T_MTS_ASSET_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_MTS_ASSET_CLEAR_BAK"
+         attr2="mts"/>
+
+    <!--删除客户股份一级持仓信息-->
+    <bex bex_code="delete_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_MTS_ASSET"
+         attr2="mts"/>
+    <!--还原客户股份一级持仓信息信息-->
+    <bex bex_code="restore_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="restore_T_MTS_ASSET"
+         attr2="mts"/>
+
+    <!--查询客户股份二级持仓信息清算备份信息-->
+    <bex bex_code="query_T_MTS_ASSET_SUB_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_MTS_ASSET_SUB_CLEAR_BAK"
+         attr2="mts"/>
+    <!--插入客户股份二级持仓信息清算备份信息-->
+    <bex bex_code="insert_T_MTS_ASSET_SUB_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_MTS_ASSET_SUB_CLEAR_BAK"
+         attr2="mts"/>
+    <!--删除客户股份二级持仓信息清算备份信息-->
+    <bex bex_code="delete_T_MTS_ASSET_SUB_CLEAR_BAK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_MTS_ASSET_SUB_CLEAR_BAK"
+         attr2="mts"/>
+
+    <!--删除客户股份二级持仓信息-->
+    <bex bex_code="delete_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+    <!--还原客户股份二级持仓信息信息-->
+    <bex bex_code="restore_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="restore_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+
+    <!--计算完结的二级持仓的成本价-->
+    <bex bex_code="overSecHold_CALC_COSTPRICE_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="overSecHold_CALC_COSTPRICE"
+         attr2="mts"/>
+    <!--计算交易员费用汇总信息-->
+    <bex bex_code="calc_Trader_total_cost_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="calc_Trader_total_cost"
+         attr2="mts"/>
+
+    <!--新增交易员资金股份流水信息-->
+    <bex bex_code="insert_T_TRADER_FUND_ASSET_LOG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_TRADER_FUND_ASSET_LOG"
+         attr2="mts"/>
+
+    <!--新增交易员最早交易日期-->
+    <bex bex_code="query_trader_min_trdDate_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_trader_min_trdDate"
+         attr2="mts"/>
+    <!--查询交易员资金股份流水信息-->
+    <bex bex_code="query_T_TRADER_FUND_ASSET_LOG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_TRADER_FUND_ASSET_LOG"
+         attr2="mts"/>
+    <!--查询交易员资金分类汇总信息-->
+    <bex bex_code="query_TRADER_FUND_GRP_SUM_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_TRADER_FUND_GRP_SUM"
+         attr2="mts"/>
+    <!--查询交易员股份分类汇总信息-->
+    <bex bex_code="query_TRADER_ASSET_GRP_SUM_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_TRADER_ASSET_GRP_SUM"
+         attr2="mts"/>
+
+    <!--查询交易员盈亏汇总信息-->
+    <bex bex_code="query_TRADER_SURPLUS_SUM_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_TRADER_SURPLUS_SUM_INFO"
+         attr2="mts"/>
+    <!--查询客户盈亏明细信息-->
+    <bex bex_code="query_CUST_SURPLUS_DETAIL_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_CUST_SURPLUS_DETAIL_INFO"
+         attr2="mts"/>
+    <!--账户盈亏汇总查询-->
+    <bex bex_code="query_CUST_SURPLUS_SUM_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_CUST_SURPLUS_SUM_INFO"
+         attr2="mts"/>
+
+    <!--交易员盈亏图表查询-->
+    <bex bex_code="query_TRADE_SURPLUS_CHAR_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_TRADE_SURPLUS_CHAR_INFO"
+         attr2="mts"/>
+
+    <!--交易员盈亏图表查询-->
+    <bex bex_code="query_TRADE_SURPLUS_CHAR_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_TRADE_SURPLUS_CHAR_INFO"
+         attr2="mts"/>
+
+    <!--交易员交易信息清算-->
+    <bex bex_code="exe_proTradeDaySumClear_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="exe_proTradeDaySumClear"
+         attr2="mts"/>
+
+    <!--新增客户资金股份流水信息-->
+    <bex bex_code="insert_T_CUST_FUND_ASSET_LOG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_CUST_FUND_ASSET_LOG"
+         attr2="mts"/>
+
+    <!--客户盈亏图表查询-->
+    <bex bex_code="query_CUST_SURPLUS_CHAR_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_CUST_SURPLUS_CHAR_INFO"
+         attr2="mts"/>
+    <!--查询持仓产品总计-->
+    <bex bex_code="query_HOLD_STOCK_MAKET_TOTAL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_HOLD_STOCK_MAKET_TOTAL"
+         attr2="mts"/>
+</bexs>
+ 

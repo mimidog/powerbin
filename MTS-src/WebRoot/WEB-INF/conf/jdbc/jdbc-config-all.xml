@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+
+    <!--参数查询-->
+    <select id="upmSysParamQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT * 
+         FROM UPM_SYSPARAM WHERE PAR_CODE='${PAR_CODE}'
+	</select>
+
+    
+</mapper>

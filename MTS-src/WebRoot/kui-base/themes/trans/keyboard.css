@@ -1,0 +1,29 @@
+.softkeyboard .combo-arrow {
+	background: url('images/keyboard.png') no-repeat center center;
+}
+
+.softkeyboard-panel{
+	width: auto!important;
+	height: auto;
+	padding: 0 10px;
+}
+
+.softkeyboard-panel ul {
+	width: auto;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.softkeyboard-panel li {
+	float: left;
+	list-style: none;
+}
+
+.softkeyboard-panel input {
+	padding: 1px 6px;
+	margin: 2px;
+	+padding: 1px 5px;
+	-moz-padding-start: 3px;
+	-moz-padding-end: 3px;
+}

@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic ValidateBox - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+   		<script type="text/javascript">	
+		
+	function destroy(){
+	   $('#cc').validatebox('destroy');
+		}
+	
+	function disable(){
+		$('#cc').validatebox('disabled');
+		}
+	
+	function enable(){
+		$('#cc').validatebox('enabled');
+		}
+</script>
+</head>
+<body>
+	<h2>Basic ValidateBox</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>It's easy to add validate logic to a input box.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<div class="kui-panel" title="Register" style="width:400px;padding:10px">
+		<table>
+			<tr>
+				<td>User Name:</td>
+				<td><input class="kui-validatebox" kui-options="required:true,disabled:false,maxLength:5.5,validType:'length[3,8]',showMessage:true"></td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><input class="kui-validatebox" kui-options="required:true,validType:'email'"></td>
+			</tr>
+			<tr>
+				<td>Birthday:</td>
+				<td><input class="kui-datebox" type="text"></td>
+			</tr>
+			<tr>
+				<td>URL:</td>
+				<td><input class="kui-validatebox" kui-options="required:true,validType:'url'"></td>
+			</tr>
+			<tr>
+				<td>Phone:</td>
+				<td><input id='cc' class="kui-validatebox" kui-options="required:true"></td>
+			</tr>
+			<tr>
+				<td>Allow(@#$%):</td>
+				<td><input id='code' class="kui-validatebox" kui-options="required:true,validType:'val[1,10]',speTxt:['$','%','#','@']"></td>
+			</tr>
+			<tr>
+				<td>setTimeLong:</td>
+				<td><input id='setTimeLong' class="kui-validatebox" kui-options="setTimeLong:1000,required:true,validType:'val[1,5]'"></td>
+			</tr>
+			<tr>
+				<td>enChar:</td>
+				<td><input class="kui-validatebox" kui-options="required:true,validType:'enChar[3,8]'"></td>
+			</tr>
+		</table>
+	</div>
+    <a href="#" class="kui-linkbutton" onclick="destroy()">destroy方法</a>
+    <a href="#" class="kui-linkbutton" onclick="clear()">clear方法</a>
+    <a href="#" class="kui-linkbutton" onclick="disable()">diabled方法</a>
+    <a href="#" class="kui-linkbutton" onclick="enable()">enabled方法</a>
+</body>
+</html>

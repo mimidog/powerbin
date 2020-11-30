@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+	
+	<select id="userLogin" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT USER_ID AS USER_CODE,
+		       USER_NAME,
+		       USER_TYPE,
+		       USER_STA,
+		       OPEN_DATE,
+		       LOG_IP,
+		       LOG_DATE,
+		       EMP_ID,
+		       USER_ICON,
+		       'DODHk/35t/2dfAWSuU3hlFzfL69Y9csJ' AS USER_TICKET_INFO,
+		       2 AS USER_ROLE,
+		       '0' AS IRETCODE
+		  FROM UAR_USER
+		 WHERE USER_ID = '${USER_CODE}'
+		   AND USER_PASS = '${TRD_PWD}'
+	</select>
+	
+	<!-- 系统参数管理 -->
+	<select id="sysParamQuery1" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT PAR_CODE,PAR_NAME,PAR_VAL,SUBSYS,REMARK FROM UPM_SYSPARAM where 1 = 1 		
+		   <if test="PAR_CODE != '-1'">
+		   AND PAR_CODE = '${PAR_CODE}'
+		   </if>
+			<if test="SUBSYS != '-1'">
+		   AND SUBSYS = ${SUBSYS}
+		   </if>
+		   <if test="PAR_NAME != ''">
+		   AND PAR_NAME LIKE '${PAR_NAME}%'  
+		   </if>
+	</select>	
+	<!--<insert id="sysParamInsert1" parameterType="hashmap">-->
+		<!--INSERT INTO UPM_SYSPARAM (PAR_CODE,PAR_NAME,PAR_VAL,SUBSYS,REMARK)-->
+		<!--VALUES ('${PAR_CODE}', '${PAR_NAME}','${PAR_VAL}',${SUBSYS}, '${REMARK}')-->
+	<!--</insert>-->
+	<!--<update id="sysParamUpdate1" parameterType="hashmap">-->
+		<!--UPDATE UPM_SYSPARAM SET -->
+			<!--PAR_NAME = '${PAR_NAME}' ,-->
+			<!--PAR_VAL = '${PAR_VAL}',-->
+			<!--REMARK = '${REMARK}',-->
+			<!--SUBSYS = ${SUBSYS}-->
+			<!--WHERE PAR_CODE = '${PAR_CODE}'-->
+	<!--</update>-->
+	<!--<delete id="sysParamDelete1" parameterType="hashmap">-->
+		<!--DELETE UPM_SYSPARAM WHERE PAR_CODE = '${PAR_CODE}'-->
+	<!--</delete>-->
+
+	<!---->
+	<!--<insert id="sysDictInsert1" parameterType="hashmap">-->
+		<!--INSERT INTO UPM_DICTIONARY (DICT_CODE,DICT_NAME,SUBSYS)-->
+		<!--VALUES ('${DICT_CODE}', '${DICT_NAME}',${SUBSYS})-->
+	<!--</insert>-->
+	<!---->
+	<!--<update id="sysDictUpdate1" parameterType="hashmap">-->
+		<!--UPDATE UPM_DICTIONARY-->
+		<!--<set>-->
+			<!--<if test="DICT_NAME != null">DICT_NAME='${DICT_NAME}'</if>  -->
+		<!--</set>  -->
+		<!--WHERE DICT_CODE='${DICT_CODE}'  -->
+	<!--</update>-->
+	<!---->
+	<!--<delete id="sysDictDelete1" parameterType="int">-->
+        <!--DELETE FROM UPM_DICTIONARY WHERE DICT_CODE='${DICT_CODE}'-->
+    <!--</delete>-->
+	<!---->
+	<!--<select id="sysDictItemQuery1" parameterType="hashmap" resultType="java.util.HashMap">-->
+		<!--SELECT DICT_CODE,DICT_ITEM,DICT_ITEM_NAME,DICT_ORD FROM UPM_DICT_ITEMS where 1 = 1 		-->
+		   <!--<if test="DICT_CODE != '-1'">-->
+		   <!--AND INSTR(','+'${DICT_CODE}'+',',','+DICT_CODE+',') &gt; 0-->
+		   <!--</if>-->
+		   <!--ORDER BY DICT_ORD,DICT_ITEM,ITEM_ID-->
+	<!--</select>-->
+	<!---->
+	<!--<insert id="sysDictItemInsert1" parameterType="hashmap">-->
+		<!--INSERT INTO UPM_DICT_ITEMS (ITEM_ID,DICT_CODE,DICT_ITEM,DICT_ITEM_NAME,DICT_ORD)-->
+		<!--VALUES (seq_dict_item.nextval,'${DICT_CODE}', '${DICT_ITEM}','${DICT_ITEM_NAME}',${DICT_ORD})-->
+	<!--</insert>-->
+	<!---->
+	<!--<update id="sysDictItemUpdate1" parameterType="hashmap">-->
+		<!--UPDATE UPM_DICT_ITEMS-->
+		<!--<set>  -->
+			<!--<if test="DICT_ITEM_NAME != null">DICT_ITEM_NAME='${DICT_ITEM_NAME}',</if>-->
+			<!--<if test="DICT_ORD != null">DICT_ORD=${DICT_ORD}</if> -->
+		<!--</set>  -->
+		<!--WHERE DICT_CODE='${DICT_CODE}' AND DICT_ITEM='${DICT_ITEM}'-->
+	<!--</update>-->
+	<!---->
+	<!--<delete id="sysDictItemDelete1" parameterType="hashmap">-->
+        <!--DELETE FROM UPM_DICT_ITEMS WHERE DICT_CODE='${DICT_CODE}' AND DICT_ITEM='${DICT_ITEM}'-->
+    <!--</delete>-->
+
+	<!--&lt;!&ndash; 系统菜单 &ndash;&gt;-->
+	<!--<select id="menuQuery1" parameterType="hashmap" resultType="java.util.HashMap">-->
+	  <!--SELECT MENU_ID,MENU_NAME,PAR_MENU,MENU_LVL,MENU_PUR,MENU_LINK,MENU_STA,SUBSYS,MENU_ICO FROM UPM_MENU WHERE 1= 1 -->
+	  <!--<if test="MENU_ID != '-1'">-->
+		<!--AND MENU_ID = '${MENU_ID}' -->
+	  <!--</if>-->
+	  <!--<if test="MENU_STA != '-1'">-->
+		<!--AND MENU_STA = '${MENU_STA}'-->
+	  <!--</if>-->
+	  <!--ORDER BY MENU_LVL-->
+	<!--</select>-->
+	<!--<insert id="menuInsert1" parameterType="hashmap">-->
+	  <!--INSERT INTO UPM_MENU (MENU_ID,MENU_NAME,PAR_MENU,MENU_LVL-->
+	  <!--<if test="MENU_PUR != '-1'">-->
+		<!--,MENU_PUR-->
+	  <!--</if>-->
+	  <!--<if test="MENU_LINK != '-1'">-->
+		<!--,MENU_LINK-->
+	  <!--</if>-->
+	  <!--<if test="MENU_STA != '-1'">-->
+		<!--,MENU_STA-->
+	  <!--</if>-->
+	  <!--<if test="SUBSYS != '-1'">-->
+		<!--,SUBSYS-->
+	  <!--</if>-->
+	  <!--<if test="MENU_ICO != '-1'">-->
+		<!--,MENU_ICO-->
+	  <!--</if>-->
+	  <!--) VALUES (SEQ_MENU.nextval,'${MENU_NAME}',${PAR_MENU},KUI_CREATELVL('UPM_MENU','MENU_ID','PAR_MENU','MENU_LVL',${PAR_MENU})-->
+	  <!--<if test="MENU_PUR != '-1'">-->
+		<!--,${MENU_PUR}-->
+	  <!--</if>-->
+	  <!--<if test="MENU_LINK != '-1'">-->
+		<!--,'${MENU_LINK}'-->
+	  <!--</if>-->
+	  <!--<if test="MENU_STA != '-1'">-->
+		<!--,${MENU_STA}-->
+	  <!--</if>-->
+	  <!--<if test="SUBSYS != '-1'">-->
+		<!--,${SUBSYS}-->
+	  <!--</if>-->
+	  <!--<if test="MENU_ICO != '-1'">-->
+		<!--,'${MENU_ICO}'-->
+	  <!--</if>-->
+	  <!--)-->
+	<!--</insert>-->
+	<!--<update id="menuUpdate1" parameterType="hashmap">-->
+	  <!--UPDATE UPM_MENU SET-->
+		<!--MENU_NAME='${MENU_NAME}',-->
+		<!--PAR_MENU=${PAR_MENU},-->
+		<!--MENU_LVL='${MENU_LVL}',-->
+		<!--MENU_PUR='${MENU_PUR}',-->
+		<!--MENU_LINK='${MENU_LINK}',-->
+		<!--MENU_STA='${MENU_STA}',-->
+		<!--SUBSYS=${SUBSYS},-->
+		<!--MENU_ICO='${MENU_ICO}'-->
+		<!--WHERE MENU_ID =${MENU_ID} -->
+	<!--</update>-->
+	<!--<delete id="menuDelete1" parameterType="hashmap">-->
+	  <!--DELETE UPM_MENU WHERE MENU_LVL LIKE (SELECT MENU_LVL+'%' FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')-->
+	<!--</delete>-->
+	<!-- 内部机构信息 -->
+	<insert id="instOrgInsert1" parameterType="hashmap">
+	  <selectKey keyProperty="level" resultType="String" order="BEFORE">  
+            SELECT ISNULL(max(ORG_LVL),null) FROM UPM_ORG WHERE PAR_ORG = '${PAR_ORG}'
+	  </selectKey>
+	  INSERT INTO UPM_ORG (ORG_CODE,ORG_TYPE,ORG_NAME,ORG_STA,PAR_ORG,ORG_LVL
+	  <if test="ZIP_CODE != '-1'">
+		,ZIP_CODE
+	  </if>
+	  <if test="ORG_ADDR != '-1'">
+		,ORG_ADDR
+	  </if>
+	  <if test="ORG_CON != '-1'">
+		,ORG_CON
+	  </if>
+	  <if test="EMAIL != '-1'">
+		,EMAIL
+	  </if>
+	  <if test="ORG_TEL != '-1'">
+		,ORG_TEL
+	  </if>
+	  <if test="ORG_FAX != '-1'">
+		,ORG_FAX
+	  </if>
+	  ) VALUES ('${ORG_CODE}','${ORG_TYPE}','${ORG_NAME}','${ORG_STA}','${PAR_ORG}'
+	   <choose>
+			<when test="level == null and PAR_ORG != 0">
+			  ,1001
+			</when>
+			<when test="level == null and PAR_ORG == 0">
+			  ,10
+			</when>
+			<when test="level != null and PAR_ORG == 0">
+			  ,${level}+10
+			</when>
+			<otherwise>
+			  ,${level}+1
+			</otherwise>
+		</choose>
+	  <if test="ZIP_CODE != '-1'">
+		,'${ZIP_CODE}'
+	  </if>
+	  <if test="ORG_ADDR != '-1'">
+		,'${ORG_ADDR}'
+	  </if>
+	  <if test="ORG_CON != '-1'">
+		,'${ORG_CON}'
+	  </if>
+	  <if test="EMAIL != '-1'">
+		,'${EMAIL}'
+	  </if>
+	  <if test="ORG_TEL != '-1'">
+		,'${ORG_TEL}'
+	  </if>
+	  <if test="ORG_FAX != '-1'">
+		,'${ORG_FAX}'
+	  </if>
+	  )
+	</insert>
+	<update id="instOrgUpdate1" parameterType="hashmap">
+	   UPDATE UPM_ORG SET
+			ORG_TYPE='${ORG_TYPE}',
+			ORG_NAME='${ORG_NAME}',
+			ORG_STA='${ORG_STA}',
+			PAR_ORG='${PAR_ORG}',
+			ORG_LVL='${ORG_LVL}', 
+			ZIP_CODE='${ZIP_CODE}',
+			ORG_ADDR='${ORG_ADDR}',
+			ORG_CON='${ORG_CON}', 
+			EMAIL='${EMAIL}',
+			ORG_TEL='${ORG_TEL}', 
+			ORG_FAX='${ORG_FAX}'
+		WHERE ORG_CODE ='${ORG_CODE}' 
+	</update>
+	<delete id="instOrgDelete1" parameterType="hashmap">
+	  DELETE UPM_ORG WHERE ORG_CODE = '${ORG_CODE}'
+	</delete>
+
+	<!--&lt;!&ndash; 内部系统管理 &ndash;&gt;-->
+	<!--<select id="subSysQuery1" parameterType="hashmap" resultType="java.util.HashMap">-->
+		<!--SELECT SUBSYS,SYS_NAME,SYS_TYPE,INTER_TYPE,AUTH_TYPE,AUTH_URL,AUTH_USER,AUTH_PASS FROM UPM_SUBSYS where 1 = 1 		-->
+		   <!--<if test="SUBSYS != -1">-->
+		   <!--AND SUBSYS = '${SUBSYS}'-->
+		   <!--</if>-->
+			<!--<if test="SYS_NAME != ''">-->
+		   <!--AND SYS_NAME LIKE '${SYS_NAME}%'-->
+		   <!--</if>-->
+		   <!--<if test="SYS_TYPE != '-1'">-->
+		   <!--AND SYS_TYPE = '${SYS_TYPE}'-->
+		   <!--</if>-->
+		   <!--<if test="INTER_TYPE != '-1'">-->
+		   <!--AND INTER_TYPE = '${INTER_TYPE}'-->
+		   <!--</if>-->
+		   <!--<if test="AUTH_TYPE != '-1'">-->
+		   <!--AND AUTH_TYPE = '${AUTH_TYPE}'-->
+		   <!--</if>-->
+		   <!--ORDER BY SUBSYS-->
+	<!--</select>	-->
+	<!--<insert id="subSysInsert1" parameterType="hashmap">-->
+		<!--INSERT INTO UPM_SUBSYS (SUBSYS,SYS_NAME,SYS_TYPE,INTER_TYPE,AUTH_TYPE,AUTH_URL,AUTH_USER,AUTH_PASS)-->
+		<!--VALUES (${SUBSYS},'${SYS_NAME}','${SYS_TYPE}','${INTER_TYPE}','${AUTH_TYPE}','${AUTH_URL}','${AUTH_USER}','${AUTH_PASS}')-->
+	<!--</insert>-->
+	<!--<update id="subSysUpdate1" parameterType="hashmap">-->
+		<!--UPDATE UPM_SUBSYS SET -->
+			<!--SYS_NAME = '${SYS_NAME}' ,-->
+			<!--SYS_TYPE = '${SYS_TYPE}',-->
+			<!--INTER_TYPE = '${INTER_TYPE}',-->
+			<!--AUTH_TYPE = '${AUTH_TYPE}',-->
+			<!--AUTH_URL = '${AUTH_URL}',-->
+			<!--AUTH_USER = '${AUTH_USER}',-->
+			<!--AUTH_PASS = '${AUTH_PASS}'-->
+			<!--WHERE SUBSYS = ${SUBSYS}-->
+	<!--</update>-->
+	<!--<delete id="subSysDelete1" parameterType="hashmap">-->
+		<!--DELETE UPM_SUBSYS WHERE SUBSYS = ${SUBSYS}-->
+	<!--</delete>-->
+	<!---->
+	<!--&lt;!&ndash; 系统错误管理 &ndash;&gt;-->
+	<!--<select id="sysErrorQuery1" parameterType="hashmap" resultType="java.util.HashMap">-->
+		<!--SELECT ERR_CODE,ERR_MSG,ERR_LVL,REMARK FROM UPM_SYS_ERROR where 1 = 1 		-->
+		   <!--<if test="ERR_CODE != '-1'">-->
+		   <!--AND ERR_CODE = '${ERR_CODE}'-->
+		   <!--</if>-->
+		   <!--<if test="ERR_LVL != '-1'">-->
+		   <!--AND ERR_LVL = '${ERR_LVL}'-->
+		   <!--</if>-->
+	<!--</select>-->
+	<!--<insert id="sysErrorInsert1" parameterType="hashmap">-->
+		<!--INSERT INTO UPM_SYS_ERROR(ERR_CODE,ERR_MSG,ERR_LVL,REMARK) VALUES('${ERR_CODE}','${ERR_MSG}','${ERR_LVL}','${REMARK}')-->
+	<!--</insert>-->
+	<!--<update id="sysErrorUpdate1" parameterType="hashmap">-->
+		<!--UPDATE UPM_SYS_ERROR SET -->
+			<!--ERR_MSG = '${ERR_MSG}',-->
+			<!--ERR_LVL = '${ERR_LVL}',-->
+			<!--REMARK = '${REMARK}'-->
+		<!--WHERE ERR_CODE = '${ERR_CODE}'-->
+	<!--</update>-->
+	<!--<delete id="sysErrorDelete1" parameterType="hashmap">-->
+		<!--DELETE FROM UPM_SYS_ERROR WHERE ERR_CODE = '${ERR_CODE}'-->
+	<!--</delete>-->
+	<!--&lt;!&ndash; 国际化语言 &ndash;&gt;-->
+	<!--<select id="localeQuery1" parameterType="hashmap"  resultType="java.util.HashMap">-->
+	  <!--SELECT LOC_ID,LANG_TYPE,LANG_ID,LANG_VAL,SUBSYS FROM UPM_LOCALE WHERE 1= 1-->
+		   <!--<if test="LANG_TYPE != '-1'">-->
+		   <!--AND LANG_TYPE = '${LANG_TYPE}'-->
+		   <!--</if>-->
+		   <!--<if test="LANG_ID != '-1'">-->
+		   <!--AND LANG_ID = '${LANG_ID}'-->
+		   <!--</if>-->
+		   <!--<if test="LANG_VAL != ''">-->
+		   <!--AND LANG_VAL LIKE '${LANG_VAL}%'-->
+		   <!--</if>-->
+		   <!--<if test="SUBSYS != '-1'">-->
+		   <!--AND SUBSYS = '${SUBSYS}'-->
+		   <!--</if>-->
+	<!--</select>-->
+	<!--<insert id="localeInsert1" parameterType="hashmap">-->
+	  <!--INSERT INTO UPM_LOCALE (LOC_ID,LANG_TYPE,LANG_ID,LANG_VAL,SUBSYS) -->
+			<!--VALUES (SEQ_LOCALE.NEXTVAL,${LANG_TYPE},'${LANG_ID}','${LANG_VAL}',${SUBSYS})-->
+	<!--</insert>-->
+	<!--<update id="localeUpdate" parameterType="hashmap">-->
+	  <!--UPDATE UPM_LOCALE SET -->
+			<!--LANG_TYPE= ${LANG_TYPE},-->
+			<!--LANG_ID= '${LANG_ID}',-->
+			<!--LANG_VAL= '${LANG_VAL}',-->
+			<!--SUBSYS= ${SUBSYS} -->
+			<!--WHERE LOC_ID =${LOC_ID} -->
+	<!--</update>-->
+	<!--<delete id="localeDelete1" parameterType="hashmap">-->
+	  <!--DELETE UPM_LOCALE WHERE LOC_ID = ${LOC_ID}-->
+	<!--</delete>-->
+	<!--&lt;!&ndash; 系统功能 &ndash;&gt;-->
+	<!--<select id="sys_funcQuery1" parameterType="hashmap" resultType="java.util.HashMap">-->
+		<!--SELECT FUNC_CODE,FUNC_NAME,FUNC_TYPE,FUNC_DATA,FUNC_LBM,AUTH_FLAG,CHK_FLAG,SUBSYS,FUNC_PROXY FROM UAR_SYS_FUNC WHERE 1= 1-->
+		   <!--<if test="FUNC_CODE != '-1'">-->
+		   <!--AND FUNC_CODE = '${FUNC_CODE}'-->
+		   <!--</if>-->
+		   <!--<if test="FUNC_NAME != ''">-->
+		   <!--AND FUNC_NAME LIKE '${FUNC_NAME}%'-->
+		   <!--</if>-->
+		   <!--<if test="FUNC_TYPE != '-1'">-->
+		   <!--AND FUNC_TYPE = '${FUNC_TYPE}'-->
+		   <!--</if>-->
+		   <!--<if test="FUNC_PROXY != '-1'">-->
+		   <!--AND FUNC_PROXY = '${FUNC_PROXY}'-->
+		   <!--</if>-->
+		   <!--<if test="SUBSYS != '-1'">-->
+		   <!--AND SUBSYS = '${SUBSYS}'-->
+		   <!--</if>-->
+		   <!--<if test="AUTH_FLAG != '-1'">-->
+		   <!--AND AUTH_FLAG = '${AUTH_FLAG}'-->
+		   <!--</if>-->
+		   <!--<if test="CHK_FLAG != '-1'">-->
+		   <!--AND CHK_FLAG = '${CHK_FLAG}'-->
+		   <!--</if>-->
+	<!--</select>-->
+	<!--<insert id="sys_funcInsert1" parameterType="hashmap">-->
+	  <!--INSERT INTO UAR_SYS_FUNC (FUNC_CODE,FUNC_NAME,FUNC_TYPE,FUNC_DATA,FUNC_LBM,AUTH_FLAG,CHK_FLAG,SUBSYS,FUNC_PROXY) -->
+			<!--VALUES ('${FUNC_CODE}','${FUNC_NAME}','${FUNC_TYPE}','${FUNC_DATA}','${FUNC_LBM}','${AUTH_FLAG}','${CHK_FLAG}',${SUBSYS},'${FUNC_PROXY}')-->
+	<!--</insert>-->
+	<!--<update id="sys_funcUpdate1" parameterType="hashmap">-->
+	  <!--UPDATE UAR_SYS_FUNC SET -->
+			<!--FUNC_NAME= '${FUNC_NAME}',-->
+			<!--FUNC_TYPE= '${FUNC_TYPE}',-->
+			<!--FUNC_DATA= '${FUNC_DATA}',-->
+			<!--FUNC_LBM= '${FUNC_LBM}',-->
+			<!--AUTH_FLAG= '${AUTH_FLAG}',-->
+			<!--CHK_FLAG= '${CHK_FLAG}',-->
+			<!--SUBSYS= ${SUBSYS},-->
+			<!--FUNC_PROXY= '${FUNC_PROXY}' -->
+			<!--WHERE FUNC_CODE ='${FUNC_CODE}' -->
+	<!--</update>-->
+	<!--<delete id="sys_funcDelete1" parameterType="hashmap">-->
+	  <!--DELETE UAR_SYS_FUNC WHERE FUNC_CODE = '${FUNC_CODE}'-->
+	<!--</delete>-->
+	<!---->
+	<!--&lt;!&ndash; 用户信息 &ndash;&gt;-->
+	<!--<select id="userQuery1" parameterType="hashmap" resultType="java.util.HashMap">-->
+	  <!--SELECT USER_ID,USER_NAME,USER_TYPE,USER_STA,INT_ORG,OPEN_DATE,LOG_IP,TO_CHAR(LOG_DATE,'YYYYMMDD HH24:MI:SS') AS LOG_DATE,EMP_ID,ECIF_CODE FROM UAR_USER WHERE 1= 1-->
+	   <!--<if test="USER_ID != '-1'">-->
+	   <!--AND USER_ID = '${USER_ID}'-->
+	   <!--</if>-->
+	   <!--<if test="USER_NAME != ''">-->
+	   <!--AND USER_NAME LIKE '%${USER_NAME}%'-->
+	   <!--</if>-->
+	   <!--<if test="USER_TYPE != '-1'">-->
+	   <!--AND USER_TYPE = ${USER_TYPE}-->
+	   <!--</if>-->
+	   <!--<if test="USER_STA != '-1'">-->
+	   <!--AND USER_STA = ${USER_STA}-->
+	   <!--</if>-->
+	   <!--<if test="INT_ORG != '-1'">-->
+	   <!--AND INT_ORG = ${INT_ORG}-->
+	   <!--</if>-->
+	   <!--ORDER BY USER_ID-->
+	<!--</select>-->
+	<!--<insert id="userInsert1" parameterType="hashmap">-->
+	  <!--INSERT INTO UAR_USER (USER_ID,USER_NAME,USER_TYPE,USER_PASS,USER_STA,INT_ORG,OPEN_DATE,EMP_ID,ECIF_CODE) -->
+        <!--VALUES (${USER_ID},'${USER_NAME}','${USER_TYPE}','${USER_PASS}','${USER_STA}','${INT_ORG}',TO_CHAR(GETDATE(),'YYYYMMDD'),${EMP_ID},${ECIF_CODE})-->
+	<!--</insert>-->
+	<!--<update id="userUpdate1" parameterType="hashmap">-->
+	  <!--UPDATE UAR_USER SET -->
+        <!--USER_NAME= '${USER_NAME}',-->
+        <!--USER_TYPE= '${USER_TYPE}',-->
+        <!--USER_STA= '${USER_STA}',-->
+        <!--INT_ORG= '${INT_ORG}',       -->
+        <!--EMP_ID= ${EMP_ID},-->
+        <!--ECIF_CODE= ${ECIF_CODE} -->
+        <!--WHERE USER_ID =${USER_ID} -->
+	<!--</update>-->
+	<!--<delete id="userDelete1" parameterType="hashmap" >-->
+	  <!--DELETE UAR_USER WHERE USER_ID = ${USER_ID}-->
+	<!--</delete>-->
+	<!--<select id="userCodeQuery1" parameterType="hashmap" resultType="java.util.HashMap">-->
+	     <!--SELECT USER_ID, USER_NAME, USER_TYPE, USER_STA, INT_ORG, OPEN_DATE, LOG_IP,-->
+			   <!--TO_CHAR(LOG_DATE, 'YYYYMMDD HH24:MI:SS') AS LOG_DATE, EMP_ID,-->
+			   <!--ECIF_CODE-->
+		  <!--FROM UAR_USER-->
+		 <!--WHERE USER_ID LIKE '${USER_ID}%'-->
+			<!--OR USER_NAME LIKE '${USER_ID}%'-->
+		   <!--AND ROWNUM &lt;= 10-->
+	<!--</select>-->
+	<!-- 员工信息 -->
+	<select id="empQuery1" parameterType="hashmap" resultType="java.util.HashMap">
+	  SELECT U.USER_ID, U.USER_NAME, U.OPEN_DATE, U.LOG_IP, U.LOG_DATE, U.USER_ICON, E.EMP_ID,
+       E.EMP_CODE, E.EMP_NAME, E.GANDER, E.INST_ORG, E.EMP_POS, E.OFF_TEL,
+       E.MOBILE, E.EMAIL, E.REMARK
+	  FROM UAR_USER U, UAR_EMP E
+      WHERE U.EMP_ID = E.EMP_ID
+	   <if test="EMP_ID != '-1'">
+	   AND E.EMP_ID = '${EMP_ID}'
+	   </if>
+	   <if test="USER_ID != '-1'">
+	   AND U.USER_ID = '${USER_ID}'
+	   </if>
+	   <if test="EMP_NAME != ''">
+	   AND E.EMP_NAME LIKE '%${EMP_NAME}%'  
+	   </if>
+	   ORDER BY EMP_ID
+	</select>
+	<insert id="empInsert1" parameterType="hashmap">
+	  INSERT INTO UAR_EMP (EMP_ID,EMP_CODE,EMP_NAME,GANDER,INST_ORG,EMP_POS,OFF_TEL,MOBILE,EMAIL,REMARK) 
+        VALUES (${EMP_ID},'${EMP_CODE}','${EMP_NAME}','${GANDER}','${INST_ORG}','${EMP_POS}','${OFF_TEL}','${MOBILE}','${EMAIL}','${REMARK}')
+	</insert>
+	<update id="empUpdate1" parameterType="hashmap">
+	  UPDATE UAR_EMP SET 
+        EMP_CODE= '${EMP_CODE}',
+        EMP_NAME= '${EMP_NAME}',
+        GANDER= '${GANDER}',
+        INST_ORG= '${INST_ORG}',
+        EMP_POS= '${EMP_POS}',
+        OFF_TEL= '${OFF_TEL}',
+        MOBILE= '${MOBILE}',
+        EMAIL= '${EMAIL}',
+        REMARK= '${REMARK}' 
+        WHERE EMP_ID =${EMP_ID} 
+	</update>
+	<delete id="empDelete1" parameterType="hashmap" >
+	  DELETE UAR_EMP WHERE EMP_ID = ${EMP_ID}
+	</delete>
+	<insert id="finInstInsert1" parameterType="hashmap">
+	  INSERT INTO UPM_FIN_INST (INST_ID,INST_CODE,INST_TYPE,INST_SNAME,INST_FNAME,INST_SPELL,INST_CONT,INST_TEL,INST_WEB,INST_STA,UPD_DATE) 
+        VALUES ((NEXT VALUE FOR SEQ_FIN_INST),'${INST_CODE}','${INST_TYPE}','${INST_SNAME}','${INST_FNAME}',dbo.KUI_SPELL('${INST_SNAME}'),'${INST_CONT}','${INST_TEL}','${INST_WEB}','1',GETDATE())
+	</insert>
+	
+	<insert id="finInstInsert1_MSSQL" parameterType="hashmap">
+	  INSERT INTO UPM_FIN_INST (INST_ID,INST_CODE,INST_TYPE,INST_SNAME,INST_FNAME,INST_SPELL,INST_CONT,INST_TEL,INST_WEB,INST_STA,UPD_DATE) 
+        VALUES ('${ID}','${INST_CODE}','${INST_TYPE}','${INST_SNAME}','${INST_FNAME}',dbo.KUI_SPELL('${INST_SNAME}'),'${INST_CONT}','${INST_TEL}','${INST_WEB}','1',GETDATE())
+	</insert>
+	
+	<update id="finInstUpdate1" parameterType="hashmap">
+	  UPDATE UPM_FIN_INST SET 
+        INST_CODE= '${INST_CODE}',
+        INST_TYPE= '${INST_TYPE}',
+        INST_SNAME= '${INST_SNAME}',
+        INST_FNAME= '${INST_FNAME}',
+        INST_SPELL= dbo.KUI_SPELL('${INST_SNAME}'), 
+		INST_CONT= '${INST_CONT}',
+		INST_TEL= '${INST_TEL}',
+		INST_WEB= '${INST_WEB}',
+		UPD_DATE= GETDATE()
+        WHERE INST_ID =${INST_ID} 
+	</update>
+	<delete id="finInstDelete1" parameterType="hashmap" >
+	  UPDATE UPM_FIN_INST SET INST_STA='0' WHERE INST_ID = ${INST_ID}
+	</delete>
+	<!-- 查询工资-->
+	<select id="finTestQuery1" parameterType="hashmap" resultType="java.util.HashMap">
+	  SELECT ID,NAME,SALERY FROM UPM_TEST1
+	   <if test="ID != '-1'">
+	   AND ID = '${ID}'
+	   </if>
+	   <if test="NAME != ''">
+	   AND NAME LIKE '${NAME}%'  
+	   </if>	  
+	</select>
+</mapper>

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <bex bex_code="sysParamPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.SYS.SYSPARAM" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="dictPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.SYS.DICT" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="dictItemPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.SYS.DICTITEM" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="orgPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.SYS.ORG" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="userInfoPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.USER.INFO" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="postPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.USER.POST" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="rolePublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.USER.ROLE" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="userPostPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.USER.USERPOST" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="userMainPostPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.USER.USERMAINPOST" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="userRolePublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.USER.USERROLE" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="permsetPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.PERM.PERMSET" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="permsetMenberPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.PERM.PERMSETMENBER" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="sysServicePublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.PERM.SYSSERVICE" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="manObjPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.PERM.MANOBJ" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+   	
+   	<bex bex_code="manObjEmpowerPublish" bex_type="14" page_mode="2" bex_cate="1" attr1="esb.publish" attr2="PLAT.PERM.OBJEMPOWER" attr3="esbWebservice" attr4="esbWebservice">
+   	</bex>
+</bexs>
+ 

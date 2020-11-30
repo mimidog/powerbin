@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DynamicMapper.Comment">
+  
+  <!-- COMMENT INSERT -->
+  <insert id="BpmCommentInsert" parameterType="hashmap">
+    insert into UWK_HI_COMMENT (HI_COMMENT_ID, COMM_TYPE, COMM_TIME, USER_ID, TASK_ID, PROC_INST_ID, ACTION, COMM_MESSAGE, FULL_MSG, CREATE_TIME)
+    values (
+      #{comment.id ,jdbcType=VARCHAR},
+      #{comment.type ,jdbcType=VARCHAR},
+      #{comment.time ,jdbcType=TIMESTAMP},
+      #{comment.userId ,jdbcType=VARCHAR},
+      #{comment.taskId ,jdbcType=VARCHAR},
+      #{comment.processInstanceId ,jdbcType=VARCHAR},
+      #{comment.action ,jdbcType=VARCHAR},
+      #{comment.message ,jdbcType=VARCHAR},
+      #{comment.fullMessageBytes ,jdbcType=BLOB},
+      #{comment.createTime ,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <!-- COMMENT DELETE -->
+  
+  <delete id="BpmCommentDelete" parameterType="hashmap">
+    delete from UWK_HI_COMMENT where HI_COMMENT_ID = #{id}
+  </delete>
+
+  <delete id="BpmCommentDeleteByTaskId" parameterType="hashmap">
+    delete from UWK_HI_COMMENT where TASK_ID = #{taskId} 
+  </delete>
+ 
+ <!-- COMMENT RESULTMAP -->
+
+  <resultMap id="commentResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.CommentEntity">
+    <id property="id" column="HI_COMMENT_ID" jdbcType="VARCHAR" />
+    <result property="type" column="COMM_TYPE" jdbcType="VARCHAR" />
+    <result property="userId" column="USER_ID" jdbcType="VARCHAR" />
+    <result property="time" column="COMM_TIME" jdbcType="TIMESTAMP" />
+    <result property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="action" column="ACTION" jdbcType="VARCHAR" />
+    <result property="message" column="COMM_MESSAGE" jdbcType="VARCHAR" />
+    <result property="fullMessageBytes" column="FULL_MSG" jdbcType="BLOB" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" /> 
+  </resultMap>
+  
+  <!-- COMMENT SELECT -->
+
+  <select id="BpmCommentSelect" parameterType="hashmap" resultMap="commentResultMap">
+    select * 
+    from UWK_HI_COMMENT 
+    where HI_COMMENT_ID = #{comment.id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="BpmCommentsSelectByTaskId" parameterType="hashmap" resultMap="commentResultMap">
+    select * 
+    from UWK_HI_COMMENT 
+    where TASK_ID = #{comment.taskId,jdbcType=VARCHAR}
+      and COMM_TYPE = 'comment'
+    order by COMM_TIME desc
+  </select>
+  
+  <select id="BpmCommentsSelectByTaskIdAndType" parameterType="hashmap" resultMap="commentResultMap">
+  	select *
+  	from UWK_HI_COMMENT
+  	where TASK_ID = #{taskId,jdbcType=VARCHAR}
+  		and COMM_TYPE = #{type,jdbcType=VARCHAR}
+  	order by COMM_TIME desc
+  </select>
+  
+  <select id="BpmCommentsSelectByType" parameterType="hashmap" resultMap="commentResultMap">
+  	select *
+  	from UWK_HI_COMMENT
+  	where COMM_TYPE = #{comment.type,jdbcType=VARCHAR}
+  	order by COMM_TIME desc
+  </select>
+
+  <select id="BpmCommentSelectEventsByTaskId" parameterType="hashmap" resultMap="commentResultMap">
+    select * 
+    from UWK_HI_COMMENT 
+    where TASK_ID = #{comment.taskId,jdbcType=VARCHAR}
+    order by COMM_TIME desc
+  </select>
+
+  <select id="BpmCommentsSelectByProcessInstanceId" parameterType="hashmap" resultMap="commentResultMap">
+    select * 
+    from UWK_HI_COMMENT 
+    where PROC_INST_ID = #{comment.processInstanceId,jdbcType=VARCHAR}
+    order by COMM_TIME desc
+  </select>
+
+</mapper>

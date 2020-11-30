@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--序列号管理bex-->
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+
+    <select id="QUERY_SERIAL" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT SERIAL_TYPE,ORG_CODE,SYS_TYPE,MIN_VAL_INT64,MAX_VAL_INT64,LAST_VAL_INT64,UP_DATE,
+        PREFIX,ACCT_LEN,REMARK
+        FROM T_SERIAL
+        <where>
+            <if test="SERIAL_TYPE != null and SERIAL_TYPE !=''">
+                AND SERIAL_TYPE = '${SERIAL_TYPE}'
+            </if>
+            <if test="ORG_CODE != null and ORG_CODE !=''">
+                AND ORG_CODE ='${ORG_CODE}'
+            </if>
+            <if test="SYS_TYPE != null and SYS_TYPE != ''">
+                AND SYS_TYPE = '${SYS_TYPE}'
+            </if>
+        </where>
+    </select>
+
+    <update id="UPDATE_SERIAL" parameterType="java.util.HashMap">
+        update T_SERIAL set
+        <if test="LAST_VAL_INT64 != null and LAST_VAL_INT64 != ''">
+            LAST_VAL_INT64 = '${LAST_VAL_INT64}',
+        </if>
+        <if test="MIN_VAL_INT64 != null and MIN_VAL_INT64 != ''">
+            MIN_VAL_INT64 = '${MIN_VAL_INT64}',
+        </if>
+        <if test="MAX_VAL_INT64 != null and MAX_VAL_INT64 != ''">
+            MAX_VAL_INT64 = '${MAX_VAL_INT64}',
+        </if>
+        <if test="PREFIX != null and PREFIX != ''">
+            PREFIX = '${PREFIX}',
+        </if>
+        <if test="ACCT_LEN != null and ACCT_LEN != ''">
+            ACCT_LEN = '${ACCT_LEN}',
+        </if>
+        UP_DATE = '${UP_DATE}'
+        <where>
+            <if test="SERIAL_TYPE != null and SERIAL_TYPE !=''">
+                AND SERIAL_TYPE = '${SERIAL_TYPE}'
+            </if>
+            <if test="ORG_CODE != null and ORG_CODE !=''">
+                AND ORG_CODE ='${ORG_CODE}'
+            </if>
+            <if test="SYS_TYPE != null and SYS_TYPE != ''">
+                AND SYS_TYPE = '${SYS_TYPE}'
+            </if>
+        </where>
+    </update>
+    <insert id="INSERT_SERIAL" parameterType="java.util.HashMap">
+        INSERT INTO T_SERIAL (SERIAL_TYPE, ORG_CODE, SYS_TYPE, MIN_VAL_INT64, MAX_VAL_INT64, LAST_VAL_INT64,
+                    UP_DATE, PREFIX, ACCT_LEN, REMARK)
+        VALUES ('${SERIAL_TYPE}', '${ORG_CODE}', '${SYS_TYPE}', '${MIN_VAL_INT64}', '${MAX_VAL_INT64}', '${LAST_VAL_INT64}'
+                ,'${UP_DATE}', '${PREFIX}','${ACCT_LEN}', '${REMARK}')
+    </insert>
+    <delete id="DELETE_SERIAL" parameterType="java.util.HashMap">
+        delete from T_SERIAL
+        <where>
+            <if test="SERIAL_TYPE != null and SERIAL_TYPE !=''">
+                AND SERIAL_TYPE = '${SERIAL_TYPE}'
+            </if>
+            <if test="ORG_CODE != null and ORG_CODE !=''">
+                AND ORG_CODE ='${ORG_CODE}'
+            </if>
+            <if test="SYS_TYPE != null and SYS_TYPE != ''">
+                AND SYS_TYPE = '${SYS_TYPE}'
+            </if>
+        </where>
+    </delete>
+</mapper>

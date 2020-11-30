@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bexs> 
+  <!--KGE_TABSBex设置start-->  
+  <bex bex_code="KGE_TABSQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TABSQuery"/>  
+  <bex bex_code="KGE_TABSInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TABSInsert"> 
+    <param para_code="TAB_NAME" para_name="表名" data_type="12" para_type="0" def_val="-1"/> 
+  </bex>  
+  <bex bex_code="KGE_TABSUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TABSUpdate"/>  
+  <bex bex_code="KGE_TABSDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TABSDelete"/>  
+  <bex bex_code="KGE_ComExcuteSql" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_ComExcuteSql"/>  
+  <bex bex_code="KGE_CheckedTabelExist" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_CheckedTabelExist"/>  
+  <bex bex_code="KGE_GetExistTableCols" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_GetExistTableCols"/>  
+  <!--KGE_TABSBex设置end-->  
+  <!--KGE_TAB_COLSBex设置start-->  
+  <bex bex_code="KGE_TAB_COLSQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TAB_COLSQuery"/>  
+  <bex bex_code="KGE_TAB_COLSInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TAB_COLSInsert"> 
+    <param para_code="COL_NAME" para_name="字段名称" data_type="12" para_type="0" def_val="-1"/> 
+  </bex>  
+  <bex bex_code="KGE_TAB_COLSUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TAB_COLSUpdate"/>  
+  <bex bex_code="KGE_TAB_COLSTnameUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TAB_COLSTnameUpdate"/>  
+  <bex bex_code="KGE_TAB_COLSDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TAB_COLSDelete"/>  
+  <bex bex_code="KGE_TAB_COLSDeleteAll" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_TAB_COLSDeleteAll"/>  
+  <!--KGE_TAB_COLSBex设置end-->  
+  <!--T_KHBex设置start-->
+  <bex bex_code="KGE_T_KHQueryAll" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_T_KHQueryAll"/>
+  <bex bex_code="KGE_T_KHInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_T_KHInsert"/>
+  <bex bex_code="KGE_T_KHUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_T_KHUpdate"/>
+  <bex bex_code="KGE_T_KHDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="KGE_T_KHDelete"/>
+  <!--T_KHBex设置end-->
+</bexs>

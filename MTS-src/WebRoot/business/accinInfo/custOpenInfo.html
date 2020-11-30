@@ -1,0 +1,366 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>个人客户开户信息管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.form-label {
+  text-align: right;
+}
+.form-table tr{
+  line-height: 22px;
+}
+</style>
+<script type="text/javascript">
+//机构名称选择事件
+function orgCodeSel(rec) {
+    //查询风控员信息
+    $('#riskController').combogrid({
+        req:[{
+            service: 'P0001008',
+            USER_STA:'1',
+            POST_ID:getSysParamValuebyCode('RISK_CONTROLLER_POST_ID'),
+            ORG_CODE:rec['id']
+        }]
+    });
+      //查询客户经理信息
+      $('#custDirector').combogrid({
+          req:[{
+              service: 'P0001008',
+              USER_STA:'1',
+              POST_ID:getSysParamValuebyCode('CUST_DIRECTOR_POST_ID'),
+              ORG_CODE:rec['id']
+          }]
+      })
+
+
+}
+
+function createCustId() {
+   if($('#orgCode').combotree('getValue')=='' || $('#orgCode').combotree('getValue')=='0'){
+       alert('请选择机构名称且【总部】机构这不能开户！');
+       return;
+   }
+    var newCustId=commonRequest({
+        service:'M0000092',
+        ORG_CODE:$('#orgCode').combotree('getValue')
+    })[0].CUST_ID;
+
+   $('#custId').val(newCustId);
+   $('#btnCreateCust').linkbutton('disable');
+    $('#orgCode').combotree('disable');
+}  
+//客户信息新增
+function openPerCust_add() {
+
+    $('#openPerCust_Form').form('clear');
+    $('#custId').validatebox('disabled');
+    $('#btnCreateCust').linkbutton('enable');
+    $('#openPerCust_Form').form('enable',['ORG_CODE','CUST_TYPE','CUST_NAME']);
+
+
+    using('dialog', function () {
+        $('#openPerCust_Dialog').dialog({
+            title:'新增',
+            width:600,
+            height:480,
+            modal:true,
+            buttons:[
+                {
+                    text:'确定',
+                    iconCls:'icon-ok',
+                    handler:function () {
+                        $('#openPerCust_Form').form('submit',{
+                            req:[{
+                                service:'M0000010'
+                            }],
+                            success:function(){
+
+                                alert('客户开户信息新增成功！');
+                                $("#openPerCust_Dialog").dialog('close');
+                                $('#mts_perCustOpenInfo_table').datagrid('reload');
+                            }
+                        });
+                    }
+                },
+                {
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#openPerCust_Dialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    });
+}
+//客户信息修改
+function openPerCust_edit() {
+    var selRow=$('#mts_perCustOpenInfo_table').datagrid('getSelected');
+    if (selRow == null) {
+        alert("请选中表格中的一条数据！");
+        return;
+    }
+
+    $('#custId').validatebox('disabled');
+    $('#btnCreateCust').linkbutton('disable');
+
+    $('#openPerCust_Form').form('disable',['ORG_CODE','CUST_TYPE','CUST_NAME']);
+
+
+    $('#openPerCust_Form').form('clear').form('load',selRow);
+    using('dialog', function () {
+        $('#openPerCust_Dialog').dialog({
+            title:'修改',
+            width:600,
+            height:480,
+            modal:true,
+            buttons:[
+                {
+                    text:'确定',
+                    iconCls:'icon-ok',
+                    handler:function () {
+                        $('#openPerCust_Form').form('submit',{
+                            req:[{
+                                service:'M0000011'
+                            }],
+                            success:function(){
+
+                                alert('客户开户信息修改成功！');
+                                $("#openPerCust_Dialog").dialog('close');
+                                $('#mts_perCustOpenInfo_table').datagrid('reload');
+                            }
+                        });
+                    }
+                },
+                {
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#openPerCust_Dialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    });
+}
+
+//交易员初始化事件
+function initriskController() {
+    $('#riskController').combogrid('grid').datagrid('reload');
+}
+function initCustDirector() {
+    $('#custDirector').combogrid('grid').datagrid('reload');
+}
+</script>
+</head>
+<body>
+<table id="mts_perCustOpenInfo_table" class="kui-datagrid"></table>
+<!--客户新增与修改对话框-->
+<div id="openPerCust_Dialog" style="display: none;">
+  <form id="openPerCust_Form" class="kui-form">
+    <table class="form-table" style="width:100%; margin-top:20px;">
+      <tr>
+        <td class="form-label">机构名称：</td>
+        <td colspan="2">
+          <input id="orgCode" name="ORG_CODE"
+                 class="kui-combotree" kui-options="required:true,req:[{service:'P0001031',ORG_STA:'1'}],
+                    panelWidth:230,panelHeight:250,treeExpand:'1',
+                    conf:{nodeId:'ORG_CODE',nodeName:'ORG_CODE_NAME',parNode:'PAR_ORG',treeType:'1'},
+                      onSelect:orgCodeSel" />
+        </td>
+        <td class="form-label">客户类型：</td>
+        <td>
+          <input name="CUST_TYPE"
+                 class="kui-combobox" kui-options="required:true,dict:'CUST_TYPE'" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">客户代码：</td>
+        <td>
+          <input id="custId" name="CUST_ID"
+                 class="kui-validatebox" kui-options="required:true,validType:'val[1,30]'" />
+        </td>
+        <td style="width:20px;">
+          <a href="#" id="btnCreateCust" class="kui-linkbutton" kui-options="iconCls:'icon-add'" onclick="createCustId()" />
+        </td>
+        <td class="form-label">客户简称：</td>
+        <td>
+          <input name="CUST_NAME"
+                 class="kui-validatebox" kui-options="required:true,validType:'val[1,30]'" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">客户级别：</td>
+        <td colspan="2">
+          <input name="CUST_LVL"
+                 class="kui-combobox" kui-options="required:true,dict:'CUST_LVL'" />
+        </td>
+        <td class="form-label">客户状态：</td>
+        <td >
+          <input name="CUST_STATUS"
+                 class="kui-combobox" kui-options="required:true,dict:'CUST_STATUS'" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">证件类型：</td>
+        <td colspan="2">
+          <input name="ID_TYPE"
+                 class="kui-combobox" kui-options="dict:'ID_TYPE'" />
+        </td>
+        <td class="form-label">证件号码：</td>
+        <td>
+          <input name="ID_CODE"
+                 class="kui-validatebox" kui-options="validType:'val[1,48]'" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">证件地址：</td>
+        <td colspan="4">
+          <input name="ID_ADDR" style="width: 450px;"
+                 class="kui-validatebox" kui-options="validType:'val[1,120]'"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">发证机关：</td>
+        <td colspan="4">
+          <input name="ID_ISS_AGCY" style="width: 450px;"
+                 class="kui-validatebox" kui-options="validType:'val[1,64]'"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">证件有效日期：</td>
+        <td colspan="2">
+          <input name="ID_EXP_DATE" class="kui-datebox" />
+        </td>
+        <td class="form-label">首选联系电话：</td>
+        <td >
+          <input name="TEL" class="kui-validatebox" kui-options="required:true,validType:'mobileortel'"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">联系电话：</td>
+        <td colspan="2">
+          <input name="TEL2" class="kui-validatebox"  kui-options="validType:'mobileortel'"/>
+        </td>
+        <td class="form-label">微信号：</td>
+        <td>
+          <input name="WEBCHAT" class="kui-validatebox"  kui-options="validType:'val[1,30]'"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">邮箱：</td>
+        <td colspan="2">
+          <input name="EMAIL" class="kui-validatebox"  kui-options="validType:'email'"/>
+        </td>
+        <td class="form-label">开户券商简称：</td>
+        <td >
+          <input name="OP_SECU" class="kui-validatebox"  kui-options="required:true,validType:'val[1,16]'"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label" >风控员：</td>
+        <td colspan="2">
+          <input  id="riskController" name="RISK_CONTROLLER"  class="kui-combogrid" kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 250,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'USER_CODE',
+                                    textField: 'USER_NAME',onShowPanel:initriskController,
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '风控员名称', field: 'USER_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field:'USER_CODE',title:'风控员代码',sortable:true,sortType:'number'},
+                                        {field:'USER_NAME',title:'风控员名称'},
+                                        {field:'USER_TYPE',title:'风控员类型',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('USER_TYPE',value);
+                                          }
+                                        },
+                                        {field:'ORG_CODE',title:'机构代码'},
+                                        {field:'ORG_NAME',title:'机构名称'}
+                                    ]]"/>
+
+        </td>
+        <td class="form-label">客户经理：</td>
+        <td>
+          <input  id="custDirector" name="CUST_DIRECTOR"  class="kui-combogrid" kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 250,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'USER_CODE',
+                                    textField: 'USER_NAME',onShowPanel:initCustDirector,
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '客户经理名称', field: 'USER_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field:'USER_CODE',title:'客户经理代码',sortable:true,sortType:'number'},
+                                        {field:'USER_NAME',title:'客户经理名称'},
+                                        {field:'USER_TYPE',title:'客户经理类型',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('USER_TYPE',value);
+                                          }
+                                        },
+                                        {field:'ORG_CODE',title:'机构代码'},
+                                        {field:'ORG_NAME',title:'机构名称'}
+                                    ]]"/>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">开户营业部：</td>
+        <td colspan="2">
+          <input name="OP_DEP" class="kui-validatebox"  kui-options="validType:'val[1,32]'"/>
+        </td>
+        <td class="form-label">操作渠道：</td>
+        <td >
+          <input name="CHANNEL" class="kui-combobox"  kui-options="dict:'CHANNEL'"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">开户日期：</td>
+        <td colspan="2">
+          <input name="OPEN_DATE" class="kui-datebox"  />
+        </td>
+        <td class="form-label">销户日期：</td>
+        <td colspan="2">
+          <input name="CLOSE_DATE" class="kui-datebox"  />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">备注：</td>
+        <td colspan="4">
+          <input name="REMARK"
+                 class="kui-validatebox" kui-options="validType:'val[1,120]'" style="width: 450px;"/>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

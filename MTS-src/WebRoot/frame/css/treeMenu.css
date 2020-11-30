@@ -1,0 +1,67 @@
+.nav {
+	min-width: 180px;
+	padding: 40px 28px 25px 0;
+}
+
+ul.nav {
+	padding: 0;
+	margin: 0;
+	font-size: 1em;
+	line-height: 0.5em;
+	list-style: none;
+}
+
+ul.nav li {
+	
+}
+
+ul.nav li a {
+	line-height: 15px;
+	font-size: 13px;
+	margin: 0px 5px 0px 0px;
+	color: #000;
+	display: block;
+	text-decoration: none;
+	
+	
+}
+
+ul.nav li a:hover {
+	color: white;
+}
+
+ul.nav ul {
+	margin: 0;
+	padding: 0;
+	display: none;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+ul.nav ul li {
+	margin: 0;
+	padding: 0;
+	clear: both;
+}
+
+
+ul.nav span {
+	float: right;
+}
+
+.closedSign{
+	width: 15px;
+	height: 15px;
+	background: transparent url('../images/frame/ui-frame-icons.png')
+		no-repeat;
+	background-position: -160px -20px;
+}
+
+.openedSign{
+	width: 15px;
+	height: 15px;
+	background: transparent url('../images/frame/ui-frame-icons.png')
+		no-repeat;
+	background-position: -180px -20px;
+}
+

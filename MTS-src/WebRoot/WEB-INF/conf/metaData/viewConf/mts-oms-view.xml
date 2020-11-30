@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<view id="mts_OMS_table_no_condition"  render="datagrid" title="订单管理信息-下委托" script="../../common/js/common.js">
+		<conf fit="true" req="[{service:'M0000045',OP_ID:g_user.userId,OMS_STATUS:'0',OMS_DATE:getSysDate(),ORDER_LVL:'1'}]"
+			  edt_isShowLoading="false" fallParas="[{enable:true}]" onSelect="queyOmsInfo" />
+        <col_item field="OMS_ID" title="订单编号"  type="input" hidden="true"/>
+		<col_item field="OMS_STATUS" title="状态"  type="input" formatter="fmtOmsStauts_new"/>
+		<col_item field="CUST_ID" title="客户代码"  type="input" hidden="true"/>
+		<col_item field="OP_ID" title="操作员代码"  type="input" hidden="true"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" hidden="true"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL" edt_required="true"
+				  edt_autoFill="true" hidden="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="STKBD" hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"  hidden="true"/>
+		<col_item field="STK_NAME" title="证券名称"  type="input" />
+		<col_item field="OMS_PRICE" title="价格"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="OMS_QTY" title="数量"  type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="TRADE_DIRECT" title="方向"  type="combobox"   edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="STK_ID" title="证券代码"  type="input" />
+		<col_item field="UP_DATE" title="更新日期" type="input"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"/>
+	</view>
+
+	<view id="mts_OMS_table"  render="datagrid" title="订单管理信息-下单" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000045',OP_ID:g_user.userId,OMS_STATUS:'1',OMS_DATE:getSysDate()}]"  onSelect="queyOmsMatch"
+			   rowStyler="setMtsOmsViewBakColor"/>
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="CUST_NAME" title="客户姓名" type="input"/>
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DEPOS_PRICE" title="委托价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="DEPOS_QTY" title="委托数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"
+				 />
+		<col_item field="UNMATCH_QTY" title="未成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]"
+				  formatter="function(value,row,index){return toThousands(value);}"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3"/>
+		<col_item field="OP_NAME" title="操作员名称"   edit_flag="3"/>
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUST_NAME" title="客户名称"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="1" edt_required="true" edt_validType="numchar[1,30]" hidden="true"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL" edt_required="true" edt_autoFill="true" hidden="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="STKBD" hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"  hidden="true"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="3" />
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_OMS_unmatch_table"  render="datagrid" title="未成交明细" >
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000045',OP_ID:g_user.userId,OMS_DATE:getSysDate(),UNMATCH_QTY_THAN_ZERO:'0',OMS_STATUS:'1'}]"
+			   onSelect="queyOmsMatch"/>
+		<btn_item text="委托撤单"  title="委托撤单" handler="enTractCancelOrder_btn" iconCls="icon-redo" />
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="3" />
+		<col_item field="CUST_NAME" title="客户姓名" type="input"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DEPOS_PRICE" title="委托价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="DEPOS_QTY" title="委托数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UNMATCH_QTY" title="未成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3"/>
+		<col_item field="OP_NAME" title="操作员名称"   edit_flag="3"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUST_NAME" title="客户名称"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="1" edt_required="true" hidden="true"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL"  hidden="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="STKBD" hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"  hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_OMS_match_table"  render="datagrid" title="订单交易信息" script="../../common/js/common.js">
+		<conf req="[{service:'M0000049',OP_ID:g_user.userId,OMS_DATE: getSysDate()}]"  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<btn_item text="新增" service="M0000050" title="订单新增" handler="omsMatch_add" iconCls="icon-add" />
+		<btn_item text="删除" service="M0000110" title="订单删除" handler="omsMatch_del" iconCls="icon-remove" />
+		<col_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
+		<col_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"   hidden="true"/>
+		<col_item field="CUST_NAME" title="客户姓名" type="input"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3" hidden="true"/>
+		<col_item field="OP_NAME" title="操作员名称"   edit_flag="3" hidden="true"/>
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3" hidden="true"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3" hidden="true"/>
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true" hidden="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="1" edt_required="true" hidden="true"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL" edt_required="true" hidden="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="STKBD" hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"  hidden="true"/>
+		<col_item field="STK_ID" title="证券代码" type="combogrid" edt_required="true"  edt_panelHeight="250" edit_flag="1"  hidden="true" edt_panelWidth="350"
+				  edt_textField="STK_NAME" edt_idField="STK_ID"
+				  edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'M0000028'}]"
+				  edt_columns="[[
+								{field:'STK_ID',title:'证券代码',},
+								{field:'STK_NAME',title:'证券名称'},
+								{field:'MARKET_ID',title:'操作员类型',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('MARKET',value);
+								  }},
+								  {field:'STKBD',title:'交易板块',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STKBD',value);
+								  }},
+								  {field:'STK_CLS',title:'证券类别',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STK_CLS',value);
+								  }},
+								  {field:'STK_SUB_CLS',title:'证券类别子类',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STK_SUB_CLS',value);
+								  }},
+								  {field:'STK_STATUS',title:'证券状态',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STK_STATUS',value);
+								  }}
+								]]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'STK_ID',title:'证券代码',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,8]'
+									  }
+									}
+						  },{field:'STK_NAME',title:'证券名称',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,16]'
+									  }
+									}
+						  }
+
+						  ]
+						}
+					   ]"
+		/>
+		<col_item field="MATCH_QTY" title="成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MATCH_PRICE" title="成交价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="MATCH_AMT" title="成交金额" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true" hidden="true"/>
+		<col_item field="MATCH_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" hidden="true"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_OMS_match_detail_table"  render="datagrid" title="订单交易明细" script="../../common/js/common.js">
+		<conf req="[{service:'M0000049',OP_ID:g_user.userId,OMS_DATE:getSysDate()}]"  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<col_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
+		<col_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  />
+		<col_item field="CUST_NAME" title="客户姓名" type="input"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  />
+		<col_item field="OP_NAME" title="操作员名称"  />
+		<col_item field="TRADER_ID" title="交易员代码" type="input" />
+		<col_item field="TRADER_NAME" title="交易员名称"   />
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox"  edt_dict="OMS_TYPE" edt_autoFill="true" hidden="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="MATCH_QTY" title="成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MATCH_PRICE" title="成交价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="MATCH_AMT" title="成交金额" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="1" edt_required="true" hidden="true"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL" edt_required="true" hidden="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="STKBD" hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"  hidden="true"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="MATCH_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" />
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_today_oms_table"  render="datagrid" title="当日订单查询" script="../../common/js/common.js">
+		<conf fit="true" req="[{service:'M0000045',OP_ID:g_user.userId,OMS_STATUS:'0',OMS_DATE:getSysDate()}]"/>
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="STK_ID" title="证券代码"  type="input" />
+		<col_item field="STK_NAME" title="证券名称"  type="input" />
+		<col_item field="OMS_PRICE" title="价格"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="OMS_QTY" title="数量"  type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="方向"  type="combobox"   edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="状态"  type="input" formatter="fmtOmsStauts_new"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"/>
+	</view>
+	<view id="mts_today_depos_table"  render="datagrid" title="当时委托查询" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" fit="true" req="[{service:'M0000045',OP_ID:g_user.userId,OMS_STATUS:'1',OMS_DATE:getSysDate()}]"/>
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="3" />
+		<col_item field="OP_ID" title="交易员编号" type="input"  edit_flag="3" />
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DEPOS_QTY" title="委托数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UNMATCH_QTY" title="未成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3"/>
+		<col_item field="OP_NAME" title="操作员名称"   edit_flag="3"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUST_NAME" title="客户名称"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+	<view id="mts_today_match_table"  render="datagrid" title="当日成交查询" script="../../common/js/common.js">
+		<conf req="[{service:'M0000049',OP_ID:g_user.userId,OMS_DATE:getSysDate()}]"  pageSize="10" colNumbers="4"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<col_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
+		<col_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  />
+		<col_item field="OP_ID" title="操作员代码" type="input"  />
+		<col_item field="OP_NAME" title="操作员名称"  />
+		<col_item field="TRADER_ID" title="交易员代码" type="input" />
+		<col_item field="TRADER_NAME" title="交易员名称"   />
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox"  edt_dict="OMS_TYPE" edt_autoFill="true" hidden="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="MATCH_QTY" title="成交数量"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MATCH_PRICE" title="成交价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"  align="right"/>
+		<col_item field="MATCH_AMT" title="成交金额" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="MATCH_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" />
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+	<view id="mts_his_oms_table"  render="datagrid" title="历史订单查询" script="../../common/js/common.js">
+		<conf  fit="true" req="[{service:'M0000051',OP_ID:g_user.userId,OMS_STATUS:'0'}]"  fallParas="[{enable:true}]"/>
+		<qry_item field="OMS_DATE_BEGIN" title="开始日期" type="datebox" edt_validType="begDate['OMS_DATE_END']" edt_defaultValue="date_getPointDate(getSysDate(),-7)" edt_required="true"/>
+		<qry_item field="OMS_DATE_END" title="截止日期" type="datebox" edt_validType="endDate['OMS_DATE_BEGIN']" edt_defaultValue="getSysDate()" edt_required="true"/>
+
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="STK_ID" title="证券代码"  type="input" />
+		<col_item field="STK_NAME" title="证券名称"  type="input" />
+		<col_item field="OMS_PRICE" title="价格"  type="input"  align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="OMS_QTY" title="数量"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="方向"  type="combobox"   edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="状态"  type="input" formatter="fmtOmsStauts_new"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"/>
+	</view>
+	<view id="mts_his_depos_table"  render="datagrid" title="历史委托查询" script="../../common/js/common.js">
+		<conf  req="[{service:'M0000051',OP_ID:g_user.userId,OMS_STATUS:'1'}]" pageSize="10" colNumbers="4"
+			  fit="true" showRowDetail="true" isShowDetail=""  fallParas="[{enable:true}]"/>
+		<qry_item field="OMS_DATE_BEGIN" title="开始日期" type="datebox" edt_validType="begDate['OMS_DATE_END']"
+				  edt_defaultValue="date_getPointDate(getSysDate(),-7)"  edt_required="true"/>
+		<qry_item field="OMS_DATE_END" title="截止日期" type="datebox" edt_validType="endDate['OMS_DATE_BEGIN']"
+				  edt_defaultValue="getSysDate()"  edt_required="true"/>
+
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="3" />
+		<col_item field="OP_ID" title="交易员编号" type="input"  edit_flag="3" />
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"  align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DEPOS_QTY" title="委托数量"  type="input" edt_required="true" edt_validType="numchar[1,19]"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="UNMATCH_QTY" title="未成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3"/>
+		<col_item field="OP_NAME" title="操作员名称"   edit_flag="3"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUST_NAME" title="客户名称"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+	<view id="mts_his_match_table"  render="datagrid" title="当日成交查询" script="../../common/js/common.js">
+		<conf req="[{service:'M0000067',OP_ID:g_user.userId}]" pageSize="10" colNumbers="4"
+			  fallParas="[{enable:true}]" fit="true" showRowDetail="true" isShowDetail=""/>
+		<qry_item field="OMS_DATE_BEGIN" title="开始日期" type="datebox" edt_validType="begDate['OMS_DATE_END']" edt_defaultValue="date_getPointDate(getSysDate(),-7)"/>
+		<qry_item field="OMS_DATE_END" title="截止日期" type="datebox" edt_validType="endDate['OMS_DATE_BEGIN']" edt_defaultValue="getSysDate()"  />
+		<col_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
+		<col_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  />
+		<col_item field="OP_ID" title="操作员代码" type="input"  />
+		<col_item field="OP_NAME" title="操作员名称"  />
+		<col_item field="TRADER_ID" title="交易员代码" type="input" />
+		<col_item field="TRADER_NAME" title="交易员名称"   />
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox"  edt_dict="OMS_TYPE" edt_autoFill="true" hidden="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="MATCH_QTY" title="成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MATCH_PRICE" title="成交价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"  align="right"/>
+		<col_item field="MATCH_AMT" title="成交金额" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"  align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="MATCH_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" />
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_OMS_manager_table"  render="datagrid" title="订单管理页面" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000045',OP_ID:g_user.userId,USER_POST:g_user.USER_POST,OMS_STATUS:'0',ORDER_TYPE:'1'}]" />
+		<qry_item field="CUST_ID" title="客户代码" type="input" edt_validType="val[1,32]" />
+		<qry_item field="STK_ID" title="证券代码" type="input" edt_validType="val[1,8]"/>
+
+		<btn_item text="新增" service="M0000046"  handler="omsManager_add" iconCls="icon-add"/>
+		<btn_item text="修改" service="M0000047"  handler="omsManager_mod" iconCls="icon-edit"/>
+		<btn_item text="删除" service="M0000048" handler="commonDelete" iconCls="icon-remove"/>
+
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="2" edt_defaultValue=":D0"/>
+		<col_item field="OMS_TYPE" title="交易指令"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"  align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" edt_defaultValue="0"  align="right"
+					formatter="function(value){return toThousands(value);}"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" edt_defaultValue="0"/>
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  />
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="mts_outlay_set_table"  render="datagrid" title="客户费率设置信息"  script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" fit="true" req="[{service:'M0000069'}]" />
+		<qry_item field="CUST_ID" title="客户代码" type="input" edt_validType="val[1,32]" />
+		<btn_item text="新增" service="M0000070" handler="outlaySet_add" iconCls="icon-add" />
+		<btn_item text="修改" service="M0000071" handler="outlaySet_mod" iconCls="icon-edit" />
+		<btn_item text="删除" service="M0000072" handler="commonDelete" iconCls="icon-remove"/>
+
+		<col_item field="OUTLAY_TYPE" title="费率类型"  type="combobox" width="100" edt_required="true"  edit_flag="1"
+				  edt_dict="OUTLAY_TYPE" edt_onChange="outlayTypeSel"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox"  edt_required="true" edt_dict="CUACCT_LVL"   edit_flag="1"/>
+		<col_item field="CUST_ID" title="客户代码" type="combogrid"  edt_required="true"  edt_panelHeight="250"  edit_flag="1"  edt_panelWidth="350"
+				  edt_textField="CUST_NAME" edt_idField="CUST_ID"
+				  edt_fallParas="[{enable:true}]"
+				  edt_req="[{service:'M0000009',CUST_STATUS:'0'}]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'CUST_ID',title:'客户代码',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,32]'
+									  }
+									}
+						  },{field:'CUST_NAME',title:'客户姓名',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,64]'
+									  }
+									}
+						  }
+
+						  ]
+						}
+					   ]"
+				  edt_columns="[[
+								{field:'CUST_ID',title:'客户代码',},
+								{field:'CUST_NAME',title:'客户姓名'},
+								{field:'ORG_NAME',title:'机构名称'},
+								{field:'CUST_TYPE',title:'客户类型',width:70,
+									  formatter: function(value,row,index){
+										return getSysDictOpt('CUST_TYPE',value);
+									  }
+                                 },
+								{field:'CUST_LVL',title:'客户级别',width:70,
+								  formatter: function(value,row,index){
+									return getSysDictOpt('CUST_LVL',value);
+								  }
+								},
+								{field:'CUST_STATUS',title:'客户状态',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('CUST_STATUS',value);
+								  }}
+								]]"
+		/>
+		<col_item field="STK_CLS" title="证券分类"  type="combobox"  edt_required="true" edt_dict="STK_CLS" edt_autoFill="true"  edit_flag="1"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true" edit_flag="1"/>
+		<col_item field="MIN_PROC_COST" title="最低手续费"  type="input" edt_required="true" edt_validType="numberex[10,19]"
+				  formatter="function(value){ return toThousands(value); }" align="right"/>
+		<col_item field="PROC_COST" title="手续费率"  type="input" edt_required="true" edt_validType="numberex[2,1,8]" edt_invalidMessage="请输入小于1大于0非负数"
+				  formatter="function(value){ return parseFloat(value).toFixed(6); }"  align="right" edt_defaultVal="5"/>
+		<col_item field="TRANSFER_COST" title="过户费率"  type="input" edt_required="true" edt_validType="numberex[2,1,8]" edt_invalidMessage="请输入小于1大于0非负数"
+				  formatter="function(value){ return parseFloat(value).toFixed(6); }"  align="right"/>
+		<col_item field="OTHER_COST" title="其它费率"  type="input" edt_required="true" edt_validType="numberex[2,1,8]" edt_invalidMessage="请输入小于1大于0非负数"
+				  formatter="function(value){ return parseFloat(value).toFixed(6); }"  align="right"/>
+		<col_item field="STAMP_TAX" title="印花税率"  type="input" edt_required="true" edt_validType="numberex[2,1,8]" edt_invalidMessage="请输入小于1大于0非负数"
+				  formatter="function(value){ return parseFloat(value).toFixed(6); }"  align="right"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3" />
+	</view>
+
+	<view id="mts_BUY_STOCK_POS_table"  render="datagrid" title="查询未审核买入股票建仓信息" >
+		<conf req="[{service:'M0000079',UP_DATE:getSysDate(),TRADE_DIRECT:'1',ORDER_TYPE:'1',OP_ID:g_user.USER_CODE,AUDIT_SIGNAL_STATE:'0'}]"
+			  pageSize="10" colNumbers="4"  fit="true" />
+		<col_item field="STK_ID" title="证券代码" type="input"  />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="BUILD_PRICE" title="建仓价格" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="SIGNAL_TYPE" title="信号类型"  type="combobox"  edt_dict="SIGNAL_TYPE"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_dict="ORDER_TYPE"/>
+		<col_item field="IS_OMS" title="是否处理"  type="combobox"  edt_dict="YES_OR_NO"/>
+		<col_item field="OP_ID" title="操作员编号" type="input"  />
+		<col_item field="OP_NAME" title="操作员姓名" type="input"  />
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="REMARK" title="备注" type="input"  />
+	</view>
+
+	<view id="mts_SELL_STOCK_POS_table"  render="datagrid" title="查询未审核卖出股票建仓信息" >
+		<conf req="[{service:'M0000079',UP_DATE:getSysDate(),TRADE_DIRECT:'2',ORDER_TYPE:'1',OP_ID:g_user.USER_CODE,AUDIT_SIGNAL_STATE:'0'}]"
+			  pageSize="10" colNumbers="4" fit="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input"  />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="BUILD_PRICE" title="建仓价格" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="SIGNAL_TYPE" title="信号类型"  type="combobox"  edt_dict="SIGNAL_TYPE"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_dict="ORDER_TYPE"/>
+		<col_item field="IS_OMS" title="是否处理"  type="combobox"  edt_dict="YES_OR_NO"/>
+		<col_item field="OP_ID" title="操作员编号" type="input"  />
+		<col_item field="OP_NAME" title="操作员姓名" type="input"  />
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="REMARK" title="备注" type="input"  />
+	</view>
+
+	<view id="mts_STOCK_POS_table" render="form" title="股票建仓表格" colNumbers="2" script="">
+		<conf colNumbers="1"/>
+		<col_item field="STK_ID" title="证券代码" type="combogrid" edt_required="true"  edt_panelHeight="250"   edt_panelWidth="450"
+				  edt_textField="STK_NAME" edt_idField="STK_ID"
+				  edt_req="[{service:'M0000028'}]"
+				  edt_columns="[[
+								{field:'STK_ID',title:'证券代码',},
+								{field:'STK_NAME',title:'证券名称'},
+								{field:'MARKET_ID',title:'交易市场',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('MARKET',value);
+								  }},
+								  {field:'STKBD',title:'交易板块',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STKBD',value);
+								  }},
+								  {field:'STK_CLS',title:'证券类别',
+								   formatter: function(value,row,index){
+									return getSysDictOpt('STK_CLS',value);
+								  }}
+								]]"
+				  edt_queryCols="[
+						{
+						  text:'查询',
+						  cols:[{field:'STK_ID',title:'证券代码',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,8]'
+									  }
+									}
+						  },{field:'STK_NAME',title:'证券名称',
+								  editor:{
+									  type:'text',
+									  options:{
+										validType:'val[1,16]'
+									  }
+									}
+						  }
+
+						  ]
+						}
+					   ]"
+		/>
+		<col_item field="BUILD_PRICE" title="建仓价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]" />
+	</view>
+
+	<view id="today_omsSingal_flow_table"  render="datagrid" title="当日订单信号流水查询" script="../../common/js/common.js">
+		<conf fit="true" req="[{service:'M0000045',OMS_DATE:getSysDate()}]" onSelect="queryEntrustSingalFlow"/>
+
+		<qry_item field="TRADER_ID"   title="交易员代码" type="input"  />
+		<qry_item field="STK_ID"   title="证券代码" type="input"  />
+		<qry_item field="OMS_STATUS"   title="方向" type="combobox"   edt_dict="TRADE_DIRECT" />
+
+		<col_item field="OMS_ID" title="申请编号" type="input"  />
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  />
+		<col_item field="TRADER_NAME" title="交易员名称"  />
+		<col_item field="STK_ID" title="证券代码"  type="input" />
+		<col_item field="STK_NAME" title="证券名称"  type="input" />
+		<col_item field="OMS_PRICE" title="价格"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="OMS_QTY" title="数量"  type="input" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="方向"  type="combobox"   edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="状态"  type="input" formatter="fmtOmsStauts_new"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"/>
+	</view>
+
+	<view id="tody_EntrustSingal_flow_table"  render="datagrid" title="当日委托信号流水查询" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			   fit="true" req="[{service:'M0000045',OP_ID:'-1'}]"  onSelect="queryMatchSingalFlow"
+			   rowStyler="setMtsOmsViewBakColor"/>
+		<col_item field="OMS_ID" title="申请编号" type="input"  edit_flag="3" edt_validType="val[1,32]"/>
+		<col_item field="STK_NAME" title="证券名称" type="input" edit_flag="3" />
+		<col_item field="OMS_PRICE" title="订单价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="OMS_QTY" title="订单数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="DEPOS_PRICE" title="委托价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="DEPOS_QTY" title="委托数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"
+		/>
+		<col_item field="UNMATCH_QTY" title="未成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]"
+				  formatter="function(value,row,index){return toThousands(value);}"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="OMS_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true"/>
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true"/>
+		<col_item field="OP_ID" title="操作员代码" type="input"  edit_flag="3"/>
+		<col_item field="OP_NAME" title="操作员名称"   edit_flag="3"/>
+		<col_item field="TRADER_ID" title="交易员代码" type="input"  edit_flag="3"/>
+		<col_item field="TRADER_NAME" title="交易员名称"   edit_flag="3"/>
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox" edt_required="true"  edt_dict="OMS_TYPE" edt_autoFill="true"/>
+		<col_item field="CUST_ID" title="客户代码"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUST_NAME" title="客户名称"   edt_required="true" edt_validType="val[1,32]" hidden="true"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="1" edt_required="true" edt_validType="numchar[1,30]" hidden="true"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL" edt_required="true" edt_autoFill="true" hidden="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="STKBD" hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"  hidden="true"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  edit_flag="3" />
+		<col_item field="UP_DATE" title="更新日期" type="input"  edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间" type="input"  edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="today_matchSingal_flow_table"  render="datagrid" title="当日成交信号流水查询" script="../../common/js/common.js">
+		<conf req="[{service:'M0000049',OP_ID:'-1'}]"  pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<col_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
+		<col_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
+		<col_item field="OMS_DATE" title="申请日期" type="datebox"  />
+		<col_item field="OP_ID" title="操作员代码" type="input"  />
+		<col_item field="OP_NAME" title="操作员名称"  />
+		<col_item field="TRADER_ID" title="交易员代码" type="input" />
+		<col_item field="TRADER_NAME" title="交易员名称"   />
+		<col_item field="OMS_TYPE" title="交易指令类别"  type="combobox"  edt_dict="OMS_TYPE" edt_autoFill="true" hidden="true"/>
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="MATCH_QTY" title="成交数量"  type="input" edt_required="true" edt_validType="numchar[1,19]" align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MATCH_PRICE" title="成交价格" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}" align="right"/>
+		<col_item field="MATCH_AMT" title="成交金额" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="PROC_COST" title="手续费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="TRANSFER_COST" title="过户费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="OTHER_COST" title="其它费" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="STAMP_TAX" title="印花税" type="input"  edt_required="true" edt_validType="numberex[10,15,4]"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input" edit_flag="1" edt_required="true" hidden="true"/>
+		<col_item field="CUACCT_LVL" title="资金账号级别"  type="combobox" edt_dict="CUACCT_LVL" edt_required="true" hidden="true"/>
+		<col_item field="STKBD" title="交易板块"  type="combobox"  edt_dict="STKBD" hidden="true"/>
+		<col_item field="TRDACCT" title="交易账号"  type="input"  hidden="true"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="MATCH_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" />
+		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true" hidden="true"/>
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]"/>
+	</view>
+
+	<view id="handBuySignalStaAudit_table"  render="datagrid" title="手工买信号审核" >
+		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'1'}]" pageSize="10" colNumbers="4" fit="true"
+			  onSelect="handSignalStaAudit_RowSel"/>
+
+		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="1" edt_disabled="true"/>
+		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_autoFill="true"/>
+
+		<btn_item text="通过" service="M0000078" title="通过" handler="audit_pass" iconCls="icon-ok"/>
+		<btn_item text="驳回" service="M0000078" title="驳回" handler="audit_reject" iconCls="icon-cancel"/>
+
+		<col_item field="STK_ID" title="证券代码" type="input"  />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="BUILD_PRICE" title="建仓价格" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="SIGNAL_TYPE" title="信号类型"  type="combobox"  edt_dict="SIGNAL_TYPE"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_dict="ORDER_TYPE"/>
+		<col_item field="IS_OMS" title="是否处理"  type="combobox"  edt_dict="YES_OR_NO"/>
+		<col_item field="OP_ID" title="操作员编号" type="input"  />
+		<col_item field="OP_NAME" title="操作员姓名" type="input"  />
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE"/>
+		<col_item field="REMARK" title="备注" type="input"  />
+	</view>
+
+	<view id="handSellSignalStaAudit_table"  render="datagrid" title="手工买信号审核" >
+		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'2'}]" pageSize="10" colNumbers="4" fit="true"
+			  onSelect="handSignalStaAudit_RowSel"/>
+
+		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="2" edt_disabled="true"/>
+		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_autoFill="true"/>
+
+		<btn_item text="通过" service="M0000078" title="通过" handler="audit_pass" iconCls="icon-ok"/>
+		<btn_item text="驳回" service="M0000078" title="驳回" handler="audit_reject" iconCls="icon-cancel"/>
+
+		<col_item field="STK_ID" title="证券代码" type="input"  />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="BUILD_PRICE" title="建仓价格" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="SIGNAL_TYPE" title="信号类型"  type="combobox"  edt_dict="SIGNAL_TYPE"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_dict="ORDER_TYPE"/>
+		<col_item field="IS_OMS" title="是否处理"  type="combobox"  edt_dict="YES_OR_NO"/>
+		<col_item field="OP_ID" title="操作员编号" type="input"  />
+		<col_item field="OP_NAME" title="操作员姓名" type="input"  />
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE"/>
+		<col_item field="REMARK" title="备注" type="input"  />
+	</view>
+</views>

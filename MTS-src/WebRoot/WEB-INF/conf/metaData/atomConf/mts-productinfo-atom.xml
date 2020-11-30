@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+	<atom atom_code="queryTradeDimensionCfgInfoAtom" atom_name="查询维度设置信息"
+		  atom_method="queryTradeDimensionCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		   attr1="" attr2=""/>
+
+	<atom atom_code="addTradeDimensionCfgInfoAtom" atom_name="新增维度设置信息"
+		  atom_method="addTradeDimensionCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modTradeDimensionCfgInfoAtom" atom_name="修改维度设置信息"
+		  atom_method="modTradeDimensionCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modTradeDimensionCfgStaInfoAtom" atom_name="修改维度状态信息"
+		  atom_method="modTradeDimensionCfgStaInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+
+
+	<atom atom_code="delTradeDimensionCfgInfoAtom" atom_name="删除维度设置信息"
+		  atom_method="delTradeDimensionCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryDimensionStockInfoAtom" atom_name="查询维度证券信息"
+		  atom_method="queryDimensionStockInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addDimensionStockInfoAtom" atom_name="新增维度证券信息"
+		  atom_method="addDimensionStockInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modDimensionStockInfoAtom" atom_name="修改维度证券信息"
+		  atom_method="modDimensionStockInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delDimensionStockInfoAtom" atom_name="删除维度证券信息"
+		  atom_method="delDimensionStockInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryStockInfoAtom" atom_name="查询股票产品信息"
+		  atom_method="queryStockInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryStockPoolAllotInfoAtom" atom_name="查询交易员分配股票池信息"
+		  atom_method="queryStockPoolAllotInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addStockPoolAllotInfoAtom" atom_name="新增交易员分配股票池信息"
+		  atom_method="addStockPoolAllotInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modStockPoolAllotInfoAtom" atom_name="修改交易员分配股票池信息"
+		  atom_method="modStockPoolAllotInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delStockPoolAllotInfoAtom" atom_name="删除交易员分配股票池信息"
+		  atom_method="delStockPoolAllotInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryStockPoolCfgInfoAtom" atom_name="查询股票池配置信息"
+		  atom_method="queryStockPoolCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addStockPoolCfgInfoAtom" atom_name="新增股票池配置信息"
+		  atom_method="addStockPoolCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modStockPoolCfgInfoAtom" atom_name="修改股票池配置信息"
+		  atom_method="modStockPoolCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delStockPoolCfgInfoAtom" atom_name="删除股票池配置信息"
+		  atom_method="delStockPoolCfgInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryStockTrendInfoAtom" atom_name="查询股票池行情信息"
+		  atom_method="queryStockTrendInfo"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="DemensionProductImportAtom" atom_name="维度产品导入"
+		  atom_method="DemensionProductImport"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="stockSubscriptionSetAtom" atom_name="产品股票池设置"
+		  atom_method="stockSubscriptionSet"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="stockBlackListSetAtom" atom_name="产品黑名单设置"
+		  atom_method="stockBlackListSet"  atom_class="com.szkingdom.business.mts.ProductInfoManager"
+		  attr1="" attr2=""/>
+</atoms>
+ 

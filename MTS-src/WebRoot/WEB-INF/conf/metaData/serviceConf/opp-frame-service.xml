@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+	<service service_code="P9999999" service_name="统一POJO服务"
+		attr1="">
+		<businesses>
+			<service_business business_code="GeneralPojoBex"
+				business_method="" serial_no="1" business_name="GeneralPojoBex" />
+		</businesses>
+	</service>
+	<service service_code="P9999998" service_name="统一视图服务"
+		service_cate="2" attr1="">
+	</service>
+
+	<!-- 用户登录 -->
+	<service service_code="P0003001" service_name="USER_LOGIN" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="UserLogin" business_method="" serial_no="1" business_name="UserLogin" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0003002" service_name="USER_LOGIN_UPDATE" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="UserLoginUpdate" business_method="" serial_no="1" business_name="UserLoginUpdate" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0003003" service_name="CHECK_USER_TICKET" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="CheckUserTicket" business_method="" serial_no="1" business_name="CheckUserTicket" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0003004" service_name="USER_LOGIN" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="KcbpUserLogin" business_method="" serial_no="1" business_name="UserLogin" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="P0004001" service_name="菜单查询"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<!--service_business business_code="frameSysMenuQuery"
+				business_method="" serial_no="1" business_name="菜单查询" business_type="1"
+				business_cate="1" attr1="" /-->
+			<service_business business_code="selectUserMenu"
+				business_method="" serial_no="1" business_name="菜单查询" business_type="3"
+				business_cate="1" attr1="" />	
+		</businesses>
+	</service>
+
+	<service service_code="P0004011" service_name="数据字典项查询"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="frameDictItemQuery"
+				business_method="" serial_no="1" business_name="数据字典项查询" business_type="1"
+				business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="P0004012" service_name="附件查询"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="fileQuery"
+				business_name="fileQuery" business_method="" serial_no="1"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004013" service_name="附件上传"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="P0004013"
+				business_name="fileUpload" business_method="" serial_no="1"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004014" service_name="附件删除"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="fileDelete"
+				business_name="fileDelete" business_method="" serial_no="1"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0004015" service_name="修改用户"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="frameUserUpdate"
+				business_name="frameUserUpdate" business_method="" serial_no="1"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="P0004016" service_name="修改用户"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="frameUserUpdateIcon"
+				business_name="frameUserUpdateIcon" business_method="" serial_no="1"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="P0004017" service_name="更换头像"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<businesses>
+			<service_business business_code="P0004017"
+				business_name="frameIconUpload" business_method="" serial_no="1"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="atomTest" service_name="开户"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">
+		<script><![CDATA[
+			def ret;
+			if ("$MODEL_KEY" == "lytest")
+			{
+				ret = doCall("TestAtom2");
+			}
+			return ret;
+		]]></script>
+		<businesses>
+			<service_business business_code="TestAtom1"
+				business_name="TestAtom" business_method="doUserQuery" serial_no="1"
+				business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="TestAtom2"
+				business_name="TestAtom2" business_method="doQuery2" serial_no="1"
+				business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="atomTest2" service_name="测试"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">		
+		<businesses>
+			<service_business business_code="insertSysMenu"
+				business_name="" business_method="" serial_no="1"
+				business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="TESTKCXP" service_name="测试"
+		service_type="1" service_cate="1" arrange_type="1" soap_enable="1"
+		attr1="">		
+		<businesses>
+			<service_business business_code="TESTKCXP"
+				business_name="" business_method="" serial_no="1"
+				business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<service service_code="atomTest3" service_name="测试" service_type="1" service_cate="1" result_position="" arrange_type="1" soap_enable="1" attr1="">		
+		<businesses>
+			<service_business business_code="selectUserMenu"	business_name="" business_method="" serial_no="1" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="selectUserMenu"	business_name="" business_method="" serial_no="1" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="selectUserMenu"	business_name="" business_method="" serial_no="1" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="selectUserMenu"	business_name="" business_method="" serial_no="1" business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<!-- 刷新缓存 -->
+    <service service_code="AllCacheRefreshService" service_name="刷新所有缓存" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="AllCacheRefreshBex" business_method="" serial_no="1" business_name="刷新所有缓存" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+
+	
+</services>

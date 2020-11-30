@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>combotree - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+<h3>组合树</h3>
+<p>继承$.fn.combo.defaults和$.fn.tree.defaults，属性和方法可以使用combo，tree的，具体参考tree.html，combo.html.  使用$.fn.combotree.defaults重载默认值。</p>
+<img src="images/combotree.png"/>
+
+<h4>依赖关系</h4>
+<ul>
+	<li>自定义组合框</li>
+	<li>树形菜单</li>
+</ul>
+
+<h4>使用方法</h4>
+<pre class="code">
+	<span style="color:blue">&lt;select</span> <span style="color:red">id</span><span style="color:blue">="cc"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">200px;</span><span style="color:blue">"&gt;&lt;/select&gt;</span>
+</pre>
+<pre class="code">
+	<span style="color:blue">&lt;input</span> <span style="color:red">id</span><span style="color:blue">="cc"</span> <span style="color:red">value</span><span style="color:blue">="01"&gt;</span>
+</pre>
+<pre class="code">
+	$(<span style="color:blue">'#cc'</span>).combotree({
+		url:<span style="color:blue">'tree_data.json'</span>
+	});
+</pre>
+
+<h4>属性</h4>
+<p>属性继承自定义组合框和树形菜单，以下是组合树重载的属性。</p>
+<table class="doc-table">
+
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+</tr>
+<tr>
+<td>editable（可编辑）</td>
+<td>boolean（布尔型）</td>
+<td>定义用户是否可以直接输入。</td>
+
+<td>false</td>
+</tr>
+</table>
+
+<h4>事件</h4>
+<p>事件继承自定义组合框和树形菜单</p>
+
+<h4>方法</h4>
+<p>方法继承自定义组合框，以下是组合树独有的或者重载自定义组合框的方法。</p>
+<table class="doc-table">
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+<tr>
+<td>options</td>
+<td>none</td>
+<td>返回属性对象。</td>
+
+</tr>
+<tr>
+<td>tree</td>
+<td>none</td>
+<td>返回树形菜单对象。<br/>
+<pre style="color:green">
+var t = $('#cc').combotree('tree');	// 得到树对象
+var n = t.tree('getSelected');		// 得到选中的节点
+alert(n.text);
+
+</pre>
+
+
+</td>
+</tr>
+<tr>
+<td>loadData</td>
+<td>data</td>
+<td>载入本地树形菜单数据。<br/>
+<pre style="color:green">
+$('#cc').combotree('loadData',
+	[
+		[
+			{
+				"id": 1,
+				"text": "My Documents",
+				"iconCls": "icon-ok",
+				"pid": ""
+			},
+			{
+				"id": 11,
+				"text": "Photos",
+				"state": "closed",
+				"pid": "1"
+			}
+		]
+	]
+);
+
+</td>
+</tr>
+
+<tr>
+<td>reload</td>
+<td>url</td>
+<td>再次向远程树形菜单数据发起请求。</td>
+</tr>
+<tr>
+<td>clear</td>
+<td>none</td>
+<td>清除组件值。</td>
+</tr>
+<tr>
+
+<td>setValues</td>
+<td>values</td>
+<td>设置组合框的值，参数values是一个数组。<br/>
+<pre style="color:green">$('#cc').combotree('setValues', [1,3,21]);</pre>
+</td>
+</tr>
+<tr>
+<td>setValue</td>
+<td>value</td>
+<td>设置组合框的值。<br/>
+<pre style="color:green">$('#cc').combotree('setValues', 1);</pre>
+</td>
+</tr>
+</table>
+
+
+</div>
+
+		</div>
+		</div>
+
+	</body>
+</html>

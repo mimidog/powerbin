@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>统一复核配置管理</title>
+    <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+    <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../opp/js/common.js"></script>
+    <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+    <script>
+	   	
+		
+		function chkConfigAdd(){
+			
+			$("#ORG_CODE1").combo("clear");
+			//$("#SERVICE_CODE1").combogrid("clear");
+			using('dialog', function () {
+		        $('#chkConfigSetDialog').dialog({
+		          title:'复核配置',
+		          width:500,
+		          height:150,
+		          modal:true,
+		          buttons:[
+		            {
+		              text:'确定',
+		              iconCls:'icon-ok',
+		              handler:function () {
+		            	  if(!$("#chkConfigSetForm").form('validate')) return false;
+		            	  else{
+				                var ORG_CODE = $("#ORG_CODE1").combo("getValue");
+				                var SERVICE_CODE = $("#SERVICE_CODE1").combo("getValue");
+				                
+			                    var req = [{
+		                        	service:'P0000202',
+		                        	SERVICE_CODE:SERVICE_CODE,
+		                        	ORG_CODE:ORG_CODE
+		                      	}];
+			                    ajaxRequest({
+			                      req:req,
+			                      error:function () {
+			                        alert('复核配置失败！');
+			                      },
+			                      func:function(data){
+			                          $('#SERVICE_CODE').combogrid('clear');
+			                          $('#chkConfigSetDialog').dialog('close');
+			                          $('#CHK_config').datagrid('reload');
+			                          $('#CHK_lvl_config').datagrid('clean');
+			                          $('#CHK_para_config').datagrid('clean');
+			                      }
+			                    });
+				                  
+				                }
+		              		}	
+		            },
+		            {
+		              text:'取消',
+		              iconCls:'icon-cancel',
+		              handler:function () {
+		                $('#chkConfigSetDialog').dialog('close');
+		              }
+		            }
+		          ]//end buttons
+		        });
+		      });
+		}
+		
+		function chkConfigDel(){
+			var row = $('#CHK_config').datagrid('getSelected');
+		      if(!row){
+		        alert('请选择要删除的数据！');
+		      }else{
+		        var CHK_CFG_SN = row['CHK_CFG_SN'];
+		        confirm('提示信息','是否确认删除?',function(isOK){
+		          if(isOK){
+		            ajaxRequest({
+		              req:[{
+		                  service:'P0000204',
+		                  CHK_CFG_SN:CHK_CFG_SN
+		                }],
+		              error:function(){
+		                alert('复核配置删除失败！');
+		              },
+		              func:function(data){
+		                  $('#CHK_config').datagrid('reload');
+		                  $('#CHK_lvl_config').datagrid('clean');
+                          $('#CHK_para_config').datagrid('clean');
+		              }
+		            });
+		          }
+		        });
+		      }
+		}
+		
+		function onClickMainTableRow(index,row){
+			var reqParam = {CHK_CFG_SN:row['CHK_CFG_SN']};
+			
+			$("#LBM_PARA").combobox({
+                width:'140',
+                editable:false,
+                valueField:'PAR_CODE',
+                textField:'PAR_NAME',
+                req:[
+		                {
+		                    service:'P0000076',
+		                    SERVICE_CODE:row['SERVICE_CODE'],
+		    	            PAR_TYPE:'1',
+		    	            DATA_TYPE:'1,2,4'
+		                }
+	            	]
+            });
+			
+			var $second = $("#CHK_lvl_config");
+			$second.datagrid("loadData",{});
+			if(!$.isEmptyObject(reqParam)){
+				var secondOpts = $second.data().datagrid.options;
+				var bex = typeof secondOpts.req == "string" ? eval("("+secondOpts.req+")") : secondOpts.req;
+		    	secondOpts.req = [$.extend(bex[0],reqParam)];
+		    	$second.datagrid("reload");
+			}
+		}
+		
+		function onClickSecondTableRow(index,row){
+			var reqParam = {CHK_CFG_SN:row['CHK_CFG_SN'],CHK_LVL_SN:row['CHK_LVL_SN']};
+			var $third = $("#CHK_para_config");
+			$third.datagrid("loadData",{});
+			if(!$.isEmptyObject(reqParam)){
+				var thirdOpts = $third.data().datagrid.options;
+				var bex = typeof thirdOpts.req == "string" ? eval("("+thirdOpts.req+")") : thirdOpts.req;
+		    	thirdOpts.req = [$.extend(bex[0],reqParam)];
+		    	$third.datagrid("reload");
+			}
+		}
+		
+		function chkLvladd(){
+			$("#CHK_TYPE").combo("clear");
+			$("#OP_CODES").combo("clear");
+			$('#CHK_TYPE').combobox('enable');
+			$('#OP_LVL').val("");
+			var selectRow = $("#CHK_config").datagrid("getSelected") || {};
+			if(!$.isEmptyObject(selectRow)){
+				using('dialog', function () {
+			        $('#chkLvlConfigSetDialog').dialog({
+			          title:'执行配置',
+			          width:500,
+			          height:300,
+			          modal:true,
+			          buttons:[
+			            {
+			              text:'确定',
+			              iconCls:'icon-ok',
+			              handler:function () {
+			            	  if(!$("#chkLvlConfigSetForm").form('validate')) return false;
+			            	  else{
+			            		    var CHK_CFG_SN = selectRow['CHK_CFG_SN'];
+					                var CHK_TYPE = $('#CHK_TYPE').combobox('getValue');
+					                var OP_CODES = $('#OP_CODES').combobox('getValues');
+					                for(var i = 0 ;i<OP_CODES.length;i++)
+					                {
+			                            if(OP_CODES[i] == "" || typeof(OP_CODES[i]) == "undefined")
+			                            {
+			                            	OP_CODES.splice(i,1);
+		                                    i= i-1;
+			                            }
+					                }
+					                var OP_LVL = $('#OP_LVL').val();
+				                    var req = [{
+			                        	service:'P0000212',
+			                        	CHK_CFG_SN:CHK_CFG_SN,
+			                        	CHK_TYPE:CHK_TYPE,
+			                        	OP_CODES:OP_CODES,
+			                        	OP_LVL:OP_LVL
+			                        }];
+				                    ajaxRequest({
+				                      req:req,
+				                      error:function () {
+				                        alert('执行配置失败！');
+				                      },
+				                      func:function(data){
+				                          $('#chkLvlConfigSetDialog').dialog('close');
+				                          $('#CHK_lvl_config').datagrid('reload');
+				                          $('#CHK_para_config').datagrid('clean');
+				                        }
+				                    });
+					                  
+					                }
+			              		}	
+			            },
+			            {
+			              text:'取消',
+			              iconCls:'icon-cancel',
+			              handler:function () {
+			                $('#chkLvlConfigSetDialog').dialog('close');
+			              }
+			            }
+			          ]//end buttons
+			        });
+			      });
+			} else {
+				alert("请选择统一审核配置的一条记录");
+			}
+		}
+		
+		function chkLvlModify(){
+			var selectRow = $("#CHK_lvl_config").datagrid("getSelected");
+			if(!$.isEmptyObject(selectRow)){
+   				var CHK_LVL_SN = selectRow['CHK_LVL_SN'];
+   				
+   				$('#CHK_TYPE').combobox('setValue',selectRow['CHK_TYPE']);
+   				$('#CHK_TYPE').combobox('disable');
+   				$('#OP_CODES').combobox('setValues',selectRow['OP_CODES'].split(','));
+   				$('#OP_LVL').val(selectRow['OP_LVL']);
+   				using('dialog', function () {
+			        $('#chkLvlConfigSetDialog').dialog({
+			          title:'执行配置',
+			          width:500,
+			          height:300,
+			          modal:true,
+			          buttons:[
+			            {
+			              text:'确定',
+			              iconCls:'icon-ok',
+			              handler:function () {
+			            	  if(!$("#chkLvlConfigSetForm").form('validate')) return false;
+			            	  else{
+			            		    var CHK_CFG_SN = selectRow['CHK_CFG_SN'];
+					                var CHK_TYPE = $('#CHK_TYPE').combobox('getValue');
+					                var OP_CODES = $('#OP_CODES').combobox('getValues');
+					                var OP_LVL = $('#OP_LVL').val();
+				                    var req = [{
+			                        	service:'P0000213',
+			                        	CHK_LVL_SN:CHK_LVL_SN,
+			                        	OP_CODES:OP_CODES,
+			                        	OP_LVL:OP_LVL
+			                        }];
+				                    ajaxRequest({
+				                      req:req,
+				                      error:function () {
+				                        alert('执行配置失败！');
+				                      },
+				                      func:function(data){
+				                          $('#chkLvlConfigSetDialog').dialog('close');
+				                          $('#CHK_lvl_config').datagrid('reload');
+				                      }
+				                    });
+					                  
+					                }
+			              		}	
+			            },
+			            {
+			              text:'取消',
+			              iconCls:'icon-cancel',
+			              handler:function () {
+			                $('#chkLvlConfigSetDialog').dialog('close');
+			              }
+			            }
+			          ]//end buttons
+			        });
+			      });
+			} else {
+				alert("请选择审核参数配置的一条记录");
+			}
+		}
+		
+		function chkLvlDelete(){
+			var selectRow = $("#CHK_lvl_config").datagrid("getSelected");
+		      if($.isEmptyObject(selectRow)){
+		        alert('请选择要删除的数据！');
+		      }else{
+	          	var CHK_LVL_SN = selectRow['CHK_LVL_SN'];
+		        confirm('提示信息','是否确认删除审核执行配置?',function(isOK){
+		          if(isOK){
+		            ajaxRequest({
+		              req:[{
+			            	service:'P0000214',
+			            	CHK_LVL_SN:CHK_LVL_SN
+			          	}],
+		              error:function(){
+		                alert('审核执行配置删除失败！');
+		              },
+		              func:function(data){
+		                  $('#CHK_lvl_config').datagrid('reload');
+		                  $('#CHK_para_config').datagrid('clean');
+		              }
+		            });
+		          }
+		        });
+		      }
+		}
+		
+		function initChkType(value){
+			if(value == '1' || value == '2'){
+				ajaxRequest({
+	                async:false,
+	                req:[
+	                    {
+	                        service:'P0001001',
+	                        USER_STA:'1'
+	                    }
+	                ],
+	                func:function (data) {
+	                    var flagSta = data[0]['message'][0].flag;
+	                    if (flagSta == '0') {
+	                    	var rs = data[0]['data'][0];   
+	                        $("#OP_CODES").combobox({
+	    		                width:'140',
+	    		                editable:false,
+	    		                multiple:true,
+	    		                valueField:'USER_CODE',
+	    		                textField:'USER_NAME',
+	    		                data:rs
+	    		            });
+	                    }else{
+	                        $.message.alert('获取用户列表错误');
+	                        return;
+	                    }
+	                },
+	                error:function () {
+	                    $.message.alert('获取用户列表错误');
+	                    return;
+	                }
+	            });
+				
+				
+			}else if(value == '3' || value == '4'){
+				ajaxRequest({
+	                async:false,
+	                req:[
+	                    {
+	                        service:'P0001041',
+	                        POST_STA:'1'
+	                    }
+	                ],
+	                func:function (data) {
+	                    var flagSta = data[0]['message'][0].flag;
+	                    if (flagSta == '0') {
+	                    	var rs = data[0]['data'][0];   
+	                    	if (rs.length > 0) {
+	        		            $("#OP_CODES").combobox({
+	        		                width:'140',
+	        		                multiple:true,
+	        		                editable:false,
+	        		                valueField:'POST_ID',
+	        		                textField:'POST_NAME',
+	        		                data:rs
+	        		            });
+	        		        }
+	                    }else{
+	                        $.message.alert('获取岗位列表错误');
+	                        return;
+	                    }
+	                },
+	                error:function () {
+	                    $.message.alert('获取岗位列表错误');
+	                    return;
+	                }
+	            });
+				
+			}
+		}
+		
+		function chkparaadd(){
+			$("#LBM_PARA").combo("clear");
+			$("#LBM_PARA_OP").combo("clear");
+			$('#LBM_PARA_VALUE').val("");
+			var mainRow = $("#CHK_config").datagrid("getSelected");
+			var secondRow = $("#CHK_lvl_config").datagrid("getSelected");
+			if(!$.isEmptyObject(mainRow)&&!$.isEmptyObject(secondRow)){
+				using('dialog', function () {
+			        $('#chkparaConfigSetDialog').dialog({
+			          title:'审核参数配置',
+			          width:500,
+			          height:300,
+			          modal:true,
+			          buttons:[
+			            {
+			              text:'确定',
+			              iconCls:'icon-ok',
+			              handler:function () {
+			            	  if(!$("#chkparaConfigSetForm").form('validate')) return false;
+			            	  else{
+			            		  	var CHK_LVL_SN = secondRow['CHK_LVL_SN']
+			            		    var CHK_CFG_SN = secondRow['CHK_CFG_SN'];
+					                var LBM_PARA = $('#LBM_PARA').combobox('getValue');
+					                var LBM_PARA_OP = $('#LBM_PARA_OP').combobox('getValue');
+					                var LBM_PARA_VALUE = $('#LBM_PARA_VALUE').val();
+				                    var req = [{
+			                        	service:'P0000222',
+			                        	CHK_LVL_SN:CHK_LVL_SN,
+			                        	CHK_CFG_SN:CHK_CFG_SN,
+			                        	LBM_PARA:LBM_PARA,
+			                        	LBM_PARA_OP:LBM_PARA_OP,
+			                        	LBM_PARA_VALUE:LBM_PARA_VALUE
+			                        }];
+				                    ajaxRequest({
+				                      req:req,
+				                      error:function () {
+				                        alert('执行审核参数失败！');
+				                      },
+				                      func:function(data){
+				                          $('#chkparaConfigSetDialog').dialog('close');
+				                          $('#CHK_para_config').datagrid('reload');
+				                      }
+				                    });
+					                  
+					                }
+			              		}	
+			            },
+			            {
+			              text:'取消',
+			              iconCls:'icon-cancel',
+			              handler:function () {
+			                $('#chkparaConfigSetDialog').dialog('close');
+			              }
+			            }
+			          ]//end buttons
+			        });
+			      });
+			} else {
+				alert("请选择统一审核执行配置的一条记录");
+			}
+		}
+		
+		function chkparaModify(){
+			var selectRow = $("#CHK_para_config").datagrid("getSelected");
+			if(!$.isEmptyObject(selectRow)){
+   				var CHK_PARA_SN = selectRow['CHK_PARA_SN'];
+   				
+   				$('#LBM_PARA').combobox('setValue',selectRow['LBM_PARA']);
+   				$('#LBM_PARA_OP').combobox('setValue',selectRow['LBM_PARA_OP']);
+   				$('#LBM_PARA_VALUE').val(selectRow['LBM_PARA_VALUE']);
+   				using('dialog', function () {
+			        $('#chkparaConfigSetDialog').dialog({
+			          title:'执行配置',
+			          width:500,
+			          height:300,
+			          modal:true,
+			          buttons:[
+			            {
+			              text:'确定',
+			              iconCls:'icon-ok',
+			              handler:function () {
+			            	  if(!$("#chkparaConfigSetForm").form('validate')) return false;
+			            	  else{
+			            		    var CHK_CFG_SN = selectRow['CHK_CFG_SN'];
+					                var LBM_PARA = $('#LBM_PARA').combobox('getValue');
+					                var LBM_PARA_OP = $('#LBM_PARA_OP').combobox('getValue');
+					                var LBM_PARA_VALUE = $('#LBM_PARA_VALUE').val();
+				                    var req = [{
+			                        	service:'P0000223',
+			                        	CHK_PARA_SN:CHK_PARA_SN,
+			                        	LBM_PARA:LBM_PARA,
+			                        	LBM_PARA_OP:LBM_PARA_OP,
+			                        	LBM_PARA_VALUE:LBM_PARA_VALUE
+			                        }];
+				                    ajaxRequest({
+				                      req:req,
+				                      error:function () {
+				                        alert('执行配置失败！');
+				                      },
+				                      func:function(data){
+				                          $('#chkparaConfigSetDialog').dialog('close');
+				                          $('#CHK_para_config').datagrid('reload');
+				                      }
+				                    });
+					                  
+					                }
+			              		}	
+			            },
+			            {
+			              text:'取消',
+			              iconCls:'icon-cancel',
+			              handler:function () {
+			                $('#chkparaConfigSetDialog').dialog('close');
+			              }
+			            }
+			          ]//end buttons
+			        });
+			      });
+			} else {
+				alert("请选择审核执行配置的一条记录");
+			}					
+		}
+				
+		function chkparaDelete(){
+			var selectRow = $("#CHK_para_config").datagrid("getSelected");
+		      if($.isEmptyObject(selectRow)){
+		        alert('请选择要删除的数据！');
+		      }else{
+	          	var CHK_PARA_SN = selectRow['CHK_PARA_SN'];
+		        confirm('提示信息','是否确认删除审核参数配置?',function(isOK){
+		          if(isOK){
+		            ajaxRequest({
+		              req:[{
+			            	service:'P0000224',
+			            	CHK_PARA_SN:CHK_PARA_SN
+			          	}],
+		              error:function(){
+		                alert('审核参数配置删除失败！');
+		              },
+		              func:function(data){
+		                  $('#CHK_para_config').datagrid('reload');
+		              }
+		            });
+		          }
+		        });
+		      }
+		}
+		
+		window.$ready = function() {
+			 var cw = $(window).width();
+			 var ch = $(window).height()-40;
+			 $('#main_panel').width(cw/3);
+			 $('#secend_panel').width(cw/3);
+			 $('#third_panel').width(cw/3);
+			 $('#CHK_config').height(ch);
+			 $('#CHK_lvl_config').height(ch);
+			 $('#CHK_para_config').height(ch);
+			 
+		};
+    </script>
+</head>
+<body>
+
+<div class="kui-layout" kui-options="fit:true">
+	<div id="main_panel" kui-options="region:'west'" title="" style="">
+		<table id="CHK_config" class="kui-datagrid" style=""></table>
+	</div>
+	<div id="secend_panel" kui-options="region:'center',title:'审核执行配置',split:true,iconCls:'icon-ok'" style="">
+		<table id="CHK_lvl_config" class="kui-datagrid" style=""></table>
+	</div>
+	<div id="third_panel" kui-options="region:'east',title:'审核参数配置',split:true,iconCls:'icon-ok'" style="">
+		<table id="CHK_para_config" class="kui-datagrid" style=""></table>
+	</div>
+</div>
+
+<div id="chkConfigSetDialog" style="display: none;">
+	<form class="kui-form" id="chkConfigSetForm">
+	  <table width="100%">
+	    <tr>
+	      <td class="form-label" style="width: 100px">服务代码：</td>
+	      <td style="width: 350px">
+	        <!-- select name="SERVICE_CODE" id="SERVICE_CODE1" style="width:150px" > </select-->
+	        <input class="kui-combogrid" name="SERVICE_CODE" id="SERVICE_CODE1" style="width: 126px"   kui-options="panelWidth: 330,panelHeight:310,
+                      idField: 'SERVICE_CODE',
+                      textField: 'SERVICE_NAME',
+                      singleSelect:true,
+                      showRowDetail:false,
+                      fitColumns:true,
+                      autoFill:true,
+                      width:150,
+                      req:[{ service:'P0000071',SERVICE_CODE:''}],
+                      columns: [[
+                        {field:'SERVICE_CODE',title:'服务代码',width:100},
+						{field:'SERVICE_NAME',title:'服务名称',width:100}
+                      ]],
+                      fitColumns: true
+                  "/>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="form-label" style="width: 100px">机构：</td>
+	      <td style="width: 350px">
+	        <select class="kui-combotree" name='ORG_CODE' id="ORG_CODE1" kui-options="
+	          required:true,
+	          width:'150',
+	          singleSelect:true,
+	          panelWidth:'250',
+	          panelHeight:'300',
+	          req:[{service:'P0001031',ORG_STA:'1'}],
+	          conf:{nodeId:'ORG_CODE',nodeName:'ORG_NAME',parNode:'PAR_ORG',treeType:'1'},
+	          onLoadSuccess:function (row, data){
+	            $('#ORG_CODE').combotree('tree').tree('collapseAll');
+	            }
+	          ">
+	 		</select>
+	      </td>
+	    </tr>
+	  </table>
+	  </form>
+</div>
+
+<div id="chkLvlConfigSetDialog" style="display: none;">
+	<form class="kui-form" id="chkLvlConfigSetForm">
+	  <table width="100%">
+	    <tr>
+	      <td class="form-label" >复核类型：</td>
+	      <td>
+	      	<input name="CHK_TYPE" id="CHK_TYPE" type="text" kui-options="required:true,dict:'UAS_CHK_TYPE',width:120,
+               onSelect:function(value){
+                 initChkType(value['dict_val']);
+               },
+               onLoadSuccess:function(data){
+                 initChkType(data[0]['dict_val']);
+               }" class="kui-combobox"/>
+	      </td>
+	      <td class="form-label" >复核对象：</td>
+	      <td>
+	      	<select id="OP_CODES" name="OP_CODES" class="kui-combobox" kui-options="required:true"></select>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="form-label" >复核顺序：</td>
+	      <td colspan="3">
+	        <input name="OP_LVL" id="OP_LVL" class="kui-validatebox" style="width: 120px;" kui-options="required:true,validType:'zint[10]'">
+	      </td>
+	    </tr>
+	  </table>
+	  </form>
+</div>
+
+<div id="chkparaConfigSetDialog" style="display: none;">
+	<form class="kui-form" id="chkparaConfigSetForm">
+	  <table width="100%">
+	    <tr>
+	      <td class="form-label" >参数名：</td>
+	      <td>
+	      	<input name="LBM_PARA" id="LBM_PARA" type="text" kui-options="required:true" class="kui-combobox"/>
+	      </td>
+	      <td class="form-label" >运算符：</td>
+	      <td>
+	      	<select id="LBM_PARA_OP" name="LBM_PARA_OP" class="kui-combobox" kui-options="required:true,dict:'LBM_PARA_OP'"></select>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="form-label" >运算值：</td>
+	      <td colspan="3">
+	        <input name="LBM_PARA_VALUE" id="LBM_PARA_VALUE" class="kui-validatebox" style="width: 120px;" kui-options="required:true,validType:'val[1,64]'">
+	      </td>
+	    </tr>
+	  </table>
+	  </form>
+</div>
+
+</body>
+</html>

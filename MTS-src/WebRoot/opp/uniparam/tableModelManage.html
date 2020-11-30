@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>对象模型管理页面</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="js/tableModelManage.js"></script>
+<style type="text/css">
+.sync-mask {
+    z-index:100;    
+    color:#000000 !important;   
+    font-size: 12px !important;
+    background-color:#FFFFFF;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter: alpha(opacity=90);
+    opacity: 0.9;
+    *zoom: 1;
+    overflow: hidden;
+}
+
+.sync-mask .content{
+    background-image: url("../../frame/images/front-page/plugin/loading.gif");
+    background-position: 0 2px;
+    background-repeat: no-repeat;
+    float: left;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 25px;
+    width:auto;
+}
+</style>
+</head>
+<body>
+
+<div class="kui-layout" kui-options="fit:true">
+    <div id="GEN_KGE_TABSManage_Panel" style="width:518px;"  region="west"  title="对象模型管理" split="true">
+        <table id="GEN_KGE_TABSManage" class="kui-datagrid"></table>
+    </div>
+
+    <div id="GEN_KGE_TAB_COLSManage_Panel" style="width:518px;"  region="center"  title="对象模型字段管理" split="true" >
+        <table id="GEN_KGE_TAB_COLSManage" class="kui-datagrid"></table>
+    </div>
+</div>
+<div id="addOrEditTableFormDialog" style="display: none">
+    <form id="addOrEditTableForm" class="kui-form">
+        <table style="width:500px">
+            <tr>
+                <td id="tabIdName" align='right'>表编码:</td>
+                <td colspan="3">
+                    <input id="tabId" name="tabId" type="text" kui-options="disabled:true" style="width:150px" class="kui-validatebox"
+                           />
+                </td>
+            </tr>
+            <tr>
+                <td align='right' style="width:120px">表&nbsp;&nbsp;&nbsp;名:</td>
+                <td style="width:150px">
+                    <input id="tabName" name="tabName" type="text" kui-options="required:true,validType:'numchar[1,30]'"
+                           style="width:150px" class="kui-validatebox numcharClass"/>
+                </td>
+                <td align='right' style="width:120px">表中文名:</td>
+                <td style="width:150px">
+                    <input id="tabCname" name="tabCname" type="text" kui-options="required:true,validType:'en_ch[1,50]'"
+                           style="width:150px" class="kui-validatebox"/>
+                </td>
+            </tr>
+            <!--<tr>-->
+                <!--<td align='right' style="width:120px">表空间:</td>-->
+                <!--<td style="width:150px">-->
+                    <!--<input id="tabSpace" name="tabSpace" type="text" kui-options="validType:'val[1,100]'"-->
+                           <!--style="width:150px" class="kui-validatebox"/>-->
+                <!--</td>-->
+            <!--</tr>-->
+        </table>
+    </form>
+</div>
+
+<div id="addOrEditColFormDialog" style="display: none;">
+    <form id="addOrEditColForm" class="kui-form">
+        <table style="width:600px">
+            <tr>
+                <td align='right' style="width: 130px">表&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;&nbsp;称:</td>
+                <td style="width: 150px">
+                    <input id="tabName2" name="tabName" type="text" kui-options="disabled:true" readonly class="kui-validatebox"
+                            style="width: 150px"/>
+                </td>
+                <td id="colIdName" align='right' style="width: 130px">字&nbsp;段&nbsp;编&nbsp;码:</td>
+                <td style="width: 150px">
+                    <input id="colId" name="colId" type="text" kui-options="disabled:true" class="kui-validatebox"
+                            style="width: 150px"/>
+                </td>
+            </tr>
+            <tr>
+                <td align='right' style="width:130px">字&nbsp;段&nbsp;名&nbsp;称:</td>
+                <td style="width:150px">
+                    <input id="colName" name="colName" type="text" kui-options="required:true,validType:'numchar[1,30]'"
+                           style="width: 150px" class="kui-validatebox numcharClass"/>
+                </td>
+                <td align='right' style="width:130px">字段中文名:</td>
+                <td style="width:150px">
+                    <input id="colCname" name="colCname" type="text" kui-options="required:true,validType:'en_ch[1,50]'"
+                           style="width: 150px" class="kui-validatebox"/>
+                </td>
+            </tr>
+            <tr>
+                <td align='right' style="width:130px">数&nbsp;据&nbsp;类&nbsp;型:</td>
+                <td style="width:150px">
+                    <input id="dataType" name="dataType" isClear="false" kui-options="dict:'DATA_TYPE',onSelect:changeDataLengthType" type="text" style="width: 155px" class="kui-combobox"/>
+                </td>
+                <td align='right' style="width:130px">字&nbsp;段&nbsp;长&nbsp;度:</td>
+                <td style="width:150px">
+                    <input id="dataLength" name="dataLength" kui-options="required:true,validType:'length[1,38]'"
+                           style="width: 150px"  class="kui-textinput"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td align='right' style="width:130px">是否为主键:</td>
+                <td style="width:150px">
+                    <input class="kui-combobox" style="width: 155px" isClear="false" kui-options="dict:'IS_PK',onSelect:changeIsnull" name="ispk" id="ispk"/>
+                </td>
+                <td align='right' style="width:130px">默&nbsp;&nbsp;&nbsp;认&nbsp;&nbsp;&nbsp;值:</td>
+                <td style="width:150px">
+                    <input class="kui-textinput" kui-options="validType:'numchar[1,250]'" name="colDefault" style="width: 150px" id="colDefault"/>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td align='right' style="width:130px">是否能为空:</td>
+                <td style="width:150px">
+                    <input id="isnull" name="isnull" style="width: 155px" type="text" class="kui-combobox"  isClear="false" kui-options="dict:'ISNULL'"/>
+                </td>
+
+                <td align='right' style="width:130px">排&nbsp;列&nbsp;顺&nbsp;序:</td>
+                <td style="width:150px">
+                    <input id="orderNo" name="orderNo" class="kui-textinput" kui-options="validType:'zint[3]',invalidMessage:'请输入3位数以内的正整数'" style="width: 150px"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td align='right' style="width:130px">添加查询栏:</td>
+                <td style="width:150px">
+                    <input class="kui-combobox" style="width: 155px" isClear="false" kui-options="dict:'GEN_ISSEARCH'" name="isQryItem" id="isQryItem"/>
+                </td>
+                <td align='right' style="width:130px">输&nbsp;入&nbsp;类&nbsp;型:</td>
+                <td style="width:150px">
+                    <input id="inputType" name="inputType" type="text" isClear="false" kui-options="dict:'GEN_INPUT_TYPE',onSelect:changeDataType,extItems:'[{\'dict_des\':\'--不选择--\',\'dict_val\':\'\'}]'"
+                           style="width: 155px" class="kui-combobox"/>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td align='right' style="width:130px">输入类型条件:</td>
+                <td style="width:150px" colspan="4">
+                    <textarea class="kui-textarea"  kui-options="removeSingleQuote:false, disabled:true,validType:'length[1,1000]'" name="reqDict" style="height:80px;width: 450px" id="reqDict"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>

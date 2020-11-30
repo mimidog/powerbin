@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TimeSpinner Actions - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>TimeSpinner Actions</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the buttons below to perform actions.</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="#" class="kui-linkbutton" onclick="getValue()">GetValue</a>
+		<a href="#" class="kui-linkbutton" onclick="setValue()">SetValue</a>
+		<a href="#" class="kui-linkbutton" onclick="disable()">Disable</a>
+		<a href="#" class="kui-linkbutton" onclick="enable()">Enable</a>
+	</div>
+	<input id="dt" class="kui-timespinner" style="width:80px;">
+	<script>
+		function getValue(){
+			var val = $('#dt').timespinner('getValue');
+			alert(val);
+		}
+		function setValue(){
+			$('#dt').timespinner('setValue', '09:45');
+		}
+		function disable(){
+			$('#dt').timespinner('disable');
+		}
+		function enable(){
+			$('#dt').timespinner('enable');
+		}
+	</script>
+</body>
+</html>

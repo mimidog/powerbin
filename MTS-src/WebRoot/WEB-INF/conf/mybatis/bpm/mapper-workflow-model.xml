@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ModelEntity">
+
+  <!-- MODEL INSERT -->
+  
+  <insert id="BpmModelInsert" parameterType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ModelEntity">
+    insert into UWK_RE_MODEL(MODEL_ID, REV, MNAME, MOD_CATE_KEY, CATEGORY, CREATE_TIME, LAST_UPDATE_TIME, MOD_VERSION, META_INFO, DEPLOYMENT_ID, EDITOR_SOURCE_VALUE_ID, EDITOR_SOURCE_EXTRA_VALUE_ID)
+    values(#{model.id, jdbcType=VARCHAR}, 
+           1,
+           #{model.name, jdbcType=VARCHAR}, 
+           #{model.key, jdbcType=VARCHAR}, 
+           #{model.category, jdbcType=VARCHAR}, 
+           #{model.createTime, jdbcType=TIMESTAMP},
+           #{model.lastUpdateTime, jdbcType=TIMESTAMP},
+           #{model.version, jdbcType=INTEGER}, 
+           #{model.metaInfo, jdbcType=VARCHAR}, 
+           #{model.deploymentId, jdbcType=VARCHAR},
+           #{model.editorSourceValueId, jdbcType=VARCHAR}, 
+           #{model.editorSourceExtraValueId, jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- MODEL UPDATE -->
+  <update id="BpmModelUpdate" parameterType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ModelEntity">
+    update UWK_RE_MODEL set
+      REV = #{model.revisionNext, jdbcType=INTEGER},
+      MNAME = #{model.name, jdbcType=VARCHAR},
+      MOD_CATE_KEY = #{model.key, jdbcType=VARCHAR},
+      CATEGORY = #{model.category, jdbcType=VARCHAR},
+      LAST_UPDATE_TIME = #{model.lastUpdateTime, jdbcType=TIMESTAMP},
+      MOD_VERSION = #{model.version, jdbcType=INTEGER},
+      META_INFO = #{model.metaInfo, jdbcType=VARCHAR},
+      DEPLOYMENT_ID = #{model.deploymentId, jdbcType=VARCHAR},
+      EDITOR_SOURCE_VALUE_ID = #{model.editorSourceValueId, jdbcType=VARCHAR},
+      EDITOR_SOURCE_EXTRA_VALUE_ID = #{model.editorSourceExtraValueId, jdbcType=VARCHAR}
+    where MODEL_ID = #{model.id, jdbcType=VARCHAR} and REV = #{model.revision, jdbcType=INTEGER}
+  </update>
+
+  
+  <!-- MODEL DELETE -->
+  
+  <delete id="BpmModelDelete" parameterType="map">
+    delete from UWK_RE_MODEL where MODEL_ID = #{model.id} and REV = #{model.revision}
+  </delete>
+
+
+  <!-- MODEL SELECT -->
+  
+  <resultMap id="modelResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ModelEntity">
+    <id property="id" column="MODEL_ID" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER"/>
+    <result property="name" column="MNAME" jdbcType="VARCHAR" />
+    <result property="key" column="MOD_CATE_KEY" jdbcType="VARCHAR" />
+    <result property="category" column="CATEGORY" jdbcType="VARCHAR" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    <result property="lastUpdateTime" column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP"/>
+    <result property="version" column="MOD_VERSION" jdbcType="INTEGER" />
+    <result property="metaInfo" column="META_INFO" jdbcType="VARCHAR" />
+    <result property="deploymentId" column="DEPLOYMENT_ID" jdbcType="VARCHAR" />
+    <result property="editorSourceValueId" column="EDITOR_SOURCE_VALUE_ID" jdbcType="VARCHAR" />
+    <result property="editorSourceExtraValueId" column="EDITOR_SOURCE_EXTRA_VALUE_ID" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="BpmModelSelectByQueryCriteria" parameterType="map" resultMap="modelResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select distinct RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectModelsByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+
+  <select id="BpmModelSelectCountByQueryCriteria" parameterType="map" resultType="long">
+    select count(distinct RES.MODEL_ID)
+    <include refid="selectModelsByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectModelsByQueryCriteriaSql">  
+    from UWK_RE_MODEL RES
+    <where>
+      <if test="criteria != null and criteria.id != null">
+        RES.MODEL_ID = #{criteria.id}
+      </if>
+      <choose>
+      	<when test="criteria.ignoredCase">
+		      <if test="criteria != null and criteria.name != null">
+		        and LOWER(RES.MNAME) = LOWER(#{criteria.name})
+		      </if>
+		      <if test="criteria != null and criteria.nameLike != null">
+		        and LOWER(RES.MNAME) like LOWER('%${criteria.nameLike}%')
+		      </if>
+		      <if test="criteria != null and criteria.key != null">
+		        and LOWER(RES.MOD_CATE_KEY) = LOWER(#{criteria.key})
+		      </if>
+		      <if test="criteria != null and criteria.keyLike != null">
+		        and LOWER(RES.MOD_CATE_KEY) like LOWER('%${criteria.keyLike}%')
+		      </if>
+		 </when>
+		 <otherwise>
+		      <if test="criteria != null and criteria.name != null">
+		        and RES.MNAME = #{criteria.name}
+		      </if>
+		      <if test="criteria != null and criteria.nameLike != null">
+		        and RES.MNAME like '%${criteria.nameLike}%'
+		      </if>
+		      <if test="criteria != null and criteria.key != null">
+		        and RES.MOD_CATE_KEY = #{criteria.key}
+		      </if>
+		      <if test="criteria != null and criteria.keyLike != null">
+		        and RES.MOD_CATE_KEY like '%${criteria.keyLike}%'
+		      </if>
+		 </otherwise>
+	  </choose>
+      <if test="criteria != null and criteria.keyLike != null">
+        and RES.MOD_CATE_KEY like '%${criteria.keyLike}%'
+      </if>
+      <if test="criteria != null and criteria.category != null">
+        and RES.CATEGORY = #{criteria.category}
+      </if>
+      <if test="criteria != null and criteria.categoryLike != null">
+        and RES.CATEGORY like '%${criteria.categoryLike}%'
+      </if>
+      <if test="criteria != null and criteria.categoryNotEquals != null">
+        and ( RES.CATEGORY &lt;&gt; #{criteria.categoryNotEquals} OR RES.category is null )  
+      </if>
+      <if test="criteria != null and criteria.version != null">
+        and RES.MOD_VERSION = #{criteria.version}
+      </if>
+      <if test="criteria != null and criteria.deploymentId != null">
+        and RES.DEPLOYMENT_ID = #{criteria.deploymentId}
+      </if>
+      <if test="criteria != null and criteria.notDeployed">
+        and RES.DEPLOYMENT_ID is null
+      </if>
+      <if test="criteria != null and criteria.deployed">
+        and RES.DEPLOYMENT_ID is not null
+      </if>
+      <if test="criteria != null and criteria.latest">
+        and RES.VERSION = (select max(VERSION) from UWK_RE_MODEL where MOD_CATE_KEY = RES.MOD_CATE_KEY)
+      </if>
+    </where>
+  </sql>
+  
+  <select id="BpmModelSelect" parameterType="map" resultMap="modelResultMap">
+    select * from UWK_RE_MODEL where MODEL_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+    <!-- mysql specific -->
+  <select id="BpmModelSelectCountByQueryCriteria_mysql" parameterType="map" resultType="long">
+    select distinct count(RES.MODEL_ID)
+    <include refid="selectModelsByQueryCriteriaSql"/>
+  </select>
+  
+  <select id="BpmModelSelectByNativeQuery" parameterType="map" resultMap="modelResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+      <include refid="bpm.limitBefore"/>
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+      <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmModelSelectCountByNativeQuery" parameterType="map" resultType="long">
+    ${sql}
+  </select>
+  
+</mapper>

@@ -1,0 +1,63 @@
+.uas-large-text {
+    font: 16px "΢���ź�", arial, sans-serif;
+}
+
+.uas-cust-reco-text {
+    width: 150px !important;
+    line-height: 20px !important;
+    height: 20px !important;
+    font: 16px "΢���ź�", arial, sans-serif;
+    text-align: left;
+    box-shadow: 1px 1px 5px #c5e3f9;
+    background-size: auto auto;
+    border: 1px solid #ff3d3c !important;
+}
+
+.ac_results {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.datagrid-a {
+    width: 100%;
+    border-collapse: collapse;
+    color: #444;
+    text-align: left;
+    border: 1px #C4D5E4 solid;
+    cursor: default;
+}
+
+.datagrid-a th {
+    line-height: 26px;
+    font-size: 12px;
+    color: #323232;
+    text-align: left;
+    padding-left: 5px;
+    border-bottom: 1px #C4D5E4 solid;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#edf6ff, endColorstr=#daecfe, GradientType=0);
+    background: -webkit-linear-gradient(top, #F2F9FD 0, #DAEDFA 100%);
+    background: -moz-linear-gradient(top, #F2F9FD 0, #DAEDFA 100%);
+    background: -o-linear-gradient(top, #F2F9FD 0, #DAEDFA 100%);
+    background: linear-gradient(to top, #F2F9FD 0, #DAEDFA 100%);
+}
+
+.datagrid-a td {
+    padding-left: 5px;
+    line-height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #E5E5E5;
+    word-break: keep-all;
+}
+
+.datagrid-even td {
+    background-color: #F3F3F3;
+}
+
+.datagrid-a-over td {
+    background-color: #F0552B;
+    color: #ffffff;
+}
+.form-label {
+    width:120px;
+}

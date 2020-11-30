@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Multiple selecttree - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Multiple selecttree</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the right arrow button to show the tree panel and select multiple nodes.</div>
+	</div>
+	<div style="margin:10px 0">
+		<span>Cascade Check: </span>
+		<input type="checkbox" checked onclick="$('#cc').selecttree({cascadeCheck:$(this).is(':checked')})">
+	</div>
+	<select id="cc" class="kui-selecttree" kui-options="url:'tree_data1Xml.json'" multiple style="width:200px;"></select>
+
+</body>
+</html>

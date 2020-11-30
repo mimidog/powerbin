@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<!-- 统一审核配置表操作start -->
+	<service service_code="P0000201" service_name="统一审核配置查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chkconfigQuery" business_method="" serial_no="1" business_name="统一审核配置查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000202" service_name="统一审核配置新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" >
+		<businesses>
+			<service_business business_code="chkconfigInsert" business_method="" serial_no="1" business_name="统一审核配置新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000204" service_name="统一审核配置删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chkparaconfigMainDelete" business_method="" serial_no="1" business_name="统一审核配置删除" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="chklvlconfigMainDelete" business_method="" serial_no="1" business_name="统一执行配置删除" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="chkconfigDelete" business_method="" serial_no="1" business_name="统一审核参数配置删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 统一审核配置表操作 end -->
+	
+	<!-- 统一执行配置表操作start -->
+	<service service_code="P0000211" service_name="统一执行配置查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chklvlconfigQuery" business_method="" serial_no="1" business_name="统一执行配置查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000212" service_name="统一执行配置新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" >
+		<businesses>
+			<service_business business_code="chklvlconfigInsert" business_method="" serial_no="1" business_name="统一执行配置新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000213" service_name="统一执行配置修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" >
+		<businesses>
+			<service_business business_code="chklvlconfigUpdate" business_method="" serial_no="1" business_name="统一执行配置修改" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000214" service_name="统一执行配置删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chkparaconfigSecDelete" business_method="" serial_no="1" business_name="统一执行配置删除" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="chklvlconfigDelete" business_method="" serial_no="1" business_name="统一执行配置删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 统一执行配置表操作 end -->
+	
+	<!-- 统一审核参数配置操作start -->
+	<service service_code="P0000221" service_name="统一审核参数配置查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chkparaconfigQuery" business_method="" serial_no="1" business_name="统一审核参数配置查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000222" service_name="统一审核参数配置新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" >
+		<businesses>
+			<service_business business_code="chkparaconfigInsert" business_method="" serial_no="1" business_name="统一审核参数配置新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000223" service_name="统一审核参数配置修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" >
+		<businesses>
+			<service_business business_code="chkparaconfigUpdate" business_method="" serial_no="1" business_name="统一审核参数配置修改" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000224" service_name="统一审核参数配置删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chkparaconfigDelete" business_method="" serial_no="1" business_name="统一审核参数配置删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 统一审核参数配置操作 end -->
+	
+	    
+    <!--业务复核操作    start  -->
+    <service service_code="P0000231" service_name="统一审核" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chklogQuery" business_method="" serial_no="1" business_name="统一审核" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<service service_code="P0000232" service_name="统一审核" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="chklogInsert" business_method="" serial_no="1" business_name="统一审核" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+    <!--业务复核操作    end  -->
+</services>

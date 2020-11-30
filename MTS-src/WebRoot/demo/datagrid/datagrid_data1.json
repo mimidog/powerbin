@@ -1,0 +1,37 @@
+
+
+{
+    "ANSWERS": [{
+        "ANS_MSG_HDR": {
+            "MSG_CODE": "0",
+            "MSG_TEXT": "",
+            "MSG_LEVEL": "",
+            "RESULT_NUM": "2",
+            "MSG_ID": "",
+            "PACKAGE_FLAG": "0",
+            "DATA_ROWS": "8",
+            "BPM_ROWS": "0",
+            "RUN_TIMES": "16",
+            "MSG_TRACE": ""
+        },
+        "ANS_COMM_DATA": [[{"productid":"FI-SW-01","unitcost":10.00,"status":"P","listprice":36.50,"attr1":"Large","itemid":"EST-1","test1":"23"},
+	{"productid":"K9-DL-01","unitcost":1.00,"status":"P","listprice":18.50,"attr1":"Spotted Adult Female","itemid":"EST-2","test1":"23"},
+	{"productid":"RP-SN-01","unitcost":2.00,"status":"P","listprice":28.50,"attr1":"Venomless","itemid":"EST-3","test1":"23"},
+	{"productid":"RP-SN-01","unitcost":21.00,"status":"P","listprice":26.50,"attr1":"Rattleless","itemid":"EST-4","test1":"23"},
+	{"productid":"RP-LI-02","unitcost":12.00,"status":"P","listprice":35.50,"attr1":"Green Adult","itemid":"EST-5","test1":"23"},
+	{"productid":"FL-DSH-01","unitcost":12.00,"status":"P","listprice":158.50,"attr1":"Tailless","itemid":"EST-6","test1":"23"},
+	{"productid":"FL-DSH-01","unitcost":12.00,"status":"P","listprice":83.50,"attr1":"With tail","itemid":"EST-7","test1":"23"},
+	{"productid":"FL-DLH-02","unitcost":12.00,"status":"P","listprice":63.50,"attr1":"Adult Female","itemid":"EST-8","test1":"23"},
+	{"productid":"FL-DLH-02","unitcost":12.00,"status":"P","listprice":89.50,"attr1":"Adult Male","itemid":"EST-9","test1":"23"},
+	{"productid":"AV-CB-01","unitcost":92.00,"status":"P","listprice":63.50,"attr1":"Adult Male","itemid":"EST-10","test1":"23"},
+{"productid":"FL-aaa-02","unitcost":12.00,"status":"P","listprice":83.50,"attr1":"With tail","itemid":"EST-11","test1":"23"},
+	{"productid":"FL-bbb-02","unitcost":12.00,"status":"P","listprice":63.50,"attr1":"Adult Female","itemid":"EST-12","test1":"23"},
+	{"productid":"FL-ccc-02","unitcost":12.00,"status":"P","listprice":89.50,"attr1":"Adult Male","itemid":"EST-13","test1":"33"},
+	{"productid":"AV-ddd-01","unitcost":92.00,"status":"P","listprice":63.50,"attr1":"Adult Male","itemid":"EST-14","test1":"100"}], {
+            "BPM_DATA": []
+        },
+        {
+            "CONFIG": {}
+        }]
+    }]
+}

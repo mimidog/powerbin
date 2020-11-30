@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+    <!--流程发布管理view   start-->
+    <view id="UWK_processManage" render="datagrid" title="流程发布管理">
+        <conf fit="true" req="[{'service':'P0005001','BPM_OP':'listProcessDefinition'}]"
+              pageSize="10" remotePagination="true"/>
+        <qry_item field="processDefinitionKey" title="流程标识" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="processDefinitionName" title="流程名称" type="input" edt_validType="val[0,64]"/>
+        <btn_item text="流程部署" title="流程发布" handler="reDeploymentAdd" iconCls="icon-add"/>
+        <btn_item text="删除流程" handler="deleteProcess" iconCls="icon-remove"/>
+        <col_item field="processDefinitionKey" title="流程标识" width="180"/>
+        <col_item field="processDefinitionName" title="流程名称" width="300"/>
+        <col_item field="version" title="版本号" sortType="number" width="200"/>
+        <col_item field="deploymentId" title="部署标识" hidden="true"/>
+        <col_item field="processDefinitionId" title="操作" width="300"
+                  formatter="function(value,row){return processLink(value,row);}"/>
+    </view>
+    <!--流程发布管理view   end-->
+
+    <!--流程实例管理view   start-->
+    <view id="UWK_processInstancesMrg" render="datagrid" title="流程实例管理">
+        <conf fit="true" req="[{'service':'P0005001','BPM_OP':'listInvolvedProcessInstances'}]"
+              singleSelect="true" pageSize="10" remotePagination="true" onSelect="hideEndProcess"/>
+        <qry_item field="processDefinitionName" title="流程名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="processInstanceState" title="流程实例状态" 
+                  type="combobox" edt_dict="PROCESS_INSTANCE_STA" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="结束流程实例" handler="deleteProcessInstanceWithoutCascade" iconCls="icon-end"/>
+        <btn_item text="删除流程实例" handler="deleteProcessInstance" iconCls="icon-remove"/>
+        <col_item field="processDefinitionKey" title="" hidden="true"/>
+        <col_item field="processInstanceId" title="流程实例标识" hidden="true"/>
+        <col_item field="processDefinitionName" title="流程名称" width="200"/>
+        <col_item field="startTime" title="开始时间" width="150"/>
+        <col_item field="endTime" title="结束时间" width="150"/>
+        <col_item field="duration" title="持续时间" width="150"/>
+        <col_item field="processInstanceState" title="流程实例状态" type="combobox" edt_isClear="false" edt_dict="PROCESS_INSTANCE_STA"
+                  width="100"/>
+    </view>
+    <!--流程实例管理view   end-->
+
+    <!--待办任务管理view   start-->
+    <view id="UWK_ruTaskMrg" render="datagrid" title="待办任务管理" script="../../opp/bpmManage/js/backlogTask.js">
+        <conf fit="true" req="[{service:'P0005001', BPM_OP:'listReadyTask'}]" remotePagination="true"
+              pageSize="10" onSelect="taskStateControl"/>
+        <qry_item field="taskName" title="任务名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="processDefinitionName" title="流程名称" type="input" edt_validType="val[0,64]"/>
+        <btn_item text="认领" title="认领任务" handler="claimTask" iconCls="icon-select-client"/>
+        <btn_item text="解锁" title="解锁任务" handler="unclaimTask" iconCls="icon-unlock"/>
+        <btn_item text="处理" title="处理待办任务" handler="dueTask" iconCls="icon-edit"/>
+        <btn_item text="代理" title="代理待办任务" handler="delegateTask" iconCls="icon-agent-person"/>
+        <btn_item text="回退" handler="backTask" iconCls="icon-back"/>
+        <btn_item text="加签" handler="AddTaskInstance" iconCls="icon-add"/>
+        <btn_item text="减签" handler="removeTaskInstance" iconCls="icon-remove"/>
+        <!--<btn_item text="传阅" handler="circularize" iconCls="icon-read"/>-->
+        <col_item field="processDefinitionId" title="" hidden="true"/>
+        <col_item field="taskId" title="任务标识" hidden="true"/>
+        <col_item field="taskName" title="任务名称" width="150"/>
+        <col_item field="processDefinitionName" title="流程名称" width="150"/>
+        <col_item field="createTime" title="下发时间" width="150"/>
+        <col_item field="preAssignee" title="上一步处理人" width="150" formatter="function(value){return findName(value);}"/>
+        <col_item field="preTaskName" title="上一步骤名称" width="200"/>
+        <col_item field="isDelegate" title="是否代理" type="combobox"  edt_isClear="false" edt_dict="IS_DELEGATE" width="80" formatter="function(value){ if(value==2){return '否';} else{return '是';} return value;}"/>
+    	<col_item field="owner" title="代理人" width="120" formatter="function(value){return findName(value);}"/>
+    </view>
+    <!--待办任务管理view   end-->
+
+    <!--已办任务管理view   start-->
+    <view id="UWK_hiTaskinstMrg" render="datagrid" title="已办任务管理">
+        <conf fit="true" req="[{service:'P0005001',BPM_OP:'listDoneTask'}]" singleSelect="true"
+              pageSize="10" remotePagination="true" showRowDetail="false"/>
+        <qry_item field="taskName" title="任务名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="processDefinitionName" title="流程名称" type="input" edt_validType="val[0,64]"/>
+        <!--<btn_item text="撤销" handler="cancelHiTaskinst" iconCls="icon-cancel"/>-->
+        <col_item field="processDefinitionId" title="processDefinitionId" hidden="true"/>
+        <col_item field="taskId" title="任务标识" hidden="true"/>
+        <col_item field="taskName" title="任务名称" width="120"/>
+        <col_item field="processDefinitionName" title="流程名称" width="200"/>
+        <col_item field="createTime" title="下发时间" width="150"/>
+        <col_item field="processInstanceState" title="流程实例状态" type="combobox"  edt_isClear="false" edt_dict="PROCESS_INSTANCE_STA"
+                  width="100"/>
+        <col_item field="deleteReason" title="处理方式" formatter="function(value){return parseDelReason(value);}"
+                  width="100"/>
+        <col_item field="assignee" title="处理人" width="200" formatter="function(value){return findName(value);}"/>
+    </view>
+    <!--已办任务管理view   end-->
+
+    <!--代理任务管理iew   start-->
+    <view id="UWK_delegateTaskMrg" render="datagrid" title="代理任务管理">
+        <conf fit="true" req="[{service:'P0005001',BPM_OP:'listDelegatedTasks',userId:1}]"
+              singleSelect="true" pageSize="10" remotePagination="true" colNumbers="4"/>
+        <qry_item field="taskName" title="任务名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="processDefinitionName" title="流程名称" type="input" edt_validType="val[0,64]"/>
+        <col_item field="processDefinitionId" title="" hidden="true"/>
+        <col_item field="taskId" title="任务标识" hidden="true"/>
+        <col_item field="taskName" title="任务名称" width="150"/>
+        <col_item field="processDefinitionName" title="流程名称" width="150"/>
+        <col_item field="createTime" title="下发时间" width="150"/>
+        <col_item field="endTime" title="处理时间" width="150"/>
+        <col_item field="assignee" title="处理人" width="150" formatter="function(value){return findName(value);}"/>
+        <col_item field="taskState" title="任务状态" type="combobox" edt_isClear="false" edt_dict="DELEGATE_STATE" width="100"/>
+    </view>
+    <!--代理任务管理view   end-->
+
+    <!--流程定义管理view   start-->
+    <view id="UWK_modelManage" render="datagrid" title="流程定义管理">
+        <conf fit="true" req="[{'service':'P0005001','BPM_OP':'listModel'}]"
+              pageSize="10" remotePagination="true"/>
+        <qry_item field="MODEL_KEY" title="流程标识" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="MODEL_NAME" title="名称" type="input" edt_validType="val[0,64]"/>
+        <btn_item text="创建" title="创建新流程" handler="newModel" iconCls="icon-add"/>
+        <btn_item text="部署" title="部署" handler="deployModel" iconCls="icon-dbf"/>
+        <btn_item text="编辑" title="编辑" handler="editModel" iconCls="icon-edit"/>
+        <btn_item text="导入" title="导入" handler="importModel" iconCls="icon-redo"/>
+        <btn_item text="导出" title="导出" handler="exportModel" iconCls="icon-print"/>
+        <btn_item text="删除" handler="removeModel" iconCls="icon-remove"/>
+        <col_item field="MODEL_ID" title="流程ID" hidden="true"/>
+        <col_item field="MODEL_KEY" title="流程标识" width="100"/>
+        <col_item field="MODEL_NAME" title="名称" width="150" sortable="true" edt_sorter="sorter"/>
+        <col_item field="MODEL_DESCRIPTION" title="说明" width="180"/>
+        <col_item field="MODEL_CREATETIME" title="创建时间" width="150"/>
+        <col_item field="MODEL_LASTUPDATETIME" title="最后修改时间" width="150"/>
+    </view>
+    <!--流程定义管理view   end-->
+    <!--创建流程表单view   end-->
+    <view id="UWK_newModelForm" render="form" title="创建流程" colNumbers="2">
+        <conf colNumbers="2"/>
+        <col_item field="MODEL_KEY" title="流程标识" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="MODEL_NAME" title="名称" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="MODEL_DESCRIPTION" title="描述" colspan="4" type="textarea" edt_height="50" edt_width="340" edt_validType="val[1,64]"/>
+    </view>
+    <!--创建流程表单view   end-->
+
+    <!--指定代理人表单-->
+    <view id="UWK_delegateForm" render="form" title="指定代理人" colNumbers="2">
+        <conf colNumbers="1"/>
+        <col_item field="touser" title="指定代理人" type="combogrid" edt_isClear="false" edt_required="true"/>
+    </view>
+
+    <!--开户待办任务管理view   start-->
+    <view id="UWK_kaihuRunningProcessTaskManage" render="datagrid" title="开户待办任务管理"
+          script="../../opp/js/general-util.js">
+        <conf fit="true"
+              req="[{service:'P0005001', BPM_OP:'listRunningProcessInstancesByPriority',processDefinitionKey:'openCust'}]"
+              singleSelect="true" pageSize="10" remotePagination="true"/>
+        <btn_item text="处理当前任务" title="处理当前任务" handler="dueCurrentTask" iconCls="icon-edit"/>
+        <col_item field="processDefinitionId" title="" hidden="true"/>
+        <col_item field="processDefinitionName" title="流程名称" width="100"/>
+        <col_item field="businesses" title="业务名称" width="200"/>
+        <col_item field="currentTaskName" title="当前任务名称" width="100"/>
+        <col_item field="startTime" title="发起时间" width="150"/>
+        <col_item field="currentTaskStartTime" title="当前任务下发时间" width="150"/>
+        <col_item field="currentTaskPriority" title="当前任务优先级" width="80"/>
+        <col_item field="processInstanceId" title="流程实例标识" width="80"/>
+        <col_item field="currentTaskFormKey" title="表单ID" width="80"/>
+    </view>
+    <!--开户待办任务管理view   end-->
+
+    <!--新需求的开户待办任务管理view   start-->
+    <view id="UWK_newKaihuRunningProcessTaskManage" render="datagrid" title="新开户待办任务管理"
+          script="../../opp/js/general-util.js">
+        <conf fit="true"
+              req="[{service:'P0005001', BPM_OP:'getCustReadyTasksByPriority',processDefinitionKey:'openCust'}]"
+              singleSelect="true" pageSize="10" remotePagination="true" colNumbers="5" remoteSort="true"/>
+
+        <qry_item field="ORG_CODE" title="所属机构"
+                  type="combotree"
+                  edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+                  edt_panelWidth="250"
+                  edt_panelHeight="200"
+                  edt_nodeId="ORG_CODE"
+                  edt_nodeName="ORG_NAME"
+                  edt_parNode="PAR_ORG"
+                  edt_treeType="1"
+                />
+
+        <qry_item field="preAssignee" title="发起人" type="combogrid" edt_panelHeight="250" edt_panelWidth="350"
+                  edt_textField="USER_NAME" edt_idField="USER_CODE"
+                  edt_fallParas="[{enable:true}]"
+                  edt_req="[{service:'P0001008',USER_STA:'1'}]"
+                  edt_columns="[[
+                    {field:'USER_CODE',title:'用户编号',width:100},
+                    {field:'USER_NAME',title:'用户名称',width:200}
+                    ]]"
+                  edt_queryCols="[
+                    {
+                      text:'查询',
+                      cols:[{field:'USER_NAME',title:'用户名称',
+                      editor:{
+                          type:'text',
+                          options:{
+                            validType:'val[1,64]'
+                          }
+                        }
+                      }]
+                    }
+                    ]"
+                />
+        <qry_item field="BUS_TYPE" title="业务类别"  edt_panelHeight="150" type="combobox"
+                  edt_dict="BUS_TYPE" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+
+        <qry_item field="CUST_CODE" title="客户标识" type="autocomplete" edt_validType="val[1,64]"
+                  edt_req="[{service:'custidInfoQuery'}]"
+                  edt_keyField="ID_CODE" edt_params="QUERY_PARAM" edt_sourceField="CIF_CODE,USER_NAME,ID_CODE"
+                  edt_matchCase="true" edt_useCache="false"
+                />
+
+        <qry_item field="CHANNEL" title="业务受理渠道"  type="combobox" edt_dict="CHANNEL"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="taskName" title="任务状态"  type="combobox"
+                  edt_req="[{service:'P0005001',BPM_OP:'findUserTasks',processDefinitionKey:'openCust'}]"
+                  edt_valueField="activityId" edt_textField="activityName"
+                  edt_extItems="[{'activityName':'全部','activityId':''}]"/>
+        <qry_item field="startTime" title="开始日期"  edt_validType="begDate['endTime']" type="datebox"
+                  edt_defaultValue=":D-7"/>
+        <qry_item field="endTime" title="截止日期"  edt_validType="endDate['startTime']" type="datebox"
+                  edt_defaultValue=":D0"/>
+
+        <btn_item text="处理当前任务" title="处理当前任务" handler="dueCurrentTask" iconCls="icon-edit"/>
+
+        <col_item field="CUST_CODE" title="客户标识" width="100"/>
+        <col_item field="CUST_NAME" title="客户名称" width="100"/>
+        <col_item field="ORG_CODE" title="所属机构" width="180" formatter="function(value){return parseOrgCode(value);}"/>
+        <col_item field="BUS_TYPE" title="业务类别" width="200"
+                  formatter="function(value){return parseBusinessType(value);}"/>
+        <col_item field="CHANNEL" title="业务受理渠道" width="80" type="combobox" edt_isClear="false" edt_dict="CHANNEL"/>
+        <col_item field="taskName" title="任务状态" width="80" sortable="true" edt_sorter="sorter"/>
+        <col_item field="preAssignee" title="发起人" width="100" formatter="function(value){return findName(value);}"/>
+        <col_item field="createTime" title="发起时间" width="120" sortable="true" edt_sorter="sorter"/>
+    </view>
+    <!--新需求的开户待办任务管理view   end-->
+    <!--新开户表单-->
+    <view id="UWK_newKaihu" render="form" title="开户表单" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2"/>
+        <col_item field="PROCESS_KEY" title="PROCESS_KEY" type="input" edit_flag="2"/>
+        <col_item field="processInstanceId" title="processInstanceId" type="input" edit_flag="2"/>
+        <col_item field="priority" title="priority" type="input" edit_flag="2"/>
+        <col_item field="CUST_CODE" title="客户标识" width="100" type="input" edt_required="true"
+                  edt_validType="val[1,32]"/>
+        <col_item field="CUST_NAME" title="客户名称" width="100" type="input" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="ORG_CODE" title="所属机构" width="100" type="combotree" edt_isClear="false" edt_required="true"
+                  edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+                  edt_panelWidth="250"
+                  edt_panelHeight="300"
+                  edt_nodeId="ORG_CODE"
+                  edt_nodeName="ORG_NAME"
+                  edt_parNode="PAR_ORG"
+                  edt_treeType="1"
+                />
+        <col_item field="CHANNEL" title="业务受理渠道" type="combobox" edt_isClear="false" edt_dict="CHANNEL" edt_required="true"/>
+    </view>
+    <!--======================================================================================================================================-->
+    <!--测试组需要的表单 start-->
+    <!--参数表单-->
+    <view id="UWK_testForm" render="form" title="参数表单" colNumbers="2">
+        <conf colNumbers="2" service="P0005902"/>
+        <col_item field="taskId" title="任务id" type="input" hidden="true"/>
+        <col_item field="BPM_OP" title="操作码" type="input" hidden="true"/>
+        <col_item field="PROCESS_KEY" title="PROCESS_KEY" type="input" hidden="true"/>
+        <col_item field="processInstanceId" title="流程实例id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="priority" title="优先级" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="PAR_CODE" title="参数代码" width="100" type="input" edit_flag="1" edt_required="true"
+                  edt_validType="val[1,32]"/>
+        <col_item field="PAR_NAME" title="参数名称" width="150" type="input" edt_required="true" edt_validType="val[1,64]"/>
+        <col_item field="PAR_CLS" title="参数类型" width="120" type="combobox" edt_isClear="false" edt_dict="PAR_CLS" edt_required="true"
+                  edt_defaultValue="1"/>
+        <col_item field="MAINTAIN_FLAG" title="维护标识" width="120" type="combobox" edt_isClear="false" edit_flag="1" edt_dict="MAINTAIN_FLAG"
+                  edt_defaultValue="0"/>
+        <col_item field="PAR_VAL" title="参数值" width="200" type="input" edt_required="true" edt_validType="val[1,32]"
+                  colspan="4"/>
+    </view>
+    <!--请假申请view：leaveApply-->
+    <!--申请页面字段：姓名username  请假天数days  请假原因reason-->
+    <!--请假申请完成人：1-->
+    <view id="UWK_leaveApply" render="form" title="请假申请" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="PROCESS_KEY" title="PROCESS_KEY" type="input" hidden="true"/>
+        <col_item field="username" title="姓名" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="days" title="请假天数" width="100" type="input" edt_required="true" edt_validType="zint[5]"/>
+        <col_item field="reason" title="请假原因" edt_width="350" edt_height="50" colspan="4" edt_required="true" type="textarea"
+                  edt_validType="length[1,64]"/>
+    </view>
+
+    <!--请假审批view：leaveAudit-->
+    <!--请假审批页面字段：审批结果(同意/不同意) result-->
+    <!--部门经理审批完成人：4-->   <!--总经理审批完成人：5--> <!--分管领导审批完成人：16-->
+    <view id="UWK_leaveAudit" render="form" title="请假审批" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="result" title="审批结果" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="RESULT_TYPE"/>
+    </view>
+
+    <!--人力资源备案view：leaveBak-->
+    <!--人力资源备案页面字段：是否备案 bak-->
+    <!--人力资源备案完成人：37-->
+    <view id="UWK_leaveBak" render="form" title="人力资源备案" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="bak" title="是否备案" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="BAK_TYPE"/>
+    </view>
+    <!--测试组需要的表单 end-->
+    <!--======================================================================================================================================-->
+
+
+    <!--创建表管理view   start-->
+    <view id="UWK_tabManage" render="datagrid" title="创建表模型管理">
+        <conf fit="true" req="" pageSize="10" remotePagination="true"/>
+        <btn_item text="创建表模型" title="创建表模型" handler="tabAdd" iconCls="icon-add"/>
+        <col_item field="tabName" title="表名" type="input"/>
+    </view>
+    <!--创建表管理view   end-->
+    
+     <!--===================产品管理================================================================================================================-->
+      <view id="UWK_productApply" render="form" title="产品申请" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="PROCESS_KEY" title="流程标识" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+    </view>
+    
+     <view id="UWK_firstCheck" render="form" title="公司初审" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+        <col_item field="result" title="审批结果" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="RESULT_TYPE"/>
+    </view>
+    
+     <view id="UWK_productInput" render="form" title="产品录入" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+        <col_item field="productCode" title="产品代码" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+    </view>
+    
+     <view id="UWK_masterCheck" render="form" title="公司主审" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productCode" title="产品代码" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+        <col_item field="result" title="审批结果" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="RESULT_TYPE"  edt_onSelect="showUserSelect"/>
+    </view>
+    
+    <view id="UWK_leaderCheck" render="form" title="领导主审" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productCode" title="产品代码" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+        <col_item field="result" title="审批结果" width="120" type="combobox" edt_isClear="false" onSelect="show" edt_required="true" edt_dict="CHECK_RESULT"/>
+    </view>
+    
+    <view id="UWK_productArchive" render="form" title="产品归档" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productCode" title="产品代码" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+        <col_item field="tip" title="提醒内容" edt_width="350" edt_height="50" colspan="4" edt_required="true" type="textarea"
+                  edt_validType="length[1,64]"/>
+        <col_item field="ispublic" title="是否公开" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="BAK_TYPE"/>
+    </view>
+    
+    <view id="UWK_up" render="form" title="产品上架" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productCode" title="产品代码" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+        <col_item field="upDesc" title="上架说明" edt_width="350" edt_height="50" colspan="4" edt_required="true" type="textarea"
+                  edt_validType="length[1,64]"/>
+    </view>
+    
+     <view id="UWK_upCheck" render="form" title="产品上架复核" colNumbers="2">
+        <conf colNumbers="2" service="P0005903"/>
+        <col_item field="BPM_OP" title="操作码" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="taskId" title="任务id" type="input" edit_flag="2" hidden="true"/>
+        <col_item field="productCode" title="产品代码" width="120" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productName" title="产品名称" width="100" type="input" edt_required="true" edt_validType="val[1,32]"/>
+        <col_item field="productType" title="产品类型" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="PRODUCT_TYPE"/>
+        <col_item field="result" title="审批结果" width="120" type="combobox" edt_isClear="false" edt_required="true" edt_dict="RESULT_TYPE"/>
+    </view>
+     <!--===================产品管理================================================================================================================-->
+</views>

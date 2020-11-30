@@ -1,0 +1,16 @@
+.sform_title_div{
+	/* width: 100px; */
+	float: left;
+	display:inline;
+	text-align: right;
+	margin-top: 5px;
+	color: #5B5B5B;
+}
+
+.sform_content_div{
+	float: left;
+	display:inline;
+	word-break: break-all;
+	margin-top: 5px;
+	color: #3C3C3C;
+}

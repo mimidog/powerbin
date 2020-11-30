@@ -1,0 +1,1519 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+    <!--用户信息管理 start  -->
+	<sql id="userOrgPermission">  
+		<if test="OP_POST != 1">
+			  AND ( U.ORG_CODE IN
+			(SELECT DISTINCT M.ORG_CODE 
+			  FROM UUM_USER_PERM UP
+			  JOIN UUM_PERMISSION P
+				ON P.PERM_ID = UP.PERM_ID
+			  JOIN UPM_ORG M
+				ON P.PERM_VAL = M.ORG_CODE
+			WHERE UP.AUTH_TYPE = '1'
+			   AND P.PERM_TYPE = '8'
+			   AND UP.ASS_TYPE = '1'
+			   AND ((UP.OBJ_ID = '${OP_CODE}' AND UP.OBJ_TYPE = '2') OR
+				   (UP.OBJ_ID IN (SELECT UOP.POST_ID
+									 FROM UUM_OPER_POST UOP
+									WHERE UOP.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '3') OR
+				   (UP.OBJ_ID IN (SELECT UO.ORG_CODE
+									 FROM UUM_USER U, UPM_ORG UO
+									WHERE U.ORG_CODE = UO.ORG_CODE
+									  AND U.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '4'))
+				
+				)
+				OR U.ORG_CODE IN
+        	(SELECT ORG_CODE FROM UPM_ORG WHERE ORG_LVL LIKE (SELECT ORG_LVL + '%' FROM UPM_ORG UO WHERE UO.ORG_CODE = '${OP_BRANCH}'))
+				)
+			</if>		
+	</sql>
+	<sql id="orgPermission"> 
+		<if test="OP_POST != 1">
+				  AND ( UO.ORG_CODE IN
+				(SELECT DISTINCT M.ORG_CODE 
+				  FROM UUM_USER_PERM UP
+				  JOIN UUM_PERMISSION P
+					ON P.PERM_ID = UP.PERM_ID
+				  JOIN UPM_ORG M
+					ON P.PERM_VAL = M.ORG_CODE
+				WHERE UP.AUTH_TYPE = '${AUTH_TYPE}'
+				   AND P.PERM_TYPE = '8'
+				   AND UP.ASS_TYPE = '1'
+				   AND ((UP.OBJ_ID = '${OP_CODE}' AND UP.OBJ_TYPE = '2') OR
+					   (UP.OBJ_ID IN (SELECT UOP.POST_ID
+										 FROM UUM_OPER_POST UOP
+										WHERE UOP.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '3') OR
+					   (UP.OBJ_ID IN (SELECT UO.ORG_CODE
+										 FROM UUM_USER U, UPM_ORG UO
+										WHERE U.ORG_CODE = UO.ORG_CODE
+										  AND U.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '4'))
+					)
+					OR UO.ORG_CODE IN
+        	(SELECT ORG_CODE FROM UPM_ORG WHERE ORG_LVL LIKE (SELECT ORG_LVL + '%' FROM UPM_ORG UO WHERE UO.ORG_CODE = '${OP_BRANCH}'))
+					)
+		</if>
+	</sql>
+    <select id="userInfoQuery" parameterType="hashmap" resultType="java.util.HashMap">
+      SELECT U.USER_CODE,
+       U.USER_NAME,
+       U.USER_TYPE,
+       U.USER_STA,
+       U.OPEN_DATE,
+       U.LOG_IP,
+        CONVERT(VARCHAR,U.LOG_DATE, 120) AS LOG_DATE,
+       U.EMP_ID,
+       U.USER_ICON,
+       U.OFF_TEL,
+       U.MOBILE,
+       U.EMAIL,
+       U.ORG_CODE,
+       O.ORG_NAME,
+       (select POST_NAME = stuff((select distinct ',' + convert(varchar,UP.POST_NAME) FROM UUM_POST UP, UUM_OPER_POST P
+        WHERE UP.POST_ID = P.POST_ID
+        AND P.USER_CODE = U.USER_CODE  for xml path('')),1,1,'')) AS POST_NAME
+  FROM UUM_USER U
+  LEFT JOIN UPM_ORG O ON O.ORG_CODE = U.ORG_CODE
+  WHERE 1 = 1
+		<include refid="userOrgPermission"/>	
+        <if test="QUERY_PARAM != '-1'">
+            AND U.USER_STA = '1'
+            AND (U.USER_CODE LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  U.USER_NAME LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  EXISTS(SELECT 1 FROM UPM_ORG UO WHERE UO.ORG_CODE=U.ORG_CODE AND UO.ORG_NAME LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>))
+        </if>
+        <if test="QUERY_PARAM == '-1'">
+            <if test="USER_CODE != '-1' ">
+                AND U.USER_CODE = '${USER_CODE}'
+            </if>
+            <if test="USER_NAME != '-1'">
+                AND U.USER_NAME LIKE '%${USER_NAME}%' <include refid="escapeSprit"/>
+            </if>
+            <if test="USER_TYPE != '-1'">
+                AND U.USER_TYPE = '${USER_TYPE}'
+            </if>
+            <if test="USER_STA != '-1'">
+                AND U.USER_STA = '${USER_STA}'
+            </if>
+            <if test="POST_ID != '-1' ">
+                AND EXISTS(SELECT 1 FROM UUM_OPER_POST P WHERE P.USER_CODE=U.USER_CODE AND P.POST_ID = '${POST_ID}')
+            </if>
+            <if test="POST_IDS != null ">
+            AND EXISTS(SELECT 1 FROM UUM_OPER_POST P WHERE P.USER_CODE=U.USER_CODE AND P.POST_ID  IN (${POST_IDS}))
+            </if>
+            <if test="ROLE_ID !='-1'">
+				AND EXISTS(SELECT 1 FROM UUM_USER_ROLE UUR WHERE UUR.USER_CODE=U.USER_CODE AND UUR.ROLE_ID='${ROLE_ID}')
+            </if>
+
+            <if test="ORG_CODE != '-1' ">
+                AND U.ORG_CODE = '${ORG_CODE}'
+            </if>
+            <if test="BESIDES_USER_CODE != '-1' ">
+                AND U.USER_CODE != '${BESIDES_USER_CODE}'
+            </if>
+            <if test="CURRENT_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${CURRENT_USER_CODE})
+            </if>
+            <if test="HAS_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${HAS_USER_CODE})
+            </if>
+            <if test="MOBILE != '' and MOBILE !=null">
+                AND U.MOBILE = '${MOBILE}'
+            </if>
+        </if>
+        ORDER BY U.USER_CODE
+    </select>
+    <select id="userInfoQueryforPage" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT U.USER_CODE,
+       U.USER_NAME,
+       U.USER_TYPE,
+       U.USER_STA,
+       U.OPEN_DATE,
+       U.LOG_IP,
+        CONVERT(VARCHAR,U.LOG_DATE, 120) AS LOG_DATE,
+       U.EMP_ID,
+       U.USER_ICON,
+       U.OFF_TEL,
+       U.MOBILE,
+       U.EMAIL,
+       U.ORG_CODE,
+       (SELECT ISNULL(ORG_NAME, ' ')
+          FROM UPM_ORG O
+         WHERE O.ORG_CODE = U.ORG_CODE) AS ORG_NAME,
+       (select POST_ID = stuff((select distinct ',' + convert(varchar,P.POST_ID) FROM  UUM_OPER_POST P
+        WHERE P.USER_CODE = U.USER_CODE  for xml path('')),1,1,'')) AS POST_ID,
+        (SELECT UP.POST_NAME
+          FROM UUM_OPER_POST P,UUM_POST UP
+         WHERE P.USER_CODE = U.USER_CODE AND P.MAIN_FLAG = '1' AND UP.POST_ID = P.POST_ID) AS MAIN_POST_NAME,  
+       (select POST_NAME = stuff((select distinct ',' + convert(varchar,UP.POST_NAME) FROM UUM_POST UP, UUM_OPER_POST P
+        WHERE UP.POST_ID = P.POST_ID
+        AND P.USER_CODE = U.USER_CODE  for xml path('')),1,1,'')) AS POST_NAME,
+        (SELECT UP.POST_ID
+        FROM UUM_OPER_POST P,UUM_POST UP
+        WHERE P.USER_CODE = U.USER_CODE AND P.MAIN_FLAG = '1' AND UP.POST_ID = P.POST_ID) AS MAIN_POST_ID,
+       KUI_GET_ROLES(U.USER_CODE) AS ROLES_NAME,POST_LVL
+  FROM UUM_USER U
+        WHERE 1 = 1
+        <include refid="userOrgPermission"/>
+        <if test="QUERY_PARAM != '-1'">
+            AND U.USER_STA = '1'
+            AND (U.USER_CODE LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  U.USER_NAME LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  EXISTS(SELECT 1 FROM UPM_ORG UO WHERE UO.ORG_CODE=U.ORG_CODE AND UO.ORG_NAME LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>))
+        </if>
+        <if test="QUERY_PARAM == '-1'">
+            <if test="USER_CODE != '-1' ">
+                AND U.USER_CODE = '${USER_CODE}'
+            </if>
+            <if test="USER_NAME != '-1'">
+                AND U.USER_NAME LIKE '%${USER_NAME}%' <include refid="escapeSprit"/>
+            </if>
+            <if test="MOBILE != '' and MOBILE !=null">
+                AND U.MOBILE = '${MOBILE}'
+            </if>
+            <if test="USER_TYPE != '-1'">
+                AND U.USER_TYPE = '${USER_TYPE}'
+            </if>
+            <if test="USER_STA != '-1'">
+                AND U.USER_STA = '${USER_STA}'
+            </if>
+            <if test="POST_ID != '-1' ">
+                AND EXISTS(SELECT 1 FROM UUM_OPER_POST P WHERE P.USER_CODE=U.USER_CODE AND P.POST_ID = '${POST_ID}')
+            </if>
+            <if test="ROLE_ID !='-1'">
+				AND EXISTS(SELECT 1 FROM UUM_USER_ROLE UUR WHERE UUR.USER_CODE=U.USER_CODE AND UUR.ROLE_ID='${ROLE_ID}')
+            </if>
+
+            <if test="ORG_CODE != '-1' ">
+                AND U.ORG_CODE = '${ORG_CODE}'
+            </if>
+            <if test="BESIDES_USER_CODE != '-1' ">
+                AND U.USER_CODE != '${BESIDES_USER_CODE}'
+            </if>
+            <if test="CURRENT_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${CURRENT_USER_CODE})
+            </if>
+            <if test="HAS_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${HAS_USER_CODE})
+            </if>
+            <if test="ORG_CODE_IN != '-1'">
+                AND U.ORG_CODE IN (${ORG_CODE_IN})
+            </if>
+        </if>
+        ORDER BY U.USER_CODE
+    </select>
+    
+	<select id="userInfoQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT DISTINCT U.USER_CODE,
+        U.USER_NAME,
+        U.USER_TYPE,
+        U.USER_STA,
+        U.OPEN_DATE,
+        U.LOG_IP,
+        CONVERT(VARCHAR,U.LOG_DATE, 120) AS LOG_DATE,
+        U.EMP_ID,
+        U.USER_ICON,
+        U.OFF_TEL,
+        U.MOBILE,
+        U.EMAIL,
+        U.ORG_CODE,
+        CASE WHEN UO.ORG_NAME IS NULL THEN ' ' ELSE UO.ORG_NAME END AS ORG_NAME,
+        dbo.KUI_GET_POSTS(U.USER_CODE) AS POST_ID,
+        dbo.KUI_GET_POST_NAMES(U.USER_CODE) AS POST_NAME,
+        (SELECT UP.POST_NAME
+          FROM UUM_OPER_POST P,UUM_POST UP
+         WHERE P.USER_CODE = U.USER_CODE AND P.MAIN_FLAG = '1' AND UP.POST_ID = P.POST_ID) AS MAIN_POST_NAME,
+        (SELECT UP.POST_ID
+        FROM UUM_OPER_POST P,UUM_POST UP
+        WHERE P.USER_CODE = U.USER_CODE AND P.MAIN_FLAG = '1' AND UP.POST_ID = P.POST_ID) AS MAIN_POST_ID,
+        dbo.KUI_GET_ROLES(U.USER_CODE) AS ROLES_NAME,POST_LVL
+        FROM UUM_USER U
+        LEFT JOIN UPM_ORG UO ON U.ORG_CODE = UO.ORG_CODE
+        WHERE 1 = 1
+        <include refid="userOrgPermission"/>
+        <if test="QUERY_PARAM != '-1'">
+            AND U.USER_STA = '1'
+            AND U.USER_CODE LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  U.USER_NAME LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  UO.ORG_NAME LIKE '${QUERY_PARAM}%' <include refid="escapeSprit"/>
+        </if>
+        <if test="QUERY_PARAM == '-1'">
+            <if test="USER_CODE != '-1' ">
+                AND U.USER_CODE = '${USER_CODE}'
+            </if>
+            <if test="USER_CODE_RIGHT_like != '-1' ">
+                AND U.USER_CODE LIKE '${USER_CODE_RIGHT_like}%'
+            </if>
+            <if test="MOBILE != '' and MOBILE !=null">
+                AND U.MOBILE = '${MOBILE}'
+            </if>
+            <if test="USER_NAME != '-1'">
+                AND U.USER_NAME LIKE '%${USER_NAME}%' <include refid="escapeSprit"/>
+            </if>
+            <if test="USER_TYPE != '-1'">
+                AND U.USER_TYPE = '${USER_TYPE}'
+            </if>
+            <if test="USER_STA != '-1'">
+                AND U.USER_STA = '${USER_STA}'
+            </if>
+            <if test="POST_ID != '-1' ">
+			    AND EXISTS(SELECT 1 FROM UUM_OPER_POST P WHERE P.USER_CODE=U.USER_CODE AND P.POST_ID = '${POST_ID}')
+            </if>
+            <if test="ROLE_ID !='-1'">
+                AND EXISTS(SELECT 1 FROM UUM_USER_ROLE UUR WHERE UUR.USER_CODE=U.USER_CODE AND UUR.ROLE_ID='${ROLE_ID}')
+            </if>
+
+            <if test="ORG_CODE != '-1' ">
+                AND UO.ORG_CODE = '${ORG_CODE}'
+            </if>
+            <if test="BESIDES_USER_CODE != '-1' ">
+                AND U.USER_CODE != '${BESIDES_USER_CODE}'
+            </if>
+            <if test="CURRENT_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${CURRENT_USER_CODE})
+            </if>
+            <if test="HAS_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${HAS_USER_CODE})
+            </if>
+            <if test="POST_IDS != null ">
+                AND EXISTS(SELECT 1 FROM UUM_OPER_POST P WHERE P.USER_CODE=U.USER_CODE AND P.POST_ID  IN (${POST_IDS}))
+            </if>
+        </if>
+        ORDER BY U.USER_CODE
+    </select>
+    
+    <select id="userInfoQueryforPage_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT DISTINCT U.USER_CODE,
+        U.USER_NAME,
+        U.USER_TYPE,
+        U.USER_STA,
+        U.OPEN_DATE,
+        U.LOG_IP,
+        CONVERT(VARCHAR,U.LOG_DATE, 120) AS LOG_DATE,
+        U.EMP_ID,
+        U.USER_ICON,
+        U.OFF_TEL,
+        U.MOBILE,
+        U.EMAIL,
+        U.ORG_CODE,
+        CASE WHEN UO.ORG_NAME IS NULL THEN ' ' ELSE UO.ORG_NAME END AS ORG_NAME,
+        dbo.KUI_GET_POSTS(U.USER_CODE) AS POST_ID,
+        dbo.KUI_GET_POST_NAMES(U.USER_CODE) AS POST_NAME,
+        (SELECT UP.POST_NAME
+          FROM UUM_OPER_POST P,UUM_POST UP
+         WHERE P.USER_CODE = U.USER_CODE AND P.MAIN_FLAG = '1' AND UP.POST_ID = P.POST_ID) AS MAIN_POST_NAME,
+        (SELECT UP.POST_ID
+        FROM UUM_OPER_POST P,UUM_POST UP
+        WHERE P.USER_CODE = U.USER_CODE AND P.MAIN_FLAG = '1' AND UP.POST_ID = P.POST_ID) AS MAIN_POST_ID,
+        dbo.KUI_GET_ROLES(U.USER_CODE) AS ROLES_NAME,POST_LVL
+        FROM UUM_USER U
+        LEFT JOIN UPM_ORG UO ON U.ORG_CODE = UO.ORG_CODE
+        WHERE 1 = 1
+        <include refid="userOrgPermission"/>
+        <if test="QUERY_PARAM != '-1'">
+            AND U.USER_STA = '1'
+            AND U.USER_CODE LIKE '%${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  U.USER_NAME LIKE '%${QUERY_PARAM}%' <include refid="escapeSprit"/>
+            OR  UO.ORG_NAME LIKE '%${QUERY_PARAM}%' <include refid="escapeSprit"/>
+        </if>
+        <if test="QUERY_PARAM == '-1'">
+            <if test="USER_CODE != '-1' ">
+                AND U.USER_CODE = '${USER_CODE}'
+            </if>
+            <if test="USER_CODE_RIGHT_like != '-1' ">
+                AND U.USER_CODE LIKE '${USER_CODE_RIGHT_like}%'
+            </if>
+            <if test="MOBILE != '' and MOBILE !=null">
+                AND U.MOBILE = '${MOBILE}'
+            </if>
+            <if test="USER_NAME != '-1'">
+                AND U.USER_NAME LIKE '%${USER_NAME}%' <include refid="escapeSprit"/>
+            </if>
+            <if test="USER_TYPE != '-1'">
+                AND U.USER_TYPE = '${USER_TYPE}'
+            </if>
+            <if test="USER_STA != '-1'">
+                AND U.USER_STA = '${USER_STA}'
+            </if>
+            <if test="POST_ID != '-1' ">
+			    AND EXISTS(SELECT 1 FROM UUM_OPER_POST P WHERE P.USER_CODE=U.USER_CODE AND P.POST_ID = '${POST_ID}')
+            </if>
+            <if test="ROLE_ID !='-1'">
+                AND EXISTS(SELECT 1 FROM UUM_USER_ROLE UUR WHERE UUR.USER_CODE=U.USER_CODE AND UUR.ROLE_ID='${ROLE_ID}')
+            </if>
+
+            <if test="ORG_CODE != '-1' ">
+                AND UO.ORG_CODE = '${ORG_CODE}'
+            </if>
+            <if test="BESIDES_USER_CODE != '-1' ">
+                AND U.USER_CODE != '${BESIDES_USER_CODE}'
+            </if>
+            <if test="CURRENT_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${CURRENT_USER_CODE})
+            </if>
+            <if test="HAS_USER_CODE != '-1'">
+                AND U.USER_CODE NOT IN (${HAS_USER_CODE})
+            </if>
+            <if test="ORG_CODE_IN != '-1'">
+                AND U.ORG_CODE IN (${ORG_CODE_IN})
+            </if>
+        </if>
+        ORDER BY U.USER_CODE
+    </select>
+    <select id="userInfoVagueQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT DISTINCT U.USER_CODE,
+        U.USER_NAME,
+        U.USER_TYPE,
+        U.USER_STA,
+        U.OPEN_DATE,
+        U.LOG_IP,
+         CONVERT(VARCHAR,U.LOG_DATE, 120) AS LOG_DATE,
+        U.EMP_ID,
+        U.USER_ICON,
+        U.OFF_TEL,
+        U.MOBILE,
+        U.EMAIL,
+        U.ORG_CODE,
+        UO.ORG_NAME,
+        P.POST_ID,
+        (SELECT UP.POST_NAME FROM UUM_POST UP WHERE UP.POST_ID = P.POST_ID) AS POST_NAME,
+        KUI_GET_ROLES(U.USER_CODE) AS ROLES_NAME
+        FROM UUM_USER U
+        LEFT JOIN UUM_OPER_POST P ON P.USER_CODE = U.USER_CODE
+        LEFT JOIN UUM_USER_ROLE UUR ON U.USER_CODE = UUR.USER_CODE
+        LEFT JOIN UPM_ORG UO ON U.ORG_CODE = UO.ORG_CODE
+        WHERE 1 = 1
+        <include refid="userOrgPermission"/>
+        <if test="USER_CODE != null">
+            AND U.USER_STA = '1'
+            AND U.USER_CODE like '%${USER_CODE}%'
+            <include refid="escapeSprit"/>
+            OR U.USER_NAME LIKE '%${USER_CODE}%'
+            <include refid="escapeSprit"/>
+        </if>
+        ORDER BY U.USER_CODE
+    </select>
+    <select id="userInfoByOrgCodeQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT USER_CODE,USER_NAME FROM UUM_USER
+        WHERE 1 = 1
+        <if test="ORG_CODE != ''">
+            AND ORG_CODE = '${ORG_CODE}'
+        </if>
+        <if test="HAS_USER_CODE != '' and HAS_USER_CODE!=null">
+            AND USER_CODE NOT IN (${HAS_USER_CODE})
+        </if>
+
+        ORDER BY USER_CODE
+    </select>
+	<select id="userCodeNameQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT U.USER_CODE,
+        U.USER_NAME
+        FROM UUM_USER U
+        ORDER BY U.USER_CODE
+    </select>
+    
+    <select id="queryUserByUserCode" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT USER_CODE,
+		       USER_NAME,
+		       USER_TYPE,
+		       USER_PASS,
+		       USER_STA,
+		       OPEN_DATE,
+		       LOG_IP,
+		       LOG_DATE,
+		       EMP_ID,
+		       USER_ICON,
+		       OFF_TEL,
+		       MOBILE,
+		       EMAIL,
+		       SIGNATRUE,
+		       ORG_CODE
+		  FROM UUM_USER
+		  WHERE USER_CODE = '${USER_CODE}'
+	</select>
+    
+    <insert id="userInfoInsert" parameterType="hashmap">
+		INSERT INTO UUM_USER (USER_CODE,USER_NAME,USER_PASS,USER_TYPE,USER_STA,OPEN_DATE,EMP_ID,OFF_TEL,MOBILE,EMAIL,
+		                      ORG_CODE,POST_LVL)
+		VALUES ('${USER_CODE}', '${USER_NAME}','${USER_PASS}','${USER_TYPE}','${USER_STA}',
+		convert(VARCHAR ,GETDATE(),112),'${EMP_ID}','${OFF_TEL}','${MOBILE}','${EMAIL}','${ORG_CODE}','${POST_LVL}')
+	</insert>
+	<insert id="userInfoInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UUM_USER (USER_CODE,USER_NAME,USER_PASS,USER_TYPE,USER_STA,OPEN_DATE,EMP_ID,OFF_TEL,MOBILE,EMAIL,
+		      ORG_CODE,POST_LVL)
+		VALUES ('${USER_CODE}', '${USER_NAME}','${USER_PASS}','${USER_TYPE}','${USER_STA}',
+		Cast(CONVERT(varchar(10), getdate(), 112) AS INT),NULL,'${OFF_TEL}','${MOBILE}','${EMAIL}','${ORG_CODE}','${POST_LVL}')
+	</insert>
+    <update id="userInfoUpdate" parameterType="hashmap">
+        UPDATE UUM_USER SET
+            <if test="POST_LVL !='' and POST_LVL != null">
+                and POST_LVL ='${POST_LVL}'
+            </if>
+			USER_NAME='${USER_NAME}',
+			USER_TYPE='${USER_TYPE}',
+			USER_STA='${USER_STA}',
+			EMP_ID=#{EMP_ID,jdbcType=INTEGER},
+			OFF_TEL='${OFF_TEL}',
+			MOBILE='${MOBILE}',
+			EMAIL='${EMAIL}',
+			ORG_CODE='${ORG_CODE}'
+        WHERE USER_CODE='${USER_CODE}'
+    </update>
+    <delete id="userInfoDelete" parameterType="string">
+        DELETE FROM UUM_USER WHERE USER_CODE='${USER_CODE}'
+  </delete>
+    <update id="userStatusUpdate" parameterType="hashmap">
+        UPDATE UUM_USER SET
+			USER_STA='${USER_STA}'
+        WHERE USER_CODE='${USER_CODE}'
+    </update>
+    <update id="userPasswordRest" parameterType="hashmap">
+        UPDATE UUM_USER SET
+			USER_PASS='${USER_PASS}'
+        WHERE USER_CODE='${USER_CODE}'
+    </update>
+
+    <update id="userPasswordUpdate" parameterType="hashmap">
+        UPDATE UUM_USER SET
+			USER_PASS='${NEW_PASS}'
+        WHERE USER_CODE='${USER_CODE}'
+		AND USER_PASS='${USER_PASS}'
+    </update>
+    <!--用户信息管理 end  -->
+
+    <!--角色信息管理 start-->
+    <select id="roleQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ROLE_ID,ROLE_NAME,ROLE_STA,REMARK FROM UUM_ROLE WHERE 1=1
+        <if test="ROLE_ID != '-1'">
+            AND ROLE_ID = '${ROLE_ID}'
+        </if>
+        <if test="ROLE_NAME != '-1'">
+            AND ROLE_NAME LIKE '%${ROLE_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+        <if test="ROLE_STA != '-1'">
+            AND ROLE_STA = '${ROLE_STA}'
+        </if>
+    </select>
+    <insert id="roleInsert" parameterType="hashmap">
+		  INSERT INTO UUM_ROLE (ROLE_ID,ROLE_NAME,ROLE_STA,REMARK)
+		  VALUES (#{ID},'${ROLE_NAME}','${ROLE_STA}','${REMARK}')
+	</insert>
+    <update id="roleUpdate" parameterType="hashmap">
+      UPDATE UUM_ROLE
+        SET ROLE_NAME='${ROLE_NAME}',ROLE_STA='${ROLE_STA}',REMARK='${REMARK}'
+          WHERE ROLE_ID=${ROLE_ID}
+  </update>
+    <delete id="roleDelete" parameterType="int">
+          DELETE FROM UUM_ROLE WHERE ROLE_ID=#{ROLE_ID,jdbcType=INTEGER}
+  </delete>
+    <select id="userInfo" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT C.ROLE_ID AS ROLE_ID,
+        U.USER_CODE AS USER_CODE,
+        U.USER_NAME AS USER_NAME,
+        U.USER_TYPE AS USER_TYPE
+        FROM UUM_USER U,UUM_USER_ROLE C
+        WHERE C.USER_CODE=U.USER_CODE
+        <if test="ROLE_ID != '-1'">
+            AND C.ROLE_ID = #{REQ_ROLE_ID,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="NotInRoleUserInfo" parameterType="hashmap" resultType="java.util.HashMap">
+    SELECT U.USER_CODE, U.USER_NAME
+    FROM UUM_USER U
+    WHERE U.USER_CODE NOT IN (
+    SELECT  C.USER_CODE
+    FROM UUM_USER_ROLE  C
+    WHERE C.ROLE_ID=${SER_ROLE_ID})
+  </select>
+    <insert id="roleInsertUser" parameterType="hashmap">
+    INSERT INTO UUM_USER_ROLE (USER_CODE,ROLE_ID)
+		VALUES (${REQ_USER_ID},${REQ_ROLE_ID})
+  </insert>
+    <delete id="roleDeleteUser" parameterType="int">
+    DELETE FROM UUM_USER_ROLE
+    WHERE ROLE_ID=${REQ_ROLE_ID}
+    AND USER_CODE=${REQ_USER_ID}
+  </delete>
+    <!--角色信息管理 end-->
+
+    <!--权限信息管理 start-->
+    <select id="permissionQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT DISTINCT PERM_ID,PERM_NAME,PAR_PERM,PERM_TYPE,PERM_STA,PERM_VAL,REMARK,PERM_LVL,
+        CASE WHEN PAR_PERM=0 THEN '1'
+        WHEN
+        (
+        PERM_ID IN (SELECT PERM_ID FROM UUM_PERMISSION P1
+        WHERE P1.PAR_PERM IN (SELECT P2.PERM_ID FROM UUM_PERMISSION P2 WHERE P2.PAR_PERM=0))
+        ) THEN '2'
+        WHEN P.PERM_TYPE='5' THEN '5'
+        WHEN P.PERM_TYPE='6' THEN '6'
+        ELSE '3'
+        END AS FLAG,
+        KUI_GET_CONS_NAME(PERM_ID) AS CONS_NAMES
+        FROM UUM_PERMISSION P
+        START WITH 1=1
+        <if test="PERM_ID != null and PERM_ID != '' and PERM_ID != '-1'">
+            AND PERM_ID = #{PERM_ID,jdbcType=INTEGER}
+        </if>
+        <if test="PERM_NAME != null and PERM_NAME != '' and PERM_NAME != '-1'">
+            AND PERM_NAME like '%${PERM_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+        <if test="PERM_TYPE != null and PERM_TYPE != '' and PERM_TYPE != '-1'">
+            AND PERM_TYPE = '${PERM_TYPE}'
+        </if>
+        <if test="PERM_STA != null and PERM_STA != '' and PERM_STA != '-1'">
+            AND PERM_STA = '${PERM_STA}'
+        </if>
+        <if test="PAR_PERM != null and PAR_PERM != '' and PAR_PERM != '-1'">
+            AND PAR_PERM = '${PAR_PERM}'
+        </if>    
+        <if test="PERM_VAL != null and PERM_VAL != '' and PERM_VAL != '-1'">
+            AND PERM_VAL = '${PERM_VAL}'
+        </if>     
+        CONNECT BY NOCYCLE PRIOR P.PAR_PERM = P.PERM_ID
+        ORDER BY P.PERM_LVL
+    </select>
+	<select id="permissionQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT PERM_ID,PERM_NAME,PAR_PERM,PERM_TYPE,PERM_STA,PERM_VAL,REMARK,PERM_LVL,
+        CASE WHEN PAR_PERM=0 THEN '1'
+        WHEN
+        (
+        PERM_ID IN (SELECT PERM_ID FROM UUM_PERMISSION P1
+        WHERE P1.PAR_PERM IN (SELECT P2.PERM_ID FROM UUM_PERMISSION P2 WHERE P2.PAR_PERM=0))
+        ) THEN '2'
+        WHEN P.PERM_TYPE='5' THEN '5'
+        WHEN P.PERM_TYPE='6' THEN '6'
+        ELSE '3'
+        END AS FLAG,
+        dbo.KUI_GET_CONS_NAME(PERM_ID) AS CONS_NAMES
+        FROM UUM_PERMISSION P  
+		WHERE 1=1
+        <if test="PERM_ID != null and PERM_ID != '' and PERM_ID != '-1'">
+            AND PERM_ID = #{PERM_ID,jdbcType=INTEGER}
+        </if>
+        <if test="PERM_NAME != null and PERM_NAME != '' and PERM_NAME != '-1'">
+            AND (PERM_NAME like '%${PERM_NAME}%' OR PERM_NAME='管理平台')
+            <include refid="escapeSprit"/>
+        </if>
+        <if test="PERM_TYPE != null and PERM_TYPE != '' and PERM_TYPE != '-1'">
+            AND PERM_TYPE = '${PERM_TYPE}'
+        </if>
+        <if test="PERM_STA != null and PERM_STA != '' and PERM_STA != '-1'">
+            AND PERM_STA = '${PERM_STA}'
+        </if>        
+        ORDER BY P.PERM_LVL
+    </select>
+    <insert id="permissionInsert" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PAR_PERM,PERM_TYPE,PERM_STA,PERM_VAL,REMARK,PERM_LVL)
+		VALUES (#{ID},'${PERM_NAME}',${PAR_PERM},'${PERM_TYPE}','${PERM_STA}',#{ID},'${REMARK}',
+		#{PERM_LVL})
+	</insert>
+    <update id="permissionUpdate" parameterType="hashmap">
+    UPDATE UUM_PERMISSION SET
+    PERM_NAME='${PERM_NAME}',
+    REMARK='${REMARK}'
+    WHERE PERM_ID=#{PERM_ID,jdbcType=INTEGER}
+  </update>
+    <insert id="permConsInsert" parameterType="hashmap">
+    INSERT INTO UPM_PERM_CONS (PERM_ID,CONS_ID,CONS_MAX,CONS_MIN) VALUES ('${PERM_ID}','${CONS_ID}','${CONS_MAX}','${CONS_MIN}')
+  </insert>
+    <delete id="permissionDelete" parameterType="int">
+        DELETE FROM UUM_PERMISSION WHERE PERM_ID=#{REQ_PERM_ID,jdbcType=INTEGER}
+  </delete>
+    <select id="consQueryData" parameterType="hashmap" resultType="java.util.HashMap">
+    SELECT CONS_ID FROM UPM_PERM_CONS
+    WHERE PERM_ID = '${PERM_ID}'
+  </select>
+  <delete id="permConsDelete" parameterType="int">
+    DELETE FROM UPM_PERM_CONS WHERE PERM_ID=${PERM_ID} AND CONS_ID = ${CONS_ID}
+  </delete>
+  <delete id="userpermConsDelete" parameterType="int">
+  	DELETE UUM_USER_PERM_CONS WHERE USER_PERM_CODE IN (
+  SELECT USER_PERM_CODE
+    FROM UUM_USER_PERM_CONS UUPC, UUM_USER_PERM UUP
+   WHERE UUPC.AUTH_ID = UUP.AUTH_ID
+     AND UUP.PERM_ID = ${PERM_ID}
+     AND UUPC.CONS_ID = ${CONS_ID})
+  </delete>
+  <select id="permConsQueryData" parameterType="hashmap" resultType="java.util.HashMap">
+  	SELECT PC.PERM_ID,PC.CONS_ID,PC.CONS_MAX,PC.CONS_MIN,CONS.CONS_NAME,CONS.CONS_TYPE FROM UPM_PERM_CONS PC
+	LEFT JOIN UUM_PERMISSION P ON PC.PERM_ID = P.PERM_ID
+	LEFT JOIN UUM_CONSTRAINTS CONS ON PC.CONS_ID = CONS.CONS_ID
+	WHERE CONS.CONS_STATE = '1' AND PC.PERM_ID = ${PERM_ID}
+  </select>
+  
+  <select id="consDataQuery" parameterType="hashmap" resultType="java.util.HashMap">
+  	SELECT C.CONS_ID,C.CONS_NAME,C.CONS_TYPE FROM UUM_CONSTRAINTS C WHERE C.CONS_STATE = '1' 
+  	AND NOT EXISTS (SELECT 1 FROM UPM_PERM_CONS PC WHERE C.CONS_ID = PC.CONS_ID AND PC.PERM_ID =${PERM_ID})
+    <if test="CONS_NAME != '-1' and CONS_NAME != NULL">
+        AND C.CONS_NAME LIKE '%${CONS_NAME}%'
+        <include refid="escapeSprit"/>
+    </if>
+  </select>
+    <!--权限信息管理 end-->
+
+    <!--用户授权管理 start-->
+    <select id="allUserInfo" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT USER_CODE,USER_NAME,USER_TYPE,USER_STA,OPEN_DATE,OFF_TEL,MOBILE,EMAIL,SIGNATRUE
+        FROM UUM_USER
+        WHERE 1=1
+        <if test="USER_NAME != '-1'">
+            AND USER_NAME LIKE '%${USER_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+        ORDER BY USER_CODE
+    </select>
+    <select id="userInfoConnectPerm" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT USER_CODE,USER_NAME,USER_TYPE,USER_STA,OPEN_DATE,USER_ICON,OFF_TEL,MOBILE,EMAIL,SIGNATRUE
+        FROM UUM_USER WHERE 1=1
+        <if test="REQ_USER_CODE != null and REQ_USER_CODE != '' and REQ_USER_CODE != '-1'">
+            AND USER_CODE = #{REQ_USER_CODE,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <!--员工信息管理 start-->
+    <select id="empInfoQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT EMP_ID,EMP_CODE,EMP_NAME,GENDER,EMP_ORG,EMP_POS,OFF_TEL,MOBILE,EMAIL,ECIF_CODE
+        FROM UUM_EMP
+        WHERE 1=1
+        <if test="EMP_CODE != null and EMP_CODE != '' and EMP_CODE != '-1'">
+            AND EMP_CODE = #{EMP_CODE,jdbcType=INTEGER}
+        </if>
+        <if test="EMP_NAME != null and EMP_NAME != '' and EMP_NAME != '-1'">
+            AND EMP_NAME LIKE '%${EMP_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+        ORDER BY EMP_ID
+    </select>
+    <insert id="empInfoInsert" parameterType="hashmap">
+		  INSERT INTO UUM_EMP(EMP_ID,EMP_CODE,EMP_NAME,GENDER,EMP_ORG,EMP_POS,OFF_TEL,MOBILE,EMAIL,ECIF_CODE)
+		  VALUES ((NEXT VALUE FOR SEQ_EMP),${EMP_CODE},'${EMP_NAME}','${GENDER}','${EMP_ORG}','${EMP_POS}','${OFF_TEL}',
+		  '${MOBILE}','${EMAIL}','${ECIF_CODE}')
+	</insert>
+    <update id="empInfoUpdate" parameterType="hashmap">
+    UPDATE UUM_EMP SET
+    EMP_CODE=#{EMP_CODE,jdbcType=INTEGER},
+    EMP_NAME='${EMP_NAME}',
+    GENDER='${GENDER}',
+    EMP_ORG='${EMP_ORG}',
+    EMP_POS='${EMP_POS}',
+    OFF_TEL='${OFF_TEL}',
+    MOBILE='${MOBILE}',
+    EMAIL='${EMAIL}',
+    ECIF_CODE='${ECIF_CODE}'
+    WHERE EMP_ID=#{EMP_ID,jdbcType=INTEGER}
+  </update>
+    <delete id="empInfoDelete" parameterType="int">
+    DELETE FROM UUM_EMP
+    WHERE EMP_ID=#{EMP_ID,jdbcType=INTEGER}
+  </delete>
+    <!--员工信息管理 end-->
+
+    <!-- 组织机构管理service start -->
+    <select id="orgMenuQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT UO.ORG_CODE,
+        UO.ORG_NAME,
+        UO.ORG_CODE+' '+UO.ORG_NAME as ORG_CODE_NAME,
+        UO.ORG_TYPE,
+        UO.ORG_STA,
+        UO.PAR_ORG,
+        UO.ORG_LVL,
+        UO.ORG_ADDR,
+        UO.ORG_CON,
+        UO.ORG_TEL,
+        UO.ORG_FAX,
+        UO.ZIP_CODE,
+        UO.EMAIL,
+        UO.ORG_BIZ_CLS,
+        UO.ORG_AREA,
+        UO.ORG_PROVINCE_ZIP,
+        UO.ORG_CITY_ZIP,
+        UO.REMARK,
+        UO.ORG_CLS
+        FROM UPM_ORG UO WHERE 1= 1
+		<include refid="orgPermission"/>        
+        <if test="ORG_CODE != '-1'">
+            AND UO.ORG_CODE = '${ORG_CODE}'
+        </if>
+        <if test="PAR_ORG != '-1'">
+            AND UO.PAR_ORG = '${PAR_ORG}'
+        </if>
+        <if test="ORG_STA != '-1'">
+            AND UO.ORG_STA = '${ORG_STA}'
+            AND (UO.PAR_ORG = '0' OR '1' = (SELECT UO1.ORG_STA FROM UPM_ORG UO1 WHERE UO1.ORG_CODE = UO.PAR_ORG))
+        </if>
+        ORDER BY UO.ORG_LVL
+    </select>
+    
+    <select id="orgMenuQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT UO.ORG_CODE,
+        UO.ORG_NAME,
+        UO.ORG_CODE+' '+UO.ORG_NAME as ORG_CODE_NAME,
+        UO.ORG_TYPE,
+        UO.ORG_STA,
+        UO.PAR_ORG,
+        UO.ORG_LVL,
+        UO.ORG_ADDR,
+        UO.ORG_CON,
+        UO.ORG_TEL,
+        UO.ORG_FAX,
+        UO.ZIP_CODE,
+        UO.EMAIL,
+        UO.ORG_BIZ_CLS,
+        UO.ORG_AREA,
+        UO.ORG_PROVINCE_ZIP,
+        UO.ORG_CITY_ZIP,
+        UO.REMARK,
+        UO.ORG_CLS
+        FROM UPM_ORG UO WHERE 1= 1
+        <include refid="orgPermission"/>
+        <if test="ORG_CODE != '-1'">
+            AND UO.ORG_CODE = '${ORG_CODE}'
+        </if>
+        <if test="PAR_ORG != '-1'">
+            AND UO.PAR_ORG = '${PAR_ORG}'
+        </if>
+        <if test="ORG_STA != '-1'">
+            AND UO.ORG_STA = '${ORG_STA}'
+            AND (UO.PAR_ORG = '0' OR '1' = (SELECT UO1.ORG_STA FROM UPM_ORG UO1 WHERE UO1.ORG_CODE = UO.PAR_ORG))
+        </if>
+        ORDER BY UO.ORG_LVL
+    </select>
+
+    <select id="orgMenuChildQuery" parameterType="hashmap" resultType="java.util.HashMap">
+  SELECT ORG_CODE,ORG_TYPE,ORG_NAME,ORG_STA,PAR_ORG,ORG_LVL,ZIP_CODE,ORG_ADDR,ORG_CON,EMAIL,ORG_TEL,ORG_FAX
+  FROM UPM_ORG
+ 	WHERE ORG_LVL LIKE
+       (SELECT ORG_LVL + '%' FROM UPM_ORG UO WHERE UO.ORG_CODE = '${ORG_CODE}')
+  </select>
+  <select id="orgMenuChildQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+  SELECT ORG_CODE,ORG_TYPE,ORG_NAME,ORG_STA,PAR_ORG,ORG_LVL,ZIP_CODE,ORG_ADDR,ORG_CON,EMAIL,ORG_TEL,ORG_FAX
+  FROM UPM_ORG
+ 	WHERE ORG_LVL LIKE
+       (SELECT ORG_LVL + '%' FROM UPM_ORG UO WHERE UO.ORG_CODE = '${ORG_CODE}')
+  </select>
+    <update id="orgInfoUpdate" parameterType="hashmap">
+	   UPDATE UPM_ORG SET
+			ORG_TYPE='${ORG_TYPE}',
+			ORG_NAME='${ORG_NAME}',
+			ORG_STA='${ORG_STA}',
+			PAR_ORG='${PAR_ORG}',
+			ORG_ADDR='${ORG_ADDR}',
+			ORG_CON='${ORG_CON}',
+			ORG_TEL='${ORG_TEL}',
+			ORG_FAX='${ORG_FAX}',
+			ZIP_CODE='${ZIP_CODE}',
+			EMAIL='${EMAIL}',
+			ORG_BIZ_CLS='${ORG_BIZ_CLS}',
+			ORG_CLS='${ORG_CLS}',
+			ORG_AREA='${ORG_AREA}',
+			ORG_PROVINCE_ZIP='${ORG_PROVINCE_ZIP}',
+			ORG_CITY_ZIP='${ORG_CITY_ZIP}',
+			REMARK='${REMARK}'
+		WHERE ORG_CODE ='${ORG_CODE}'
+	</update>
+    <update id="orgStaUpdate" parameterType="hashmap">
+		UPDATE UPM_ORG SET
+		ORG_STA = '${ORG_STA}'
+		WHERE ORG_LVL LIKE
+		(SELECT ORG_LVL + '%'  FROM UPM_ORG WHERE ORG_CODE='${ORG_CODE}')
+	</update>
+	<update id="orgStaUpdate_MSSQL" parameterType="hashmap">
+		UPDATE UPM_ORG SET
+		ORG_STA = '${ORG_STA}'
+		WHERE ORG_LVL LIKE
+		(SELECT ORG_LVL + '%'  FROM UPM_ORG WHERE ORG_CODE='${ORG_CODE}')
+	</update>
+    <delete id="orgDelete" parameterType="hashmap">
+	  DELETE UPM_ORG WHERE ORG_CODE = '${ORG_CODE}'
+  </delete>
+    <delete id="orgChildDelete" parameterType="hashmap">
+	   DELETE UPM_ORG O1 WHERE O1.ORG_LVL LIKE (SELECT O2.ORG_LVL + '%' FROM UPM_ORG O2 WHERE O2.ORG_CODE = '${ORG_CODE}')
+  </delete>
+   <delete id="orgChildDelete_MSSQL" parameterType="hashmap">
+	   DELETE UPM_ORG WHERE ORG_LVL LIKE (SELECT O2.ORG_LVL + '%' FROM UPM_ORG O2 WHERE O2.ORG_CODE = '${ORG_CODE}')
+  </delete>
+    <update id="updateUserOrgCode" parameterType="hashmap">
+	   UPDATE UUM_USER UU
+		   SET UU.ORG_CODE = ''
+		 WHERE UU.ORG_CODE IN
+		       (SELECT UO.ORG_CODE
+		          FROM UPM_ORG UO
+		         WHERE UO.ORG_LVL LIKE
+		               (SELECT O2.ORG_LVL + '%'
+		                  FROM UPM_ORG O2
+		                 WHERE O2.ORG_CODE = '${ORG_CODE}'))
+  </update>
+   <update id="updateUserOrgCode_MSSQL" parameterType="hashmap">
+	   UPDATE UUM_USER 
+		   SET ORG_CODE = ''
+		 WHERE ORG_CODE IN
+		       (SELECT UO.ORG_CODE
+		          FROM UPM_ORG UO
+		         WHERE UO.ORG_LVL LIKE
+		               (SELECT O2.ORG_LVL + '%'
+		                  FROM UPM_ORG O2
+		                 WHERE O2.ORG_CODE = '${ORG_CODE}'))
+  </update>
+    <delete id="orgPermDelete" parameterType="hashmap">
+	  DELETE UUM_USER_PERM WHERE OBJ_ID IN (SELECT UO.ORG_CODE
+		          FROM UPM_ORG UO
+		         WHERE UO.ORG_LVL LIKE
+		               (SELECT O2.ORG_LVL + '%'
+		                  FROM UPM_ORG O2
+		                 WHERE O2.ORG_CODE = '${ORG_CODE}')) 
+		 AND OBJ_TYPE = '4'
+  </delete>
+   <delete id="orgPermDelete_MSSQL" parameterType="hashmap">
+	  DELETE UUM_USER_PERM WHERE OBJ_ID IN (SELECT UO.ORG_CODE
+		          FROM UPM_ORG UO
+		         WHERE UO.ORG_LVL LIKE
+		               (SELECT O2.ORG_LVL + '%'
+		                  FROM UPM_ORG O2
+		                 WHERE O2.ORG_CODE = '${ORG_CODE}')) 
+		 AND OBJ_TYPE = '4'
+  </delete>
+    <insert id="orgInsert_MSSQL" parameterType="hashmap">
+        INSERT INTO UPM_ORG (ORG_CODE,ORG_TYPE,ORG_NAME,ORG_STA,PAR_ORG,ORG_LVL
+        <if test="ZIP_CODE != '-1'">
+            ,ZIP_CODE
+        </if>
+        <if test="ORG_ADDR != '-1'">
+            ,ORG_ADDR
+        </if>
+        <if test="ORG_CON != '-1'">
+            ,ORG_CON
+        </if>
+        <if test="EMAIL != '-1'">
+            ,EMAIL
+        </if>
+        <if test="ORG_TEL != '-1'">
+            ,ORG_TEL
+        </if>
+        <if test="ORG_FAX != '-1'">
+            ,ORG_FAX
+        </if>
+        <if test="ORG_BIZ_CLS != '-1'">
+            ,ORG_BIZ_CLS
+        </if>
+        <if test="ORG_CLS != '-1'">
+            ,ORG_CLS
+        </if>
+        <if test="ORG_AREA != '-1'">
+            ,ORG_AREA
+        </if>
+        <if test="ORG_PROVINCE_ZIP != '-1'">
+            ,ORG_PROVINCE_ZIP
+        </if>
+        <if test="ORG_CITY_ZIP != '-1'">
+            ,ORG_CITY_ZIP
+        </if>
+        <if test="REMARK != '-1'">
+            ,REMARK
+        </if>
+        ) VALUES
+        ('${ORG_CODE}','${ORG_TYPE}','${ORG_NAME}','${ORG_STA}','${PAR_ORG}',#{ORG_LVL}
+        <if test="ZIP_CODE != '-1'">
+            ,'${ZIP_CODE}'
+        </if>
+        <if test="ORG_ADDR != '-1'">
+            ,'${ORG_ADDR}'
+        </if>
+        <if test="ORG_CON != '-1'">
+            ,'${ORG_CON}'
+        </if>
+        <if test="EMAIL != '-1'">
+            ,'${EMAIL}'
+        </if>
+        <if test="ORG_TEL != '-1'">
+            ,'${ORG_TEL}'
+        </if>
+        <if test="ORG_FAX != '-1'">
+            ,'${ORG_FAX}'
+        </if>
+        <if test="ORG_BIZ_CLS != '-1'">
+            ,'${ORG_BIZ_CLS}'
+        </if>
+        <if test="ORG_CLS != '-1'">
+            ,'${ORG_CLS}'
+        </if>
+        <if test="ORG_AREA != '-1'">
+            ,'${ORG_AREA}'
+        </if>
+        <if test="ORG_PROVINCE_ZIP != '-1'">
+            ,'${ORG_PROVINCE_ZIP}'
+        </if>
+        <if test="ORG_CITY_ZIP != '-1'">
+            ,'${ORG_CITY_ZIP}'
+        </if>
+        <if test="REMARK != '-1'">
+            ,'${REMARK}'
+        </if>
+        )
+    </insert>
+    
+    <insert id="orgInsert" parameterType="hashmap">
+        <selectKey keyProperty="level" resultType="String" order="BEFORE">
+            SELECT ISNULL(max(ORG_LVL),null) FROM UPM_ORG WHERE PAR_ORG = '${PAR_ORG}'
+        </selectKey>
+        INSERT INTO UPM_ORG (ORG_CODE,ORG_TYPE,ORG_NAME,ORG_STA,PAR_ORG,ORG_LVL
+        <if test="ZIP_CODE != '-1'">
+            ,ZIP_CODE
+        </if>
+        <if test="ORG_ADDR != '-1'">
+            ,ORG_ADDR
+        </if>
+        <if test="ORG_CON != '-1'">
+            ,ORG_CON
+        </if>
+        <if test="EMAIL != '-1'">
+            ,EMAIL
+        </if>
+        <if test="ORG_TEL != '-1'">
+            ,ORG_TEL
+        </if>
+        <if test="ORG_FAX != '-1'">
+            ,ORG_FAX
+        </if>
+        <if test="ORG_BIZ_CLS != '-1'">
+            ,ORG_BIZ_CLS
+        </if>
+        <if test="ORG_CLS != '-1'">
+            ,ORG_CLS
+        </if>
+        <if test="ORG_AREA != '-1'">
+            ,ORG_AREA
+        </if>
+        <if test="ORG_PROVINCE_ZIP != '-1'">
+            ,ORG_PROVINCE_ZIP
+        </if>
+        <if test="ORG_CITY_ZIP != '-1'">
+            ,ORG_CITY_ZIP
+        </if>
+        <if test="REMARK != '-1'">
+            ,REMARK
+        </if>
+        ) VALUES
+        ('${ORG_CODE}','${ORG_TYPE}','${ORG_NAME}','${ORG_STA}','${PAR_ORG}',KUI_CREATELVL('UPM_ORG','ORG_CODE','PAR_ORG','ORG_LVL','${PAR_ORG}',4)
+        <if test="ZIP_CODE != '-1'">
+            ,'${ZIP_CODE}'
+        </if>
+        <if test="ORG_ADDR != '-1'">
+            ,'${ORG_ADDR}'
+        </if>
+        <if test="ORG_CON != '-1'">
+            ,'${ORG_CON}'
+        </if>
+        <if test="EMAIL != '-1'">
+            ,'${EMAIL}'
+        </if>
+        <if test="ORG_TEL != '-1'">
+            ,'${ORG_TEL}'
+        </if>
+        <if test="ORG_FAX != '-1'">
+            ,'${ORG_FAX}'
+        </if>
+        <if test="ORG_BIZ_CLS != '-1'">
+            ,'${ORG_BIZ_CLS}'
+        </if>
+        <if test="ORG_CLS != '-1'">
+            ,'${ORG_CLS}'
+        </if>
+        <if test="ORG_AREA != '-1'">
+            ,'${ORG_AREA}'
+        </if>
+        <if test="ORG_PROVINCE_ZIP != '-1'">
+            ,'${ORG_PROVINCE_ZIP}'
+        </if>
+        <if test="ORG_CITY_ZIP != '-1'">
+            ,'${ORG_CITY_ZIP}'
+        </if>
+        <if test="REMARK != '-1'">
+            ,'${REMARK}'
+        </if>
+        )
+    </insert>
+    
+	<update id="orgCascadeUpdate" parameterType="hashmap">
+	 UPDATE UUM_PERMISSION SET
+		PERM_NAME= '${ORG_CODE}' + ' ' + '${ORG_NAME}',
+	   	PERM_STA = '${ORG_STA}'
+	WHERE PERM_VAL ='${ORG_CODE}' AND PERM_TYPE = '8'
+	</update>
+  	<delete id="orgCascadeDelete" parameterType="hashmap">
+  	DELETE FROM UUM_PERMISSION WHERE PERM_VAL IN (
+		SELECT ORG_CODE FROM UPM_ORG O1 WHERE O1.ORG_LVL LIKE (SELECT O2.ORG_LVL + '%' FROM UPM_ORG O2 WHERE O2.ORG_CODE = '${ORG_CODE}')
+  	)
+  	</delete>
+  	<insert id="orgCascadeInsert" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES ((SEQ_PERMISSION.NEXTVAL),
+				'${ORG_CODE}' +' '+ '${ORG_NAME}',
+				'8',
+				'8',
+			   	'${ORG_STA}',
+				'${ORG_CODE}',
+		KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL', 8, 4))
+	</insert>
+	
+	<insert id="orgCascadeInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES ('${ID}',
+				'${ORG_CODE}' +' '+ '${ORG_NAME}',
+				'8',
+				'8',
+			   	'${ORG_STA}',
+				'${ORG_CODE}',
+		dbo.KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL', 8, 4))
+	</insert>
+    <!-- 组织机构管理service end-->
+
+    <!-- 岗位管理 start-->
+    <select id="jobsQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT POST_ID, POST_NAME, POST_STA
+        FROM UUM_POST WHERE 1= 1
+        <if test="POST_NAME != '-1'">
+            AND POST_NAME LIKE '%${POST_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+        <if test="POST_STA != '-1'">
+            AND POST_STA = '${POST_STA}'
+        </if>
+        <if test="ORD_BY_NAME != null">
+        	ORDER BY POST_NAME
+        </if>
+        <if test="ORD_BY_NAME == null">
+        	ORDER BY POST_ID
+        </if>
+    </select>
+    <!--by  ,2016/07/07，添加9999用户与岗位判断-->
+    <select id="jobsQueryByPerm" parameterType="hashmap" resultType="java.util.HashMap">
+
+        <if test="OP_POST == 1 or OP_CODE ==8888 or OP_POST == 9999 or OP_CODE ==9999">
+            SELECT M.POST_ID, M.POST_NAME, M.POST_STA
+            FROM UUM_POST M WHERE 1= 1
+        </if>
+		<if test="OP_POST != 1 and OP_CODE !=8888 and OP_POST != 9999 and OP_CODE !=9999">
+        SELECT DISTINCT M.POST_ID, M.POST_NAME, M.POST_STA
+		  FROM UUM_USER_PERM UP
+		  JOIN UUM_PERMISSION P
+		    ON P.PERM_ID = UP.PERM_ID
+		  JOIN UUM_POST M
+		    ON P.PERM_VAL = M.POST_ID
+		WHERE UP.AUTH_TYPE = '${AUTH_TYPE}'
+		   AND P.PERM_TYPE = '9'
+		   AND UP.ASS_TYPE = '1'
+		   AND ((UP.OBJ_ID = '${OP_CODE}' AND UP.OBJ_TYPE = '2') OR
+		       (UP.OBJ_ID IN (SELECT UOP.POST_ID
+		                         FROM UUM_OPER_POST UOP
+		                        WHERE UOP.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '3') OR
+		       (UP.OBJ_ID IN (SELECT UO.ORG_CODE
+		                         FROM UUM_USER U, UPM_ORG UO
+		                        WHERE U.ORG_CODE = UO.ORG_CODE
+		                          AND U.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '4'))
+        </if>
+        <if test="POST_NAME != '-1'">
+            AND M.POST_NAME LIKE '%${POST_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+        <if test="FULL_POST_NAME != null and FULL_POST_NAME != ''">
+            AND M.POST_NAME = '${FULL_POST_NAME}'
+            <include refid="escapeSprit"/>
+        </if>
+
+        <if test="POST_STA != '-1'">
+            AND M.POST_STA = '${POST_STA}'
+        </if>
+        <if test="ORD_BY_NAME != null">
+        	ORDER BY M.POST_NAME
+        </if>
+        <if test="ORD_BY_NAME == null">
+        	ORDER BY M.POST_ID
+        </if>
+        
+    </select>
+    <insert id="jobsInsert" parameterType="hashmap">
+		  INSERT INTO UUM_POST (POST_ID,POST_NAME,POST_STA)
+		  VALUES (#{ID},'${POST_NAME}','${POST_STA}')
+	</insert>
+	<insert id="jobsCascadeInsert" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES (SEQ_PERMISSION.NEXTVAL,
+				'${POST_NAME}',
+				'9',
+				(SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_TYPE = 9 AND PERM_LVL = '0005'),
+			   <if test="POST_STA == 1">
+			   	'${POST_STA}',
+			   </if>
+			   <if test="POST_STA != 1">
+			   	 0,
+			   </if>
+				 #{ID},
+		KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL','5',4))
+	</insert>
+	
+	<insert id="jobsCascadeInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES ('${PERM_ID}',
+				'${POST_NAME}',
+				'9',
+				(SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_TYPE = 9 AND PERM_LVL = '0005'),
+			   <if test="POST_STA == 1">
+			   	'${POST_STA}',
+			   </if>
+			   <if test="POST_STA != 1">
+			   	 0,
+			   </if>
+              (SELECT POST_ID FROM UUM_POST WHERE POST_NAME = '${POST_NAME}'),
+		dbo.KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL','5',4))
+	</insert>
+	
+	<insert id="userPermJobsInsert" parameterType="hashmap">
+		INSERT INTO UUM_USER_PERM (AUTH_ID,OBJ_TYPE,OBJ_ID,ASS_TYPE,PERM_ID,AUTH_TYPE)
+		VALUES
+		(SEQ_AUTH_ID.NEXTVAL,'2','${OP_CODE}','1',(SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_NAME = '${POST_NAME}' AND PERM_TYPE = '9'),'1'
+		)
+	</insert>
+	
+	<insert id="userPermJobsInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UUM_USER_PERM (AUTH_ID,OBJ_TYPE,OBJ_ID,ASS_TYPE,PERM_ID,AUTH_TYPE)
+		VALUES
+		('${AUTH_ID}','2','${OP_CODE}','1',(SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_NAME = '${POST_NAME}' AND PERM_TYPE = '9'),'1'
+		)
+	</insert>
+	
+    <update id="jobsUpdate" parameterType="hashmap">
+	   UPDATE UUM_POST SET
+			POST_NAME='${POST_NAME}',
+			POST_STA='${POST_STA}'
+		WHERE POST_ID ='${POST_ID}'
+	</update>
+    <delete id="jobsDelete" parameterType="hashmap">
+	  DELETE UUM_POST WHERE POST_ID ='${POST_ID}'
+    </delete>
+    <delete id="jobsPermDelete" parameterType="hashmap">
+	  DELETE UUM_USER_PERM WHERE OBJ_ID ='${POST_ID}' AND OBJ_TYPE = '3'
+    </delete>
+    
+    <delete id="jobsKptMenuContTabDelete" parameterType="hashmap">
+	  DELETE KPT_MENU_CONT_TAB WHERE MENU_COMP_ID IN (SELECT MENU_COMP_ID FROM KPT_MENU_COMP WHERE USER_ROLE='${POST_ID}')
+    </delete>
+    
+    <delete id="jobsKptMenuContCompDelete" parameterType="hashmap">
+	  DELETE KPT_MENU_CONT_COMP WHERE MENU_COMP_ID IN (SELECT MENU_COMP_ID FROM KPT_MENU_COMP WHERE USER_ROLE='${POST_ID}')
+    </delete>
+    
+    <delete id="jobsKptMenuCompParamDelete" parameterType="hashmap">
+	  DELETE KPT_MENU_COMP_PARAM WHERE MENU_COMP_ID IN (SELECT MENU_COMP_ID FROM KPT_MENU_COMP WHERE USER_ROLE='${POST_ID}')
+    </delete>
+    
+    <delete id="jobsKptMenuCompDelete" parameterType="hashmap">
+	  DELETE KPT_MENU_COMP WHERE USER_ROLE='${POST_ID}'
+    </delete>
+    
+    <update id="jobsCascadeUpdate" parameterType="hashmap">
+		 UPDATE UUM_PERMISSION SET
+			PERM_NAME='${POST_NAME}'
+		    <if test="POST_STA == 1">
+		   	  , PERM_STA = '${POST_STA}'
+		    </if>
+		    <if test="POST_STA != 1">
+		   	  , PERM_STA = 0
+		    </if>
+		WHERE PERM_VAL ='${POST_ID}' AND PERM_TYPE = '9'
+	</update>
+	<delete id="jobsCascadeDelete" parameterType="hashmap">
+	  DELETE FROM UUM_PERMISSION WHERE PERM_VAL = '${POST_ID}' AND PERM_TYPE = '9'
+    </delete>
+    
+    <!-- 岗位管理 end-->
+    <!-- 员工岗位分配 start-->
+    <select id="jobInfo" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT C.USER_CODE,C.MAIN_FLAG,
+        P.POST_ID,
+        P.POST_NAME,
+        P.POST_STA
+        FROM UUM_POST P,UUM_OPER_POST C
+        WHERE C.POST_ID=P.POST_ID
+        <if test="USER_CODE != '-1'">
+            AND C.USER_CODE = #{USER_CODE,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!--by  ,2016/07/07，添加9999用户与岗位判断-->
+    <select id="NotInOperJobInfo" parameterType="hashmap" resultType="java.util.HashMap">   
+    SELECT P.POST_ID, P.POST_NAME, P.POST_STA
+	  FROM UUM_POST P
+	 WHERE P.POST_ID NOT IN
+	       (SELECT OP.POST_ID
+	          FROM UUM_OPER_POST OP
+	         WHERE OP.USER_CODE = '${USER_CODE}')
+	   AND P.POST_STA = '1'
+	   AND P.POST_ID NOT IN
+	       (SELECT EJ.POST_EXCLU_ID
+	          FROM UUM_EXCLU_JOB EJ
+	         WHERE EJ.POST_ID IN
+	               (SELECT OP.POST_ID
+	                  FROM UUM_OPER_POST OP
+	                 WHERE OP.USER_CODE = '${USER_CODE}'))
+	  <if test="OP_POST != 1 and OP_POST != 9999 and OP_CODE!=9999">
+	  AND P.POST_ID IN(
+	  	SELECT M.POST_ID
+		  FROM UUM_USER_PERM UP
+		  JOIN UUM_PERMISSION P
+		    ON P.PERM_ID = UP.PERM_ID
+		  JOIN UUM_POST M
+		    ON P.PERM_VAL = M.POST_ID
+		WHERE UP.AUTH_TYPE = '1'
+		   AND P.PERM_TYPE = '9'
+		   AND UP.ASS_TYPE = '1'
+		   AND ((UP.OBJ_ID = '${OP_CODE}' AND UP.OBJ_TYPE = '2') OR
+		       (UP.OBJ_ID IN (SELECT UOP.POST_ID
+		                         FROM UUM_OPER_POST UOP
+		                        WHERE UOP.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '3') OR
+		       (UP.OBJ_ID IN (SELECT UO.ORG_CODE
+		                         FROM UUM_USER U, UPM_ORG UO
+		                        WHERE U.ORG_CODE = UO.ORG_CODE
+		                          AND U.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '4'))
+	  	
+	  )
+      </if>
+	  <if test="POST_NAME != '-1'">
+            AND P.POST_NAME LIKE '%${POST_NAME}%'
+            <include refid="escapeSprit"/>
+      </if>               
+  </select>
+  <select id="selectPrimaryJob" parameterType="hashmap" resultType="java.util.HashMap">
+    SELECT MAIN_FLAG FROM UUM_OPER_POST WHERE MAIN_FLAG = '1' AND USER_CODE = '${USER_CODE}'
+  </select>
+    <insert id="operInsertJob" parameterType="hashmap">
+    INSERT INTO UUM_OPER_POST (USER_CODE,POST_ID,MAIN_FLAG)
+		VALUES ('${USER_CODE}',${POST_ID},'1')
+  </insert>
+  <insert id="oper_insertJob" parameterType="hashmap">
+    INSERT INTO UUM_OPER_POST (USER_CODE,POST_ID,MAIN_FLAG)
+    SELECT '${USER_CODE}',COLUMN_VALUE,'0' FROM TABLE(FN_SPLIT('${POST_ID}', ','))
+  </insert>
+    <!--by  2016/04/21 添加-->
+    <insert id="oper_insertJob_MSSQL" parameterType="hashmap">
+        INSERT INTO UUM_OPER_POST (USER_CODE,POST_ID,MAIN_FLAG)
+        SELECT '${USER_CODE}',COLUMN_VALUE,'0' FROM dbo.FN_SPLIT('${POST_ID}', ',')
+    </insert>
+
+  <update id="setPrimaryJob" parameterType="hashmap">
+	   UPDATE UUM_OPER_POST SET
+			MAIN_FLAG='1'
+		WHERE USER_CODE ='${USER_CODE}' AND POST_ID ='${POST_ID}'
+  </update>
+  <update id="setNoPrimaryJob" parameterType="hashmap">
+	   UPDATE UUM_OPER_POST SET
+			MAIN_FLAG='0'
+		WHERE USER_CODE ='${USER_CODE}' AND MAIN_FLAG = '1' 
+  </update>
+    <delete id="operDeleteJob" parameterType="int">
+    DELETE FROM UUM_OPER_POST
+    WHERE USER_CODE='${USER_CODE}'
+    AND POST_ID IN (${POST_ID})
+  </delete>
+    <delete id="operDeleteJobByUserCode" parameterType="int">
+    DELETE FROM UUM_OPER_POST
+    WHERE USER_CODE IN ('${USER_CODE}')
+  </delete>
+    <!-- 员工岗位分配 end-->
+    <!-- 员工角色分配 start-->
+    <select id="roleInfo" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT C.USER_CODE,
+        R.ROLE_ID,
+        R.ROLE_NAME,
+        R.ROLE_STA
+        FROM UUM_ROLE R,UUM_USER_ROLE C
+        WHERE C.ROLE_ID=R.ROLE_ID
+        <if test="USER_CODE != '-1'">
+            AND C.USER_CODE = #{USER_CODE,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="NotInOperRoleInfo" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT R.ROLE_ID, R.ROLE_NAME,R.ROLE_STA
+        FROM UUM_ROLE R
+        WHERE R.ROLE_ID NOT IN (
+        SELECT UR.ROLE_ID
+        FROM UUM_USER_ROLE UR
+        WHERE UR.USER_CODE='${USER_CODE}')
+        AND R.ROLE_STA='1'
+        <if test="ROLE_NAME !='-1'">
+            AND R.ROLE_NAME LIKE '%${ROLE_NAME}%'
+        </if>
+    </select>
+    <insert id="operInsertRole" parameterType="hashmap">
+    INSERT INTO UUM_USER_ROLE (USER_CODE,ROLE_ID)
+		VALUES ('${USER_CODE}',${ROLE_ID})
+  </insert>
+  <insert id="operInsertRoleDefault" parameterType="hashmap">
+    INSERT INTO UUM_USER_ROLE (USER_CODE,ROLE_ID)
+		VALUES ('${USER_CODE}','2')
+  </insert>
+    <delete id="operDeleteRole" parameterType="int">
+    DELETE FROM UUM_USER_ROLE
+    WHERE ROLE_ID=${ROLE_ID}
+    AND USER_CODE='${USER_CODE}'
+  </delete>
+    <!-- 员工角色分配 end-->
+    <!-- 特殊权限定义管理 start-->
+    <select id="spePermQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT PRE_PERM_ID, PRE_PERM_NAME
+        FROM UUM_PRE_PERM WHERE 1= 1
+        <if test="PRE_PERM_ID != '-1'">
+            AND PRE_PERM_ID = #{PRE_PERM_ID,jdbcType=INTEGER}
+        </if>
+        <if test="PRE_PERM_NAME != '-1'">
+            AND PRE_PERM_NAME like '%${PRE_PERM_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+    </select>
+    <insert id="spePermInsert" parameterType="hashmap">
+    INSERT INTO UUM_PRE_PERM (PRE_PERM_ID,PRE_PERM_NAME)
+		VALUES (NEXT VALUE FOR SEQ_PRE_PERM,'${PRE_PERM_NAME}')
+  </insert>
+  <insert id="spePermInsert_MSSQL" parameterType="hashmap">
+    INSERT INTO UUM_PRE_PERM (PRE_PERM_ID,PRE_PERM_NAME)
+		VALUES ('${ID}','${PRE_PERM_NAME}')
+  </insert>
+  <insert id="spePermCascadeInsert" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES (SEQ_PERMISSION.NEXTVAL,'${PRE_PERM_NAME}','4','4','1',SEQ_PRE_PERM.CURRVAL,
+		KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL','4',4))
+  </insert>
+  <!--by  20160420 把'${ID2}'改为select IDENT_CURRENT('SEQ_PRE_PERM') -->
+  <insert id="spePermCascadeInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION (PERM_ID,PERM_NAME,PERM_TYPE,PAR_PERM,PERM_STA,PERM_VAL,PERM_LVL)
+		VALUES ('${ID}','${PRE_PERM_NAME}','4','4','1',(select IDENT_CURRENT('SEQ_PRE_PERM')) ,
+		dbo.KUI_CREATELVL('UUM_PERMISSION','PERM_ID','PAR_PERM','PERM_LVL','4',4))
+  </insert>
+    <update id="spePermUpdate" parameterType="hashmap">
+	   UPDATE UUM_PRE_PERM SET
+			PRE_PERM_NAME='${PRE_PERM_NAME}'
+		WHERE PRE_PERM_ID =${PRE_PERM_ID}
+	</update>
+    <update id="spePermCascadeUpdate" parameterType="hashmap">
+	   UPDATE UUM_PERMISSION SET
+			PERM_NAME='${PRE_PERM_NAME}'
+		WHERE PERM_VAL ='${PRE_PERM_ID}' AND PERM_TYPE = '4'
+	</update>
+    <delete id="spePermDelete" parameterType="hashmap">
+	  DELETE FROM UUM_PRE_PERM WHERE PRE_PERM_ID = ${PRE_PERM_ID}
+  </delete>
+    <delete id="speUserPermDelete" parameterType="hashmap">
+	  DELETE FROM UUM_USER_PERM WHERE PERM_ID = 
+	  (SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_VAL = '${PRE_PERM_ID}' AND PERM_TYPE = '4')
+  </delete>
+    <delete id="spePermCascadeDelete" parameterType="hashmap">
+	  DELETE FROM UUM_PERMISSION WHERE PERM_VAL = '${PRE_PERM_ID}' AND PERM_TYPE = '4' 
+  </delete>
+    <!-- 特殊权限定义管理 end-->
+    <!-- 约束限制管理 end-->
+    <select id="consQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT CONS_ID, CONS_NAME, CONS_TYPE, CONS_STATE,DEF_MIN_VAL,DEF_MAX_VAL
+        FROM UUM_CONSTRAINTS WHERE 1= 1
+        <if test="CONS_ID != '-1'">
+            AND CONS_ID = #{CONS_ID,jdbcType=INTEGER}
+        </if>
+        <if test="CONS_NAME != '-1'">
+            AND CONS_NAME like '%${CONS_NAME}%'
+            <include refid="escapeSprit"/>
+        </if>
+        <if test="CONS_TYPE != '-1'">
+            AND CONS_TYPE = '${CONS_TYPE}'
+        </if>
+        <if test="CONS_STATE != '-1'">
+            AND CONS_STATE = '${CONS_STATE}'
+        </if>
+        ORDER BY CONS_ID
+    </select>
+    <insert id="consInsert" parameterType="hashmap">
+    INSERT INTO UUM_CONSTRAINTS (CONS_ID,CONS_NAME,CONS_TYPE,CONS_STATE)
+		VALUES (NEXT VALUE FOR SEQ_CONS,'${CONS_NAME}','${CONS_TYPE}','${CONS_STATE}')
+  </insert>
+  
+  <insert id="consInsert_MSSQL" parameterType="hashmap">
+    INSERT INTO UUM_CONSTRAINTS (CONS_ID,CONS_NAME,CONS_TYPE,CONS_STATE)
+		VALUES ('${ID}','${CONS_NAME}','${CONS_TYPE}','${CONS_STATE}')
+  </insert>
+    <update id="consUpdate" parameterType="hashmap">
+	   UPDATE UUM_CONSTRAINTS SET
+			CONS_NAME='${CONS_NAME}',
+			CONS_TYPE='${CONS_TYPE}',
+			CONS_STATE='${CONS_STATE}'
+		WHERE CONS_ID ='${CONS_ID}'
+	</update>
+    <delete id="consDelete" parameterType="hashmap">
+	  DELETE FROM UUM_CONSTRAINTS WHERE CONS_ID = ${CONS_ID}
+    </delete>
+    <delete id="deletePermConsBycons" parameterType="hashmap">
+	  DELETE FROM UPM_PERM_CONS WHERE CONS_ID = ${CONS_ID}
+    </delete>
+    <delete id="deleteUserPermConsByCons" parameterType="hashmap">
+	  DELETE UUM_USER_PERM_CONS WHERE CONS_ID =  ${CONS_ID}
+    </delete>
+    <!-- 约束限制管理 end-->
+    <!-- 岗位互斥设置 start-->
+    <select id="searchExcluJob" parameterType="hashmap" resultType="java.util.HashMap">
+    	SELECT POST_ID ,POST_EXCLU_ID FROM UUM_EXCLU_JOB ORDER BY POST_ID
+    </select>
+    <select id="excluJobInfo" parameterType="hashmap" resultType="java.util.HashMap">
+    SELECT EJ.POST_ID,EJ.POST_EXCLU_ID,P.POST_NAME,P.POST_STA
+    FROM UUM_EXCLU_JOB EJ,UUM_POST P
+    WHERE EJ.POST_ID=#{POST_ID,jdbcType=INTEGER} AND P.POST_ID=EJ.POST_EXCLU_ID
+    </select>
+    <select id="NotExcluJobInfo" parameterType="hashmap" resultType="java.util.HashMap">
+    SELECT P.POST_ID,P.POST_NAME,P.POST_STA
+      FROM UUM_POST P
+     WHERE P.POST_STA = '1' AND P.POST_ID NOT IN
+          (SELECT EJ.POST_EXCLU_ID FROM UUM_EXCLU_JOB EJ
+            WHERE EJ.POST_ID=#{POST_ID,jdbcType=INTEGER})
+    AND P.POST_ID !=#{POST_ID,jdbcType=INTEGER}
+    <if test="OP_POST != 1">
+	  AND P.POST_ID IN(
+	  	SELECT M.POST_ID
+		  FROM UUM_USER_PERM UP
+		  JOIN UUM_PERMISSION P
+		    ON P.PERM_ID = UP.PERM_ID
+		  JOIN UUM_POST M
+		    ON P.PERM_VAL = M.POST_ID
+		WHERE UP.AUTH_TYPE = '1'
+		   AND P.PERM_TYPE = '9'
+		   AND UP.ASS_TYPE = '1'
+		   AND ((UP.OBJ_ID = '${OP_CODE}' AND UP.OBJ_TYPE = '2') OR
+		       (UP.OBJ_ID IN (SELECT UOP.POST_ID
+		                         FROM UUM_OPER_POST UOP
+		                        WHERE UOP.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '3') OR
+		       (UP.OBJ_ID IN (SELECT UO.ORG_CODE
+		                         FROM UUM_USER U, UPM_ORG UO
+		                        WHERE U.ORG_CODE = UO.ORG_CODE
+		                          AND U.USER_CODE = '${OP_CODE}') AND UP.OBJ_TYPE = '4'))
+	  	
+	  )
+      </if>
+    <if test="POST_NAME != ''">
+            AND P.POST_NAME LIKE '%${POST_NAME}%'
+    </if>
+    </select>
+    <insert id="addExcluJob" parameterType="hashmap">
+    INSERT INTO UUM_EXCLU_JOB (POST_ID,POST_EXCLU_ID)
+		VALUES (${POST_ID},${POST_EXCLU_ID})
+    </insert>
+    <insert id="addCascadeExcluJob" parameterType="hashmap">
+    INSERT INTO UUM_EXCLU_JOB (POST_ID,POST_EXCLU_ID)
+		VALUES (${POST_EXCLU_ID},${POST_ID})
+    </insert>
+    <delete id="delExcluJob" parameterType="hashmap">
+	  DELETE FROM UUM_EXCLU_JOB WHERE POST_ID = ${POST_ID} AND POST_EXCLU_ID=${POST_EXCLU_ID}
+    </delete>
+    <delete id="delCascadeExcluJob" parameterType="hashmap">
+	  DELETE FROM UUM_EXCLU_JOB WHERE POST_ID = ${POST_EXCLU_ID} AND POST_EXCLU_ID=${POST_ID}
+    </delete>
+    <!-- 岗位互斥设置 end-->
+
+</mapper>

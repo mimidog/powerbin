@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DynamicMapper.HistoricProcessInstanceDetail">
+
+	<insert id="BpmHistoricProcessInstanceDetailInsert"
+		parameterType="hashmap">
+		insert into uwk_hi_procdetail (
+		proc_inst_id,
+		attr_1,
+		attr_2,
+		attr_3,
+		attr_4,
+		attr_5,
+		attr_6,
+		attr_7,
+		attr_8,
+		attr_9,
+		attr_10)
+		values (
+		#{detail.processInstanceId
+		,jdbcType=VARCHAR},
+		#{detail.attribute1 ,jdbcType=VARCHAR},
+		#{detail.attribute2
+		,jdbcType=VARCHAR},
+		#{detail.attribute3
+		,jdbcType=VARCHAR},
+		#{detail.attribute4 ,jdbcType=VARCHAR},
+		#{detail.attribute5
+		,jdbcType=VARCHAR},
+		#{detail.attribute6
+		,jdbcType=VARCHAR},
+		#{detail.attribute7 ,jdbcType=VARCHAR},
+		#{detail.attribute8
+		,jdbcType=VARCHAR},
+		#{detail.attribute9
+		,jdbcType=VARCHAR},
+		#{detail.attribute10 ,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="BpmHistoricProcessInstanceDetailUpdate"
+		parameterType="hashmap">
+		update uwk_hi_procdetail
+		set
+		attr_1 = #{detail.attribute1,
+		jdbcType=VARCHAR},
+		attr_2 = #{detail.attribute2, jdbcType=VARCHAR},
+		attr_3 = #{detail.attribute3, jdbcType=VARCHAR},
+		attr_4 =
+		#{detail.attribute4, jdbcType=VARCHAR},
+		attr_5 = #{detail.attribute5,
+		jdbcType=VARCHAR},
+		attr_6 = #{detail.attribute6, jdbcType=VARCHAR},
+		attr_7 = #{detail.attribute7, jdbcType=VARCHAR},
+		attr_8 =
+		#{detail.attribute8, jdbcType=VARCHAR},
+		attr_9 = #{detail.attribute9,
+		jdbcType=VARCHAR},
+		attr_10 = #{detail.attribute10, jdbcType=VARCHAR}
+		where proc_inst_id =
+		#{detail.processInstanceId, jdbcType=VARCHAR}
+		<!-- and REV = #{attachment.revision, jdbcType=INTEGER} -->
+	</update>
+
+	<resultMap id="historicProcessInstanceDetailResultMap"
+		type="com.szkingdom.frame.bpm.kworkflow.entity.HistoricProcessInstanceDetailEntity">
+		<id property="processInstanceId" column="proc_inst_id" jdbcType="VARCHAR" />
+		<result property="attribute1" column="attr_1" jdbcType="VARCHAR" />
+		<result property="attribute2" column="attr_2" jdbcType="VARCHAR" />
+		<result property="attribute3" column="attr_3" jdbcType="VARCHAR" />
+		<result property="attribute4" column="attr_4" jdbcType="VARCHAR" />
+		<result property="attribute5" column="attr_5" jdbcType="VARCHAR" />
+		<result property="attribute6" column="attr_6" jdbcType="VARCHAR" />
+		<result property="attribute7" column="attr_7" jdbcType="VARCHAR" />
+		<result property="attribute8" column="attr_8" jdbcType="VARCHAR" />
+		<result property="attribute9" column="attr_9" jdbcType="VARCHAR" />
+		<result property="attribute10" column="attr_10" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<delete id="HistoricProcessInstanceDetailDelete" parameterType="hashmap">
+		delete from uwk_hi_procdetail
+		where proc_inst_id =
+		#{processInstanceId,jdbcType=VARCHAR}
+	</delete>
+
+
+	<select id="BpmHistoricProcessInstanceDetailSelect"
+		parameterType="hashmap" resultMap="historicProcessInstanceDetailResultMap">
+		select * from uwk_hi_procdetail
+		where proc_inst_id = #{processInstanceId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

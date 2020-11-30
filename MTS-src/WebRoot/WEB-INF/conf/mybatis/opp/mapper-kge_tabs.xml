@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="generator.dao.KgeTabsMapper" >
+  <insert id="KGE_TABSInsert" parameterType="map" >
+    insert into KGE_TABS (TAB_ID, TAB_NAME, TAB_CNAME,
+      TAB_SPACE, CREATED, LAST_UPDATE_TIME, 
+      LAST_UPDATE_USER, STATUS)
+    values (#{tabId,jdbcType=VARCHAR}, UPPER('${tabName}'), #{tabCname,jdbcType=VARCHAR},
+      #{tabSpace,jdbcType=VARCHAR}, GETDATE(), GETDATE(), 
+      #{lastUpdateUser,jdbcType=VARCHAR}, 1)
+  </insert>
+  <update id="KGE_TABSUpdate" parameterType="hashmap" >
+    update KGE_TABS
+    <set >
+      <if test="tabName != null" >
+        TAB_NAME = UPPER('${tabName}'),
+      </if>
+      <if test="tabCname != null" >
+        TAB_CNAME = '${tabCname}',
+      </if>
+      <if test="tabSpace != null" >
+        TAB_SPACE = #{tabSpace,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        CREATED =  CONVERT(DATE,#{created}),
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME =  CONVERT(DATE,#{lastUpdateTime}),
+      </if>
+      <if test="lastUpdateUser != null" >
+        LAST_UPDATE_USER = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where TAB_ID = #{tabId,jdbcType=VARCHAR}
+  </update>
+  <select id="KGE_TABSQuery" parameterType="hashmap" resultType="hashmap" >
+    select TAB_ID "tabId", TAB_NAME "tabName", TAB_CNAME "tabCname", TAB_SPACE "tabSpace",  CONVERT(VARCHAR,CREATED, 112) "created",
+      CONVERT(VARCHAR,LAST_UPDATE_TIME, 112) "lastUpdateTime", LAST_UPDATE_USER "lastUpdateUser",
+    STATUS "status"
+    from KGE_TABS t where 1=1 
+    <if test="tabName != null and tabName != ''" >
+       AND UPPER(TAB_NAME) = UPPER(#{tabName,jdbcType=VARCHAR})
+    </if>
+   <if test="tabNameLike != null and tabNameLike != ''" >
+       AND UPPER(TAB_NAME) like UPPER('%${tabNameLike}%')
+    </if>
+    <if test="tabCname != null and tabCname !=''" >
+       AND TAB_CNAME LIKE '%${tabCname}%'
+    </if>
+    <if test="tabSpace != '' and tabSpace != null" >
+       AND TAB_SPACE = #{tabSpace,jdbcType=VARCHAR}
+    </if>
+    <if test="created != '' and created != null" >
+       AND CREATED =  CONVERT(DATE,#{created})
+    </if>
+    <if test="lastUpdateTime != '' and lastUpdateTime != null" >
+       AND LAST_UPDATE_TIME =  CONVERT(DATE,#{lastUpdateTime})
+    </if>
+    <if test="lastUpdateUser != '' and lastUpdateUser != null" >
+       AND LAST_UPDATE_USER = #{lastUpdateUser,jdbcType=VARCHAR}
+    </if>
+    <if test="status != '' and status != null" >
+       AND STATUS = #{status,jdbcType=DECIMAL}
+    </if>
+    order by CREATED DESC
+  </select>
+  <delete id="KGE_TABSDelete" parameterType="map" >
+    delete from KGE_TABS
+    where TAB_ID = #{tabId,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="KGE_ComExcuteSql" parameterType="map" resultType="map">
+        ${sql}
+  </select>
+  <select id="KGE_CheckedTabelExist" parameterType="map" resultType="map">
+    select table_name from user_tables t where UPPER(t.TABLE_NAME) = UPPER('${tabName}')
+  </select>
+ 
+   <resultMap id="colsMap" type="com.szkingdom.frame.generator.GenColumns">
+     <result property="tabName" column="TABLE_NAME" jdbcType="VARCHAR"/>
+     <result property="columnName" column="COLUMN_NAME" jdbcType="VARCHAR"/>
+     <result property="dataType" column="DATA_TYPE" jdbcType="VARCHAR"/>  
+     <result property="dataLength" column="DATA_LENGTH" jdbcType="INTEGER" />
+     <result property="dataPrecision" column="DATA_PRECISION" jdbcType="INTEGER"/>
+     <result property="dataScale" column="DATA_SCALE" jdbcType="INTEGER"/>
+     <result property="nullAble" column="NULLABLE" jdbcType="VARCHAR"/> 
+     <result property="columnId" column="COLUMN_ID" jdbcType="INTEGER" />
+     <result property="defaultLength" column="DEFAULT_LENGTH" jdbcType="INTEGER"/>
+     <result property="dataDefault" column="DATA_DEFAULT" jdbcType="LONGVARCHAR"/>
+     <result property="isPk" column="CONSTRAINT_TYPE" jdbcType="VARCHAR"/>
+   </resultMap> 
+  <select id="KGE_GetExistTableCols" parameterType="map" resultMap="colsMap">
+      select tab.*,PKTAB.CONSTRAINT_TYPE from (select b.TABLE_NAME,
+       b.COLUMN_NAME,
+       b.DATA_TYPE,
+       b.DATA_LENGTH,
+       b.DATA_PRECISION,
+       b.DATA_SCALE,
+       b.NULLABLE,
+       b.COLUMN_ID,
+       b.DEFAULT_LENGTH,
+       b.DATA_DEFAULT
+  from user_tab_columns b
+ where b.TABLE_NAME = UPPER('${tabName}')) tab
+  left join (SELECT A.COLUMN_NAME,B.constraint_type
+               FROM USER_CONS_COLUMNS A, USER_CONSTRAINTS B
+              WHERE A.CONSTRAINT_NAME = B.CONSTRAINT_NAME AND B.CONSTRAINT_TYPE ='P'
+                AND A.TABLE_NAME = UPPER('${tabName}')) PKTAB
+    on PKTAB.COLUMN_NAME = tab.COLUMN_NAME
+  </select>
+</mapper>

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+	<atom atom_code="queryOMSInfoAtom" atom_name="查询订单管理信息"
+		  atom_method="queryOMSInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		   attr1="" attr2=""/>
+
+	<atom atom_code="addOMSInfoAtom" atom_name="新增订单管理信息"
+		  atom_method="addOMSInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modOMSInfoAtom" atom_name="修改订单管理信息"
+		  atom_method="modOMSInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delOMSInfoAtom" atom_name="删除订单管理信息"
+		  atom_method="delOMSInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryOMSMatchInfoAtom" atom_name="查询订单成交信息"
+		  atom_method="queryOMSMatchInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addOMSMatchInfoAtom" atom_name="新增订单成交信息"
+		  atom_method="addOMSMatchInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modOMSMatchInfoAtom" atom_name="修改订单成交信息"
+		  atom_method="modOMSMatchInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delOMSMatchInfoAtom" atom_name="删除订单成交信息"
+		  atom_method="delOMSMatchInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryOmsHisInfoAtom" atom_name="查询订单的历史信息"
+		  atom_method="queryOmsHisInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addOmsHisInfoAtom" atom_name="新增订单的历史信息"
+		  atom_method="addOmsHisInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryMatchHisInfoAtom" atom_name="查询成交的历史信息"
+		  atom_method="queryMatchHisInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addMatchHisInfoAtom" atom_name="新增成交的历史信息"
+		  atom_method="addMatchHisInfo"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryOutlaySetAtom" atom_name="查询客户费用设置信息"
+		  atom_method="queryOutlaySet"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addOutlaySetAtom" atom_name="新增客户费用设置信息"
+		  atom_method="addOutlaySet"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modOutlaySetAtom" atom_name="修改客户费用设置信息"
+		  atom_method="modOutlaySet"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="delOutlaySetAtom" atom_name="删除客户费用设置信息"
+		  atom_method="delOutlaySet"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addStockBuildPosHandAtom" atom_name="手动新增股票建仓信息"
+		  atom_method="addStockBuildPosHand"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryStockBuildPosAtom" atom_name="查询股票建仓信息"
+		  atom_method="queryStockBuildPos"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="updateHandSignalAuditStaAtom" atom_name="更新手工信号的审核状态"
+		  atom_method="updateHandSignalAuditSta"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="validOrderlimitByBuyEntractAtom" atom_name="校验买委托时额度限制"
+		  atom_method="validOrderlimitByBuyEntract"  atom_class="com.szkingdom.business.mts.OMSInfoManager"
+		  attr1="" attr2=""/>
+
+</atoms>
+ 

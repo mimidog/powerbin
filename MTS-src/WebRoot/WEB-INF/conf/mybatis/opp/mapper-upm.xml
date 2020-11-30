@@ -1,0 +1,1726 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+	<sql id="escapeSprit"> 	   
+  	</sql>
+	
+    <!--系统参数管理操作    start  -->
+	<select id="sysParamQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT PAR_CODE, PAR_NAME, PAR_VAL, PAR_CLS, MAINTAIN_FLAG,BLONG_TYPE
+		FROM UPM_SYSPARAM
+        WHERE 1 = 1
+        <if test="PAR_CODE != '' and PAR_CODE !=null and PAR_CODE != '-1'">
+            AND PAR_CODE = '${PAR_CODE}'
+        </if>
+        <if test="PAR_NAME != '' and PAR_NAME !=null">
+            AND PAR_NAME LIKE '%${PAR_NAME}%'  
+        </if>
+        <if test="PAR_CLS != '' and PAR_CLS !=null">
+            AND PAR_CLS = '${PAR_CLS}'
+        </if>
+		<if test="MAINTAIN_FLAG != '' and MAINTAIN_FLAG !=null">
+            AND MAINTAIN_FLAG = '${MAINTAIN_FLAG}'
+        </if>
+        <if test="BLONG_TYPE != '' and BLONG_TYPE !=null">
+            AND BLONG_TYPE = '${BLONG_TYPE}'
+        </if>
+        <if test="PAR_CODES != '' and PAR_CODES !=null">
+            AND PAR_CODE in ('${PAR_CODES}')
+        </if>
+		ORDER BY PAR_CODE
+    </select>
+	<insert id="sysParamInsert" parameterType="hashmap">
+		INSERT INTO UPM_SYSPARAM (PAR_CODE,PAR_NAME,PAR_VAL,PAR_CLS,MAINTAIN_FLAG,BLONG_TYPE)
+		VALUES ('${PAR_CODE}', '${PAR_NAME}','${PAR_VAL}',${PAR_CLS}, ISNULL('${MAINTAIN_FLAG}',0),'${BLONG_TYPE}')
+	</insert>
+	<insert id="sysParamInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UPM_SYSPARAM (PAR_CODE,PAR_NAME,PAR_VAL,PAR_CLS,MAINTAIN_FLAG,BLONG_TYPE)
+		VALUES ('${PAR_CODE}', '${PAR_NAME}','${PAR_VAL}',${PAR_CLS}, ISNULL('${MAINTAIN_FLAG}',0),'${BLONG_TYPE}')
+	</insert>
+	<insert id="sysParamInsert_MYSQL" parameterType="hashmap">
+		INSERT INTO UPM_SYSPARAM (PAR_CODE,PAR_NAME,PAR_VAL,PAR_CLS,MAINTAIN_FLAG,BLONG_TYPE)
+		VALUES ('${PAR_CODE}', '${PAR_NAME}','${PAR_VAL}',${PAR_CLS}, IFNULL('${MAINTAIN_FLAG}',0),'${BLONG_TYPE}')
+	</insert>
+	<update id="sysParamUpdate" parameterType="hashmap">
+        UPDATE UPM_SYSPARAM SET
+			PAR_NAME='${PAR_NAME}',
+			PAR_VAL=#{PAR_VAL,jdbcType=VARCHAR},
+            PAR_CLS='${PAR_CLS}',
+			MAINTAIN_DATE = GETDATE()
+        WHERE PAR_CODE='${PAR_CODE}'
+		AND MAINTAIN_FLAG IN ('0','1')
+    </update>
+	<update id="sysParamUpdate_MSSQL" parameterType="hashmap">
+        UPDATE UPM_SYSPARAM SET
+			PAR_NAME='${PAR_NAME}',
+			PAR_VAL='${PAR_VAL}',
+            PAR_CLS='${PAR_CLS}',
+			MAINTAIN_DATE = GETDATE()
+        WHERE PAR_CODE='${PAR_CODE}'
+		AND MAINTAIN_FLAG IN ('0','1')
+    </update>
+	<update id="sysParamUpdate_MYSQL" parameterType="hashmap">
+        UPDATE UPM_SYSPARAM SET
+			PAR_NAME='${PAR_NAME}',
+			PAR_VAL='${PAR_VAL}',
+            PAR_CLS='${PAR_CLS}',
+			MAINTAIN_DATE = NOW()
+        WHERE PAR_CODE='${PAR_CODE}'
+		AND MAINTAIN_FLAG IN ('0','1')
+    </update>
+	<delete id="sysParamDelete" parameterType="int">
+        DELETE FROM UPM_SYSPARAM WHERE PAR_CODE='${PAR_CODE}' AND ISNULL(MAINTAIN_FLAG,'0') IN ('0','2')
+    </delete>
+	<delete id="sysParamDelete_MSSQL" parameterType="int">
+        DELETE FROM UPM_SYSPARAM WHERE PAR_CODE='${PAR_CODE}' AND ISNULL(MAINTAIN_FLAG,'0') IN ('0','2')
+    </delete>
+	<delete id="sysParamDelete_MYSQL" parameterType="int">
+        DELETE FROM UPM_SYSPARAM WHERE PAR_CODE='${PAR_CODE}' AND IFNULL(MAINTAIN_FLAG,'0') IN ('0','2')
+    </delete>
+	<!--系统参数管理操作    end  -->
+
+	<!--数据字典管理操作    start  -->
+	<select id="dictionaryQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT DICT_CODE,DICT_NAME,MAINTAIN_FLAG FROM UPM_DICTIONARY WHERE DICT_TYPE = 0 
+        <if test="DICT_CODE != '-1'">
+            AND DICT_CODE LIKE UPPER('%${DICT_CODE}%')
+        </if>
+        <if test="DICT_NAME != '-1'">
+            AND DICT_NAME LIKE '%${DICT_NAME}%'  
+        </if>
+        <if test="MAINTAIN_FLAG != '-1'">
+            AND MAINTAIN_FLAG = '${MAINTAIN_FLAG}'
+        </if>
+        <if test="BLONG_TYPE != '-1'">
+            AND BLONG_TYPE = '${BLONG_TYPE}'
+        </if>
+    </select>
+    <insert id="dictionaryInsert" parameterType="hashmap">
+		INSERT INTO UPM_DICTIONARY (DICT_CODE,DICT_NAME,MAINTAIN_FLAG,DICT_TYPE,BLONG_TYPE)
+		VALUES ('${DICT_CODE}', '${DICT_NAME}','${MAINTAIN_FLAG}',0,'${BLONG_TYPE}')
+	</insert>	
+    <update id="dictionaryUpdate" parameterType="hashmap">
+        UPDATE UPM_DICTIONARY SET
+            DICT_NAME='${DICT_NAME}'
+        WHERE DICT_CODE='${DICT_CODE}'
+		AND MAINTAIN_FLAG IN ('0','1')
+    </update>
+	<delete id="dictionaryDelete" parameterType="int">
+        DELETE FROM UPM_DICTIONARY WHERE DICT_CODE='${DICT_CODE}' AND MAINTAIN_FLAG IN ('0','2')
+    </delete>
+	<delete id="dictionaryCascadeDelete" parameterType="int">
+        DELETE FROM UPM_DICT_ITEMS WHERE DICT_CODE='${DICT_CODE}'
+    </delete>
+    <!--数据字典管理操作    end  -->
+
+    <!--字典项管理操作    start  -->
+	<select id="dicItemsQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ITEM_ID,DICT_CODE,DICT_ITEM,DICT_ITEM_NAME,DICT_ORD,MAINTAIN_FLAG FROM UPM_DICT_ITEMS WHERE 1=1
+        <if test="DICT_CODE != '-1'">
+            AND DICT_CODE = '${DICT_CODE}'
+        </if>
+        <if test="DICT_ITEM_NAME != '-1'">
+            AND DICT_ITEM_NAME NOT IN ('${DICT_ITEM_NAME}')
+        </if>
+        <if test="DICT_ITEM != null and DICT_ITEM != '-1'">
+            AND DICT_ITEM IN ('${DICT_ITEM}')
+        </if>
+        <if test="DICT_ORD != null and DICT_ORD != ''">
+            AND DICT_ORD = '${DICT_ORD}'
+        </if>
+		ORDER BY DICT_CODE,DICT_ORD,DICT_ITEM
+    </select>
+    <!--Added by zhanglei 2017-03-21 START-->
+    <select id="dicItemsQuery_1" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ITEM_ID, DICT_CODE, DICT_ITEM, DICT_ITEM_NAME, DICT_ORD, MAINTAIN_FLAG FROM UPM_DICT_ITEMS
+        WHERE  1 = 1
+        <if test="ITEM_ID != null and ITEM_ID != ''">
+            AND ITEM_ID != '${ITEM_ID}'
+        </if>
+        <if test="DICT_CODE != null and DICT_CODE != ''">
+            AND DICT_CODE = '${DICT_CODE}'
+        </if>
+        <if test="DICT_ITEM != null and DICT_ITEM != ''">
+            AND DICT_ITEM = '${DICT_ITEM}'
+        </if>
+        <if test="DICT_ORD != null and DICT_ORD != ''">
+            AND DICT_ORD = '${DICT_ORD}'
+        </if>
+        ORDER BY DICT_CODE,DICT_ORD,DICT_ITEM
+    </select>
+    <!--Added by zhanglei 2017-03-21 END-->
+    <insert id="dicItemsInsert" parameterType="hashmap">
+		INSERT INTO UPM_DICT_ITEMS (ITEM_ID,DICT_CODE,DICT_ITEM,DICT_ITEM_NAME,DICT_ORD,MAINTAIN_FLAG)
+		VALUES (#{ID}, '${DICT_CODE}','${DICT_ITEM}','${DICT_ITEM_NAME}',#{DICT_ORD,jdbcType=INTEGER},'${MAINTAIN_FLAG}')
+	</insert>
+    <update id="dicItemsUpdate" parameterType="hashmap">
+        UPDATE UPM_DICT_ITEMS SET
+            DICT_ITEM='${DICT_ITEM}',
+            DICT_ITEM_NAME='${DICT_ITEM_NAME}',
+            DICT_ORD=#{DICT_ORD,jdbcType=INTEGER}
+        WHERE ITEM_ID=#{ITEM_ID,jdbcType=INTEGER}
+    </update>
+	<delete id="dicItemsDelete" parameterType="int">
+        DELETE FROM UPM_DICT_ITEMS WHERE ITEM_ID=#{ITEM_ID,jdbcType=INTEGER}
+    </delete>
+    <!--字典项管理操作    end  -->
+	
+	<!--机构数据字典管理操作    start  -->
+    <select id="orgDictionaryQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT DICT_CODE,DICT_NAME,MAINTAIN_FLAG FROM UPM_DICTIONARY WHERE DICT_TYPE = 1
+        <if test="DICT_CODE != '-1'">
+            AND DICT_CODE = '${DICT_CODE}'
+        </if>
+        <if test="DICT_NAME != '-1'">
+            AND DICT_NAME LIKE '%${DICT_NAME}%'  
+        </if>
+    </select>
+    <insert id="orgDictionaryInsert" parameterType="hashmap">
+		INSERT INTO UPM_DICTIONARY (DICT_CODE,DICT_NAME,MAINTAIN_FLAG,DICT_TYPE)
+		VALUES ('${DICT_CODE}', '${DICT_NAME}','${MAINTAIN_FLAG}',1)
+	</insert>
+    <update id="orgDictionaryUpdate" parameterType="hashmap">
+        UPDATE UPM_DICTIONARY SET
+            DICT_NAME='${DICT_NAME}'
+        WHERE DICT_CODE='${DICT_CODE}'
+    </update>
+    <delete id="orgDictionaryDelete" parameterType="int">
+        DELETE FROM UPM_DICTIONARY WHERE DICT_CODE='${DICT_CODE}'
+    </delete>
+    <delete id="orgDictionaryCascadeDelete" parameterType="int">
+        DELETE FROM UPM_DICT_ITEMS WHERE DICT_CODE='${DICT_CODE}'
+    </delete>
+    <!--机构数据字典管理操作    end  -->
+	
+	<!--机构字典项管理操作    start  -->
+    <select id="orgDicItemsQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ITEM_ID,DICT_CODE,DICT_ITEM,DICT_ITEM_NAME,DICT_ORD,ORG_CODE,MAINTAIN_FLAG FROM UPM_DICT_ITEMS WHERE ORG_CODE='${ORG_CODE}'
+        <if test="DICT_CODE != '-1'">
+            AND DICT_CODE = '${DICT_CODE}'
+        </if>
+        ORDER BY DICT_CODE,DICT_ORD,DICT_ITEM
+    </select>
+    <insert id="orgDicItemsInsert" parameterType="hashmap">
+        INSERT INTO UPM_DICT_ITEMS (ITEM_ID,DICT_CODE,DICT_ITEM,DICT_ITEM_NAME,DICT_ORD,ORG_CODE,MAINTAIN_FLAG)
+        VALUES (#{ID}, '${DICT_CODE}','${DICT_ITEM}','${DICT_ITEM_NAME}', #{DICT_ORD,jdbcType=INTEGER},'${ORG_CODE}','${MAINTAIN_FLAG}')
+    </insert>
+    <update id="orgDicItemsUpdate" parameterType="hashmap">
+        UPDATE UPM_DICT_ITEMS SET
+            DICT_ITEM='${DICT_ITEM}',
+            DICT_ITEM_NAME='${DICT_ITEM_NAME}',
+            DICT_ORD=#{DICT_ORD,jdbcType=INTEGER},
+            ORG_CODE='${ORG_CODE}'
+        WHERE ITEM_ID=#{ITEM_ID,jdbcType=INTEGER}
+    </update>
+    <delete id="orgDicItemsDelete" parameterType="int">
+        DELETE FROM UPM_DICT_ITEMS WHERE ITEM_ID=#{ITEM_ID,jdbcType=INTEGER}
+    </delete>
+    <!--机构字典项管理操作    end  -->
+	
+	<!--系统菜单管理操作    start  -->
+	<select id="sysMenuQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT MENU_ID,MENU_NAME,(MENU_ID+' '+MENU_NAME) as CODE_NAME,PAR_MENU,MENU_LVL,MENU_PUR,MENU_LINK,MENU_STA,MENU_ICO,MENU_PLAT,MENU_BPM_FORM
+        FROM UPM_MENU
+        WHERE 1=1
+		<if test="MENU_ID != -1">
+            AND MENU_ID = '${MENU_ID}'
+        </if>
+		<if test="MENU_STA != -1">
+            AND MENU_STA = '${MENU_STA}'
+        </if>
+		<if test="MENU_NAME != -1">
+            AND MENU_NAME like '%${MENU_NAME}%'  
+        </if>
+        <if test="MENU_PLAT != -1">
+            AND MENU_PLAT = '%${MENU_PLAT}%'  
+        </if>        
+        <if test="MENU_BPM_FORM != '' and MENU_BPM_FORM != null">
+            AND MENU_BPM_FORM = '${MENU_BPM_FORM}'
+        </if> 
+		<if test="FRONT_MENU != '' and FRONT_MENU != null">
+            AND MENU_PUR &lt;&gt; '1' AND MENU_PLAT &lt;&gt; '0'
+        </if>        
+		<if test="FRONT_MENU == '' or FRONT_MENU == null">
+            AND MENU_PUR = '1' AND MENU_PLAT = '0'
+        </if> 
+        <if test="ORDER_BY_MENU_PLAT != '' and ORDER_BY_MENU_PLAT != null">
+           ORDER BY MENU_PLAT, MENU_PUR
+        </if>   
+        <if test="ORDER_BY_MENU_PLAT == '' or ORDER_BY_MENU_PLAT == null">
+           ORDER BY MENU_LVL
+        </if>   
+    </select>	
+    
+    <select id="sysMenuQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT MENU_ID,MENU_NAME,(convert(varchar,MENU_ID)+' '+MENU_NAME) as CODE_NAME,PAR_MENU,MENU_LVL,MENU_PUR,MENU_LINK,MENU_STA,MENU_ICO,MENU_PLAT,MENU_BPM_FORM 
+        FROM UPM_MENU
+        WHERE 1=1
+		<if test="MENU_ID != -1">
+            AND MENU_ID = '${MENU_ID}'
+        </if>
+		<if test="MENU_STA != -1">
+            AND MENU_STA = '${MENU_STA}'
+        </if>
+		<if test="MENU_NAME != -1">
+            AND MENU_NAME like '%${MENU_NAME}%'  
+        </if>
+        <if test="MENU_PLAT != -1">
+            AND MENU_PLAT = '%${MENU_PLAT}%'  
+        </if>        
+        <if test="MENU_BPM_FORM != '' and MENU_BPM_FORM != null">
+            AND MENU_BPM_FORM = '${MENU_BPM_FORM}'
+        </if> 
+		<if test="FRONT_MENU != '' and FRONT_MENU != null">
+            AND MENU_PUR &lt;&gt; '1' AND MENU_PLAT &lt;&gt; '0'
+        </if>        
+		<if test="FRONT_MENU == '' or FRONT_MENU == null">
+            AND MENU_PUR = '1' AND MENU_PLAT = '0'
+        </if> 
+        <if test="ORDER_BY_MENU_PLAT != '' and ORDER_BY_MENU_PLAT != null">
+           ORDER BY MENU_PLAT, MENU_PUR
+        </if>   
+        <if test="ORDER_BY_MENU_PLAT == '' or ORDER_BY_MENU_PLAT == null">
+           ORDER BY MENU_LVL
+        </if>   
+    </select>	
+ <insert id="sysMenuInsert" parameterType="hashmap">
+        INSERT INTO UPM_MENU
+		  (MENU_ID,
+		   MENU_NAME,
+		   PAR_MENU,
+		   MENU_LVL,
+		   MENU_PUR,
+		   MENU_LINK,
+		   MENU_STA,
+		   MENU_ICO,
+		   MENU_PLAT,
+		   MENU_BPM_FORM)
+		VALUES
+		  (#{ID},
+		   '${MENU_NAME}',
+		   ${PAR_MENU},
+		   '${MENU_LVL}',
+		   '${MENU_PUR}',
+		   '${MENU_LINK}',
+		   '${MENU_STA}',
+		   '${MENU_ICO}',
+		   '${MENU_PLAT}',
+		   '${MENU_BPM_FORM}')
+	</insert> 
+	<update id="sysMenuUpdate" parameterType="hashmap">
+        UPDATE UPM_MENU
+        SET MENU_NAME='${MENU_NAME}',
+			MENU_PUR='${MENU_PUR}',
+			MENU_LINK='${MENU_LINK}',
+			MENU_STA='${MENU_STA}',
+			MENU_ICO='${MENU_ICO}',
+			MENU_PLAT='${MENU_PLAT}',
+            MENU_BPM_FORM='${MENU_BPM_FORM}'
+        WHERE MENU_ID=#{MENU_ID,jdbcType=INTEGER}
+  </update>
+  <update id="sysMenuStaUpdate" parameterType="hashmap">
+        UPDATE UPM_MENU M
+        SET M.MENU_STA='${MENU_STA}'
+        WHERE M.MENU_LVL LIKE (SELECT U.MENU_LVL FROM UPM_MENU U WHERE U.MENU_ID=#{MENU_ID,jdbcType=INTEGER})+'%'
+  </update>
+  <update id="sysMenuStaUpdate_MSSQL" parameterType="hashmap">
+        UPDATE UPM_MENU
+        SET MENU_STA='${MENU_STA}'
+        WHERE MENU_LVL LIKE ISNULL((SELECT U.MENU_LVL FROM UPM_MENU U WHERE U.MENU_ID=#{MENU_ID,jdbcType=INTEGER}),'')+'%'
+  </update>
+  <update id="sysMenuStaUpdate_MYSQL" parameterType="hashmap">
+        UPDATE UPM_MENU
+        SET MENU_STA='${MENU_STA}'
+        WHERE MENU_LVL LIKE CONCAT(IFNULL((SELECT U.MENU_LVL FROM UPM_MENU U WHERE U.MENU_ID=#{MENU_ID,jdbcType=INTEGER}),''),'%')
+  </update>
+
+  <update id="permMenuUpdate" parameterType="hashmap">
+      UPDATE UUM_PERMISSION
+      SET PERM_NAME = '${MENU_NAME}',
+      PERM_TYPE = 
+      CASE
+        WHEN '${MENU_PUR}' = '1' THEN '1'
+        WHEN  '${MENU_PUR}' = '2' THEN '2'
+        WHEN  '${MENU_PUR}' = '3' THEN '2'
+        WHEN  '${MENU_PUR}' = '4' THEN '2'
+      END,
+      PERM_STA  = '${MENU_STA}',
+      PERM_LVL = 
+      CASE
+        WHEN '${MENU_PUR}' = '1' THEN (SELECT '0001'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '2' THEN (SELECT '0002'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '3' THEN (SELECT '0002'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '4' THEN (SELECT '0002'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+      END
+      WHERE PERM_VAL='${MENU_ID}' AND (PERM_TYPE = '1' OR PERM_TYPE = '2')
+  </update>
+  <update id="permMenuUpdate_MSSQL" parameterType="hashmap">
+      UPDATE UUM_PERMISSION
+      SET PERM_NAME = '${MENU_NAME}',
+      PERM_TYPE = 
+      (CASE
+        WHEN '${MENU_PUR}' = '1' THEN '1'
+        WHEN  '${MENU_PUR}' = '2' THEN '2'
+        WHEN  '${MENU_PUR}' = '3' THEN '2'
+        WHEN  '${MENU_PUR}' = '4' THEN '2'
+      END),
+      PERM_STA  = '${MENU_STA}',
+      PERM_LVL = 
+      (CASE
+        WHEN '${MENU_PUR}' = '1' THEN (SELECT '0001'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '2' THEN (SELECT '0002'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '3' THEN (SELECT '0002'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '4' THEN (SELECT '0002'+MENU_LVL FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+      END)
+      WHERE PERM_VAL='${MENU_ID}' AND (PERM_TYPE = '1' OR PERM_TYPE = '2')
+  </update>
+  <update id="permMenuUpdate_MYSQL" parameterType="hashmap">
+      UPDATE UUM_PERMISSION
+      SET PERM_NAME = '${MENU_NAME}',
+      PERM_TYPE = 
+      (CASE
+        WHEN '${MENU_PUR}' = '1' THEN '1'
+        WHEN  '${MENU_PUR}' = '2' THEN '2'
+        WHEN  '${MENU_PUR}' = '3' THEN '2'
+        WHEN  '${MENU_PUR}' = '4' THEN '2'
+      END),
+      PERM_STA  = '${MENU_STA}',
+      PERM_LVL = 
+      (CASE
+        WHEN '${MENU_PUR}' = '1' THEN (SELECT CONCAT('0001', MENU_LVL) FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '2' THEN (SELECT CONCAT('0002', MENU_LVL) FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '3' THEN (SELECT CONCAT('0002', MENU_LVL) FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+        WHEN  '${MENU_PUR}' = '4' THEN (SELECT CONCAT('0002', MENU_LVL) FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+      END)
+      WHERE PERM_VAL='${MENU_ID}' AND (PERM_TYPE = '1' OR PERM_TYPE = '2')
+  </update>
+  <update id="permMenuStaUpdate" parameterType="hashmap">
+        UPDATE UUM_PERMISSION P
+        SET P.PERM_STA='${MENU_STA}'
+        WHERE P.PERM_LVL LIKE 
+               (SELECT U.PERM_LVL+'%' FROM UUM_PERMISSION U WHERE U.PERM_VAL=CONVERT(VARCHAR,#{MENU_ID,jdbcType=INTEGER}) AND
+                                            PERM_TYPE=(CASE WHEN '${MENU_PUR}'='1' THEN '1' ELSE '2' END)) 
+        
+  </update>
+  <update id="permMenuStaUpdate_MSSQL" parameterType="hashmap">
+        UPDATE UUM_PERMISSION
+        SET PERM_STA='${MENU_STA}'
+        WHERE PERM_LVL LIKE 
+               (SELECT U.PERM_LVL+'%' FROM UUM_PERMISSION U WHERE U.PERM_VAL='${MENU_ID}' AND 
+                                            PERM_TYPE=(CASE WHEN '${MENU_PUR}'='1' THEN '1' ELSE '2' END)) 
+        
+  </update>
+    <update id="permMenuStaUpdate_MYSQL" parameterType="hashmap">
+        UPDATE UUM_PERMISSION
+        SET PERM_STA='${MENU_STA}'
+        WHERE PERM_LVL LIKE 
+               (SELECT CONCAT_WS('',U.PERM_LVL,'%') FROM UUM_PERMISSION U WHERE U.PERM_VAL='${MENU_ID}' AND 
+                                            PERM_TYPE=(CASE WHEN '${MENU_PUR}'='1' THEN '1' ELSE '2' END)) 
+        
+  </update>
+
+    <update id="sysMenuLvlUpdate" statementType="CALLABLE"
+		parameterType="hashmap">
+		 <![CDATA[ 
+          call KUI_UPT_MENU_LVL(
+          	#{F_FUNCTION,mode=IN,jdbcType=VARCHAR},
+          	#{F_OP_USER,mode=IN,jdbcType=INTEGER},
+          	#{F_OP_ROLE,mode=IN,jdbcType=VARCHAR},
+          	#{F_OP_SITE,mode=IN,jdbcType=VARCHAR},
+          	#{F_CHANNEL,mode=IN,jdbcType=VARCHAR},
+          	#{F_SESSION,mode=IN,jdbcType=VARCHAR},
+			#{F_RUNTIME,mode=IN,jdbcType=VARCHAR},
+			#{P_MENU,mode=IN,jdbcType=VARCHAR},
+			#{P_TARGET,mode=IN,jdbcType=VARCHAR},
+			#{P_POINT,mode=IN,jdbcType=VARCHAR},
+            #{RC1,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=ProcResultMap},
+            #{RC2,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=ProcResultMap}) 
+        ]]>
+	</update>
+	<select id="frontMenuSearch" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_ID, MENU_NAME, MENU_SPELL, MENU_PLAT
+	  FROM (SELECT UM.MENU_ID, UM.MENU_NAME, dbo.KUI_SPELL(MENU_NAME) AS MENU_SPELL, UM.MENU_PLAT
+	          FROM UPM_MENU UM
+	         WHERE MENU_PUR = 2
+	           AND NOT EXISTS
+	         (SELECT 1 FROM UPM_MENU UM2 WHERE UM2.PAR_MENU = UM.MENU_ID)) XX
+	</select>
+	<insert id="sysMenubatchSync" parameterType="map">
+        <if test="list != null and list.size() > 0">
+            INSERT INTO UPM_MENU
+            (MENU_ID,
+            MENU_NAME,
+            PAR_MENU,
+            MENU_LVL,
+            MENU_PUR,
+            MENU_LINK,
+            MENU_STA,
+            MENU_ICO,
+            MENU_PLAT)
+
+            SELECT T.* from
+            (
+            <foreach collection="list" item="item" index="index"
+                separator="union all">
+                (SELECT '${item.ID}' as MENU_ID ,
+                '${item.MENU_NAME}' as MENU_NAME,
+                ${item.PAR_MENU} as PAR_MENU,
+                '${item.MENU_LVL}' as MENU_LVL,
+                '${item.MENU_PUR}' as MENU_PUR,
+                '${item.MENU_LINK}' as MENU_LINK,
+                '${item.MENU_STA}' as MENU_STA,
+                '${item.MENU_ICO}' as MENU_ICO,
+                '${item.MENU_PLAT}' as MENU_PLAT)
+            </foreach>
+            ) T
+        </if>
+    </insert>
+	<insert id="sysMenubatchSync_MYSQL" parameterType="map">
+        <if test="list != null and list.size() > 0">
+            INSERT INTO UPM_MENU
+            (MENU_ID,
+            MENU_NAME,
+            PAR_MENU,
+            MENU_LVL,
+            MENU_PUR,
+            MENU_LINK,
+            MENU_STA,
+            MENU_ICO,
+            MENU_PLAT)
+
+            SELECT T.* from
+            (
+            <foreach collection="list" item="item" index="index"
+                separator="union all">
+                (SELECT '${item.ID}' as MENU_ID ,
+                '${item.MENU_NAME}' as MENU_NAME,
+                ${item.PAR_MENU} as PAR_MENU,
+                '${item.MENU_LVL}' as MENU_LVL,
+                '${item.MENU_PUR}' as MENU_PUR,
+                '${item.MENU_LINK}' as MENU_LINK,
+                '${item.MENU_STA}' as MENU_STA,
+                '${item.MENU_ICO}' as MENU_ICO,
+                '${item.MENU_PLAT}' as MENU_PLAT)
+            </foreach>
+            ) T
+        </if>
+    </insert>
+
+	<!--系统菜单管理操作    end  -->
+
+	<!--系统国际化管理操作    start  -->
+	<select id="sysLocaleQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT LOC_CODE,LOC_NAME FROM UPM_LOCALE WHERE 1=1
+		<if test="LOC_CODE != ''">
+            AND LOC_CODE like '%${LOC_CODE}%'
+        </if>
+		<if test="LOC_NAME != ''">
+            AND LOC_NAME like '%${LOC_NAME}%'  
+        </if>
+        ORDER BY LOC_CODE
+    </select>
+	<insert id="sysLocaleInsert" parameterType="hashmap">
+        INSERT INTO UPM_LOCALE (LOC_CODE,LOC_NAME) 
+		VALUES ('${LOC_CODE}','${LOC_NAME}')
+    </insert>
+	<update id="sysLocaleUpdate" parameterType="hashmap">
+        UPDATE UPM_LOCALE
+		SET LOC_NAME='${LOC_NAME}'
+        WHERE LOC_CODE='${LOC_CODE}'
+    </update>
+	<delete id="sysLocaleDelete" parameterType="string">
+        DELETE UPM_LOCALE WHERE LOC_CODE ='${LOC_CODE}'
+    </delete>
+	<delete id="sysLocaleCascadeDelete" parameterType="string">
+        DELETE FROM UPM_LOC_LANG WHERE LOC_CODE ='${LOC_CODE}'
+    </delete>
+	<!--系统国际化管理操作    end  -->
+
+	<!--系统国际化语言管理操作    start  -->
+	<select id="sysLocLangQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT LOC_CODE,LANG_TYPE,LOC_VAL FROM UPM_LOC_LANG WHERE 1=1
+		<if test="LOC_CODE != ''">
+            AND LOC_CODE = '${LOC_CODE}'
+        </if>
+        ORDER BY LOC_CODE,LANG_TYPE
+    </select>
+	<insert id="sysLocLangInsert" parameterType="hashmap">
+        INSERT INTO UPM_LOC_LANG (LOC_CODE,LANG_TYPE,LOC_VAL) 
+		VALUES ('${LOC_CODE}','${LANG_TYPE}','${LOC_VAL}')
+    </insert>
+	<update id="sysLocLangUpdate" parameterType="hashmap">
+        UPDATE UPM_LOC_LANG
+		SET LOC_VAL='${LOC_VAL}'
+        WHERE LOC_CODE='${LOC_CODE}'
+		AND LANG_TYPE = '${LANG_TYPE}'
+    </update>
+	<delete id="sysLocLangDelete" parameterType="string">
+        DELETE UPM_LOC_LANG WHERE LOC_CODE='${LOC_CODE}' AND LANG_TYPE = '${LANG_TYPE}'
+    </delete>
+	<!--系统国际化语言管理操作    end  -->
+
+	<!--系统服务管理操作    start  -->
+	<select id="sysServiceQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT SERVICE_CODE, SERVICE_NAME, SERVICE_TYPE, ENABLE_SOAP,REC_FLAG,ACCESS_CONTROL
+		FROM UPM_SYS_SERVICE WHERE 1=1
+		<if test="SERVICE_CODE != '' and SERVICE_CODE != null ">
+            AND SERVICE_CODE = '${SERVICE_CODE}'
+        </if>
+		<if test="SERVICE_NAME != '' and SERVICE_CODE != null">
+            AND SERVICE_NAME like '%${SERVICE_NAME}%'  
+        </if>
+        ORDER BY SERVICE_CODE
+    </select>
+	<insert id="sysServiceInsert" parameterType="hashmap">
+        INSERT INTO UPM_SYS_SERVICE (SERVICE_CODE, SERVICE_NAME, SERVICE_TYPE, ENABLE_SOAP,REC_FLAG,ACCESS_CONTROL) 
+		VALUES ('${SERVICE_CODE}','${SERVICE_NAME}','${SERVICE_TYPE}','${ENABLE_SOAP}','${REC_FLAG}','${ACCESS_CONTROL}')
+    </insert>
+	<update id="sysServiceUpdate" parameterType="hashmap">
+        UPDATE UPM_SYS_SERVICE
+		SET SERVICE_NAME='${SERVICE_NAME}',
+			SERVICE_TYPE='${SERVICE_TYPE}',
+			ENABLE_SOAP='${ENABLE_SOAP}',
+			REC_FLAG = '${REC_FLAG}',
+			ACCESS_CONTROL = '${ACCESS_CONTROL}'
+        WHERE SERVICE_CODE='${SERVICE_CODE}'		
+    </update>
+	<delete id="sysServiceDelete" parameterType="string">
+        DELETE UPM_SYS_SERVICE WHERE SERVICE_CODE='${SERVICE_CODE}'
+    </delete>
+	<!--系统服务管理操作    end  -->
+
+	<!--服务参数管理操作    start  -->
+	<select id="sysSerParQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT SERVICE_CODE,
+			   PAR_CODE,
+			   PAR_NAME,
+			   PAR_TYPE,
+			   DATA_TYPE,
+			   NULLABLE,
+			   DEF_VAL
+		  FROM UPM_SER_PAR WHERE 1=1
+		<if test="SERVICE_CODE != ''">
+            AND SERVICE_CODE = '${SERVICE_CODE}'
+        </if>
+        <if test="DATA_TYPE != ''">
+            AND DATA_TYPE IN ('${DATA_TYPE}')
+        </if>
+        ORDER BY PAR_CODE
+    </select>
+	<insert id="sysSerParInsert" parameterType="hashmap">
+        INSERT INTO UPM_SER_PAR (SERVICE_CODE, PAR_CODE, PAR_NAME, PAR_TYPE,DATA_TYPE,NULLABLE,DEF_VAL) 
+		VALUES ('${SERVICE_CODE}','${PAR_CODE}','${PAR_NAME}','${PAR_TYPE}','${DATA_TYPE}','${NULLABLE}','${DEF_VAL}')
+    </insert>
+	<update id="sysSerParUpdate" parameterType="hashmap">
+        UPDATE UPM_SER_PAR
+		SET PAR_NAME='${PAR_NAME}',
+			PAR_TYPE='${PAR_TYPE}',
+			DATA_TYPE='${DATA_TYPE}',
+			NULLABLE='${NULLABLE}',
+			DEF_VAL='${DEF_VAL}'
+        WHERE SERVICE_CODE='${SERVICE_CODE}'
+		  AND PAR_CODE='${PAR_CODE}'
+    </update>
+	<delete id="sysSerParDelete" parameterType="string">
+        DELETE UPM_SER_PAR WHERE SERVICE_CODE='${SERVICE_CODE}' AND PAR_CODE='${PAR_CODE}' 
+    </delete>
+    <!--系统服务管理删除 把对应的服务参数也删除掉 tangsy -->
+   <delete id="sysSerParDeleteNew" parameterType="string">
+        DELETE UPM_SER_PAR WHERE SERVICE_CODE='${SERVICE_CODE}'  
+    </delete> 
+	<!--服务参数管理操作    end  -->
+	
+	<!--系统错误查询    start  -->
+	<select id="sysErrorQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ERR_CODE,ERR_MSG,ERR_LVL,REMARK
+		FROM UPM_SYS_ERROR WHERE 1=1
+		<if test="ERR_CODE != ''">
+            AND ERR_CODE like '%${ERR_CODE}%'  
+        </if>
+        ORDER BY ERR_CODE
+    </select>
+	<!--系统错误查询    end  -->
+
+	<!--系统服务流水查询    start  -->
+	<select id="sysSerRecQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT R.REC_NO,
+           CONVERT(VARCHAR,R.EXEC_DATE, 120) AS EXEC_DATE,
+			   R.SERVICE_CODE,
+			   S.SERVICE_NAME,
+			   R.OP_USER,
+			   R.OP_SITE,
+			   R.OPT_PAR
+		  FROM UPM_SYS_SER_REC R, UPM_SYS_SERVICE S
+		 WHERE R.SERVICE_CODE = S.SERVICE_CODE
+		<if test="REC_NO != -1">
+            AND R.REC_NO = #{REC_NO,jdbcType=INTEGER}
+        </if>
+		<if test="BEGIN_DATE != -1">
+            AND R.EXEC_DATE &gt;=  CONVERT(DATETIME,'${BEGIN_DATE}'+' 00:00:00')
+        </if>
+		<if test="END_DATE != -1">
+            AND R.EXEC_DATE &lt;=  CONVERT(DATETIME,'${END_DATE}'+' 23:59:59')
+        </if>
+		<if test="SERVICE_CODE != ''">
+            AND R.SERVICE_CODE = '${SERVICE_CODE}'
+        </if>
+        <if test="SERVICE_NAME != ''">
+            AND S.SERVICE_NAME LIKE '%${SERVICE_NAME}%'  
+        </if>
+		<if test="OP_USER != -1">
+            AND R.OP_USER = #{OP_USER,jdbcType=INTEGER}
+        </if>
+        ORDER BY R.REC_NO DESC
+    </select>
+	<select id="sysSerRecQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT R.REC_NO,
+			   CONVERT(VARCHAR,R.EXEC_DATE , 112) AS EXEC_DATE,
+			   R.SERVICE_CODE,
+			   S.SERVICE_NAME,
+			   R.OP_USER,
+			   R.OP_SITE,
+			   R.OPT_PAR
+		  FROM UPM_SYS_SER_REC R, UPM_SYS_SERVICE S
+		 WHERE R.SERVICE_CODE = S.SERVICE_CODE
+		<if test="REC_NO != -1">
+            AND R.REC_NO = #{REC_NO,jdbcType=INTEGER}
+        </if>
+		<if test="BEGIN_DATE != -1">
+            AND R.EXEC_DATE &gt;= CONVERT(DATETIME,'${BEGIN_DATE}'+' 00:00:00' , 112)
+        </if>
+		<if test="END_DATE != -1">
+            AND R.EXEC_DATE &lt;= CONVERT(DATETIME,'${END_DATE}'+' 23:59:59' , 112)
+        </if>
+		<if test="SERVICE_CODE != ''">
+            AND R.SERVICE_CODE = '${SERVICE_CODE}'
+        </if>
+        <if test="SERVICE_NAME != ''">
+            AND S.SERVICE_NAME LIKE '%${SERVICE_NAME}%'  
+        </if>
+		<if test="OP_USER != -1">
+            AND R.OP_USER = #{OP_USER,jdbcType=INTEGER}
+        </if>
+        ORDER BY R.REC_NO DESC
+    </select>
+	<select id="sysSerRecQuery_MYSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT R.REC_NO,
+			   DATE_FORMAT(R.EXEC_DATE , '%Y%m%d %T') AS EXEC_DATE,
+			   R.SERVICE_CODE,
+			   S.SERVICE_NAME,
+			   R.OP_USER,
+			   R.OP_SITE,
+			   R.OPT_PAR
+		  FROM UPM_SYS_SER_REC R, UPM_SYS_SERVICE S
+		 WHERE R.SERVICE_CODE = S.SERVICE_CODE
+		<if test="REC_NO != -1">
+            AND R.REC_NO = #{REC_NO,jdbcType=INTEGER}
+        </if>
+		<if test="BEGIN_DATE != -1">
+            AND R.EXEC_DATE &gt;= CONVERT(DATETIME,CONCAT('${BEGIN_DATE}',' 00:00:00'))
+        </if>
+		<if test="END_DATE != -1">
+            AND R.EXEC_DATE &lt;= CONVERT(DATETIME,CONCAT('${END_DATE}',' 23:59:59'))
+        </if>
+		<if test="SERVICE_CODE != ''">
+            AND R.SERVICE_CODE = '${SERVICE_CODE}'
+        </if>
+        <if test="SERVICE_NAME != ''">
+            AND S.SERVICE_NAME LIKE '%${SERVICE_NAME}%'  
+        </if>
+		<if test="OP_USER != -1">
+            AND R.OP_USER = #{OP_USER,jdbcType=INTEGER}
+        </if>
+        ORDER BY R.REC_NO DESC
+    </select>
+
+	<insert id="sysSerRecInsert" parameterType="hashmap">
+		 INSERT INTO UPM_SYS_SER_REC
+		  (REC_NO, EXEC_DATE, SERVICE_CODE, OP_USER, OP_SITE, OPT_PAR)
+		VALUES
+		  ('${ID}',
+		   SYSDATE,
+		   '${SERVICE_CODE}',
+		   '${OP_USER}',
+		   '${OP_SITE}',
+		   #{OPT_PAR,jdbcType=VARCHAR})
+	</insert>
+	<insert id="sysSerRecInsert_MSSQL" parameterType="hashmap">
+		 INSERT INTO UPM_SYS_SER_REC
+		  (REC_NO, EXEC_DATE, SERVICE_CODE, OP_USER, OP_SITE, OPT_PAR)
+		VALUES
+		  ('${ID}',
+		   GETDATE(),
+		   '${SERVICE_CODE}',
+		   '${OP_USER}',
+		   '${OP_SITE}',
+		   #{OPT_PAR,jdbcType=VARCHAR})
+	</insert>
+	<insert id="sysSerRecInsert_MYSQL" parameterType="hashmap">
+		 INSERT INTO UPM_SYS_SER_REC
+		  (REC_NO, EXEC_DATE, SERVICE_CODE, OP_USER, OP_SITE, OPT_PAR)
+		VALUES
+		  ('${ID}',
+		   NOW(),
+		   '${SERVICE_CODE}',
+		   '${OP_USER}',
+		   '${OP_SITE}',
+		   '${OPT_PAR}')
+	</insert>
+	<insert id="recDetailBatchInsert" parameterType="java.util.List">  
+		  INSERT INTO UPM_SER_REC_DETAIL
+          (REC_NO, SER_REC_NO, SERVICE_CODE, PAR_CODE, PAR_VAL)  
+		  SELECT (SELECT SEQ_SER_REC_DETAIL.NEXTVAL FROM DUAL),T.* from
+		  (
+		  <foreach collection="REC_DETAIL_LIST" item="ITEM" index="index" separator="union all"  > 
+		   (SELECT '${ID}' AS SER_REC_NO,#{SERVICE_CODE,mode=IN,jdbcType=VARCHAR} AS SERVICE_CODE,#{ITEM.PAR_CODE} AS PAR_CODE,#{ITEM.PAR_VALUE} AS PAR_VAL)
+		  </foreach>
+		  ) T
+	</insert>
+	<insert id="recDetailBatchInsert_MSSQL" parameterType="java.util.List">  
+		  INSERT INTO UPM_SER_REC_DETAIL
+          ( SER_REC_NO, SERVICE_CODE, PAR_CODE, PAR_VAL) 
+		  <foreach collection="REC_DETAIL_LIST" item="ITEM" index="index" separator="union all" >
+          (SELECT '${ID}' AS SER_REC_NO,#{SERVICE_CODE,mode=IN,jdbcType=VARCHAR} AS SERVICE_CODE,#{ITEM.PAR_CODE} AS PAR_CODE,#{ITEM.PAR_VALUE} AS PAR_VAL)
+		</foreach>  
+	</insert>
+	<insert id="recDetailBatchInsert_MYSQL" parameterType="java.util.List">  
+		  INSERT INTO UPM_SER_REC_DETAIL
+          ( SER_REC_NO, SERVICE_CODE, PAR_CODE, PAR_VAL) 
+		  <foreach collection="REC_DETAIL_LIST" item="ITEM" index="index" separator="union all" >
+              (SELECT '${ID}' AS SER_REC_NO,#{SERVICE_CODE,mode=IN,jdbcType=VARCHAR} AS SERVICE_CODE,#{ITEM.PAR_CODE} AS PAR_CODE,#{ITEM.PAR_VALUE} AS PAR_VAL)
+		</foreach>  
+	</insert>
+
+	<!--系统服务流水查询    end  -->
+	
+	<!--服务流水参数查询    start  -->
+	<select id="serRecParQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT D.REC_NO,
+			   D.SER_REC_NO,
+			   D.SERVICE_CODE,
+			   D.PAR_CODE,
+			   P.PAR_NAME,
+			   D.PAR_VAL
+		  FROM UPM_SER_REC_DETAIL D, UPM_SER_PAR P
+		 WHERE D.SERVICE_CODE = P.SERVICE_CODE
+		   AND D.PAR_CODE = P.PAR_CODE
+		<if test="SER_REC_NO != -1">
+            AND D.SER_REC_NO = #{SER_REC_NO,jdbcType=INTEGER}
+        </if>
+        ORDER BY D.REC_NO ASC
+    </select>
+	<!--服务流水参数查询    end  -->
+
+	<!--系统序号管理    start  -->
+	<select id="sysSeqQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT USER_CODE FROM UPM_SYS_SEQ
+    </select>
+	<update id="sysSeqGet" parameterType="hashmap" >
+         UPDATE UPM_SYS_SEQ SET USER_CODE = USER_CODE + 1
+    </update>
+    <update id="sysOrgSeqGet" parameterType="hashmap" >
+         UPDATE UPM_SYS_SEQ SET ORG_CODE = ORG_CODE + 1
+    </update>
+	<update id="sysSeqUpdate" parameterType="hashmap">
+        UPDATE UPM_SYS_SEQ SET USER_CODE = '${USER_CODE}'
+    </update>
+	<!--系统序号管理    end  -->
+	
+	    <!--系统利率设置    start  -->
+    <select id="rateQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT INT_RATE_SN, INT_RATE_NAME, INT_RATE_CLS, CURRENCY, DEPOSIT_RATE,DEPOSIT_TAX_RATE,LIABILITY_RATE,ID_RATE_TYPE,ORG
+        FROM UPM_RATE WHERE 1 = 1
+        <if test="INT_RATE_CLS != ''">
+            AND INT_RATE_CLS = '${INT_RATE_CLS}'
+        </if>
+        <if test="CURRENCY != ''">
+            AND CURRENCY = '${CURRENCY}'
+        </if>
+        <if test="ID_RATE_TYPE != ''">
+            AND ID_RATE_TYPE = '${ID_RATE_TYPE}'
+        </if>
+        <if test="ORG != ''">
+            AND ORG = '${ORG}'
+        </if>
+        ORDER BY INT_RATE_SN DESC
+    </select>
+
+    <insert id="rateInsert" parameterType="hashmap">
+		INSERT INTO UPM_RATE (INT_RATE_SN, INT_RATE_NAME, INT_RATE_CLS, CURRENCY, DEPOSIT_RATE,DEPOSIT_TAX_RATE,LIABILITY_RATE,ID_RATE_TYPE,ORG)
+		VALUES (SEQ_INT_RATE_SN.NEXTVAL,'${INT_RATE_NAME}', '${INT_RATE_CLS}', '${CURRENCY}', '${DEPOSIT_RATE}', '${DEPOSIT_TAX_RATE}', '${LIABILITY_RATE}','${ID_RATE_TYPE}','${ORG}')
+	</insert>
+
+    <insert id="rateInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UPM_RATE (INT_RATE_SN, INT_RATE_NAME, INT_RATE_CLS, CURRENCY, DEPOSIT_RATE,DEPOSIT_TAX_RATE,LIABILITY_RATE,ID_RATE_TYPE,ORG)
+		VALUES ('${ID}','${INT_RATE_NAME}', '${INT_RATE_CLS}', '${CURRENCY}', '${DEPOSIT_RATE}', '${DEPOSIT_TAX_RATE}', '${LIABILITY_RATE}','${ID_RATE_TYPE}','${ORG}')
+	</insert>
+
+    <update id="rateUpdate" parameterType="hashmap">
+        UPDATE UPM_RATE SET
+			INT_RATE_NAME='${INT_RATE_NAME}',
+			INT_RATE_CLS='${INT_RATE_CLS}',
+            CURRENCY='${CURRENCY}',
+            DEPOSIT_RATE='${DEPOSIT_RATE}',
+            DEPOSIT_TAX_RATE='${DEPOSIT_TAX_RATE}',
+            LIABILITY_RATE='${LIABILITY_RATE}',
+            ID_RATE_TYPE='${ID_RATE_TYPE}',
+            ORG='${ORG}'
+        WHERE INT_RATE_SN='${INT_RATE_SN}'
+    </update>
+
+    <delete id="rateDelete" parameterType="int">
+        DELETE FROM UPM_RATE WHERE INT_RATE_SN='${INT_RATE_SN}'
+    </delete>
+    <!--系统利率设置    end  -->    
+    
+    <!--佣金名称设置-->
+    <select id="commissionQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT COMMISSION_CODE, COMMISSION_NAME, COMMISSION_TYPE, RANGE, REMARK FROM UPM_COMMISSION WHERE 1= 1
+        <if test="COMMISSION_CODE != '-1'">
+            AND COMMISSION_CODE = '${COMMISSION_CODE}'
+        </if>
+        <if test="COMMISSION_NAME != '-1'">
+            AND COMMISSION_NAME LIKE '%${COMMISSION_NAME}%'  
+        </if>
+        <if test="COMMISSION_TYPE != '-1'">
+            AND COMMISSION_TYPE = '${COMMISSION_TYPE}'
+        </if>
+        ORDER BY COMMISSION_CODE
+    </select>
+    <select id="commissionNCQuery" parameterType="hashmap" resultType="java.util.HashMap">
+      SELECT COMMISSION_CODE,COMMISSION_CODE + ' ' + COMMISSION_NAME AS COMMISSION_NAME FROM UPM_COMMISSION WHERE 1= 1
+      <if test="COMMISSION_CODE != '-1'">
+        AND COMMISSION_CODE = '${COMMISSION_CODE}'
+      </if>
+      <if test="COMMISSION_NAME != '-1'">
+        AND COMMISSION_NAME LIKE '%${COMMISSION_NAME}%'
+      </if>
+      <if test="COMMISSION_TYPE != '-1'">
+        AND COMMISSION_TYPE = '${COMMISSION_TYPE}'
+      </if>
+      ORDER BY COMMISSION_CODE
+    </select>
+    <insert id="commissionInsert" parameterType="hashmap">
+		INSERT INTO UPM_COMMISSION
+		  (COMMISSION_CODE, COMMISSION_NAME, COMMISSION_TYPE, RANGE, REMARK)
+		VALUES
+		  ('${COMMISSION_CODE}', '${COMMISSION_NAME}', '${COMMISSION_TYPE}', '${RANGE}', '${REMARK}')
+	</insert>
+
+    <update id="commissionUpdate" parameterType="hashmap">
+        UPDATE UPM_COMMISSION
+		   SET COMMISSION_NAME = '${COMMISSION_NAME}',
+		       COMMISSION_TYPE = '${COMMISSION_TYPE}',
+		       RANGE = '${RANGE}',
+		       REMARK = '${REMARK}'
+		 WHERE COMMISSION_CODE = '${COMMISSION_CODE}'
+    </update>
+
+    <delete id="commissionDelete" parameterType="int">
+        DELETE UPM_COMMISSION
+ 			WHERE COMMISSION_CODE = '${COMMISSION_CODE}'
+    </delete>
+    <!--佣金名称设置-->
+    
+    
+    
+    <!--标准佣金设置-->
+    <select id="commissionStaQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ID,
+	       COMMISSION_CODE,
+	       SYS_CODE,
+	       BRANCH_ORG,
+	       CURRENCY_CODE,
+	       MARKET,
+	       TRENCH,
+	       TRAN_BEHAVIOR,
+	       STOCK_TYPE,
+	       STOCK_CODE,
+	       MONEY_LOWER,
+	       COMMISSION_RATE,
+	       COMMISSION_UPPER,
+	       COMMISSION_LOWER
+	  FROM UPM_COMMISSION_STA WHERE 1=1
+        <if test="COMMISSION_CODE != ''">
+            AND COMMISSION_CODE = '${COMMISSION_CODE}'
+        </if>
+        <if test="SYS_CODE != ''">
+            AND SYS_CODE = '${SYS_CODE}'
+        </if>
+        <if test="BRANCH_ORG != ''">
+            AND BRANCH_ORG = '${BRANCH_ORG}'
+        </if>
+        ORDER BY ID
+    </select>
+    
+    <insert id="commissionStaInsert" parameterType="hashmap">
+    	<selectKey resultType="long" keyProperty="ID" order="BEFORE">
+			SELECT SEQ_UPM_COMMISSION_STA.NEXTVAL from dual
+		</selectKey>
+		INSERT INTO UPM_COMMISSION_STA
+		  (ID, COMMISSION_CODE, SYS_CODE, BRANCH_ORG, CURRENCY_CODE, MARKET, TRENCH, TRAN_BEHAVIOR, STOCK_TYPE, STOCK_CODE, MONEY_LOWER, COMMISSION_RATE, COMMISSION_UPPER, COMMISSION_LOWER)
+		VALUES
+		  (#{ID}, '${COMMISSION_CODE}', '${SYS_CODE}', '${BRANCH_ORG}', '${CURRENCY_CODE}', '${MARKET}', '${TRENCH}', '${TRAN_BEHAVIOR}', '${STOCK_TYPE}', '${STOCK_CODE}', '${MONEY_LOWER}', '${COMMISSION_RATE}', '${COMMISSION_UPPER}', '${COMMISSION_LOWER}')
+
+	</insert>
+
+    <insert id="commissionStaInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UPM_COMMISSION_STA
+		  (ID, COMMISSION_CODE, SYS_CODE, BRANCH_ORG, CURRENCY_CODE, MARKET, TRENCH, TRAN_BEHAVIOR, STOCK_TYPE, STOCK_CODE, MONEY_LOWER, COMMISSION_RATE, COMMISSION_UPPER, COMMISSION_LOWER)
+		VALUES
+		  ('${ID}', '${COMMISSION_CODE}', '${SYS_CODE}', '${BRANCH_ORG}', '${CURRENCY_CODE}', '${MARKET}', '${TRENCH}', '${TRAN_BEHAVIOR}', '${STOCK_TYPE}', '${STOCK_CODE}', '${MONEY_LOWER}', '${COMMISSION_RATE}', '${COMMISSION_UPPER}', '${COMMISSION_LOWER}')
+
+	</insert>
+
+    <update id="commissionStaUpdate" parameterType="hashmap">
+        UPDATE UPM_COMMISSION_STA
+		   SET COMMISSION_CODE = '${COMMISSION_CODE}',
+		       SYS_CODE = '${SYS_CODE}',
+		       BRANCH_ORG = '${BRANCH_ORG}',
+		       CURRENCY_CODE = '${CURRENCY_CODE}',
+		       MARKET = '${MARKET}',
+		       TRENCH = '${TRENCH}',
+		       TRAN_BEHAVIOR = '${TRAN_BEHAVIOR}',
+		       STOCK_TYPE = '${STOCK_TYPE}',
+		       STOCK_CODE = '${STOCK_CODE}',
+		       MONEY_LOWER = '${MONEY_LOWER}',
+		       COMMISSION_RATE = '${COMMISSION_RATE}',
+		       COMMISSION_UPPER = '${COMMISSION_UPPER}',
+		       COMMISSION_LOWER = '${COMMISSION_LOWER}'
+		 WHERE ID = #{ID,jdbcType=INTEGER}
+    </update>
+
+    <delete id="commissionStaDelete" parameterType="int">
+        DELETE UPM_COMMISSION_STA WHERE ID = #{ID,jdbcType=INTEGER}
+    </delete>
+    <!--标准佣金设置-->
+    
+    
+    <!--特殊佣金设置-->
+    <select id="commissionSpeQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ID,
+	       COMMISSION_CODE,
+	       SYS_CODE,
+	       BRANCH_ORG,
+	       COMMISSION_VARIETIES,
+	       PERIOD_TYPE,
+	       PERIOD_RANGE,
+	       MARKET,
+	       TRENCH,
+	       TRAN_BEHAVIOR,
+	       STOCK_TYPE,
+	       STOCK_CODE,
+	       ASSET_LIMIT,
+	       MONEY_LOWER,
+	       COMMISSION_RATE,
+	       COMMISSION_UPPER,
+	       COMMISSION_LOWER
+	  FROM UPM_COMMISSION_SPE WHERE 1=1
+        <if test="COMMISSION_CODE != '-1'">
+            AND COMMISSION_CODE = '${COMMISSION_CODE}'
+        </if>
+        <if test="SYS_CODE != ''">
+            AND SYS_CODE = '${SYS_CODE}'
+        </if>
+        <if test="BRANCH_ORG != ''">
+            AND BRANCH_ORG = '${BRANCH_ORG}'
+        </if>
+        ORDER BY ID
+    </select>
+    
+    <insert id="commissionSpeInsert" parameterType="hashmap">
+    	<selectKey resultType="long" keyProperty="ID" order="BEFORE">
+			SELECT SEQ_UPM_COMMISSION_SPE.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO UPM_COMMISSION_SPE
+		  (ID,
+		   COMMISSION_CODE,
+		   SYS_CODE,
+		   BRANCH_ORG,
+		   COMMISSION_VARIETIES,
+		   PERIOD_TYPE,
+		   PERIOD_RANGE,
+		   MARKET,
+		   TRENCH,
+		   TRAN_BEHAVIOR,
+		   STOCK_TYPE,
+		   STOCK_CODE,
+		   ASSET_LIMIT,
+		   MONEY_LOWER,
+		   COMMISSION_RATE,
+		   COMMISSION_UPPER,
+		   COMMISSION_LOWER)
+		VALUES
+		  (#{ID},
+		   '${COMMISSION_CODE}',
+		   '${SYS_CODE}',
+		   '${BRANCH_ORG}',
+		   '${COMMISSION_VARIETIES}',
+		   '${PERIOD_TYPE}',
+		   '${PERIOD_RANGE}',
+		   '${MARKET}',
+		   '${TRENCH}',
+		   '${TRAN_BEHAVIOR}',
+		   '${STOCK_TYPE}',
+		   '${STOCK_CODE}',
+		   '${ASSET_LIMIT}',
+		   '${MONEY_LOWER}',
+		   '${COMMISSION_RATE}',
+		   '${COMMISSION_UPPER}',
+		   '${COMMISSION_LOWER}')
+	</insert>
+
+    <insert id="commissionSpeInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UPM_COMMISSION_SPE
+		  (ID,
+		   COMMISSION_CODE,
+		   SYS_CODE,
+		   BRANCH_ORG,
+		   COMMISSION_VARIETIES,
+		   PERIOD_TYPE,
+		   PERIOD_RANGE,
+		   MARKET,
+		   TRENCH,
+		   TRAN_BEHAVIOR,
+		   STOCK_TYPE,
+		   STOCK_CODE,
+		   ASSET_LIMIT,
+		   MONEY_LOWER,
+		   COMMISSION_RATE,
+		   COMMISSION_UPPER,
+		   COMMISSION_LOWER)
+		VALUES
+		  ('${ID}',
+		   '${COMMISSION_CODE}',
+		   '${SYS_CODE}',
+		   '${BRANCH_ORG}',
+		   '${COMMISSION_VARIETIES}',
+		   '${PERIOD_TYPE}',
+		   '${PERIOD_RANGE}',
+		   '${MARKET}',
+		   '${TRENCH}',
+		   '${TRAN_BEHAVIOR}',
+		   '${STOCK_TYPE}',
+		   '${STOCK_CODE}',
+		   '${ASSET_LIMIT}',
+		   '${MONEY_LOWER}',
+		   '${COMMISSION_RATE}',
+		   '${COMMISSION_UPPER}',
+		   '${COMMISSION_LOWER}')
+	</insert>
+
+    <update id="commissionSpeUpdate" parameterType="hashmap">
+        UPDATE UPM_COMMISSION_SPE
+		   SET COMMISSION_CODE = '${COMMISSION_CODE}',
+		       SYS_CODE = '${SYS_CODE}',
+		       BRANCH_ORG = '${BRANCH_ORG}',
+		       COMMISSION_VARIETIES = '${COMMISSION_VARIETIES}',
+		       PERIOD_TYPE = '${PERIOD_TYPE}',
+		       PERIOD_RANGE = '${PERIOD_RANGE}',
+		       MARKET = '${MARKET}',
+		       TRENCH = '${TRENCH}',
+		       TRAN_BEHAVIOR = '${TRAN_BEHAVIOR}',
+		       STOCK_TYPE = '${STOCK_TYPE}',
+		       STOCK_CODE = '${STOCK_CODE}',
+		       ASSET_LIMIT = '${ASSET_LIMIT}',
+		       MONEY_LOWER = '${MONEY_LOWER}',
+		       COMMISSION_RATE = '${COMMISSION_RATE}',
+		       COMMISSION_UPPER = '${COMMISSION_UPPER}',
+		       COMMISSION_LOWER = '${COMMISSION_LOWER}'
+		 WHERE ID = #{ID,jdbcType=INTEGER}
+    </update>
+
+    <delete id="commissionSpeDelete" parameterType="int">
+        DELETE UPM_COMMISSION_SPE WHERE ID = #{ID,jdbcType=INTEGER}
+    </delete>
+    <!--特殊佣金设置-->
+    
+    <!--默认佣金表设置-->
+    <select id="commissionDefQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ID,TRENCH,BUSINESS_TYPE,COMMISSION_CODE,REMARK
+	  	FROM UPM_COMMISSION_DEF WHERE 1=1
+        <if test="TRENCH != '-1'">
+            AND TRENCH = '${TRENCH}'
+        </if>
+        <if test="BUSINESS_TYPE != '-1'">
+            AND BUSINESS_TYPE = '${BUSINESS_TYPE}'
+        </if>
+        <if test="COMMISSION_CODE != '-1'">
+            AND COMMISSION_CODE = '${COMMISSION_CODE}'
+        </if>
+        ORDER BY TRENCH,BUSINESS_TYPE,COMMISSION_CODE
+    </select>
+    
+    <insert id="commissionDefInsert" parameterType="hashmap">
+    	<selectKey resultType="long" keyProperty="ID" order="BEFORE">
+			SELECT SEQ_UPM_COMMISSION_DEF.NEXTVAL FROM DUAL
+		</selectKey>
+    	INSERT INTO UPM_COMMISSION_DEF
+		  (ID,TRENCH,BUSINESS_TYPE,COMMISSION_CODE,REMARK)
+		VALUES
+		  (#{ID},'${TRENCH}','${BUSINESS_TYPE}','${COMMISSION_CODE}','${REMARK}')
+	</insert>
+	
+    <insert id="commissionDefInsert_MSSQL" parameterType="hashmap">
+    	INSERT INTO UPM_COMMISSION_DEF
+		  (ID,TRENCH,BUSINESS_TYPE,COMMISSION_CODE,REMARK)
+		VALUES
+		  ('${ID}','${TRENCH}','${BUSINESS_TYPE}','${COMMISSION_CODE}','${REMARK}')
+	</insert>
+
+    <update id="commissionDefUpdate" parameterType="hashmap">
+        UPDATE UPM_COMMISSION_DEF
+		   SET TRENCH = '${TRENCH}',
+		   BUSINESS_TYPE = '${BUSINESS_TYPE}',
+		   COMMISSION_CODE = '${COMMISSION_CODE}',
+		    REMARK='${REMARK}'
+		 WHERE ID = #{ID,jdbcType=INTEGER}
+    </update>
+
+    <delete id="commissionDefDelete" parameterType="int">
+        DELETE UPM_COMMISSION_DEF 
+         WHERE ID = #{ID,jdbcType=INTEGER}
+    </delete>
+    <!--默认佣金表设置-->
+    
+    <select id="uumuserconfigQuery" parameterType="hashmap" resultType="java.util.HashMap">
+    	SELECT USER_CODE , CONFIGURE,PLAT_CONFIG FROM UUM_USER_CONFIG 
+    		 WHERE USER_CODE = '${USER_CODE}'
+    </select>
+    
+    <insert id="uumuserconfigInsert" parameterType="hashmap">
+    	INSERT INTO UUM_USER_CONFIG
+		  (USER_CODE,CONFIGURE,PLAT_CONFIG)
+		VALUES
+		  ('${USER_CODE}','${CONFIGURE}','${PLAT_CONFIG}')
+	</insert>
+	
+	<update id="uumuserconfigUpdate" parameterType="hashmap">
+    	UPDATE  UUM_USER_CONFIG
+    	SET 
+    	<if test="CONFIGURE != '-1'">
+             CONFIGURE = '${CONFIGURE}'
+    	</if>
+    	<if test="PLAT_CONFIG != '-1'">
+             PLAT_CONFIG = '${PLAT_CONFIG}'
+    	</if>
+    	WHERE USER_CODE = '${USER_CODE}'
+	</update>
+    
+    <delete id="uumuserconfigDelete" parameterType="int">
+        DELETE UUM_USER_CONFIG 
+         	WHERE USER_CODE = '${USER_CODE}'
+    </delete>
+    
+    
+    <!--平台设置-->
+    <select id="platQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT ID, PLAT_NAME, STATUS, SEQ, AUTH_MODE, IS_VALIDATE, VALIDATE_CODE,IS_MAIN FROM UPM_PLATFORM WHERE 1=1
+        <if test="PLAT_NAME != '-1'">
+            AND PLAT_NAME LIKE '%${PLAT_NAME}%'
+        </if>
+        <if test="STATUS != '-1'">
+            AND STATUS = '${STATUS}'
+        </if>
+        ORDER BY SEQ
+    </select>    
+    <insert id="platInsert" parameterType="hashmap">
+		INSERT INTO UPM_PLATFORM
+		  (ID,PLAT_NAME,STATUS,SEQ,AUTH_MODE,IS_VALIDATE,VALIDATE_CODE,IS_MAIN)
+		VALUES
+		  (#{ID},'${PLAT_NAME}','${STATUS}',${SEQ},'${AUTH_MODE}','${IS_VALIDATE}','${VALIDATE_CODE}','${IS_MAIN}')
+	</insert>
+
+
+    <update id="platUpdate" parameterType="hashmap">
+        UPDATE UPM_PLATFORM
+		   SET PLAT_NAME= '${PLAT_NAME}',
+		       STATUS 	= '${STATUS}',
+		       SEQ		= '${SEQ}',
+		       AUTH_MODE= '${AUTH_MODE}',
+		       IS_VALIDATE 	= '${IS_VALIDATE}',
+		       VALIDATE_CODE		= '${VALIDATE_CODE}',
+		       IS_MAIN = '${IS_MAIN}'
+		 WHERE ID = #{ID,jdbcType=INTEGER}
+    </update>
+    
+    <select id="platMenuQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT MENU_ID FROM UPM_MENU
+        WHERE MENU_PLAT = '${ID}' AND LENGTH(MENU_LVL) = 4
+    </select>
+    <select id="platMenuQuery_MSSQL" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT MENU_ID FROM UPM_MENU
+        WHERE MENU_PLAT = '${ID}' AND len(MENU_LVL) = 4
+    </select>
+
+    <update id="platMenuUpdate" parameterType="hashmap">
+        UPDATE UPM_MENU
+		   SET MENU_NAME= '${PLAT_NAME}' 
+		 WHERE MENU_ID = '${MENU_ID}'
+    </update>
+    
+    <update id="platMenuStaUpdate" parameterType="hashmap">
+        UPDATE UPM_MENU
+		   SET MENU_STA= '${STATUS}' 
+		 WHERE MENU_LVL LIKE (SELECT MENU_LVL+'%' FROM UPM_MENU WHERE MENU_ID = '${MENU_ID}')
+    </update>
+    
+    <update id="platPermissionUpdate" parameterType="hashmap">
+        UPDATE UUM_PERMISSION
+		   SET PERM_NAME= '${PLAT_NAME}' 
+		 WHERE PERM_TYPE = 2 AND PERM_VAL = '${MENU_ID}'
+    </update>
+    
+    <update id="platPermissionStaUpdate" parameterType="hashmap">
+        UPDATE UUM_PERMISSION
+		   SET PERM_STA= '${STATUS}' 
+		 WHERE PERM_LVL LIKE (SELECT PERM_LVL+'%' FROM UUM_PERMISSION WHERE PERM_TYPE = 2 AND PERM_VAL = '${MENU_ID}')
+    </update>
+
+    <delete id="platDelete" parameterType="int">
+        DELETE UPM_PLATFORM 
+         WHERE ID = #{ID,jdbcType=INTEGER} AND ID != 0
+    </delete>
+    
+    <delete id="platMenuDelete" parameterType="int">
+        DELETE UPM_MENU 
+         WHERE MENU_PLAT = #{ID,jdbcType=INTEGER} AND MENU_PLAT != 0
+    </delete>
+    
+    <delete id="platPermissionDelete" parameterType="int">
+         DELETE UUM_PERMISSION
+		 WHERE PERM_LVL LIKE (SELECT PERM_LVL+'%' FROM UUM_PERMISSION WHERE PERM_TYPE = 2 AND PERM_VAL = '${MENU_ID}')
+    </delete>
+    <!--平台设置-->
+	<!--系统菜单-->
+	<insert id="permInsert" parameterType="hashmap">
+		INSERT INTO UUM_PERMISSION
+		  (PERM_ID, PERM_NAME, PERM_TYPE, PAR_PERM, PERM_STA, PERM_VAL, PERM_LVL)
+		VALUES
+		  (#{ID},'${PERM_NAME}','${PERM_TYPE}','${PAR_PERM}','${PERM_STA}','${PERM_VAL}','${PERM_LVL}')	
+	</insert>
+	<select id="permIdQuery" parameterType="hashmap" resultType="java.util.HashMap">
+	    SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_VAL = '${PERM_VAL}' AND PERM_TYPE = '${PERM_TYPE}'
+	</select>
+	<delete id="sysMenuDel" parameterType="int">
+		DELETE FROM UPM_MENU WHERE MENU_LVL LIKE
+         (SELECT MENU_LVL + '%' FROM UPM_MENU WHERE MENU_ID = #{MENU_ID,jdbcType=INTEGER})
+	</delete>
+	<delete id="sysMenuDel_MSSQL" parameterType="int">
+		DELETE FROM UPM_MENU WHERE MENU_LVL LIKE
+         (SELECT ISNULL(MENU_LVL,'') + '%' FROM UPM_MENU WHERE MENU_ID = #{MENU_ID,jdbcType=INTEGER})
+	</delete>
+	<delete id="sysMenuDel_MYSQL" parameterType="int">
+		DELETE FROM UPM_MENU WHERE MENU_LVL LIKE
+         (SELECT CONCAT(IFNULL(MENU_LVL,''),'%') FROM UPM_MENU WHERE MENU_ID = #{MENU_ID,jdbcType=INTEGER})
+	</delete>
+	<select id="purQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_PUR FROM UPM_MENU WHERE MENU_ID = #{MENU_ID,jdbcType=INTEGER}
+	</select>
+	<select id="permLvlQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT PERM_LVL FROM UUM_PERMISSION WHERE PERM_VAL = '${MENU_ID}'
+	</select>
+	<delete id="sysPermDel" parameterType="int">
+		DELETE FROM UUM_PERMISSION WHERE PERM_TYPE='${PUR}' AND PERM_LVL LIKE '${PERM_LVL}' + '%'
+	</delete>
+	<delete id="sysPermDel_MSSQL" parameterType="int">
+		DELETE FROM UUM_PERMISSION WHERE PERM_TYPE='${PUR}' AND PERM_LVL LIKE '${PERM_LVL}'+'%'
+	</delete>
+	<delete id="sysPermDel_MYSQL" parameterType="int">
+		DELETE FROM UUM_PERMISSION WHERE PERM_TYPE='${PUR}' AND PERM_LVL LIKE CONCAT_WS('','${PERM_LVL}','%')
+	</delete>
+
+	<!--系统菜单-->
+	
+	<!-- 帮助 -->
+	<select id="helpQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UH.HELP_ID,UH.TITLE,UH.DEPICTION,UH.MENU_ID,UH.COMP_ID,(SELECT COMP_NAME FROM KPT_COMPONENTS KC WHERE UH.COMP_ID = KC.COMP_ID) AS COMP_NAME FROM UPM_HELP UH WHERE 1=1
+		<if test="HELP_ID != '-1'">
+        	AND UH.HELP_ID = '${HELP_ID}'
+    	</if>
+		<if test="TITLE != '-1'">
+        	AND UH.TITLE LIKE '%${TITLE}%'
+    	</if>
+    	<if test="MENU_ID != '-1'">
+        	AND UH.MENU_ID = '${MENU_ID}'
+    	</if>
+    	<if test="COMP_ID != '-1'">
+        	AND UH.COMP_ID = '${COMP_ID}'
+    	</if>
+    	<if test="P_ID != '-1'">
+        	AND (UH.COMP_ID = '${P_ID}' OR UH.MENU_ID = '${P_ID}')
+    	</if>
+    	ORDER BY UH.HELP_ID DESC
+	</select>
+	<insert id="helpInsert" parameterType="hashmap">
+		<selectKey resultType="long" keyProperty="ID" order="BEFORE">
+			SELECT SEQ_HELP.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO UPM_HELP (HELP_ID,TITLE,DEPICTION,MENU_ID,COMP_ID)
+		VALUES (#{ID}, '${TITLE}',#{DEPICTION,jdbcType=VARCHAR},'${MENU_ID}','${COMP_ID}')
+	</insert>    
+    
+    <insert id="helpInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UPM_HELP (HELP_ID,TITLE,DEPICTION,MENU_ID,COMP_ID)
+		VALUES ('${ID}', '${TITLE}',#{DEPICTION,jdbcType=VARCHAR},'${MENU_ID}','${COMP_ID}')
+	</insert> 
+    <update id="helpUpdate" parameterType="hashmap">
+        UPDATE UPM_HELP SET
+            TITLE='${TITLE}',
+            DEPICTION=#{DEPICTION,jdbcType=VARCHAR},
+            MENU_ID='${MENU_ID}',
+            COMP_ID='${COMP_ID}'
+        WHERE HELP_ID='${HELP_ID}'
+    </update>
+	<delete id="helpDelete" parameterType="int">
+        DELETE FROM UPM_HELP WHERE HELP_ID=#{HELP_ID,jdbcType=INTEGER}
+    </delete>
+    <delete id="helpDetailDeleteByHelpId" parameterType="int">
+        DELETE FROM UPM_HELP_DETAIL WHERE HELP_ID=#{HELP_ID,jdbcType=INTEGER}
+    </delete>
+    
+    <select id="helpMenuQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT DISTINCT MENU_ID FROM UPM_HELP 
+    	ORDER BY MENU_ID 
+	</select>
+	
+	<select id="helpCompQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT DISTINCT COMP_ID FROM UPM_HELP 
+    	ORDER BY COMP_ID 
+	</select>
+    
+    <select id="helpDetailQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT COL_ID,COL_CODE,HELP_ID,COL_TITLE,COL_DEPICTION FROM UPM_HELP_DETAIL WHERE 1=1
+		AND HELP_ID = #{HELP_ID,jdbcType=INTEGER}
+		<if test="COL_ID != '-1'">
+        	AND COL_ID = '${COL_ID}'
+    	</if>
+		<if test="COL_CODE != '-1'">
+        	AND COL_CODE LIKE '%${COL_CODE}%'
+    	</if>
+    	<if test="COL_TITLE != '-1'">
+        	AND COL_TITLE LIKE '%${COL_TITLE}%'
+    	</if>
+    	ORDER BY COL_CODE 
+	</select>
+	
+	<select id="helpDetailByMenuQuery" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT UHD.COL_ID,UHD.COL_CODE,UHD.HELP_ID,UHD.COL_TITLE,UHD.COL_DEPICTION FROM UPM_HELP_DETAIL UHD,UPM_HELP UH WHERE UH.HELP_ID=UHD.HELP_ID 
+		<if test="P_ID != '-1'">
+        	AND (UH.COMP_ID = '${P_ID}' OR UH.MENU_ID = '${P_ID}')
+    	</if>
+		ORDER BY COL_CODE 
+	</select>
+	
+	<insert id="helpDetailInsert" parameterType="hashmap">
+		<selectKey resultType="long" keyProperty="ID" order="BEFORE">
+			SELECT SEQ_HELP_DETAIL.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO UPM_HELP_DETAIL (COL_ID,COL_CODE,HELP_ID,COL_TITLE,COL_DEPICTION)
+		VALUES (#{ID},'${COL_CODE}', '${HELP_ID}','${COL_TITLE}',#{COL_DEPICTION,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="helpDetailInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO UPM_HELP_DETAIL (COL_ID,COL_CODE,HELP_ID,COL_TITLE,COL_DEPICTION)
+		VALUES ('${ID}','${COL_CODE}', '${HELP_ID}','${COL_TITLE}',#{COL_DEPICTION,jdbcType=VARCHAR})
+	</insert>     
+    <update id="helpDetailUpdate" parameterType="hashmap">
+        UPDATE UPM_HELP_DETAIL SET
+        	COL_CODE = '${COL_CODE}',
+            COL_TITLE='${COL_TITLE}',
+            COL_DEPICTION=#{COL_DEPICTION,jdbcType=VARCHAR}
+        WHERE COL_ID='${COL_ID}'
+    </update>
+	<delete id="helpDetailDelete" parameterType="int">
+        DELETE FROM UPM_HELP_DETAIL 
+         WHERE COL_ID='${COL_ID}'
+    </delete>
+	<!-- 帮助 -->
+	<!--系统菜单拖动start-->
+	<select id="getMenulvl" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_LVL AS MENU_LVL FROM UPM_MENU WHERE MENU_ID = #{P_MENU,jdbcType=INTEGER}
+	</select>
+	<select id="getTargetlvl" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_LVL AS OTARGET_LVL FROM UPM_MENU WHERE MENU_ID = #{P_TARGET,jdbcType=INTEGER}
+	</select>
+	<select id="getTargetChildNum" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT COUNT(MENU_LVL) AS NUM FROM UPM_MENU WHERE PAR_MENU = #{P_TARGET,jdbcType=INTEGER}
+	</select>
+	<update id="upadteMenuPar" parameterType="hashmap">
+        UPDATE UPM_MENU SET PAR_MENU = #{P_TARGET,jdbcType=INTEGER} WHERE MENU_ID = #{P_MENU,jdbcType=INTEGER}
+    </update>
+    <select id="getOneMenulvl" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT ((SELECT MENU_LVL FROM UPM_MENU WHERE MENU_ID=#{P_TARGET,jdbcType=INTEGER}) + '0001') AS NEW_MENU_LVL
+	</select>
+    <select id="getOneMenulvl_MYSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT CONCAT((SELECT MENU_LVL FROM UPM_MENU WHERE MENU_ID=#{P_TARGET,jdbcType=INTEGER}),'0001') AS NEW_MENU_LVL
+	</select>
+	<update id="updateMenuLvl" parameterType="hashmap">
+		UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					(SELECT '${NEW_MENU_LVL}' + SUBSTRING(M2.MENU_LVL,TO_NUMBER('${OLD_MENU_LVL_LENGTH}')+1) FROM UPM_MENU M2 WHERE M2.MENU_LVL LIKE '${OLD_MENU_LVL}%' 
+					AND M1.MENU_ID = M2.MENU_ID)
+					WHERE M1.MENU_ID IN (SELECT MENU_ID FROM UPM_MENU WHERE MENU_LVL LIKE '${OLD_MENU_LVL}%')        
+    </update>
+	<update id="updateMenuLvl_MYSQL" parameterType="hashmap">
+		UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					(SELECT CONCAT_WS('','${NEW_MENU_LVL}',SUBSTRING(M2.MENU_LVL,'${OLD_MENU_LVL_LENGTH}'+1)) FROM UPM_MENU M2 WHERE M2.MENU_LVL LIKE '${OLD_MENU_LVL}%' 
+					AND M1.MENU_ID = M2.MENU_ID)
+					WHERE M1.MENU_ID IN (SELECT MENU_ID FROM UPM_MENU WHERE MENU_LVL LIKE '${OLD_MENU_LVL}%')        
+    </update>
+    <update id="updateMenuParToTargetPar" parameterType="hashmap">
+       UPDATE UPM_MENU T
+         SET T.PAR_MENU = (SELECT M.PAR_MENU FROM UPM_MENU M WHERE M.MENU_ID = #{P_TARGET,jdbcType=INTEGER})
+       WHERE T.MENU_ID = #{P_MENU,jdbcType=INTEGER}
+    </update>
+    <select id="getTargetSamelvl" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_ID AS MENU_ID,MENU_NAME AS MENU_NAME, PAR_MENU AS PAR_MENU, MENU_LVL AS MENU_LVL
+                    FROM UPM_MENU
+                   WHERE TO_NUMBER(MENU_LVL) >= TO_NUMBER('${OLD_TARGET_LVL}')
+                     AND MENU_ID != #{P_MENU,jdbcType=INTEGER}
+                     AND PAR_MENU=(SELECT T.PAR_MENU FROM UPM_MENU T WHERE T.MENU_ID=#{P_TARGET,jdbcType=INTEGER})
+					ORDER BY MENU_LVL DESC
+	</select>
+    <select id="getTargetSamelvl_MYSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_ID AS MENU_ID,MENU_NAME AS MENU_NAME, PAR_MENU AS PAR_MENU, MENU_LVL AS MENU_LVL
+                    FROM UPM_MENU
+                   WHERE CAST(MENU_LVL as unsigned int) >= CAST('${OLD_TARGET_LVL}' as unsigned int)
+                     AND MENU_ID != #{P_MENU,jdbcType=INTEGER}
+                     AND PAR_MENU=(SELECT T.PAR_MENU FROM UPM_MENU T WHERE T.MENU_ID=#{P_TARGET,jdbcType=INTEGER})
+					ORDER BY MENU_LVL DESC
+	</select>
+    <select id="getTargetPlusOne" parameterType="hashmap" resultType="java.util.HashMap">
+    	SELECT CASE MOD(LENGTH(TO_NUMBER('${NOW_TARGET_LVL}')+1),4) WHEN 0 THEN CONVERT(VARCHAR,CONVERT(NUMERIC ,'${NOW_TARGET_LVL}')+1)
+                                                        WHEN 1 THEN CONVERT(VARCHAR,'000')+CONVERT(VARCHAR,CONVERT(NUMERIC,'${NOW_TARGET_LVL}')+1)
+                                                        WHEN 2 THEN CONVERT(VARCHAR,'00')+CONVERT(VARCHAR,CONVERT(NUMERIC,'${NOW_TARGET_LVL}')+1)
+                                                        WHEN 3 THEN CONVERT(VARCHAR,'0')+CONVERT(VARCHAR,CONVERT(NUMERIC,'${NOW_TARGET_LVL}')+1)
+                                                        END AS NEW_TARGET_LVL
+            FROM UPM_MENU A
+            WHERE MENU_ID = #{NOW_TARGET_ID,jdbcType=INTEGER}
+    </select>
+    <select id="getTargetPlusOne_MYSQL" parameterType="hashmap" resultType="java.util.HashMap">
+    	SELECT CASE MOD(LENGTH('${NOW_TARGET_LVL}'+1),4) WHEN 0 THEN CONCAT_WS('','${NOW_TARGET_LVL}'+1)
+                                                        WHEN 1 THEN CONCAT_WS('','000','${NOW_TARGET_LVL}'+1)
+                                                        WHEN 2 THEN CONCAT_WS('','00','${NOW_TARGET_LVL}'+1)
+                                                        WHEN 3 THEN CONCAT_WS('','0','${NOW_TARGET_LVL}'+1)
+                                                        END AS NEW_TARGET_LVL
+            FROM UPM_MENU A
+            WHERE MENU_ID = #{NOW_TARGET_ID,jdbcType=INTEGER}
+    </select>
+    <update id="updateTargetLvl" parameterType="hashmap">
+		UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					(SELECT '${NEW_TARGET_LVL}' + SUBSTRING(M2.MENU_LVL,TO_NUMBER('${OLD_TARGET_LVL_LENGTH}')+1) FROM UPM_MENU M2 WHERE M2.MENU_LVL LIKE '${NOW_TARGET_LVL}%' 
+					AND M1.MENU_ID = M2.MENU_ID)
+					WHERE M1.MENU_ID IN (SELECT MENU_ID FROM UPM_MENU WHERE MENU_LVL LIKE '${NOW_TARGET_LVL}%')        
+    </update>
+    <update id="updateTargetLvl_MYSQL" parameterType="hashmap">
+		UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					(SELECT CONCAT_WS('','${NEW_TARGET_LVL}',SUBSTRING(M2.MENU_LVL,'${OLD_TARGET_LVL_LENGTH}'+1)) FROM UPM_MENU M2 WHERE M2.MENU_LVL LIKE '${NOW_TARGET_LVL}%' 
+					AND M1.MENU_ID = M2.MENU_ID)
+					WHERE M1.MENU_ID IN (SELECT MENU_ID FROM UPM_MENU WHERE MENU_LVL LIKE '${NOW_TARGET_LVL}%')        
+    </update>
+    <update id="updateMenu" parameterType="hashmap">
+       UPDATE UPM_MENU T
+         SET T.MENU_LVL = '${NEW_MENU_LVL}'
+       WHERE T.MENU_ID = #{P_MENU,jdbcType=INTEGER}
+    </update>
+    <select id="getMenuChildLvl" parameterType="hashmap" resultType="java.util.HashMap">
+    SELECT MENU_ID AS MENU_ID,MENU_NAME AS MENU_NAME, PAR_MENU AS PAR_MENU, MENU_LVL AS MENU_LVL
+                    FROM UPM_MENU WHERE MENU_ID!=#{P_MENU,jdbcType=INTEGER}
+                    START WITH MENU_ID=#{P_MENU,jdbcType=INTEGER}
+                    CONNECT BY PRIOR MENU_ID=PAR_MENU
+                    ORDER BY MENU_LVL
+     </select>
+    <select id="getMenuChildLvl_MYSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		select p.MENU_ID   AS MENU_ID,
+			   p.MENU_NAME AS MENU_NAME,
+			   p.PAR_MENU  AS PAR_MENU,
+			   p.MENU_LVL  AS MENU_LVL
+		  FROM UPM_MENU p,
+			   (select MENU_LVL
+				  from UPM_MENU
+				 where PAR_MENU = #{P_MENU, jdbcType = INTEGER}) q
+		 where p.MENU_LVL like CONCAT_WS('',q.MENU_LVL, '%')
+		 ORDER BY p.MENU_LVL
+	</select>
+    <update id="updateMenuOneLvl" parameterType="hashmap">
+     UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					(SELECT '${NEW_MENU_LVL}' + SUBSTRING(M2.MENU_LVL,TO_NUMBER('${OLD_MENU_LVL_LENGTH}')+1) FROM UPM_MENU M2 WHERE M2.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}   
+					AND M1.MENU_ID = M2.MENU_ID)
+					WHERE M1.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}  
+    </update>
+    <update id="updateMenuOneLvl_MYSQL" parameterType="hashmap">
+     UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					(SELECT CONCAT_WS('','${NEW_MENU_LVL}',SUBSTRING(M2.MENU_LVL,'${OLD_MENU_LVL_LENGTH}'+1)) FROM UPM_MENU M2 WHERE M2.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}   
+					AND M1.MENU_ID = M2.MENU_ID)
+					WHERE M1.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}  
+    </update>
+    <select id="getTargetLaterlvl" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_ID AS MENU_ID,MENU_NAME AS MENU_NAME, PAR_MENU AS PAR_MENU, MENU_LVL AS MENU_LVL
+                    FROM UPM_MENU
+                   WHERE TO_NUMBER(MENU_LVL) > TO_NUMBER('${OLD_TARGET_LVL}')
+                     AND MENU_ID != #{P_MENU,jdbcType=INTEGER}
+                     AND PAR_MENU=(SELECT T.PAR_MENU FROM UPM_MENU T WHERE T.MENU_ID=#{P_TARGET,jdbcType=INTEGER})
+                   ORDER BY MENU_LVL DESC
+	</select>
+    <select id="getTargetLaterlvl_MYSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT MENU_ID AS MENU_ID,MENU_NAME AS MENU_NAME, PAR_MENU AS PAR_MENU, MENU_LVL AS MENU_LVL
+                    FROM UPM_MENU
+                   WHERE CAST(MENU_LVL as unsigned int) > CAST('${OLD_TARGET_LVL}' as unsigned int)
+                     AND MENU_ID != #{P_MENU,jdbcType=INTEGER}
+                     AND PAR_MENU=(SELECT T.PAR_MENU FROM UPM_MENU T WHERE T.MENU_ID=#{P_TARGET,jdbcType=INTEGER})
+                   ORDER BY MENU_LVL DESC
+	</select>
+	<update id="updateBotMenu" parameterType="hashmap">
+		UPDATE UPM_MENU T
+         SET T.MENU_LVL = 
+         ( SELECT
+           CASE WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=0 THEN CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+               WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=1 THEN '000' + CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+               WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=2 THEN '00' + CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+               WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=3 THEN '0' + CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+         ) 
+       WHERE T.MENU_ID = #{P_MENU,jdbcType=INTEGER}
+    </update>
+	<update id="updateBotMenu_MYSQL" parameterType="hashmap">
+		UPDATE UPM_MENU T
+         SET T.MENU_LVL = 
+         (SELECT CASE MOD(LENGTH('${NEW_MENU_LVL}'+1),4) WHEN 0 THEN CONCAT_WS('','','${NEW_MENU_LVL}'+1)
+                                                        WHEN 1 THEN CONCAT_WS('','000','${NEW_MENU_LVL}'+1)
+                                                        WHEN 2 THEN CONCAT_WS('','00','${NEW_MENU_LVL}'+1)
+                                                        WHEN 3 THEN CONCAT_WS('','0','${NEW_MENU_LVL}'+1)
+                                                        END AS NEW_TARGET_LVL
+          )
+         ) 
+       WHERE T.MENU_ID = #{P_MENU,jdbcType=INTEGER}
+    </update>
+
+	<update id="updateBotMenuOneLvl" parameterType="hashmap">
+     UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					(SELECT
+                       CASE WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=0 THEN CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+                           WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=1 THEN '000' + CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+                           WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=2 THEN '00' + CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+                           WHEN LEN(CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)%4=3 THEN '0' + CONVERT(VARCHAR,CONVERT(NUMERIC,'${NEW_MENU_LVL}')+1)
+
+         )+ SUBSTRING(M2.MENU_LVL,TO_NUMBER('${OLD_MENU_LVL_LENGTH}')+1) FROM UPM_MENU M2 WHERE M2.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}
+		AND M1.MENU_ID = M2.MENU_ID)
+		WHERE M1.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}  
+    </update>
+	<update id="updateBotMenuOneLvl_MYSQL" parameterType="hashmap">
+     UPDATE UPM_MENU M1 SET M1.MENU_LVL = 
+					 (SELECT CONCAT(CASE MOD(LENGTH('${NEW_MENU_LVL}'+1,4) WHEN 0 THEN CONCAT_WS('','${NEW_MENU_LVL}'+1)
+                                                        WHEN 1 THEN CONCAT('000','${NEW_MENU_LVL}'+1)
+                                                        WHEN 2 THEN CONCAT('00','${NEW_MENU_LVL}'+1)
+                                                        WHEN 3 THEN CONCAT('0','${NEW_MENU_LVL}'+1)
+                                                        END
+		,SUBSTRING(M2.MENU_LVL,'${OLD_MENU_LVL_LENGTH}'+1)) FROM UPM_MENU M2 WHERE M2.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}   
+		AND M1.MENU_ID = M2.MENU_ID)
+		WHERE M1.MENU_ID = #{NOW_MENU_ID,jdbcType=INTEGER}  
+    </update>
+     <select id="getPerm" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT PERM_ID AS PERM_ID,PERM_NAME AS PERM_NAME,PERM_TYPE AS PERM_TYPE,
+			PAR_PERM AS PAR_PERM,PERM_VAL AS PERM_VAL,PERM_LVL AS PERM_LVL
+			FROM UUM_PERMISSION WHERE (PERM_TYPE='1' OR PERM_TYPE='2') AND PAR_PERM!=0 ORDER BY PERM_LVL
+	</select>
+	<select id="getParMenu" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT
+		 CASE WHEN
+        (SELECT PERM_ID FROM UUM_PERMISSION WHERE (PERM_TYPE='1' OR PERM_TYPE='2') AND PERM_VAL=
+                  (SELECT PAR_MENU FROM UPM_MENU WHERE MENU_ID=TO_NUMBER('${PERM_VAL}'))) IS NULL THEN '0' ELSE '1' END
+                 AS FLAG
+	</select>
+	<select id="getParMenu_MYSQL" parameterType="hashmap" resultType="java.util.HashMap">
+		SELECT  IF(
+        (SELECT PERM_ID FROM UUM_PERMISSION WHERE (PERM_TYPE='1' OR PERM_TYPE='2') AND PERM_VAL=
+	                          (SELECT PAR_MENU FROM UPM_MENU WHERE MENU_ID=CAST('${PERM_VAL}' as unsigned int))) is null,'0','1')  AS FLAG 
+	</select>
+    <update id="updateGPerm" parameterType="hashmap">
+	    UPDATE UUM_PERMISSION P SET P.PERM_LVL =
+	 SUBSTRING(P.PERM_LVL,0,4)+
+	 (SELECT M.MENU_LVL FROM UPM_MENU M WHERE M.MENU_ID=TO_NUMBER('${PERM_VAL}')),
+	 PAR_PERM='1'
+	 WHERE (P.PERM_TYPE='1' OR P.PERM_TYPE='2') AND 
+	 P.PERM_VAL = '${PERM_VAL}'
+	 </update>
+    <update id="updateGPerm_MYSQL" parameterType="hashmap">
+	    UPDATE UUM_PERMISSION P SET P.PERM_LVL =
+	 CONCAT_WS('',SUBSTRING(P.PERM_LVL,0,4),
+	 (SELECT M.MENU_LVL FROM UPM_MENU M WHERE M.MENU_ID=CAST('${PERM_VAL}' as unsigned int))),
+	 PAR_PERM='1'
+	 WHERE (P.PERM_TYPE='1' OR P.PERM_TYPE='2') AND 
+	 P.PERM_VAL = '${PERM_VAL}'
+	 </update>
+	 <update id="updateYPerm" parameterType="hashmap">
+	    UPDATE UUM_PERMISSION P SET P.PERM_LVL =
+	 SUBSTRING(P.PERM_LVL,0,4)+
+	 (SELECT M.MENU_LVL FROM UPM_MENU M WHERE M.MENU_ID=TO_NUMBER('${PERM_VAL}')),
+	 PAR_PERM='2'
+	 WHERE (P.PERM_TYPE='1' OR P.PERM_TYPE='2') AND 
+	 P.PERM_VAL = '${PERM_VAL}'
+	 </update>
+	 <update id="updateYPerm_MYSQL" parameterType="hashmap">
+	    UPDATE UUM_PERMISSION P SET P.PERM_LVL =
+	 CONCAT_WS('',SUBSTRING(P.PERM_LVL,0,4),
+	 (SELECT M.MENU_LVL FROM UPM_MENU M WHERE M.MENU_ID=CAST('${PERM_VAL}' as unsigned int))),
+	 PAR_PERM='2'
+	 WHERE (P.PERM_TYPE='1' OR P.PERM_TYPE='2') AND 
+	 P.PERM_VAL = '${PERM_VAL}'
+	 </update>
+	 <update id="updateParPerm" parameterType="hashmap">
+	    UPDATE UUM_PERMISSION P SET P.PERM_LVL =
+	 SUBSTRING(P.PERM_LVL,0,4)+
+	 (SELECT M.MENU_LVL FROM UPM_MENU M WHERE M.MENU_ID=TO_NUMBER('${PERM_VAL}')),
+	 PAR_PERM=(SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_VAL=
+	                          (SELECT PAR_MENU FROM UPM_MENU WHERE MENU_ID=TO_NUMBER('${PERM_VAL}'))
+	                 )
+	 WHERE (P.PERM_TYPE='1' OR P.PERM_TYPE='2') AND 
+	 P.PERM_VAL = '${PERM_VAL}'
+	 </update>
+	 <update id="updateParPerm_MYSQL" parameterType="hashmap">
+	    UPDATE UUM_PERMISSION P SET P.PERM_LVL =
+	 CONCAT_WS('',SUBSTRING(P.PERM_LVL,0,4),
+	 (SELECT M.MENU_LVL FROM UPM_MENU M WHERE M.MENU_ID=CAST('${PERM_VAL}' as unsigned int))),
+	 PAR_PERM=(SELECT PERM_ID FROM UUM_PERMISSION WHERE PERM_VAL=
+	                          (SELECT PAR_MENU FROM UPM_MENU WHERE MENU_ID=CAST('${PERM_VAL}' as unsigned int))
+	                 )
+	 WHERE (P.PERM_TYPE='1' OR P.PERM_TYPE='2') AND 
+	 P.PERM_VAL = '${PERM_VAL}'
+	 </update>
+	 <update id="updateBut" parameterType="hashmap">
+	 	UPDATE UUM_PERMISSION A SET A.PERM_LVL = 
+		(SELECT B.PERM_LVL + SUBSTRING(A.PERM_LVL,-4,4) FROM UUM_PERMISSION B WHERE B.PERM_ID=A.PAR_PERM) 
+		WHERE A.PERM_TYPE='5'
+	 </update>
+	 <update id="updateBut_MYSQL" parameterType="hashmap">
+	 	UPDATE UUM_PERMISSION A SET A.PERM_LVL = 
+		(SELECT CONCAT_WS('',B.PERM_LVL,SUBSTRING(A.PERM_LVL,-4,4)) FROM UUM_PERMISSION B WHERE B.PERM_ID=A.PAR_PERM) 
+		WHERE A.PERM_TYPE='5'
+	 </update>
+    <!--系统菜单拖动end-->
+    
+    <!--用户操作站点-->
+    <select id="opChannelQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT SID, ORG_CODE, USER_CODE, USER_SITE, CHANNELS,START_TIME,END_TIME
+		FROM UPM_OP_SITE WHERE 1 = 1
+        <if test="USER_CODE != '-1'">
+            AND USER_CODE = '${USER_CODE}'  
+        </if>
+		ORDER BY SID DESC
+    </select>
+	<insert id="opChannelInsert" parameterType="hashmap">
+		INSERT INTO UPM_OP_SITE (SID, ORG_CODE, USER_CODE, USER_SITE, CHANNELS,START_TIME,END_TIME)
+		VALUES ('${ID}', '${ORG_CODE}','${USER_CODE}','${USER_SITE}', '${CHANNELS}','${START_TIME}','${END_TIME}')
+	</insert>
+	<update id="opChannelUpdate" parameterType="hashmap">
+        UPDATE UPM_OP_SITE SET
+			USER_SITE='${USER_SITE}',
+			START_TIME='${START_TIME}',
+            END_TIME='${END_TIME}'
+        WHERE SID='${SID}'
+    </update>
+	<delete id="opChannelDelete" parameterType="int">
+        DELETE FROM UPM_OP_SITE WHERE SID='${SID}' 
+    </delete>
+    <!--用户操作站点-->
+</mapper>

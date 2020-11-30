@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>机构管理</title>
+  
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    function getClickedOrg(){
+      var node = $('#orgTree').tree('getSelected');
+      return node;
+    }
+    //修改机构信息
+    function editOrgInfo(){
+      var node = getClickedOrg();
+      if(node == null){
+        alert('提示信息','请从左侧机构树上选择需要修改的机构');
+        return;
+      }
+      $('#orgInfoForm').form('submit',{
+        req:[{
+          service:'P9999999',
+		  bex_codes:'uniParam_instOrgUpdate'
+        }],
+        success:function(){
+          alert('机构修改成功');
+		  clearAllForm();
+		  $('#orgTree').tree('reload');
+        }
+      });
+    }
+    //添加同级机构
+    function addSameLvlOrg(){
+      var node = getClickedOrg();
+	  var pNode = null;
+	  if(node!=null)
+		  pNode = $('#orgTree').tree('getParent',node.target);
+      $('#addSameLvlForm').form('submit',{
+        req:[{
+          service:'P9999999',
+		  bex_codes:'uniParam_instOrgInsert',
+          PAR_ORG:pNode==null?0:pNode['id']
+        }],
+        success:function(){
+          alert('新增同级机构成功');
+		  clearAllForm();
+          $('#orgTree').tree('reload');
+        }
+      });
+    }
+    //添加子机构
+    function addChildOrg(){
+      var node = getClickedOrg();
+      if(node == null){
+        alert('提示信息','请从左侧机构树上选择机构');
+        return;
+      }
+      $('#addChildOrgForm').form('submit',{
+        req:[{
+          service:'P9999999',
+		  bex_codes:'uniParam_instOrgInsert',
+          PAR_ORG:node['id']
+        }],
+        success:function(){
+          alert('新增子机构成功');
+		  clearAllForm();
+		  $('#orgTree').tree('reload');
+        }
+      });
+    }
+    //删除机构
+    function removeOrg(){
+      var node = getClickedOrg();
+      if(node == null){
+        alert('提示信息','请从左侧机构树上选择需要删除的机构');
+        return;
+      }
+	  confirm('删除系统机构','确定要删除吗?',function(n){
+		if(n){
+			ajaxRequest({
+			async:false,
+			req:[{
+			  service:'P9999999',
+			  bex_codes:'uniParam_instOrgDelete',
+			  ORG_CODE:node['id']
+			  }],
+			func:function(data){
+			  if(data[0]['service']['flag'] == 0){
+				alert('机构删除成功');
+				clearAllForm();
+				$('#orgTree').tree('reload');
+			  }
+			},
+			error:function(){
+			  alert('机构删除失败');
+			}
+		  });
+		}
+	  });  
+      
+    }
+    function loadOrgInfo(data){
+      var orgInfo = getOrgInfo(data['id']);
+	  clearAllForm();
+      $('#orgInfoForm').form('load',orgInfo);
+    }
+    function getOrgInfo(orgCode){
+      var org = null;
+      ajaxRequest({
+        async:false,
+        req:[
+          {service:'P9999999',bex_codes:'uniParam_instOrgQuery',ORG_CODE:orgCode}
+        ],
+        func:function(data){
+          org = data[0]['data'][0][0];
+        },
+        error:function(){
+          org = null;
+        }
+      });
+      return org;
+    }
+	function clearAllForm(){
+		$('#orgInfoForm').form('clear');
+		$('#addSameLvlForm').form('clear');
+		$('#addChildOrgForm').form('clear');
+	}
+  </script>
+</head>
+<body class="kui-layout">
+<div kui-options="region:'west'" style="width:300px" title="内部机构">
+  <ul id="orgTree" class="kui-tree" kui-options="animate:true,req:[{service:'P9999999',bex_codes:'uniParam_instOrgQuery'}],
+     conf:{
+        nodeId:'ORG_CODE',
+        nodeName:'ORG_NAME',
+        treeType:'1',
+        parNode:'PAR_ORG'
+    },
+    onClick:loadOrgInfo
+    "></ul>
+</div>
+<div kui-options="region:'center',title:''">
+  <div id="orgTabs" class="kui-tabs" kui-options="onSelect:function(title,index){
+    $(this).tabs('getTab',index).show();
+  }">
+    <div title="机构信息" kui-options="iconCls:'icon-edit'" style="padding:5px;display:none;">
+      <form id="orgInfoForm" class="kui-form">
+        <table>
+		  <tr>
+            <td>机构代码:</td>
+            <td><input class="kui-validatebox" kui-options="disabled:true" disabled name="ORG_CODE"></td>
+         
+            <td>机构名称:</td>
+            <td><input class="kui-validatebox" kui-options="required:true" name="ORG_NAME"></td>
+          </tr>
+          <tr>
+            <td>机构类型:</td>
+            <td>
+              <select class="kui-combobox" name="ORG_TYPE" kui-options="editable:false">
+                <option value="0">内部机构</option>
+                <option value="1">外部机构</option>
+              </select>
+            </td>
+          
+            <td>机构状态:</td>
+            <td>
+              <select  class="kui-combobox" name="ORG_STA" kui-options="editable:false">
+                <option value="1">启用</option>
+                <option value="2">禁用</option>
+              </select>
+            </td>
+          </tr>
+		  <tr>
+            <td>机构地址:</td>
+            <td><input class="kui-validatebox" name="ORG_ADDR"></td>
+         
+            <td>邮编:</td>
+            <td><input class="kui-validatebox" name="ZIP_CODE"></td>
+          </tr>
+          <tr>
+            <td>联系人:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_CON"></td>
+          
+            <td>电子邮箱:</td>
+            <td><input class="kui-validatebox" kui-options="" name="EMAIL"></td>
+          </tr>
+		  <tr>
+            <td>联系电话:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_TEL"></td>
+         
+            <td>传真:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_FAX"></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <a class="kui-linkbutton" href="javascript:void(0)" kui-options="iconCls:'icon-edit'" onclick="editOrgInfo()">修改</a>
+              <a class="kui-linkbutton" href="javascript:void(0)" kui-options="iconCls:'icon-remove'" onclick="removeOrg()">删除</a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div title="添加同级机构" kui-options="iconCls:'icon-add'" style="padding:5px;display:none;">
+      <form id="addSameLvlForm" class="kui-form">
+        <table>
+          <tr>
+            <td>机构代码:</td>
+            <td><input class="kui-validatebox" kui-options="required:true" name="ORG_CODE"></td>
+         
+            <td>机构名称:</td>
+            <td><input class="kui-validatebox" kui-options="required:true" name="ORG_NAME"></td>
+          </tr>
+          <tr>
+            <td>机构类型:</td>
+            <td>
+              <select class="kui-combobox" name="ORG_TYPE" kui-options="editable:false">
+                <option value="0">内部机构</option>
+                <option value="1">外部机构</option>
+              </select>
+            </td>
+          
+            <td>机构状态:</td>
+            <td>
+              <select  class="kui-combobox" name="ORG_STA" kui-options="editable:false">
+                <option value="1">启用</option>
+                <option value="2">禁用</option>
+              </select>
+            </td>
+          </tr>
+		  <tr>
+            <td>机构地址:</td>
+            <td><input class="kui-validatebox"  name="ORG_ADDR"></td>
+        
+            <td>邮编:</td>
+            <td><input class="kui-validatebox" name="ZIP_CODE"></td>
+          </tr>
+          <tr>
+            <td>联系人:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_CON"></td>
+         
+            <td>电子邮箱:</td>
+            <td><input class="kui-validatebox" kui-options="" name="EMAIL"></td>
+          </tr>
+		  <tr>
+            <td>联系电话:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_TEL"></td>
+          
+            <td>传真:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_FAX"></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <a class="kui-linkbutton" href="javascript:void(0)" kui-options="iconCls:'icon-save'" onclick="addSameLvlOrg()">确定</a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div title="添加子机构" kui-options="iconCls:'icon-add'" style="padding:5px;display:none;">
+      <form id="addChildOrgForm" class="kui-form">
+        <table>
+          <tr>
+            <td>机构代码:</td>
+            <td><input class="kui-validatebox" kui-options="required:true" name="ORG_CODE"></td>
+         
+            <td>机构名称:</td>
+            <td><input class="kui-validatebox" kui-options="required:true" name="ORG_NAME"></td>
+          </tr>
+          <tr>
+            <td>机构类型:</td>
+            <td>
+              <select class="kui-combobox" name="ORG_TYPE" kui-options="editable:false">
+                <option value="0">内部机构</option>
+                <option value="1">外部机构</option>
+              </select>
+            </td>
+        
+            <td>机构状态:</td>
+            <td>
+              <select  class="kui-combobox" name="ORG_STA" kui-options="editable:false">
+                <option value="1">启用</option>
+                <option value="2">禁用</option>
+              </select>
+            </td>
+          </tr>
+		  <tr>
+            <td>机构地址:</td>
+            <td><input class="kui-validatebox" name="ORG_ADDR"></td>
+        
+            <td>邮编:</td>
+            <td><input class="kui-validatebox" name="ZIP_CODE"></td>
+          </tr>
+          <tr>
+            <td>联系人:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_CON"></td>
+      
+            <td>电子邮箱:</td>
+            <td><input class="kui-validatebox" kui-options="" name="EMAIL"></td>
+          </tr>
+		  <tr>
+            <td>联系电话:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_TEL"></td>
+          
+            <td>传真:</td>
+            <td><input class="kui-validatebox" kui-options="" name="ORG_FAX"></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <a class="kui-linkbutton" href="javascript:void(0)" kui-options="iconCls:'icon-save'" onclick="addChildOrg()">确定</a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

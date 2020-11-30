@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<view id="OPER_POST_LVL_CHG_APP_table"  render="datagrid" title="操作员岗位级别审核" script="../../common/js/common.js">
+		<conf fit="true" req="[{service:'M0001006',AUDIT_RS:'0'}]"/>
+
+		<qry_item field="APP_DATE" title="申请日期"  type="datebox"/>
+		<qry_item field="OPER_USER" title="人员ID"  type="input"/>
+		<btn_item text="审核" service="M0000042" title="审核" handler="postLvlchgAudit" iconCls="icon-ok"  />
+        <col_item field="LOG_ID" title="流水号"  type="input"/>
+		<col_item field="APP_DATE" title="申请日期"  type="input" />
+		<col_item field="APP_TIME" title="申请时间"  type="input"/>
+		<col_item field="OPER_USER" title="人员ID"  type="input" />
+		<col_item field="OPER_NAME" title="人员名称"  type="input" />
+		<col_item field="OPER_ORG" title="所属机构"  type="input" formatter="getOrgName"/>
+		<col_item field="OPER_TYPE" title="人员类型"  type="combobox" edt_dict="USER_TYPE"
+				  edt_autoFill="true" />
+		<col_item field="OPER_STA" title="人员状态"  type="combobox" edt_dict="USER_STA"
+				  edt_autoFill="true" />
+		<col_item field="POST_ID" title="岗位编号"  type="input"  hidden="true"/>
+		<col_item field="POST_NAME" title="岗位"  type="input"  />
+		<col_item field="MAIN_POST_ID" title="主岗位编号"  type="input"  hidden="true"/>
+		<col_item field="MAIN_POST_NAME" title="主岗位名称"  type="input"  />
+		<col_item field="CHG_B_POST_LVL" title="变更前岗位级别"  type="combobox"  edt_dict="POST_LVL"/>
+		<col_item field="CHG_A_POST_LVL" title="变更后岗位级别"  type="combobox"  edt_dict="POST_LVL"/>
+	</view>
+
+	<view id="MAKET_SUBSCRBIE_SET_table"  render="datagrid" title="行情订阅信息" script="../../common/js/common.js">
+		<conf fit="true" req="[{service:'M0001010'}]"/>
+		<qry_item field="SS_TYPE" title="行情类型"  type="combobox" edt_dict="SS_TYPE"/>
+		<qry_item field="SS_MARKET" title="市场代码"  type="combobox" edt_dict="SS_MARKET"/>
+		<qry_item field="STK_CODE" title="股票代码"  type="input"/>
+		<btn_item text="新增" service="M0001011" title="新增行情订阅信息" handler="subscrbie_add" iconCls="icon-add" />
+		<btn_item text="修改" service="M0001012" title="修改行情订阅信息" handler="subscrbie_edit" iconCls="icon-edit"/>
+		<btn_item text="删除" service="M0001013" title="删除行情订阅信息"  handler="commonDelete" iconCls="icon-remove"  />
+		<col_item field="SS_TYPE" title="行情类型"  type="combobox" edt_dict="SS_TYPE"/>
+		<col_item field="SS_MARKET" title="市场代码"  type="combobox" edt_dict="SS_MARKET"/>
+		<col_item field="STK_CODE" title="股票代码"  type="input"/>
+		<col_item field="STK_NAME" title="股票名称"  type="input"/>
+		<col_item field="SS_CODE" title="订阅代码"  type="input"/>
+		<col_item field="REMARK" title="备注"  type="input"/>
+	</view>
+
+	<!--序列号配置信息-->
+	<view id="MTS_SERIAL_CONF_table"  render="datagrid" title="序列号配置信息" script="../../common/js/common.js">
+		<conf fit="true" req="[{service:'M0001014'}]"/>
+		<qry_item field="SERIAL_TYPE" title="序列类型"  type="combobox" edt_dict="SERIAL_TYPE"/>
+		<qry_item field="ORG_CODE" title="机构名称"  edt_width="140" width="100"
+				  type="combotree"
+				  edt_req="[{service:'P0001031'}]"
+				  edt_panelWidth="250"
+				  edt_panelHeight="200"
+				  edt_nodeId="ORG_CODE"
+				  edt_nodeName="ORG_CODE_NAME"
+				  edt_parNode="PAR_ORG"
+				  edt_treeType="1"
+		/>
+		<btn_item text="新增" service="M0001015" title="新增序列号配置信息" handler="commonAdd" iconCls="icon-add" />
+		<btn_item text="修改" service="M0001016" title="修改序列号配置信息" handler="commonModify" iconCls="icon-edit"/>
+		<btn_item text="删除" service="M0001017" title="删除序列号配置信息"  handler="commonDelete" iconCls="icon-remove"  />
+		<col_item field="SERIAL_TYPE" title="序列类型"  type="combobox" edt_dict="SERIAL_TYPE" edt_width="140" width="150"
+				  edt_height="200" edt_required="true" edit_flag="1"/>
+		<col_item field="ORG_CODE" title="机构名称" edt_required="true" edt_width="140" edit_flag="1"
+				  type="combotree"
+				  edt_req="[{service:'P0001031'}]"
+				  edt_panelWidth="250"
+				  edt_panelHeight="200"
+				  edt_nodeId="ORG_CODE"
+				  edt_nodeName="ORG_CODE_NAME"
+				  edt_parNode="PAR_ORG"
+				  edt_treeType="1"
+		/>
+		<col_item field="MIN_VAL_INT64" title="最小值"  type="input" edt_validType="zint[19]"  edt_required="true" edt_width="140" />
+		<col_item field="MAX_VAL_INT64" title="最大值"  type="input" edt_validType="zint[19]"  edt_required="true" edt_width="140" />
+		<col_item field="LAST_VAL_INT64" title="当前值"  type="input" edt_validType="zint[19]"  edt_required="true" edt_width="140" />
+		<col_item field="PREFIX" title="前缀"  type="input" edt_validType="zint[8]" edt_required="true" edt_width="140" edit_flag="1"/>
+		<col_item field="ACCT_LEN" title="长度"  type="input" edt_validType="zint[6]" edt_required="true" edt_width="140"/>
+		<col_item field="REMARK" title="备注"  type="input" edt_width="140"/>
+	</view>
+</views>

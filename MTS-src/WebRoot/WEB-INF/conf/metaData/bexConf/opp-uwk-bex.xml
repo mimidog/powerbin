@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--流程定义管理bex设置   start-->
+    <bex bex_code="UWK_reProcdefInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="reProcdefInsert">
+    </bex>
+    <bex bex_code="UWK_reProcdefDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="reProcdefDelete">
+    </bex>
+    <bex bex_code="UWK_reProcdefUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="reProcdefUpdate">
+    </bex>
+    <bex bex_code="UWK_reProcdefQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="reProcdefQuery">
+    </bex>
+    <!--流程定义管理bex设置   end-->
+
+    <!--流程实例管理bex设置   start-->
+    <bex bex_code="UWK_ruExecutionInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="ruExecutionInsert">
+    </bex>
+    <bex bex_code="UWK_ruExecutionDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="ruExecutionDelete">
+    </bex>
+    <bex bex_code="UWK_ruExecutionUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="ruExecutionUpdate">
+    </bex>
+    <bex bex_code="UWK_ruExecutionQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="ruExecutionQuery">
+    </bex>
+    <!--流程实例管理bex设置   end-->
+
+    <!--流程部署管理bex设置   start-->
+    <bex bex_code="UWK_reDeploymentInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="reDeploymentInsert">
+    </bex>
+    <bex bex_code="UWK_reDeploymentDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="reDeploymentDelete">
+    </bex>
+    <bex bex_code="UWK_reDeploymentUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="reDeploymentUpdate">
+    </bex>
+    <bex bex_code="UWK_reDeploymentQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="reDeploymentQuery">
+    </bex>
+    <!--流程部署管理bex设置   end-->
+    <bex bex_code="UWK_ruTaskQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="ruTaskQuery">
+    </bex>
+
+    <bex bex_code="UWK_hiTaskinstQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="hiTaskinstQuery">
+    </bex>
+
+
+</bexs>
+ 

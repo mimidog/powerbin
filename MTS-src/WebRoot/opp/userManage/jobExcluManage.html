@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>岗位互斥设置</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+    function jobExclu(){
+      var row = $('#UUM_jobExclu').datagrid('getSelected');
+      if (row == null) {
+        alert('请选择一个岗位！');
+        return;
+      }else{
+        var POST_ID = row['POST_ID'];
+        var opt = $('#UUM_ExcluJobInfo').data().datagrid.options;
+        opt.req = [$.extend(opt.req[0], {POST_ID:POST_ID})];
+        $('#UUM_ExcluJobInfo').datagrid('reload');
+        $('#jobExcluManage').dialog('open');
+      }
+    }
+    function addExcluJob(){
+     var row = $('#UUM_jobExclu').datagrid('getSelected');
+     var POST_ID = row['POST_ID'];
+     using('dialog',function(){
+    	var d=$('#excluJobSetDialog');
+         d.dialog({
+          title:'互斥岗位设置',
+          width:500,
+          height:150,
+          modal:true,
+          buttons:[
+            {
+              text:'确定',
+              iconCls:'icon-ok',
+              handler:function(){
+                var POST_EXCLU_ID = $('#POST_IDS').combo('getValues');
+                if(POST_EXCLU_ID[0]==null || POST_EXCLU_ID[0]==''){
+                  alert('请选择互斥岗位！');
+                  return;
+                }else{
+                    d.find(".l-btn").linkbutton("disable");
+                  var req = [];
+                  for(var i=0; i<POST_EXCLU_ID.length;i++){
+                    req[i] = {
+                      service:'P0001062',
+                      POST_EXCLU_ID:POST_EXCLU_ID[i],
+                      POST_ID:POST_ID
+                    };
+                  }
+                  ajaxRequest({
+                    req:req,
+                    func:function(data){
+                        alert('互斥岗位设置成功！');
+                        d.find(".l-btn").linkbutton("enable");
+                        $('#POST_IDS').combogrid('clear');
+                        $('#UUM_ExcluJobInfo').datagrid('reload');
+                        $('#excluJobSetDialog').dialog('close');
+                    },
+                      error:function(e){
+                          alert('互斥岗位设置失败！');
+                          d.find(".l-btn").linkbutton("enable");
+                      }
+                  })
+
+                }
+              }
+            },
+            {
+              text:'取消',
+              iconCls:'icon-cancel',
+              handler:function(){
+                $('#excluJobSetDialog').dialog('close');
+              }
+            }
+          ]
+        })
+      })
+     using('combogrid',function(){
+       $('#POST_IDS').combogrid({
+         panelWidth:350,
+         panelHeight:300,
+         singleSelect:false,
+         multiple:true,
+         idField: 'POST_ID',
+         textField: 'POST_NAME',
+         req:[{ service:'P0001066',POST_ID:POST_ID}],
+         queryCols:[{
+             'text':'查询',
+             'icon':'icon-search',
+             collapsed:true,
+             cols:[{
+               title:'岗位名称',
+               field:'POST_NAME',
+               editor:{
+                 type:'text',
+                 options:{
+               	  validType:'val[0,64]'
+                 }
+               }
+             }]
+         }],
+         columns: [[
+           {checkbox:true,width:50},
+           {field:'POST_ID',title:'岗位编号',sortType:'number',width:100},
+           {field:'POST_NAME',title:'岗位名称',width:100}]],
+         onClear:function(){
+        	 $('#POST_IDS').combogrid('grid').datagrid("clearSelections");
+         },
+		 onShowPanel:function(){
+			$(this).combogrid('grid').datagrid("reload");
+		 }
+       });
+         $('#POST_IDS').combogrid('clear');
+     });
+
+
+    }
+    function delExcluJob(){
+      var row = $('#UUM_ExcluJobInfo').datagrid('getSelections');
+      if(row.length==0){
+        alert('请选择要删除的数据！');
+      }else{
+        var req = [];
+        for(var i=0;i<row.length;i++){
+          var POST_ID = row[i]['POST_ID'];
+          var POST_EXCLU_ID = row[i]['POST_EXCLU_ID'];
+          req[i] = {
+            service:'P0001064',
+            POST_ID:POST_ID,
+            POST_EXCLU_ID:POST_EXCLU_ID
+          };
+        }
+        confirm('提示信息','是否确认删除?',function(isOK){
+          if(isOK){
+              var d=$('#jobExcluManage');
+              d.find(".l-btn").linkbutton("disable");
+            ajaxRequest({
+              req:req,
+              error:function(){
+                  alert('互斥岗位删除失败！');
+                  d.find(".l-btn").linkbutton("enable");
+              },
+              func:function(data){
+                  alert('互斥岗位删除成功！');
+                  d.find(".l-btn").linkbutton("enable");
+                  $('#UUM_ExcluJobInfo').datagrid('reload');
+              }
+            });
+          }
+        });
+      }
+    }
+  </script>
+</head>
+<body>
+<table id="UUM_jobExclu" title="岗位互斥设置" class="kui-datagrid"></table>
+
+<div id="jobExcluManage" class="kui-dialog" style="width:650px;height:300px"
+     kui-options="title:'互斥岗位设置',closed:true,iconCls:'icon-regist',modal:true">
+  <table id="UUM_ExcluJobInfo" class="kui-datagrid" ></table>
+</div>
+
+<div id="excluJobSetDialog" style="display: none;">
+  <table width="100%">
+    <tr>
+      <td class="form-label" style="width: 100px">岗位名称：</td>
+      <td style="width: 350px">
+        <select name="POST_IDS" id="POST_IDS" style="width:150px"> </select>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

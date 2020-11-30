@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>window - jQuery kjaxUI帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>文件上传</h3>
+
+<p></p>
+
+<img src="images/fileupload.png"/>
+
+
+
+<h4>依赖关系</h4>
+
+<ul>
+	<li>无</li>
+</ul>
+
+
+
+<h4>使用方法</h4>
+<xmp class="code" >
+<input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"></td>
+<button class="button" id="buttonUpload" onclick="return ajaxFileUpload();">Upload</button></td>
+function ajaxFileUpload()
+	{
+		$.ajaxFileUpload
+		(
+			{
+				url:'xxx',
+				secureuri:false,
+				fileElementId:'fileToUpload',
+				dataType: 'json',
+				beforeSend:function()
+				{
+					$("#loading").show();
+				},
+				complete:function()
+				{
+					$("#loading").hide();
+				},				
+				success: function (data, status)
+				{
+					alert(data)
+				},
+				error: function (data, status, e)
+				{
+					alert(e);
+				}
+			}
+		)
+		return false;
+	}
+</xmp>
+
+<h4>属性解释</h4>
+
+<p></p>
+
+<table class="doc-table">
+
+<tr>
+
+<th style="width:140px"><strong>名称</strong></th>
+<th style="width:110px"><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+
+
+
+</tr>
+
+<tr>
+
+<td>url</td>
+
+<td>string（字符串）</td>
+
+<td>表示处理文件上传操作的文件路径</td>
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>fileElementId</td>
+
+<td>string（字符串）</td>
+
+<td>表示文件域ID。如上：fileToUpload</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>secureuri</td>
+
+<td>boolean（布尔型）</td>
+
+
+
+<td>是否启用安全提交</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>dataType</td>
+
+<td>string（字符串）</td>
+
+<td>返回数据</td>
+
+<td>可取值json,xml,script,html</td>
+
+</tr>
+
+<tr>
+
+<td>success</td>
+
+
+
+<td></td>
+
+<td>提交成功后的回调函数。</td>
+
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>error</td>
+
+<td></td>
+
+<td>发生错误时的回调函数</td>
+
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>complete</td>
+
+<td></td>
+
+<td>无论成功与否的回调函数。</td>
+
+<td></td>
+
+</tr>
+
+
+	</body>
+</html>

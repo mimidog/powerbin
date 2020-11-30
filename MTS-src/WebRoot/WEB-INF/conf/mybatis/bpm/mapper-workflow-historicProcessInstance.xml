@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricProcessInstanceEntity">
+
+  <!-- HISTORIC PROCESS INSTANCE INSERT -->
+  <insert id="BpmHistoricProcessInstanceInsert" parameterType="hashmap">
+      insert into UWK_HI_PROCINST (
+        HI_PROCINST_ID,
+        PROC_INST_ID,
+        BUSINESS_KEY,
+        PROC_DEF_ID,
+        START_TIME,
+        END_TIME,
+        DURATION,
+        START_USER_ID,
+        START_ACT_ID,
+        END_ACT_ID,
+        SUPER_PROCESS_INSTANCE_ID,
+        DELETE_REASON,
+        REMIND_STATE,
+        CREATE_TIME
+      ) values (
+        #{processInstance.id ,jdbcType=VARCHAR},
+        #{processInstance.processInstanceId, jdbcType=VARCHAR},
+        #{processInstance.businessKey, jdbcType=VARCHAR},
+        #{processInstance.processDefinitionId, jdbcType=VARCHAR},
+        #{processInstance.startTime, jdbcType=TIMESTAMP},
+        #{processInstance.endTime, jdbcType=TIMESTAMP},
+        #{processInstance.durationInMillis ,jdbcType=BIGINT},
+        #{processInstance.startUserId, jdbcType=VARCHAR},
+        #{processInstance.startActivityId, jdbcType=VARCHAR},
+        #{processInstance.endActivityId, jdbcType=VARCHAR},
+        #{processInstance.superProcessInstanceId, jdbcType=VARCHAR},
+        #{processInstance.deleteReason, jdbcType=VARCHAR},
+        #{processInstance.remindState, jdbcType=INTEGER},
+        #{processInstance.createTime, jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <!-- HISTORIC PROCESS INSTANCE UPDATE -->
+  
+  <update id="BpmHistoricProcessInstanceUpdate" parameterType="hashmap">
+    update UWK_HI_PROCINST set
+      PROC_DEF_ID = #{processInstance.processDefinitionId, jdbcType=VARCHAR},
+      BUSINESS_KEY = #{processInstance.businessKey, jdbcType=VARCHAR},
+      START_TIME = #{processInstance.startTime, jdbcType=TIMESTAMP},
+      END_TIME = #{processInstance.endTime, jdbcType=TIMESTAMP},
+      DURATION = #{processInstance.durationInMillis ,jdbcType=BIGINT},
+      END_ACT_ID = #{processInstance.endActivityId, jdbcType=VARCHAR},
+      DELETE_REASON = #{processInstance.deleteReason, jdbcType=VARCHAR},
+      LAST_TASK_ID = #{processInstance.lastTaskId, jdbcType=VARCHAR},
+      LAST_TASK_ASSIGNEE = #{processInstance.lastTaskAssignee, jdbcType=VARCHAR},
+      LAST_TASK_TIME = #{processInstance.lastTaskTime, jdbcType=TIMESTAMP},
+      REMIND_STATE = #{processInstance.remindState, jdbcType=INTEGER}
+    where HI_PROCINST_ID = #{processInstance.id}
+  </update>
+
+  <!-- HISTORIC PROCESS INSTANCE DELETE -->
+  
+  <delete id="BpmHistoricProcessInstanceDelete">
+    delete from UWK_HI_PROCINST where PROC_INST_ID = #{processInstanceId}
+  </delete>
+  
+  <!-- HISTORIC PROCESS INSTANCE RESULT MAP -->
+  
+  <resultMap id="historicProcessInstanceResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricProcessInstanceEntity">
+    <id property="id" column="HI_PROCINST_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY" jdbcType="VARCHAR"/>
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION" jdbcType="BIGINT" />
+    <result property="startUserId" column="START_USER_ID" jdbcType="VARCHAR" />
+    <result property="startActivityId" column="START_ACT_ID" jdbcType="VARCHAR" />
+    <result property="endActivityId" column="END_ACT_ID" jdbcType="VARCHAR" />
+    <result property="superProcessInstanceId" column="SUPER_PROCESS_INSTANCE_ID" jdbcType="VARCHAR" />
+    <result property="deleteReason" column="DELETE_REASON" jdbcType="VARCHAR" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+    <result property="lastTaskId" column="LAST_TASK_ID" jdbcType="VARCHAR" />
+    <result property="lastTaskAssignee" column="LAST_TASK_ASSIGNEE" jdbcType="VARCHAR" />
+    <result property="lastTaskTime" column="LAST_TASK_TIME" jdbcType="TIMESTAMP" />
+    <result property="remindState" column="REMIND_STATE" jdbcType="INTEGER" />
+    <association property="processDefinition" column="PROCDEF_ID" javaType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity">
+    	<result property="name" column="DEF_NAME"  jdbcType="VARCHAR" />
+    	<result property="key" column="DEF_KEY"  jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  
+  <resultMap id="historicProcessInstanceAndVariablesResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricProcessInstanceEntity">
+    <id property="id" column="HI_PROCINST_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY" jdbcType="VARCHAR"/>
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION" jdbcType="BIGINT" />
+    <result property="startUserId" column="START_USER_ID" jdbcType="VARCHAR" />
+    <result property="startActivityId" column="START_ACT_ID" jdbcType="VARCHAR" />
+    <result property="endActivityId" column="END_ACT_ID" jdbcType="VARCHAR" />
+    <result property="superProcessInstanceId" column="SUPER_PROCESS_INSTANCE_ID" jdbcType="VARCHAR" />
+    <result property="deleteReason" column="DELETE_REASON" jdbcType="VARCHAR" />
+    <result property="lastTaskId" column="LAST_TASK_ID" jdbcType="VARCHAR" />
+    <result property="lastTaskAssignee" column="LAST_TASK_ASSIGNEE" jdbcType="VARCHAR" />
+    <result property="lastTaskTime" column="LAST_TASK_TIME" jdbcType="TIMESTAMP" />
+    <result property="remindState" column="REMIND_STATE" jdbcType="INTEGER" />
+    <association property="processDefinition" column="PROCDEF_ID" javaType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity">
+    	<result property="name" column="DEF_NAME"  jdbcType="VARCHAR" />
+    	<result property="key" column="DEF_KEY"  jdbcType="VARCHAR" />
+    </association>
+    <association property="historicProcessInstanceDetail" column="DETAIL_ID" javaType="com.szkingdom.frame.bpm.kworkflow.entity.HistoricProcessInstanceDetailEntity">
+    	<id property="processInstanceId" column="DETAIL_ID" jdbcType="VARCHAR"/>
+    	<result property="attribute1" column="DETAIL_ATTRI1"  jdbcType="VARCHAR" />
+    	<result property="attribute2" column="DETAIL_ATTRI2"  jdbcType="VARCHAR" />
+    	<result property="attribute3" column="DETAIL_ATTRI3"  jdbcType="VARCHAR" />
+    	<result property="attribute4" column="DETAIL_ATTRI4"  jdbcType="VARCHAR" />
+    	<result property="attribute5" column="DETAIL_ATTRI5"  jdbcType="VARCHAR" />
+    	<result property="attribute6" column="DETAIL_ATTRI6"  jdbcType="VARCHAR" />
+    	<result property="attribute7" column="DETAIL_ATTRI7"  jdbcType="VARCHAR" />
+    	<result property="attribute8" column="DETAIL_ATTRI8"  jdbcType="VARCHAR" />
+    	<result property="attribute9" column="DETAIL_ATTRI9"  jdbcType="VARCHAR" />
+    	<result property="attribute10" column="DETAIL_ATTRI10"  jdbcType="VARCHAR" />
+    	<result property="attribute11" column="DETAIL_ATTRI11"  jdbcType="VARCHAR" />
+    	<result property="attribute12" column="DETAIL_ATTRI12"  jdbcType="VARCHAR" />
+    	<result property="attribute13" column="DETAIL_ATTRI13"  jdbcType="VARCHAR" />
+    	<result property="attribute14" column="DETAIL_ATTRI14"  jdbcType="VARCHAR" />
+    	<result property="attribute15" column="DETAIL_ATTRI15"  jdbcType="VARCHAR" />
+    </association>
+    <collection property="queryVariables" column="EXECUTION_ID" javaType="ArrayList" ofType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricVariableInstanceEntity">
+      <id property="id" column="VAR_ID"/>
+      <result property="name" column="VAR_NAME" javaType="String" jdbcType="VARCHAR" />
+      <result property="variableType" column="VAR_TYPE" typeHandler="VariableTypeTypeHandler"/>
+      <result property="revision" column="VAR_REV" jdbcType="INTEGER" />
+      <result property="processInstanceId" column="VAR_PROC_INST_ID" jdbcType="VARCHAR" />
+      <result property="executionId" column="VAR_EXECUTION_ID" jdbcType="VARCHAR" />
+      <result property="taskId" column="VAR_TASK_ID" jdbcType="VARCHAR" />
+      <result property="byteArrayRef" column="VAR_BYTEARRAY_ID" typeHandler="ByteArrayRefTypeHandler"/>
+      <result property="doubleValue" column="VAR_DOUBLE" jdbcType="DOUBLE" />
+      <result property="textValue" column="VAR_TEXT" jdbcType="VARCHAR" />
+      <result property="textValue2" column="VAR_TEXT2" jdbcType="VARCHAR" />
+      <result property="longValue" column="VAR_LONG" jdbcType="BIGINT" />
+    </collection>
+  </resultMap>
+
+  <!-- HISTORIC PROCESS INSTANCE SELECT -->
+  
+  <select id="BpmHistoricProcessInstanceSelect" resultMap="historicProcessInstanceResultMap">
+    select * from UWK_HI_PROCINST where PROC_INST_ID = #{processInstanceId}
+  </select>
+
+  <select id="BpmHistoricProcessInstanceIdsSelectByProcessDefinitionId" parameterType="hashmap" resultType="string">
+    select HI_PROCINST_ID
+    from UWK_HI_PROCINST 
+    where PROC_DEF_ID = #{processDefinitionId}
+  </select>
+  
+
+  <select id="BpmHistoricProcessInstancesSelectByQueryCriteria" parameterType="hashmap" resultMap="historicProcessInstanceResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    , DEF.PROCDEF_NAME  as DEF_NAME, DEF.PROCDEF_KEY as DEF_KEY
+    <include refid="selectHistoricProcessInstancesByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmHistoricProcessInstanceSelectCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select count(RES.HI_PROCINST_ID)
+    <include refid="selectHistoricProcessInstancesByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectHistoricProcessInstancesByQueryCriteriaSql">  
+    from UWK_HI_PROCINST RES
+    <include refid="commonSelectHistoricProcessInstancesByQueryCriteriaSql"/>
+  </sql>
+  
+  <select id="BpmHistoricProcessInstancesSelectWithVariablesByQueryCriteria" parameterType="hashmap" resultMap="historicProcessInstanceAndVariablesResultMap">
+  		<include refid="bpm.limitBefore"/>
+	    select distinct RES.*
+	    <if test="criteria.queryVariableValues != null and !criteria.registBusiness"> ,
+	    VAR.HI_VARINST_ID as VAR_ID,
+        VAR.HVNAME        as VAR_NAME,
+        VAR.VAR_TYPE      as VAR_TYPE,
+        VAR.REV           as VAR_REV,
+        VAR.PROC_INST_ID  as VAR_PROC_INST_ID,
+        VAR.EXECUTION_ID  as VAR_EXECUTION_ID,
+        VAR.TASK_ID       as VAR_TASK_ID,
+        VAR.DOUBLETYPE    as VAR_DOUBLE,
+        VAR.TEXTTYPE      as VAR_TEXT,
+        VAR.TEXT2TYPE     as VAR_TEXT2,
+        VAR.LONGTYPE      as VAR_LONG
+	    </if>
+	    <if test="criteria.queryVariableValues != null and criteria.registBusiness">
+    		,DETAIL.PROC_INST_ID DETAIL_ID,DETAIL.ATTR_1 AS DETAIL_ATTRI1,DETAIL.ATTR_2 AS DETAIL_ATTRI2,DETAIL.ATTR_3 AS DETAIL_ATTRI3,
+            DETAIL.ATTR_4 AS DETAIL_ATTRI4,DETAIL.ATTR_5 AS DETAIL_ATTRI5,DETAIL.ATTR_6 AS DETAIL_ATTRI6,DETAIL.ATTR_7 AS DETAIL_ATTRI7,
+            DETAIL.ATTR_8 AS DETAIL_ATTRI8,DETAIL.ATTR_9 AS DETAIL_ATTRI9,DETAIL.ATTR_10 AS DETAIL_ATTRI10,DETAIL.ATTR_11 AS DETAIL_ATTRI11,
+    		DETAIL.ATTR_12 AS DETAIL_ATTRI12,DETAIL.ATTR_13 AS DETAIL_ATTRI13,DETAIL.ATTR_14 AS DETAIL_ATTRI14,DETAIL.ATTR_15 AS DETAIL_ATTRI15,
+    		DEF.PROCDEF_NAME  AS DEF_NAME,DEF.PROCDEF_KEY as DEF_KEY
+    	</if>
+    	<include refid="bpm.limitBetween"/>
+	    <include refid="selectHistoricProcessInstancesWithVariablesByQueryCriteriaSql"/> 
+    	<include refid="bpm.orderBy"/>
+    	<include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmHistoricProcessInstancesSelectWithVariablesByQueryCriteria_MSSQL" parameterType="hashmap" resultMap="historicProcessInstanceAndVariablesResultMap">
+    <include refid="bpm.limitBefore"/>
+    select distinct TEMPRES_ID as HI_PROCINST_ID,TEMPRES_PROC_INST_ID as PROC_INST_ID,
+    TEMPRES_BUSINESS_KEY as BUSINESS_KEY, TEMPRES_PROC_DEF_ID as PROC_DEF_ID,
+    TEMPRES_START_TIME as START_TIME, TEMPRES_END_TIME as END_TIME,
+    TEMPRES_DURATION as DURATION, TEMPRES_START_USER_ID as START_USER_ID, TEMPRES_START_ACT_ID as START_ACT_ID,
+    TEMPRES_END_ACT_ID as END_ACT_ID, TEMPRES_SUPER_PROCESS_INSTANCE_ID as SUPER_PROCESS_INSTANCE_ID,
+    TEMPRES_DELETE_REASON as DELETE_REASON
+	<if test="criteria.includeProcessVariables and !criteria.registBusiness">
+	,TEMPVAR_ID as VAR_ID, TEMPVAR_NAME as VAR_NAME, TEMPVAR_TYPE as VAR_TYPE, TEMPVAR_REV as VAR_REV,
+    TEMPVAR_PROC_INST_ID as VAR_PROC_INST_ID, TEMPVAR_EXECUTION_ID as VAR_EXECUTION_ID, TEMPVAR_TASK_ID as VAR_TASK_ID,
+    TEMPVAR_BYTEARRAY_ID as VAR_BYTEARRAY_ID, TEMPVAR_DOUBLE as VAR_DOUBLE, 
+    TEMPVAR_TEXT as VAR_TEXT, TEMPVAR_TEXT2 as VAR_TEXT2, TEMPVAR_LONG as VAR_LONG
+	</if>
+	<if test="criteria.queryVariableValues != null and criteria.registBusiness">
+    		,DETAIL_ID, DETAIL_ATTRI1, DETAIL_ATTRI2, DETAIL_ATTRI3,
+             DETAIL_ATTRI4, DETAIL_ATTRI5, DETAIL_ATTRI6, DETAIL_ATTRI7,
+             DETAIL_ATTRI8, DETAIL_ATTRI9, DETAIL_ATTRI10, DETAIL_ATTRI11,
+    		 DETAIL_ATTRI12, DETAIL_ATTRI13, DETAIL_ATTRI14, DETAIL_ATTRI15,
+    		 DEF_NAME, DEF_KEY
+    </if>
+    <include refid="bpm.limitOuterJoinBetween"/>
+    RES.HI_PROCINST_ID as TEMPRES_ID, RES.BUSINESS_KEY as TEMPRES_BUSINESS_KEY,
+    RES.PROC_DEF_ID as TEMPRES_PROC_DEF_ID, RES.PROC_INST_ID as TEMPRES_PROC_INST_ID, 
+    RES.START_TIME as TEMPRES_START_TIME, RES.END_TIME as TEMPRES_END_TIME,
+    RES.DURATION as TEMPRES_DURATION, RES.START_USER_ID as TEMPRES_START_USER_ID,
+    RES.START_ACT_ID as TEMPRES_START_ACT_ID, RES.END_ACT_ID as TEMPRES_END_ACT_ID,
+    RES.SUPER_PROCESS_INSTANCE_ID as TEMPRES_SUPER_PROCESS_INSTANCE_ID, RES.DELETE_REASON as TEMPRES_DELETE_REASON
+	<if test="criteria.includeProcessVariables and !criteria.registBusiness">
+    ,VAR.HI_VARINST_ID as TEMPVAR_ID, VAR.HVNAME as TEMPVAR_NAME, VAR.VAR_TYPE as TEMPVAR_TYPE, VAR.REV as TEMPVAR_REV,
+    VAR.PROC_INST_ID as TEMPVAR_PROC_INST_ID, VAR.EXECUTION_ID as TEMPVAR_EXECUTION_ID, VAR.TASK_ID as TEMPVAR_TASK_ID,
+    VAR.BYTEARRAY_ID as TEMPVAR_BYTEARRAY_ID, VAR.DOUBLETYPE as TEMPVAR_DOUBLE, 
+    VAR.TEXTTYPE as TEMPVAR_TEXT, VAR.TEXT2TYPE as TEMPVAR_TEXT2, VAR.LONGTYPE as TEMPVAR_LONG
+	</if>
+	<if test="criteria.queryVariableValues != null and criteria.registBusiness">
+    		,DETAIL.PROC_INST_ID DETAIL_ID,DETAIL.ATTR_1 AS DETAIL_ATTRI1,DETAIL.ATTR_2 AS DETAIL_ATTRI2,DETAIL.ATTR_3 AS DETAIL_ATTRI3,
+            DETAIL.ATTR_4 AS DETAIL_ATTRI4,DETAIL.ATTR_5 AS DETAIL_ATTRI5,DETAIL.ATTR_6 AS DETAIL_ATTRI6,DETAIL.ATTR_7 AS DETAIL_ATTRI7,
+            DETAIL.ATTR_8 AS DETAIL_ATTRI8,DETAIL.ATTR_9 AS DETAIL_ATTRI9,DETAIL.ATTR_10 AS DETAIL_ATTRI10,DETAIL.ATTR_11 AS DETAIL_ATTRI11,
+    		DETAIL.ATTR_12 AS DETAIL_ATTRI12,DETAIL.ATTR_13 AS DETAIL_ATTRI13,DETAIL.ATTR_14 AS DETAIL_ATTRI14,DETAIL.ATTR_15 AS DETAIL_ATTRI15,
+    		DEF.PROCDEF_NAME  AS DEF_NAME,DEF.PROCDEF_KEY as DEF_KEY
+    </if>
+    <include refid="selectHistoricProcessInstancesWithVariablesByQueryCriteriaSql"/> 
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <sql id="selectHistoricProcessInstancesWithVariablesByQueryCriteriaSql">  
+    from UWK_HI_PROCINST RES
+    <if test="criteria.includeProcessVariables and !criteria.registBusiness">
+      left outer join UWK_HI_VARINST VAR ON RES.PROC_INST_ID = VAR.EXECUTION_ID and VAR.TASK_ID is null
+    </if>
+    <include refid="commonSelectHistoricProcessInstancesByQueryCriteriaSql"/>
+  </sql>
+  
+  <sql id="commonSelectHistoricProcessInstancesByQueryCriteriaSql">
+    <!-- <if test="criteria.processKeyNotIn != null || criteria.processDefinitionKey != null || criteria.processDefinitionNameLike !=null || criteria.registBusiness"> -->
+      inner join UWK_RE_PROCDEF DEF on RES.PROC_DEF_ID = DEF.PROCDEF_ID
+    <!-- </if> -->
+    <if test="criteria.includeProcessVariables and criteria.registBusiness">
+      inner join UWK_HI_PROCDETAIL DETAIL on RES.PROC_INST_ID = DETAIL.PROC_INST_ID
+    </if>
+    
+    <if test="criteria.queryVariableValues != null and !criteria.registBusiness">
+    <foreach collection="criteria.queryVariableValues" index="index" item="queryVariableValue">
+      inner join UWK_HI_VARINST  A${index} on RES.PROC_INST_ID = A${index}.PROC_INST_ID
+    </foreach>
+    </if>    
+    
+    <where>
+      <if test="criteria.processInstanceId != null">
+        RES.PROC_INST_ID = #{criteria.processInstanceId}
+      </if>
+      <if test="criteria.processInstanceIds != null and !criteria.processInstanceIds.isEmpty()">
+        and RES.PROC_INST_ID in
+        <foreach item="item" index="index" collection="criteria.processInstanceIds" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="criteria.processDefinitionId != null">
+        and RES.PROC_DEF_ID = #{criteria.processDefinitionId}
+      </if>
+      <choose>
+      	<when test="criteria.ignoredCase">
+		      <if test="criteria.processDefinitionKey != null">
+		        and LOWER(DEF.PROCDEF_KEY) = LOWER(#{criteria.processDefinitionKey})
+		      </if>
+		      <if test="criteria.processDefinitionNameLike != null">
+		        and LOWER(DEF.PROCDEF_NAME) like LOWER('%${criteria.processDefinitionNameLike}%')
+		      </if>   
+		      <if test="criteria.businessKey != null">
+		        and LOWER(RES.BUSINESS_KEY) = LOWER(#{criteria.businessKey})
+		      </if>
+	     </when>
+	     <otherwise>
+		     <if test="criteria.processDefinitionKey != null">
+		        and DEF.PROCDEF_KEY = #{criteria.processDefinitionKey}
+		      </if>
+		      <if test="criteria.processDefinitionNameLike != null">
+		        and DEF.PROCDEF_NAME like '%${criteria.processDefinitionNameLike}%'
+		      </if>   
+		      <if test="criteria.businessKey != null">
+		        and RES.BUSINESS_KEY = #{criteria.businessKey}
+		      </if>
+	     </otherwise>
+	  </choose>
+
+      <if test="criteria.startedBefore != null">
+        and RES.START_TIME &lt;= #{criteria.startedBefore}
+      </if>
+      <if test="criteria.startedAfter != null">
+        and RES.START_TIME &gt;= #{criteria.startedAfter}
+      </if>
+      <if test="criteria.finishedBefore != null">
+        and RES.END_TIME &lt;= #{criteria.finishedBefore}
+      </if>
+      <if test="criteria.finishedAfter != null">
+        and RES.END_TIME &gt;= #{criteria.finishedAfter}
+      </if>
+      <if test="criteria.processKeyNotIn != null">
+        <foreach collection="criteria.processKeyNotIn" index="index" item="procDefKey">
+        and DEF.PROCDEF_KEY not like '%${procDefKey}%'
+      </foreach>
+      </if>
+      
+      <!-- DEPRECATED : TO BE REMOVED IN 5.11 -->
+      <if test="criteria.startDateOn">
+        and RES.START_TIME &gt;= #{criteria.startDateOnBegin}
+        and RES.START_TIME &lt;= #{criteria.startDateOnEnd}
+      </if>
+      <!-- DEPRECATED : TO BE REMOVED IN 5.11 -->
+      <if test="criteria.finishDateOn">
+        and RES.END_TIME &gt;= #{criteria.finishDateOnBegin}
+        and RES.END_TIME &lt;= #{criteria.finishDateOnEnd}
+      </if>
+      <!-- DEPRECATED : TO BE REMOVED IN 5.11 -->
+      <if test="criteria.finishDateBy">
+        and RES.END_TIME &lt;= #{criteria.finishDateBy}
+      </if>
+      <!-- DEPRECATED : TO BE REMOVED IN 5.11 -->
+      <if test="criteria.startDateBy">
+        and RES.START_TIME &gt;= #{criteria.startDateBy}
+      </if>
+
+      <if test="criteria.unfinished">
+        and RES.END_TIME IS NULL
+      </if>
+      <if test="criteria.finished">
+        and RES.END_TIME is not NULL
+      </if>
+      <if test="criteria.involvedUser != null">
+        and (
+          exists(select LINK.USER_ID from UWK_HI_IDENTITYLINK LINK where USER_ID = #{criteria.involvedUser} and LINK.PROC_INST_ID = RES.HI_PROCINST_ID)
+        )
+      </if>
+      <if test="criteria.assignee != null">
+        and
+          exists(select TASK.ASSIGNEE from UWK_HI_TASKINST TASK where ASSIGNEE = #{criteria.assignee} and TASK.PROC_INST_ID = RES.HI_PROCINST_ID)
+      </if>
+      <if test="criteria.startedBy != null">
+        and RES.START_USER_ID = #{criteria.startedBy}
+      </if>
+      <if test="criteria.superProcessInstanceId != null">
+        and RES.SUPER_PROCESS_INSTANCE_ID = #{criteria.superProcessInstanceId}
+      </if>
+      <if test="criteria.excludeSubprocesses">
+        and RES.SUPER_PROCESS_INSTANCE_ID is null
+      </if>
+      
+      <if test="criteria.registBusiness">
+	      <if test="criteria.lastTaskAssignee">
+	        and RES.LAST_TASK_ASSIGNEE = #{criteria.lastTaskAssignee}
+	      </if>
+	      <if test="criteria.lastTaskTimeBefore != null">
+	        and RES.LAST_TASK_TIME &lt;= #{criteria.lastTaskTimeBefore}
+	      </if>
+	      <if test="criteria.lastTaskTimeAfter != null">
+	        and RES.LAST_TASK_TIME &gt;= #{criteria.lastTaskTimeAfter}
+	      </if>
+	      <if test="criteria.loginUser != null">
+	        AND RES.PROC_INST_ID NOT IN (SELECT URT.PROC_INST_ID FROM UWK_RU_TASK URT WHERE URT.PROC_INST_ID = PROC_INST_ID 
+	        	AND URT.TASSIGNEE = #{criteria.loginUser} )
+	      </if>
+	      AND RES.DELETE_REASON is null
+      </if>
+      
+      <if test="criteria.queryVariableValues != null and !criteria.registBusiness">
+      <foreach collection="criteria.queryVariableValues" index="index" item="queryVariableValue">
+        <if test="queryVariableValue.name != null">
+          <!-- Match-all variable-names when name is null -->
+          and A${index}.HVNAME= #{queryVariableValue.name}
+        </if>
+        <if test="!queryVariableValue.type.equals('null')">
+        <!-- When operator is not-equals or type of value is null, type doesn't matter! -->
+          and A${index}.VAR_TYPE = #{queryVariableValue.type}
+        </if>
+        <if test="queryVariableValue.textValue != null &amp;&amp; queryVariableValue.longValue == null &amp;&amp; queryVariableValue.doubleValue == null">
+          <choose>
+            <when test="queryVariableValue.operator.equals('EQUALS_IGNORE_CASE') || queryVariableValue.operator.equals('NOT_EQUALS_IGNORE_CASE')">
+              and lower(A${index}.TEXTTYPE)
+            </when>
+            <otherwise>
+              and A${index}.TEXTTYPE
+            </otherwise>
+          </choose>
+          <choose>
+            <when test="queryVariableValue.operator.equals('LIKE')">LIKE</when>
+            <otherwise><include refid="executionVariableOperator" /></otherwise>
+          </choose>
+          #{queryVariableValue.textValue}
+        </if>
+        <if test="queryVariableValue.textValue2 != null">
+        and A${index}.TEXT2TYPE
+        <choose>
+          <when test="queryVariableValue.operator.equals('LIKE')">LIKE</when>
+          <otherwise><include refid="executionVariableOperator" /></otherwise>
+        </choose>
+          #{queryVariableValue.textValue2}
+        </if>
+        <if test="queryVariableValue.longValue != null">
+        and A${index}.LONGTYPE
+        <include refid="executionVariableOperator" />
+        #{queryVariableValue.longValue}
+        </if>
+        <if test="queryVariableValue.doubleValue != null">
+        and A${index}.DOUBLETYPE
+        <include refid="executionVariableOperator" />
+        #{queryVariableValue.doubleValue}
+        </if>
+        <!-- Null variable type -->
+        <if test="queryVariableValue.textValue == null &amp;&amp; queryVariableValue.textValue2 == null &amp;&amp; queryVariableValue.longValue == null &amp;&amp; queryVariableValue.doubleValue == null">
+          <choose>
+          <when test="queryVariableValue.operator.equals('NOT_EQUALS')">
+            and (A${index}.TEXTTYPE is not null or A${index}.TEXT2TYPE is not null or A${index}.LONGTYPE is not null or A${index}.DOUBLETYPE is not null or A${index}.EXECUTION_ID is not null)
+          </when>
+          <otherwise>
+            and A${index}.TEXTTYPE is null and A${index}.TEXT2TYPE is null and A${index}.LONGTYPE is null and A${index}.DOUBLETYPE is null and A${index}.EXECUTION_ID is null
+          </otherwise>
+        </choose>
+        </if>
+      </foreach>
+      </if>
+      
+      <if test="criteria.queryVariableValues != null and criteria.registBusiness">
+      <foreach collection="criteria.queryVariableValues" index="index" item="queryVariableValue">
+        <if test="queryVariableValue.name != null and queryVariableValue.textValue != null">
+          <choose>
+            <when test="queryVariableValue.operator.equals('EQUALS_IGNORE_CASE') || queryVariableValue.operator.equals('NOT_EQUALS_IGNORE_CASE')">
+              and lower(detail.${queryVariableValue.name})
+            </when>
+            <otherwise>
+              and detail.${queryVariableValue.name}
+            </otherwise>
+          </choose>
+          <choose>
+            <when test="queryVariableValue.operator.equals('LIKE')">LIKE '%${queryVariableValue.textValue}%'</when>
+            <when test="queryVariableValue.operator.equals('IN')">IN (${queryVariableValue.textValue})</when>
+            <otherwise><include refid="executionVariableOperator" />
+           	 #{queryVariableValue.textValue}
+            </otherwise>
+          </choose>
+        </if>
+        <if test="queryVariableValue.textValue2 != null">
+        and detail.${queryVariableValue.name}
+        <choose>
+          <when test="queryVariableValue.operator.equals('LIKE')">LIKE '%${queryVariableValue.textValue2}%'</when>
+          <when test="queryVariableValue.operator.equals('IN')">IN (${queryVariableValue.textValue2})</when>
+          <otherwise><include refid="executionVariableOperator" />
+          	#{queryVariableValue.textValue2}
+          </otherwise>
+        </choose>
+        </if>
+      </foreach>
+      </if>
+      
+    </where>
+  </sql>
+  
+  <sql id="executionVariableOperator">
+    <choose>
+      <when test="queryVariableValue.operator.equals('EQUALS')">=</when>
+      <when test="queryVariableValue.operator.equals('EQUALS_IGNORE_CASE')">=</when>
+      <when test="queryVariableValue.operator.equals('NOT_EQUALS')">&lt;&gt;</when>
+      <when test="queryVariableValue.operator.equals('NOT_EQUALS_IGNORE_CASE')">&lt;&gt;</when>
+      <when test="queryVariableValue.operator.equals('GREATER_THAN')">&gt;</when>
+      <when test="queryVariableValue.operator.equals('GREATER_THAN_OR_EQUAL')">&gt;=</when>
+      <when test="queryVariableValue.operator.equals('LESS_THAN')">&lt;</when>
+      <when test="queryVariableValue.operator.equals('LESS_THAN_OR_EQUAL')">&lt;=</when>
+   </choose>
+  </sql>
+ 
+   <select id="BpmHistoricProcessInstanceSelectByNativeQuery" parameterType="java.util.Map" resultMap="historicProcessInstanceResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+    <include refid="bpm.limitBefore"/>  
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+    <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+ 
+  <select id="BpmHistoricProcessInstanceSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+</mapper>

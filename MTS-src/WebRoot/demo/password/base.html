@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>password Task - KINGDOM UI Demo</title>
+   <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+     <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+   <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+
+	<h2>Basic password</h2>
+	<!-- 通过view配置
+	<view id="testForm" render="form">
+	<col_item field="CONFIRM" title="确11认密码" type="twriceText" edt_required="true" edt_inputType='text' edt_validType='val[1,3]'/>
+        <col_item field="CONFIRM_PASS" title="确认密码" type="password" edt_required="true" edt_inputType='password' edt_validType='val[1,3]'/>
+    </view> -->
+<!-- 	<form id="testForm" class="kui-form"></form>-->
+<div class="outer-scroll" style="overflow: auto;height: 100px;">
+<div class= "inner" style="overflow: auto;height: 150px;">
+	<form id="myForm" class="kui-form" >
+		密码：<input class="kui-password" type="password" kui-options="required:'true',validType:'val[1,3]',onConfirmSuccess:fun"> 
+		<span>swss</span> 
+		文本：<input class="kui-password" name="ss" type="twriceText" kui-options="validType:'val[1,3]',onConfirmSuccess:fun"> 
+		<div>swss</div>
+		<input id="aa" type="button" value="测试"><br/>
+	</form>
+</div>	
+</div>	
+<script>
+function fun(str){
+	console.log(str,this);
+}
+</script>
+</body>
+</html>

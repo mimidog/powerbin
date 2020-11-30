@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>combogrid - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+<div style="padding:10px">
+	<h3>组合表格</h3>
+	<p>继承$.fn.combo.defaults和$.fn.datagrid.defaults，可以使用combo和datagrid的相关属性和方法，具体参考combo.html和datagrid。使用$.fn.combogrid.defaults重载默认值。</p>
+	<img src="images/combogrid.png"/>
+	<h4>依赖关系</h4>
+	<ul>	
+		<li>自定义组合框</li>	
+		<li>数据表格</li>
+	</ul>
+	<h4>使用方法</h4>
+	<pre class="code">	
+    <span style="color:blue">&lt;select</span> <span style="color:red">id</span><span style="color:blue">="cc"</span> <span style="color:red">name</span><span style="color:blue">="dept"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">250px;</span><span style="color:blue">"&gt;&lt;/select&gt;</span>
+	</pre>
+	
+	<pre class="code">	
+    <span style="color:blue">&lt;input</span> <span style="color:red">id</span><span style="color:blue">="cc"</span> <span style="color:red">name</span><span style="color:blue">="dept"</span> <span style="color:red">value</span><span style="color:blue">="01"&gt;</span>
+	</pre>
+	
+	<pre class="code">
+     $(<span style="color:blue">'#cc'</span>).combogrid({		
+     	panelWidth:<span style="color:red">450</span>,		
+     	value:<span style="color:blue">'006'</span>,	 		
+     	idField:<span style="color:blue">'code'</span>,		
+     	textField:'<span style="color:blue">name'</span>,		
+     	url:<span style="color:blue">'datagrid_data.json'</span>,		
+     	columns:[[			
+     		{field:<span style="color:blue">'code'</span>,title:<span style="color:blue">'Code'</span>,width:<span style="color:red">60</span>},			
+     		{field:<span style="color:blue">'name'</span>,title:<span style="color:blue">'Name'</span>,width:<span style="color:red">100</span>},			
+     		{field:<span style="color:blue">'addr'</span>,title:<span style="color:blue">'Address'</span>,width:<span style="color:red">120</span>},			
+     		{field:<span style="color:blue">'col4'</span>,title:<span style="color:blue">'Col41'</span>,width:<span style="color:red">100</span>}		
+     	]]	
+     });
+	</pre>
+	
+	<h4>属性</h4>
+	<p>属性继承自定义组合框和数据表格，以下是组合表格独有的属性。</p>
+	<table class="doc-table">
+		<tr>
+			<th style="width:140px"><strong>名称</strong></th>
+			<th style="width:110px"><strong>类型</strong></th>
+			<th><strong>描述</strong></th>
+			<th><strong>默认值</strong></th>
+		</tr>
+		<tr>
+			<td>loadMsg（载入时信息）</td>
+			<td>string（字符串）</td>
+			<td>当数据表格载入远程数据时的提示信息。</td>
+			<td>null</td></tr><tr><td>idField（id字段）</td>
+			<td>string（字符串）</td><td>标识表格行数据唯一性的字段名。</td>
+			<td>null</td>
+		</tr>
+		<tr>
+			<td>textField（文本域）</td>
+			<td>string（字符串）</td>
+			<td>显示在文本框中的文本域的名称。</td>
+			<td>null</td></tr><tr><td>mode（模式）</td>
+			<td>string（字符串）</td>
+			<td>定义当文本发生改变时如何载入组合表格的数据。如果组合表格要从远程服务器载入数据，设置为'remote'。</td>
+			<td>local</td>
+		</tr>
+		<tr>
+			<td>filter（过滤器）</td>
+			<td>function(q, row)</td>
+			<td>定义当模式设置为'local'时如何选择本地数据，返回true将选择一行。<br/>
+			<pre style="color:green">
+$('#cc').combogrid({
+	filter: function(q, row){
+		var opts = $(this).combogrid('options');
+		return row[opts.textField].indexOf(q) == 0;
+	}
+});
+			<pre>
+			</td>
+			<td></td>
+		</tr>
+	</table>
+
+<h4>事件</h4>
+
+<p>事件继承自定义组合框和数据表格。</p>
+<h4>方法</h4>
+<p>方法继承自定义组合框，以下是组合表格独有的或者重载自定义组合框的方法。</p>
+<table class="doc-table">
+	<tr>
+		<th><strong>名称</strong></th>
+		<th><strong>参数</strong></th>
+		<th><strong>描述</strong></th>
+	</tr>
+	<tr>
+		<td>options</td>
+		<td>none</td>
+		<td>返回属性对象。</td>
+	</tr>
+	<tr>
+		<td>grid</td>
+		<td>none</td>
+		<td>返回数据表格对象。</td>
+	</tr>
+	<tr>
+		<td>setValues</td>
+		<td>values</td>
+		<td>设置组合框的值，参数values是一个数组。</td>
+	</tr>
+	<tr>
+		<td>setValue</td>
+		<td>value</td>
+		<td>设置组合框的值</td>
+	</tr>
+	<tr>
+		<td>clear</td>
+		<td>none</td>
+		<td>清除组合框的值。</td>
+	</tr>
+</table>
+</div>
+</div>
+</div>
+	</body></html>

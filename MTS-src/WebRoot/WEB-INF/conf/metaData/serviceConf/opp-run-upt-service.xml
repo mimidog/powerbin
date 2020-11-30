@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<!-- 布局管理 start -->
+	<service service_code="P0004021" service_name="布局查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="Run_getAllLayout" business_method="" serial_no="1" business_name="布局查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="Run_getAllBoard" business_method="" serial_no="1" business_name="板块查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	
+	<!-- 容器管理 start -->
+	<service service_code="P0004022" service_name="容器查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="Run_getAllContainer" business_method="" serial_no="1" business_name="容器查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>	
+	
+	<!-- 门户菜单查询 start -->
+	<service service_code="P0004023" service_name="门户菜单查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="Run_getUserPortalMenu" business_method="" serial_no="1" business_name="门户菜单查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0004024" service_name="门户菜单组件查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="Run_getUserMenuComp" business_method="" serial_no="1" business_name="门户菜单组件查询" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="Run_getUserMenuContComp" business_method="" serial_no="1" business_name="门户菜单容器组件查询" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="Run_getUserMenuCompParam" business_method="" serial_no="1" business_name="门户菜单组件参数查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="Run_getUserMenuContTab" business_method="" serial_no="1" business_name="门户菜单容器TAB查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+
+	<!-- 门户菜单查询 end -->
+</services>

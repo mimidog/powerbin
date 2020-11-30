@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <META http-equiv="Expires" CONTENT="0">
+  <META http-equiv="Cache-Control" CONTENT="no-cache">
+  <META http-equiv="Pragma" CONTENT="no-cache">
+  <META http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript" src="../../business/js/common.js"></script>
+	<script type="text/javascript"> 
+	function itemsFun (data){
+		var items = [];
+		if(data.length > 0){
+			for(var i=0;i<data.length;i++){
+				var DICT_ITEM = data[i].DICT_ITEM ;
+				var DICT_ITEM_NAME = data[i].DICT_ITEM_NAME ;
+				var temp = {"text":DICT_ITEM_NAME,"value":DICT_ITEM};
+				items.push(temp);
+			}
+		}
+		return items;
+	}
+	using("combobox");
+	window.$ready=function() { 
+		var data_1 = getDict("perm_type");
+		var item_1 = itemsFun(data_1);
+		for(var i=0;i<12;i++){
+			$("body").append('<div style="margin-left: 100px;margin-top: 10px;" id="selection'+i+'"> </div>');
+			$("#selection"+i+"").combobox({
+				width:200,
+				height:30,
+				panelWidth:200,
+				multiple: true,
+				disabled: false,
+				name:"selection"+i+"",
+				//data:item_1
+				data:[
+				      {"text":"测试数据_1","value":"aa"},
+				      {"text":"测试数据_2","value":"bb"},
+				      {"text":"测试数据_3","value":"cc"},
+				      {"text":"测试数据_4","value":"dd"},
+				      {"text":"测试数据_5","value":"ee"},
+				      {"text":"测试数据_6","value":"ff"},
+				      {"text":"测试数据_7","value":"gg"},
+				      {"text":"测试数据_8","value":"hh"}]
+			});
+		} 
+		//alert($("#selection0").combobox("options").width);
+		
+		/* $("#dd").click(function(){
+			alert($("#selection0").combobox("getValue"));
+		}); */
+		//$("#selection0").combobox("disable");
+		//$("#selection0").combobox("enable");
+		//$("#selection0").combobox("setText");
+	}
+	/* $("#ss").live("click",function(){
+		$("#selection0").combobox("getText");
+	}); */
+	</script> 
+	
+</head> 
+<body> 
+<!-- <div id="dd">check</div>  -->
+ <div class="kui-combobox" style="margin-left: 100px;margin-top: 10px;"  kui-options="width:200,
+ 				panelWidth:200,
+				multiple: false,
+				disabled: false,
+				name:'selection',
+				data:[
+				      {'text':'测试数据_1','value':'aa'},
+				      {'text':'测试数据_2','value':'bb'},
+				      {'text':'测试数据_3','value':'cc'},
+				      {'text':'测试数据_4','value':'dd'},
+				      {'text':'测试数据_5','value':'ee'},
+				      {'text':'测试数据_6','value':'ff'},
+				      {'text':'测试数据_7','value':'gg'},
+				      {'text':'测试数据_8','value':'hh'}]"></div> 
+</body> 
+</html> 

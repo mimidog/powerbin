@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+    <title>角色分配</title>
+    <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+    <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+    <script type="text/javascript">
+        function roleAllocate() {
+            var row = $('#UUM_roleAllocate').datagrid('getSelected');
+            if (row == null) {
+                alert('请选择一个人员！');
+                return;
+            } else {
+                var USER_CODE = row['USER_CODE'];
+                var opt = $('#UUM_role').data().datagrid.options;
+                opt.req = [$.extend(opt.req[0], {USER_CODE:USER_CODE})];
+                $('#UUM_role').datagrid('reload');
+                $('#operRoleManage').dialog('open');
+            }
+        }
+        function operAddRole() {
+            var row = $('#UUM_roleAllocate').datagrid('getSelected');
+            var USER_CODE = row['USER_CODE'];
+            using('combogrid', function () {
+                $('#ROLE_IDS').combogrid({
+                    panelWidth:350,
+                    panelHeight:270,
+                    singleSelect:false,
+                    multiple:true,
+                    idField:'ROLE_ID',
+                    textField:'ROLE_NAME',
+                    req:[
+                        { service:'P0001056', USER_CODE:USER_CODE}
+                    ],
+                    queryCols:[
+                        {
+                            'text':'查询',
+                            'icon':'icon-search',
+                            collapsed:true,
+                            cols:[
+                                {
+                                    title:'角色名称',
+                                    field:'ROLE_NAME',
+                                    editor:{
+                                        type:'text',
+                                        options:{
+                                            validType:'val[1,64]'
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    columns:[
+                        [
+                            {checkbox:true, width:50},
+                            {field:'ROLE_ID',hidden:true, width:50},
+                            {field:'ROLE_NAME', title:'角色名称', width:100},
+                            {field:'ROLE_STA', title:'角色状态', width:100,
+                                formatter:function (value, row, index) {
+                                    return getSysDictOpt('ROLE_STA', value);
+                                }
+                            }
+                        ]
+                    ]
+                });
+                $('#ROLE_IDS').combogrid('clear');
+            });
+            using('dialog', function () {
+                $('#operRoleSetDialog').dialog({
+                    title:'人员分配角色',
+                    width:500,
+                    height:150,
+                    modal:true,
+                    buttons:[
+                        {
+                            text:'确定',
+                            iconCls:'icon-ok',
+                            handler:function () {
+                                var USER_CODE = row['USER_CODE'];
+                                var ROLE_IDS = $("#ROLE_IDS").combo("getValues");
+                                if (ROLE_IDS[0] == null || ROLE_IDS[0] == '') {
+                                    alert("请选择要添加的角色！");
+                                    return;
+                                } else {
+                                    if (ROLE_IDS.length > 0) {
+                                        var req = [];
+                                        for (var i = 0; i < ROLE_IDS.length; i++) {
+                                            req[i] = {
+                                                service:'P0001057',
+                                                USER_CODE:USER_CODE,
+                                                ROLE_ID:ROLE_IDS[i]
+                                            };
+                                        }
+                                        ajaxRequest({
+                                            req:req,
+                                            error:function () {
+                                                alert('人员角色设置失败！');
+                                            },
+                                            func:function (data) {
+                                            	$('#UUM_role').datagrid('reload');
+                                                    alert('人员角色设置成功！');
+                                                    $('#ROLE_IDS').combogrid('clear');
+                                                    $('#operRoleSetDialog').dialog('close');
+                                                    //$('#UUM_roleAllocate').datagrid('reload');
+                                            }
+                                        });
+                                    } else {
+                                        alert('请选择要添加的角色');
+                                        return;
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            text:'取消',
+                            iconCls:'icon-cancel',
+                            handler:function () {
+                                $('#operRoleSetDialog').dialog('close');
+                            }
+                        }
+                    ]
+                });
+            });
+        }
+        function operDelRole() {
+            var row = $('#UUM_role').datagrid('getSelections');
+            if (row.length == 0) {
+                alert('请选择要删除的数据！');
+            } else {
+                var req = [];
+                for (var i = 0; i < row.length; i++) {
+                    var ROLE_ID = row[i]['ROLE_ID'];
+                    var USER_CODE = row[i]['USER_CODE'];
+                    req[i] = {
+                        service:'P0001058',
+                        ROLE_ID:ROLE_ID,
+                        USER_CODE:USER_CODE
+                    };
+                }
+                confirm('提示信息', '是否确认删除?', function (isOK) {
+                    if (isOK) {
+                        ajaxRequest({
+                            req:req,
+                            error:function () {
+                                alert('角色删除失败！');
+                            },
+                            func:function (data) {
+                                alert('角色删除成功！');
+                                $('#UUM_role').datagrid('reload');
+                                //$('#UUM_roleAllocate').datagrid('reload');
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        
+        function closeFun(){
+        	$('#UUM_roleAllocate').datagrid('reload');
+        }
+    </script>
+</head>
+<body>
+<table id="UUM_roleAllocate" title="人员角色分配" class="kui-datagrid"></table>
+
+<div id="operRoleManage" class="kui-dialog" style="width:650px;height:300px"
+     kui-options="title:'人员角色管理',closed:true,iconCls:'icon-regist',modal:true,onClose:closeFun" >
+    <table id="UUM_role" style="height:280px" class="kui-datagrid"></table>
+</div>
+
+<div id="operRoleSetDialog" style="display: none;">
+    <table width="100%">
+        <tr>
+            <td class="form-label" style="width: 100px">角色名称：</td>
+            <td style="width: 350px">
+                <select name="ROLE_IDS" id="ROLE_IDS" style="width:150px"> </select>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

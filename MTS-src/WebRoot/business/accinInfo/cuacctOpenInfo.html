@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>个人客户开户信息管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.form-label {
+  text-align: right;
+}
+.form-table tr{
+  line-height: 22px;
+}
+</style>
+<script type="text/javascript">
+//客户机构代码
+var custOrgId='';
+
+//选择客户号之后
+function custIdSel(rowIndex, rowData) {
+    custOrgId=rowData['ORG_CODE'];
+
+}
+//选择资金账号
+function currencySel(rec) {
+    $('#cuacctId').val('');
+    $('#btnCreateCuacct').linkbutton('enable');
+
+    if(rec['dict_val']=='0'){
+        var custIdIEqCuacctId=getSysParamValuebyCode('RMB_CUST_ID_IS_CUACCT_ID');
+        if(custIdIEqCuacctId=='1'){
+            $('#cuacctId').val($('#custId').combogrid('getValue'));
+            $('#btnCreateCuacct').linkbutton('disable');
+        }
+    }
+}
+//生成资金账号
+function createCuacctId() {
+    if(custOrgId ==''){
+        alert('请选择客户代码！');
+        return;
+    }
+
+   if($('#currency').combobox('getValue')==''){
+       alert('请选择资金账号开户币种！');
+       return;
+   }
+
+    var newCuacctId=commonRequest({
+        service:'M0000085',
+        ORG_CODE:custOrgId,
+        CURRENCY:$('#currency').combobox('getValue')
+    })[0].CUACCT_ID;
+
+   $('#cuacctId').val(newCuacctId);
+   $('#btnCreateCuacct').linkbutton('disable');
+   $('#custId').combogrid('disable');
+}  
+//资金账号信息新增
+function openCuacct_add() {
+
+    $('#openCuacct_Form').form('clear');
+    $('#cuacctId').validatebox('disabled');
+    $('#btnCreateCuacct').linkbutton('enable');
+    $('#openCuacct_Form').form('enable',['CUST_ID','CURRENCY']);
+
+    using('dialog', function () {
+        $('#openCuacct_Dialog').dialog({
+            title:'新增',
+            width:580,
+            height:300,
+            modal:true,
+            buttons:[
+                {
+                    text:'确定',
+                    iconCls:'icon-ok',
+                    handler:function () {
+                        $('#openCuacct_Form').form('submit',{
+                            req:[{
+                                service:'M0000002'
+                            }],
+                            success:function(){
+                                custOrgId='';
+                                alert('客户资金账号信息新增成功！');
+                                $("#openCuacct_Dialog").dialog('close');
+                                $('#mts_custCuacctInfo_table').datagrid('reload');
+                            }
+                        });
+                    }
+                },
+                {
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#openCuacct_Dialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    });
+}
+//客户信息修改
+function openCuacct_mod() {
+    var selRow=$('#mts_custCuacctInfo_table').datagrid('getSelected');
+    if (selRow == null) {
+        alert("请选中表格中的一条数据！");
+        return;
+    }
+
+    $('#openCuacct_Form').form('clear').form('load',selRow);
+    $('#cuacctId').validatebox('disabled');
+    $('#btnCreateCuacct').linkbutton('disable');
+    $('#openCuacct_Form').form('disable',['CUST_ID','CURRENCY']);
+
+    using('dialog', function () {
+        $('#openCuacct_Dialog').dialog({
+            title:'修改',
+            width:580,
+            height:300,
+            modal:true,
+            buttons:[
+                {
+                    text:'确定',
+                    iconCls:'icon-ok',
+                    handler:function () {
+                        $('#openCuacct_Form').form('submit',{
+                            req:[{
+                                service:'M0000003'
+                            }],
+                            success:function(){
+
+                                alert('客户资金账号信息修改成功！');
+                                $("#openCuacct_Dialog").dialog('close');
+                                $('#mts_custCuacctInfo_table').datagrid('reload');
+                            }
+                        });
+                    }
+                },
+                {
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#openCuacct_Dialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    });
+}
+</script>
+</head>
+<body>
+<table id="mts_custCuacctInfo_table" class="kui-datagrid"></table>
+<!--客户新增与修改对话框-->
+<div id="openCuacct_Dialog" style="display: none;">
+  <form id="openCuacct_Form" class="kui-form">
+    <table class="form-table" style="width:100%; margin-top:20px;">
+
+      <tr>
+        <td class="form-label">客户代码：</td>
+        <td colspan="2">
+          <input id="custId" name="CUST_ID" class="kui-combogrid"  kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 280,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'CUST_ID',
+                                    textField: 'CUST_NAME',
+                                    req: [{
+                                        service: 'M0000009',
+                                        CUST_STATUS:'0'
+                                    }],
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '客户代码', field: 'CUST_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                title: '客户简称', field: 'CUST_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field:'CUST_ID',title:'客户代码',sortable:true,sortType:'number'},
+                                        {field:'CUST_NAME',title:'客户简称'},
+                                        {field:'ORG_CODE',title:'机构代码'},
+                                        {field:'ORG_NAME',title:'机构名称'},
+                                        {field:'CUST_TYPE',title:'客户类型',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_TYPE',value);
+                                          }
+                                        },
+                                        {field:'CUST_LVL',title:'客户级别',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_LVL',value);
+                                          }
+                                        },
+                                        {field:'CUST_STATUS',title:'客户状态',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_STATUS',value);
+                                          }
+                                        }
+                                    ]],onClickRow:custIdSel"/>
+
+        </td>
+        </td>
+        <td class="form-label">币种：</td>
+        <td>
+          <input id="currency" name="CURRENCY" class="kui-combobox" kui-options="required:true,dict:'CURRENCY',
+              onSelect:currencySel" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">资金账号：</td>
+        <td>
+          <input  id="cuacctId" name="CUACCT_ID"
+                 class="kui-validatebox" kui-options="required:true,validType:'val[1,30]'"/>
+        </td>
+        <td style="width:20px;">
+          <a href="#" id="btnCreateCuacct" class="kui-linkbutton" kui-options="iconCls:'icon-add'" onclick="createCuacctId()" />
+        </td>
+        <td class="form-label">资金账号级别：</td>
+        <td>
+          <input name="CUACCT_LVL"
+                 class="kui-combobox" kui-options="required:true,dict:'CUACCT_LVL'" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">资金账号状态：</td>
+        <td colspan="2">
+          <input name="CUACCT_STATUS"
+                 class="kui-combobox" kui-options="required:true,dict:'CUACCT_STATUS'" />
+        </td>
+        <td class="form-label">支付类型：</td>
+        <td >
+          <input name="PAY_TYPE" class="kui-combobox" kui-options="dict:'PAY_TYPE'" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">支付机构：</td>
+        <td colspan="2">
+          <input name="PAY_ORG" class="kui-combobox" kui-options="dict:'PAY_ORG'" />
+        </td>
+        <td class="form-label">支付账户：</td>
+        <td >
+          <input name="PAY_ID" class="kui-validatebox" kui-options="validType:'val[1,30]'" />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">开户日期：</td>
+        <td colspan="2">
+          <input name="OPEN_DATE" class="kui-datebox"  />
+        </td>
+        <td class="form-label">销户日期：</td>
+        <td colspan="2">
+          <input name="CLOSE_DATE" class="kui-datebox"  />
+        </td>
+      </tr>
+      <tr>
+        <td class="form-label">备注：</td>
+        <td colspan="4">
+          <input name="REMARK"  class="kui-validatebox" kui-options="validType:'val[1,120]'" style="width: 440px;"/>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

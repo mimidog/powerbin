@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DynamicMapper.HistoricDetail">
+
+  <!-- HISTORIC DETAILS INSERT -->
+  
+  <insert id="BpmHistoricFormPropertyInsert" parameterType="hashmap">
+    insert into UWK_HI_DETAIL (HI_DETAIL_ID, DETAIL_TYPE, PROC_INST_ID, EXECUTION_ID, TASK_ID, ACT_INST_ID, DETAIL_NAME, TEXTTYPE, DETAIL_TIME, CREATE_TIME)
+    values (
+      #{historicDetail.id, jdbcType=VARCHAR},
+      'FormProperty',
+      #{historicDetail.processInstanceId, jdbcType=VARCHAR},
+      #{historicDetail.executionId, jdbcType=VARCHAR},
+      #{historicDetail.taskId, jdbcType=VARCHAR},
+      #{historicDetail.activityInstanceId, jdbcType=VARCHAR},
+      #{historicDetail.propertyId, jdbcType=VARCHAR},     
+      #{historicDetail.propertyValue, jdbcType=VARCHAR},
+      #{historicDetail.time, jdbcType=TIMESTAMP},
+      #{historicDetail.createTime, jdbcType=TIMESTAMP}
+    )
+  </insert>
+  
+  <insert id="BpmHistoricDetailInsertVariableInstanceUpdate" parameterType="hashmap">
+    insert into UWK_HI_DETAIL (
+       HI_DETAIL_ID,
+	   DETAIL_TYPE,
+	   PROC_INST_ID,
+	   EXECUTION_ID,
+	   TASK_ID,
+	   ACT_INST_ID,
+	   DETAIL_NAME,
+	   VAR_TYPE,
+	   REV,
+	   DETAIL_TIME,
+	   BYTEARRAY_ID,
+	   DOUBLETYPE,
+	   LONGTYPE,
+	   TEXTTYPE,
+	   TEXT2TYPE,
+	   CREATE_TIME)
+    values (
+      #{historicDetail.id, jdbcType=VARCHAR},
+      'VariableUpdate',
+      #{historicDetail.processInstanceId, jdbcType=VARCHAR},
+      #{historicDetail.executionId, jdbcType=VARCHAR},
+      #{historicDetail.taskId, jdbcType=VARCHAR},
+      #{historicDetail.activityInstanceId, jdbcType=VARCHAR},
+      #{historicDetail.variableName, jdbcType=VARCHAR},
+      #{historicDetail.variableType, typeHandler=VariableTypeTypeHandler},
+      #{historicDetail.revision, jdbcType=VARCHAR},
+      #{historicDetail.time, jdbcType=TIMESTAMP},
+      #{historicDetail.byteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+      #{historicDetail.doubleValue, jdbcType=DOUBLE},
+      #{historicDetail.longValue, jdbcType=BIGINT},
+      #{historicDetail.textValue, jdbcType=VARCHAR},
+      #{historicDetail.textValue2, jdbcType=VARCHAR},
+      #{historicDetail.createTime, jdbcType=TIMESTAMP}
+    )
+  </insert>
+  
+  <!-- HISTORIC DETAILS DELETE -->
+
+  <delete id="BpmHistoricDetailDeleteAssignment" parameterType="hashmap">
+    delete from UWK_HI_DETAIL where HI_DETAIL_ID = #{id}
+  </delete>
+  
+  <delete id="BpmHistoricDetailDeleteTransitionInstance" parameterType="hashmap">
+    delete from UWK_HI_DETAIL where HI_DETAIL_ID = #{id}
+  </delete>
+  
+  <delete id="BpmHistoricDetailVariableInstanceUpdateDelete" parameterType="hashmap">
+    delete from UWK_HI_DETAIL where HI_DETAIL_ID = #{id}
+  </delete>
+  
+  <delete id="BpmHistoricFormPropertyDelete" parameterType="hashmap">
+    delete from UWK_HI_DETAIL where HI_DETAIL_ID = #{id}
+  </delete>
+
+
+ <!-- HISTORIC DETAILS RESULTMAP -->
+  <resultMap id="historicDetailResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricDetailEntity">
+    <id property="id" column="HI_DETAIL_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="activityInstanceId" column="ACT_INST_ID" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+    <result property="time" column="DETAIL_TIME" jdbcType="TIMESTAMP" />
+    <discriminator javaType="string" column="DETAIL_TYPE">
+      <case value="VariableUpdate" resultMap="historicVariableUpdateResultMap"/> 
+      <case value="FormProperty" resultMap="historicFormPropertyResultMap"/> 
+    </discriminator>
+  </resultMap>
+  
+  <resultMap id="historicVariableUpdateResultMap" extends="historicDetailResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricDetailVariableInstanceUpdateEntity">
+    <result property="name" column="DETAIL_NAME" javaType="String" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+    <result property="variableType" column="VAR_TYPE" typeHandler="VariableTypeTypeHandler"/>
+    <result property="activityId" column="ACTIVITY_ID" jdbcType="VARCHAR" />
+    <result property="byteArrayRef" column="BYTEARRAY_ID" typeHandler="ByteArrayRefTypeHandler" />
+    <result property="doubleValue" column="DOUBLETYPE" jdbcType="DOUBLE" />
+    <result property="textValue" column="TEXTTYPE" jdbcType="VARCHAR" />
+    <result property="textValue2" column="TEXT2TYPE" jdbcType="VARCHAR" />
+    <result property="longValue" column="LONGTYPE" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <resultMap id="historicFormPropertyResultMap" extends="historicDetailResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.HistoricFormPropertyEntity">
+    <result property="propertyId" column="DETAIL_NAME" javaType="String" jdbcType="VARCHAR" />
+    <result property="propertyValue" column="TEXTTYPE" javaType="String" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- HISTORIC VARIABLE UPDATE SELECT -->
+
+  <select id="BpmHistoricDetailsSelectByQueryCriteria" parameterType="hashmap" resultMap="historicDetailResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+     <choose>
+        <when test="criteria.taskVarOn">
+            <include refid="BpmHistoricDetailsSelectQueryForTask"/>
+        </when>
+        <otherwise>
+    		<include refid="selectHistoricDetailsByQueryCriteriaSql"/>
+        </otherwise>
+      </choose>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmHistoricDetailSelectCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select count(RES.HI_DETAIL_ID)
+         <choose>
+        <when test="criteria.taskVarOn">
+            <include refid="BpmHistoricDetailsSelectQueryForTask"/>
+        </when>
+        <otherwise>
+    		<include refid="selectHistoricDetailsByQueryCriteriaSql"/>
+        </otherwise>
+      </choose>
+  </select>
+  
+  <sql id="selectHistoricDetailsByQueryCriteriaSql">
+    from UWK_HI_DETAIL RES
+    <where>
+      <if test="criteria.id != null">
+        RES.HI_DETAIL_ID = #{criteria.id}
+        <include refid="selectHistoricDetailsByQueryCriteriaParamSql"/>
+      </if>
+      <if test="criteria.processInstanceId != null">
+        RES.PROC_INST_ID = #{criteria.processInstanceId}
+        <include refid="selectHistoricDetailsByQueryCriteriaParamSql"/>
+      </if>
+      <if test="criteria.executionId != null">
+        RES.EXECUTION_ID = #{criteria.executionId}
+        <include refid="selectHistoricDetailsByQueryCriteriaParamSql"/>
+      </if>
+    </where>
+  </sql>
+
+  <sql id="selectHistoricDetailsByQueryCriteriaParamSql">
+        <if test="criteria.activityId != null">
+        and RES.ACT_INST_ID = #{criteria.activityId}
+      </if>
+      <if test="criteria.activityInstanceId != null">
+        and RES.ACT_INST_ID = #{criteria.activityInstanceId}
+      </if>
+      <choose>
+        <when test="criteria.taskId != null">
+          and RES.TASK_ID = #{criteria.taskId}
+        </when>
+        <otherwise>
+          <if test="criteria.excludeTaskRelated">
+           and RES.TASK_ID is null
+         </if>
+        </otherwise>
+      </choose>
+      
+      <if test="criteria.type != null">
+        and RES.DETAIL_TYPE = #{criteria.type}
+      </if>
+  </sql>
+
+  <select id="BpmHistoricDetailSelectByNativeQuery" parameterType="java.util.Map" resultMap="historicDetailResultMap">
+    <if test="resultType == 'LIST_PAGE'">
+       	<include refid="bpm.limitBefore"/>
+    </if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+        <include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmHistoricDetailSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+  
+  <sql id="BpmHistoricDetailsSelectQueryForTask">  
+    from (select * from UWK_HI_DETAIL udl where udl.TASK_ID = #{criteria.taskId}
+	union (select ud.*
+	         from UWK_HI_DETAIL ud
+	         left join UWK_HI_ACTINST ua
+	           on ud.ACT_INST_ID = ua.HI_ACTINST_ID
+	        where ua.TASK_ID = #{criteria.taskId})) RES
+    <include refid="selectBpmHistoricDetailsSelectQueryForTaskParamSql"/>
+  </sql>
+
+  <sql id="selectBpmHistoricDetailsSelectQueryForTaskParamSql">
+        <if test="criteria.activityId != null">
+        and RES.ACT_INST_ID = #{criteria.activityId}
+      </if>
+      <if test="criteria.activityInstanceId != null">
+        and RES.ACT_INST_ID = #{criteria.activityInstanceId}
+      </if>
+      <if test="criteria.type != null">
+        and RES.DETAIL_TYPE = #{criteria.type}
+      </if>
+  </sql>
+
+</mapper>

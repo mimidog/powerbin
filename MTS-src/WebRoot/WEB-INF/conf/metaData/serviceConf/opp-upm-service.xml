@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<!-- 系统参数管理 start -->
+	<service service_code="P0000001" service_name="系统参数查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysParamQuery" business_method="" serial_no="1" business_name="系统参数查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000002" service_name="系统参数新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" >
+		<businesses>
+			<service_business business_code="sysParamInsert" business_method="" serial_no="1" business_name="系统参数新增" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+            <!--<service_business business_code="sysParamPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000003" service_name="系统参数修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysParamUpdate" business_method="" serial_no="1" business_name="系统参数修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="sysParamPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000004" service_name="系统参数删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysParamDelete" business_method="" serial_no="1" business_name="系统参数删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="sysParamPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<!-- 系统参数管理 end -->
+	<!-- 数据字典管理 start -->
+	<service service_code="P0000011" service_name="数据字典查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="dictionaryQuery" business_method="" serial_no="1" business_name="数据字典查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000012" service_name="数据字典新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>		
+			<service_business business_code="dictionaryInsert" business_method="" serial_no="1" business_name="数据字典新增" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="dictPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000013" service_name="数据字典修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="dictionaryUpdate" business_method="" serial_no="1" business_name="数据字典修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="dictPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000014" service_name="数据字典删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="dictionaryDelete" business_method="" serial_no="1" business_name="数据字典删除" business_type="1" business_cate="1" attr1=""/>
+			<service_business business_code="dictionaryCascadeDelete" business_method="" serial_no="1" business_name="数据字典项级联删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="dictPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+		</businesses>		
+	</service>
+	<!-- 数据字典管理 end -->
+	<!-- 字典项管理 start -->
+	<service service_code="P0000021" service_name="字典项查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="dicItemsQuery" business_method="" serial_no="1" business_name="字典项查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000022" service_name="字典项新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="seqItemId" business_method="" serial_no="1" business_name="获取字典项序列" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="dicItemsInsert" business_method="" serial_no="1" business_name="字典项新增" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="dictItemPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000023" service_name="字典项修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="dicItemsUpdate" business_method="" serial_no="1" business_name="字典项修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="dictItemPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000024" service_name="字典项删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="dicItemsDelete" business_method="" serial_no="1" business_name="字典项删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="dictItemPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<!-- 字典项管理 end -->
+	<!-- 机构数据字典管理 start -->
+    <service service_code="P0000026" service_name="机构数据字典查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="orgDictionaryQuery" business_method="" serial_no="1" business_name="机构数据字典查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000027" service_name="机构数据字典新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="orgDictionaryInsert" business_method="" serial_no="1" business_name="机构数据字典新增" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+        	<!--<service_business business_code="dictPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+        </businesses>
+    </service>
+    <service service_code="P0000028" service_name="机构数据字典修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="orgDictionaryUpdate" business_method="" serial_no="1" business_name="机构数据字典修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+        	<!--<service_business business_code="dictPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+        </businesses>
+    </service>
+    <service service_code="P0000029" service_name="机构数据字典删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="orgDictionaryDelete" business_method="" serial_no="1" business_name="机构数据字典删除" business_type="1" business_cate="1" attr1=""/>
+            <service_business business_code="orgDictionaryCascadeDelete" business_method="" serial_no="1" business_name="机构数据字典项级联删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+            <!--<service_business business_code="dictPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+        </businesses>
+    </service>
+    <!-- 机构数据字典管理 end -->
+
+    <!-- 机构字典项管理 start -->
+    <service service_code="P0000031" service_name="机构字典项查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="orgDicItemsQuery" business_method="" serial_no="1" business_name="机构字典项查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000032" service_name="机构字典项新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="seqItemId" business_method="" serial_no="1" business_name="获取字典项序列" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="orgDicItemsInsert" business_method="" serial_no="1" business_name="机构字典项新增" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+        	<!--<service_business business_code="dictItemPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+        </businesses>
+    </service>
+    <service service_code="P0000033" service_name="机构字典项修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="orgDicItemsUpdate" business_method="" serial_no="1" business_name="机构字典项修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+        	<!--<service_business business_code="dictItemPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+        </businesses>
+    </service>
+    <service service_code="P0000034" service_name="机构字典项删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="orgDicItemsDelete" business_method="" serial_no="1" business_name="机构字典项删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+        	<!--<service_business business_code="dictItemPublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+        </businesses>
+    </service>
+    <!--  机构字典项管理 end -->
+    
+	<!-- 系统菜单管理 start -->
+	<service service_code="P0000041" service_name="系统菜单查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysMenuQuery" business_method="" serial_no="1" business_name="系统菜单查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!--<service service_code="P0000042" service_name="系统菜单新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysMenuInsert" business_method="" serial_no="1" business_name="系统菜单新增" business_type="1" business_cate="1" attr1="" />
+    	</businesses>
+	</service>-->
+	<service service_code="P0000042" service_name="系统菜单新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="insertSysMenu" business_method="" serial_no="1" business_name="系统菜单新增" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="insertSysPerm" business_method="" serial_no="1" business_name="系统权限新增" business_type="3" business_cate="1" attr1="" />
+    	</businesses>
+	</service>
+
+   <service service_code="P0000043" service_name="系统菜单修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+    <businesses>
+      <service_business business_code="sysMenuUpdate" business_method="" serial_no="1" business_name="系统菜单修改" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="sysMenuStaUpdate" business_method="" serial_no="1" business_name="系统菜单状态修改" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="permMenuUpdate" business_method="" serial_no="1" business_name="权限信息跟着系统菜单修改" business_type="1" business_cate="1" attr1="" />
+      <service_business business_code="permMenuStaUpdate" business_method="" serial_no="1" business_name="权限信息状态修改" business_type="1" business_cate="1" attr1="" />
+    </businesses>
+  </service>
+	<service service_code="P0000044" service_name="系统菜单删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="delSysPerm" business_method="" serial_no="1" business_name="系统权限删除" business_type="3" business_cate="1" attr1="" />
+			<service_business business_code="delSysMenu" business_method="" serial_no="1" business_name="系统菜单删除" business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000045" service_name="菜单级别更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysMenuLvlUpdate" business_method="" serial_no="1" business_name="菜单级别更新" business_type="3" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000046" service_name="门户菜单搜索" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="frontMenuSearch" business_method="" serial_no="1" business_name="门户菜单搜索" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000047" service_name="菜单批量导入" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="sysMenubatchSync" business_method="" serial_no="1" business_name="菜单批量导入" business_type="3" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+	<!-- 系统菜单管理 end -->
+
+	<!-- 系统国际化管理 start -->
+	<service service_code="P0000051" service_name="系统国际化查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocaleQuery" business_method="" serial_no="1" business_name="系统国际化查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000052" service_name="系统国际化新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocaleInsert" business_method="" serial_no="1" business_name="系统国际化新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000053" service_name="系统国际化修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocaleUpdate" business_method="" serial_no="1" business_name="系统国际化修改" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000054" service_name="系统国际化删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocaleDelete" business_method="" serial_no="1" business_name="系统国际化删除" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="sysLocaleCascadeDelete" business_method="" serial_no="1" business_name="系统国际化级联删除" business_type="1" business_cate="1" attr1="" />
+			
+		</businesses>
+	</service>
+
+	<service service_code="P0000061" service_name="系统国际化语言查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocLangQuery" business_method="" serial_no="1" business_name="系统国际化语言查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000062" service_name="系统国际化语言新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocLangInsert" business_method="" serial_no="1" business_name="系统国际化语言新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000063" service_name="系统国际化语言修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocLangUpdate" business_method="" serial_no="1" business_name="系统国际化语言修改" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000064" service_name="系统国际化语言删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysLocLangDelete" business_method="" serial_no="1" business_name="系统国际化语言删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 系统国际化管理 end -->
+
+	<!-- 系统服务管理 start -->
+	<service service_code="P0000071" service_name="系统服务查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysServiceQuery" business_method="" serial_no="1" business_name="系统服务查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000072" service_name="系统服务新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysServiceInsert" business_method="" serial_no="1" business_name="系统服务新增" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="sysServicePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000073" service_name="系统服务修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysServiceUpdate" business_method="" serial_no="1" business_name="系统服务修改" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+            <!--注释掉发布功能 by  20160614-->
+			<!--<service_business business_code="sysServicePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="1"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<service service_code="P0000074" service_name="系统服务删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysServiceDelete" business_method="" serial_no="1" business_name="系统服务删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+			<service_business business_code="sysSerParDeleteNew" business_method="" serial_no="1" business_name="服务参数删除" business_type="1" business_cate="1" attr1=""  attr4="1"/>
+			
+			<!--<service_business business_code="sysServicePublish" business_method="" serial_no="1" business_name="系统参数发布" business_type="3" business_cate="1" attr1="2"  attr2="1"/>-->
+		</businesses>
+	</service>
+	<!-- 系统服务管理 end -->
+
+	<!-- 服务参数管理 start -->
+	<service service_code="P0000076" service_name="服务参数查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSerParQuery" business_method="" serial_no="1" business_name="服务参数查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000077" service_name="服务参数新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSerParInsert" business_method="" serial_no="1" business_name="服务参数新增" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000078" service_name="服务参数修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSerParUpdate" business_method="" serial_no="1" business_name="服务参数修改" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000079" service_name="服务参数删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSerParDelete" business_method="" serial_no="1" business_name="服务参数删除" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 服务参数管理 end -->
+
+	<!-- 系统错误查询 start -->
+	<service service_code="P0000081" service_name="系统错误查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysErrorQuery" business_method="" serial_no="1" business_name="系统错误查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 系统错误查询 end -->
+
+	<!-- 系统操作流水查询 start -->
+	<service service_code="P0000091" service_name="系统操作流水查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSerRecQuery" business_method="" serial_no="1" business_name="系统操作流水查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 系统操作流水查询 end -->
+
+	<!-- 服务流水参数查询 start -->
+	<service service_code="P0000101" service_name="服务流水参数查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="serRecParQuery" business_method="" serial_no="1" business_name="服务流水参数查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 服务流水参数查询 end -->
+
+	<!-- 系统序号管理 start -->
+	<service service_code="P0000111" service_name="系统序号查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSeqQuery" business_method="" serial_no="1" business_name="系统序号查询" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000112" service_name="系统序号获取" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSeqQuery" business_method="" serial_no="1" business_name="系统序号查询" business_type="1" business_cate="1" attr1="" />
+			<service_business business_code="sysSeqGet" business_method="" serial_no="1" business_name="系统序号增长" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<service service_code="P0000113" service_name="系统序号修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+		<businesses>
+			<service_business business_code="sysSeqUpdate" business_method="" serial_no="1" business_name="系统序号修改" business_type="1" business_cate="1" attr1="" />
+		</businesses>
+	</service>
+	<!-- 系统序号管理 end -->
+	
+	    <!-- 系统利率设置 start -->
+    <service service_code="P0000121" service_name="系统利率查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="rateQuery" business_method="" serial_no="1" business_name="系统利率查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000122" service_name="系统利率新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="" >
+        <businesses>
+            <service_business business_code="rateInsert" business_method="" serial_no="1" business_name="系统利率新增" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000123" service_name="系统利率修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="rateUpdate" business_method="" serial_no="1" business_name="系统利率修改" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000124" service_name="系统利率删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="rateDelete" business_method="" serial_no="1" business_name="系统利率删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!-- 系统利率设置 end -->
+    
+    
+    <!--佣金名称设置-->
+    <service service_code="P0000131" service_name="佣金名称查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionQuery" business_method="" serial_no="1" business_name="佣金名称查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000135" service_name="佣金代码和名称查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+      <businesses>
+        <service_business business_code="commissionNCQuery" business_method="" serial_no="1" business_name="佣金代码和名称查询" business_type="1" business_cate="1" attr1="" />
+      </businesses>
+    </service>
+    <service service_code="P0000132" service_name="佣金名称新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionInsert" business_method="" serial_no="1" business_name="佣金名称新增" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000133" service_name="佣金名称更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionUpdate" business_method="" serial_no="1" business_name="佣金名称更新" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000134" service_name="佣金名称删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionDelete" business_method="" serial_no="1" business_name="佣金名称删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!--佣金名称设置-->
+    
+    <!--标准佣金设置-->
+    <service service_code="P0000141" service_name="标准佣金查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionStaQuery" business_method="" serial_no="1" business_name="佣金名称查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000142" service_name="标准佣金新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionStaInsert" business_method="" serial_no="1" business_name="佣金名称新增" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000143" service_name="标准佣金更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionStaUpdate" business_method="" serial_no="1" business_name="佣金名称更新" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000144" service_name="标准佣金删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionStaDelete" business_method="" serial_no="1" business_name="佣金名称删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!--标准佣金设置-->
+    
+    <!--特殊佣金设置-->
+    <service service_code="P0000151" service_name="特殊佣金查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionSpeQuery" business_method="" serial_no="1" business_name="佣金名称查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000152" service_name="特殊佣金新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionSpeInsert" business_method="" serial_no="1" business_name="佣金名称新增" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000153" service_name="特殊佣金更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionSpeUpdate" business_method="" serial_no="1" business_name="佣金名称更新" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000154" service_name="特殊佣金删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionSpeDelete" business_method="" serial_no="1" business_name="佣金名称删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!--特殊佣金设置-->
+	<!--默认佣金表设置-->
+    <service service_code="P0000161" service_name="默认佣金查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionDefQuery" business_method="" serial_no="1" business_name="默认佣金查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000162" service_name="默认佣金新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionDefInsert" business_method="" serial_no="1" business_name="默认佣金新增" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000163" service_name="默认佣金更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionDefUpdate" business_method="" serial_no="1" business_name="默认佣金更新" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000164" service_name="默认佣金删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="commissionDefDelete" business_method="" serial_no="1" business_name="默认佣金删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!--默认佣金表设置-->
+    
+    <service service_code="P0000171" service_name="用户配置查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="uumuserconfigQuery" business_method="" serial_no="1" business_name="默认佣金查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000172" service_name="用户配置新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="insertUserConfig"
+				business_name="" business_method="" serial_no="1"
+				business_type="3" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000174" service_name="用户配置删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="uumuserconfigDelete" business_method="" serial_no="1" business_name="默认佣金删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    
+    <!--平台管理设置-->
+    <service service_code="P0000181" service_name="平台信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="platQuery" business_method="" serial_no="1" business_name="平台信息查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000182" service_name="平台信息新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="insertRefPlat"	 serial_no="1"	business_type="3" business_cate="1" attr1="SEQ_UUM_PLATFORM" />
+        </businesses>
+    </service>
+    <service service_code="P0000183" service_name="平台信息更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="modifyRefPlat"	 serial_no="1"	business_type="3" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000184" service_name="平台信息删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+       	 	<service_business business_code="deleteRefPlat"	 serial_no="1"	business_type="3" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!--平台管理设置-->
+    <!-- 帮助 -->
+    <service service_code="P0000241" service_name="帮助信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="helpQuery" business_method="" serial_no="1" business_name="帮助信息查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000242" service_name="帮助信息新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="helpInsert"	 serial_no="1"	business_type="3" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000243" service_name="帮助信息更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="helpUpdate" business_method="" serial_no="1" business_name="帮助信息更新" business_type="3" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000244" service_name="帮助信息删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="helpDetailDeleteByHelpId" business_method="" serial_no="1" business_name="帮助信息删除" business_type="1" business_cate="1" attr1="" />
+            <service_business business_code="helpDelete" business_method="" serial_no="1" business_name="帮助信息删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    
+    <service service_code="P0000245" service_name="帮助详细信息查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="helpDetailQuery" business_method="" serial_no="1" business_name="帮助详细信息查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000246" service_name="帮助详细信息新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="helpDetailInsert"	 serial_no="1"	business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000247" service_name="帮助详细信息更新" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="helpDetailUpdate" business_method="" serial_no="1" business_name="帮助详细信息更新" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000248" service_name="帮助详细信息删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="helpDetailDelete" business_method="" serial_no="1" business_name="帮助详细信息删除" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    
+     <service service_code="P0000249" service_name="帮助信息关联菜单查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>
+            <service_business business_code="helpMenuQuery" business_method="" serial_no="1" business_name="帮助信息关联菜单查询" business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000250" service_name="帮助信息关联组件查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="helpCompQuery" serial_no="1"	business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <service service_code="P0000251" service_name="帮助信息关联组件查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="helpDetailByMenuQuery" serial_no="1"	business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!-- 帮助 -->
+    
+    <!-- 用户操作站点  -->
+    <service service_code="P0000255" service_name="用户操作站点查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="opChannelQuery" serial_no="1"	business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    
+    <service service_code="P0000252" service_name="用户操作站点新增" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>	
+            <service_business business_code="seqOPSiteId" business_method="" serial_no="1" business_name="获取用户操作站点序列" business_type="3" business_cate="1" attr1="" />		
+            <service_business business_code="opChannelInsert" serial_no="1"	business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    
+    <service service_code="P0000253" service_name="用户操作站点修改" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="opChannelUpdate" serial_no="1"	business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    
+    <service service_code="P0000254" service_name="用户操作站点删除" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
+        <businesses>			
+            <service_business business_code="opChannelDelete" serial_no="1"	business_type="1" business_cate="1" attr1="" />
+        </businesses>
+    </service>
+    <!-- 用户操作站点  -->
+</services>

@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+ <head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="Shortcut Icon" href="../../kjdp.ico" type="image/x-icon" />
+	<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="kbss.overlap.print.dragdrop.js"></script>
+	<script type="text/javascript" src="kbss.overlap.print.service-1.0.js"></script>
+	<style type="text/css">
+		body{
+			margin:0;
+			padding:0;
+			position:relative;
+		}
+		.gt-overlap-print{
+			background: url("css/tool_print.gif") no-repeat scroll center center transparent;
+			float:right;
+		}
+		.data{
+			display:block;
+			position:absolute;
+			cursor: hand;
+			cursor: pointer;
+			word-break:no;
+			white-space:nowrap;
+		}
+		
+		#preview{
+			position:absolute;
+			right:8%;
+			bottom:17px;
+			-moz-opacity: 0.8;
+			opacity: 0.8;
+			z-index:3;
+		}
+		#preview span{
+			font-size: 32px;
+		    font-weight: bold;
+		    color:#6C6C6C;
+		    line-height: 28px;
+		    padding: 2px 0 0 7px;
+		}
+		#print_button_mm{
+			top: 1px;
+			position: absolute;
+			left: 38%;
+			cursor: pointer;
+			padding: 6px 16px;
+			background:#ffffdd;
+			border:1px solid #f6ebb5;
+			font-weight:bold;
+			font-size: 14px;
+		}
+		#enabledMove{
+			top: 1px;
+			position: absolute;
+			left: 48%;
+			cursor: pointer;
+			padding: 6px 16px;
+			background:#ffffdd;
+			border:1px solid #f6ebb5;
+			font-weight:bold;
+			font-size: 14px;
+		}
+	</style>
+	<style media="print">
+		body{
+			margin:0;
+			padding:0;
+			color:#000000;
+		}
+		.noprint{ display: none;}
+	</style>
+	<script type="text/javascript" defer="defer">
+		//存储scrollPanel宽和高的临时变量
+		var scrollPanelWidth;
+		var scrollPanelHeight;
+		var overlapPrint;
+		var docloaded = false;
+
+		//打印前执行动作
+		function bodyOnBeforePrint() {
+			//overlapPrint.changeInputToSpan();
+			var $area = $("#print_area"),
+				$content = $("#print_content"),
+				$title = $("#print_title");
+			if($area.length>0){
+				scrollPanelWidth = $area.width();
+				scrollPanelHeight = $area.height();
+			}
+			if($content.length>0){
+				//$area.height($content.height());
+				//下面这段添加后会导致有些浏览器打印本一页内容变两页且第二页是空的
+				/*$area.css({"overflow":"hidden","width":"100%","height":"100%"});
+				$content.css({"top":"0px","left":"-20px","border":"0px","width":"100%"});*/
+			}
+		}
+	
+		//打印后执行动作
+		function bodyOnAfterPrint() {
+			var $area = $("#print_area"),
+				$content = $("#print_content"),
+				$title = $("#print_title");
+			
+			$area.height(scrollPanelHeight);
+			$area.css({"overflow":"auto","width":"100%"});
+			$content.css({"top":"0px","left":"0px","border":"0px"});
+		}
+		
+		function printHandler(obj){
+			window.print();
+		}
+		
+		function previewHandler(e){
+			var grid = e.data.target,
+				data = $.data(grid[0], "datagrid"),
+				opts = data.options,
+				edit = false;
+			if (grid.datagrid('validateRow', opts.editing)) {
+				grid.datagrid('endEdit', opts.editing);
+				edit = true;
+			}
+			var updateRecords = data.updatedRows,
+				addRecords = data.insertedRows;
+				
+			$.each(updateRecords,function(i,d){
+				if(updateRecords[i]){
+					var id = updateRecords[i].PARAM_ID;
+					overlapPrint.updateTicketData(id,d);
+				}
+			});
+			$.each(addRecords,function(j,v){
+				overlapPrint.updateTicketData(v.PARAM_ID,v);
+			});
+			grid.datagrid("acceptChanges");
+		}
+		
+		function deleteHandler(e){
+			var grid = e.data.target,
+				data = $.data(grid[0], "datagrid"),
+				selectedRecord = grid.datagrid("getSelected"),
+				addRecords = data.insertedRows;
+		}
+		
+		$(function(){
+			if(!overlapPrint){
+				overlapPrint = $.callOverlapPrint();
+				docloaded = true;
+			}
+           var viewId = location.search.substring(1).split("=")[1],
+                dataValue = window.opener.printData;
+			overlapPrint.setData(viewId,dataValue);
+		});
+		
+		function $ready(){
+		    var fun = $.noop,
+		    	$spans = $("#print_content").find("span"),
+				setPosition = function(span){
+				    var p = $(span).offset();
+				    $.ls($(span).text(),p);
+				}
+			
+			$spans.each(function(){
+				fun = this.onmousedown;
+				this.onmousedown = function(){};
+				var p = $.ls($(this).text());
+				if(p){
+					$(this).css({
+					    top:p.top,
+					    left:p.left
+					});
+				}
+		    });
+			$("#enabledMove").click(function(){
+			    $(this).text("鼠标点中拖动");
+			    $spans.each(function(){
+					this.onmousedown = fun;
+			    });
+			});
+			
+			$("#print_button_mm").click(function(){
+			    $spans.each(function(){
+					setPosition(this);
+			    });
+			    printHandler();
+			});
+		}
+		
+	</script>
+ </head>
+ <body onbeforeprint="bodyOnBeforePrint();" onafterprint="bodyOnAfterPrint();" >
+		<div id="print_area" style="width:100%;float:left;background:#CCC; position: relative;top: 0;left:0;"></div>
+		<div id="preview" class="noprint"></div>
+		<div id="print_button" class="noprint">
+			<span id="print_button_mm">打印</span>
+			<span id="enabledMove">调整布局</span>
+			
+		</div>
+		<!--div id="print_config" class="noprint" style="float:right;width:0%;height:100%;border-left:1px dotted #CCC;">
+			<div id="print_toolbar" style="float:left;width:100%;">
+			</div>
+			<div id="print_param">
+			</div>
+		</div-->
+		<span id="text_tamp" class="noprint" style="font-size:14px;word-break:no;white-space:nowrap;visibility:hidden;"></span>		
+</body>
+</html>

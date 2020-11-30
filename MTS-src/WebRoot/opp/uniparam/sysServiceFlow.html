@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <title>系统服务流水查询</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+<table id="UPM_sysSerRecQuery" class="kui-datagrid"></table>
+</body>
+</html>
+<script type="text/javascript">
+  window.onload=function(){
+    using('combogrid',function(){
+      initTable();
+    })
+  }
+  function initTable(){
+    $('.datagrid-queryForm>form').find('input[name=OP_USER]').combogrid({
+      panelWidth:350,
+      panelHeight:240,
+      singleSelect:true,
+      multiple:false,
+      idField: 'USER_CODE',
+      textField: 'USER_NAME',
+      fallParas:[{enable:true}],
+      req:[{ service:'P0001008',USER_STA:'1'}],
+      queryCols:[{
+        'text':'查询',
+        'icon':'icon-search',
+        collapsed:true,
+        cols:[{
+          title:'用户名称',
+          field:'USER_NAME',
+          editor:{
+            type:'text',
+            options:{
+              validType:'val[1,64]'
+            }
+          }
+        }]
+      }],
+      columns: [[
+        {field:'USER_CODE',title:'用户编号',width:100},
+        {field:'USER_NAME',title:'用户名称',width:200}]]
+    });
+  }
+</script>

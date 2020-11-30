@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+
+    <bex bex_code="QUERY_T_OP_LOG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="QUERY_T_OP_LOG" attr2="mts"/>
+    <bex bex_code="INSERT_T_OP_LOG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="INSERT_T_OP_LOG" attr2="mts"/>
+
+</bexs>

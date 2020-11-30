@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="panel-fit">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>权限集设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="js/permissionSetting.js"></script>
+</head>
+<body>
+<table id="permSetTbl" title="权限集设置"></table>
+<div id="addFunSetDialog" style="display: none; ">
+	<table id="sysService"  style="height: 300px;"></table>
+</div>
+<div id="permSetInfoDialog" style="display: none; ">
+	<table id="sysServiceList"  style="height: 300px;"></table>
+</div>
+<div id="permSetDialog" style="display: none; ">
+	<form id="permSetForm" class="kui-form">
+		<table>
+			<tr>
+				<td style="width: 100px;" align="right">权限集名称：</td>
+				<td><input type="hidden" id="PERM_SET_ID" name="PERM_SET_ID" />
+				<input type="text" id="PERM_SET_NAME" name="PERM_SET_NAME" class="kui-validatebox" kui-options="validType:'val[1,64]',required:true"/></td>
+			</tr>
+			<tr>
+				<td style="width: 100px;" align="right">备注：</td>
+				<td><textarea rows="" cols="" id="REMARK" class="kui-validatebox" name="REMARK" kui-options="validType:'val[0,256]'" style="min-width: 280px;min-height: 60px; max-width: 280px;max-height: 60px;"></textarea></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</body>
+</html>

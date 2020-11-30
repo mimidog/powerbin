@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+    <!--用户信息管理view   start-->
+    <view id="UUM_userInfoManage" render="datagrid" title="人员信息管理" script="../../opp/js/manage-platform-func.js">
+        <conf service="P0001008" colNumbers="3" fit="true" fallParas="[{enable:true}]" />
+        <qry_item field="USER_CODE" title="ID号" type="input" edt_validType="zint[18]"/>
+        <qry_item field="USER_NAME" title="人员名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="USER_TYPE" title="人员类型" type="combobox" edt_dict="USER_TYPE"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" service="P0001002" title="新增用户信息" handler="userInfoAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0001003" title="修改用户信息" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="重置密码" service="P0001003" title="用户重置密码" handler="userPasswordReset" iconCls="icon-edit"/>
+        <btn_item text="状态变更" service="P0001003" title="用户状态变更" handler="userStatusModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0001004" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="USER_CODE" title="ID号" type="input" width="60" edt_width="140" primary_key="1" edit_flag="2"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" width="100" edt_width="140" edt_required="true"
+                  edt_validType="val[1,32]"/>
+        <col_item field="USER_TYPE" title="人员类型" type="combobox" width="60" edt_width="144" edt_dict="USER_TYPE"
+                  edt_required="true"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" width="60" edt_width="144" edit_flag="2"
+                  edt_dict="USER_STA" edt_required="true"/>
+        <col_item field="OPEN_DATE" title="开户日期" type="input" width="80" edt_width="140" edit_flag="3"/>
+        <col_item field="OFF_TEL" title="办公电话" type="input" width="120" edt_width="140" edt_validType="tel"/>
+        <col_item field="MOBILE" title="手机号" type="input" width="120" edt_width="140" edt_validType="mobile"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" width="150" colspan="4" edt_width="362"
+                  edt_validType="email"/>
+    </view>
+    <!--用户信息管理view   end-->
+
+    <!--用户密码重置view   start-->
+    <view id="UPM_userPasswordResetForm" render="form" title="用户密码重置" colNumbers="2">
+        <conf colNumbers="2" service="P0001006"/>
+        <col_item field="USER_CODE" title="人员标号" type="input" edit_flag="2"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" edit_flag="2"/>
+        <col_item field="USER_PASS" title="登陆密码" type="password" edt_required="true" edt_validType="val[1,25]"/>
+        <col_item field="CONFIRM_PASS" title="确认密码" type="password" edt_required="true" edt_validType="val[1,25]"/>
+    </view>
+    <!--用户密码重置view   end-->
+
+    <!--人员信息管理view   start-->
+    <view id="UUM_operInfoManage" render="datagrid" title=" " script="../../opp/js/operInfoManage.js?ver=1">
+        <conf service="P0001008" pageSize="10" gridMenu="'fileExport'" colNumbers="3" fit="true"  fallParas="[{enable:true}]"/>
+        <qry_item field="USER_CODE" title="ID号" type="input" edt_validType="numberex[10,10,0]" edt_invalidMessage="请输入10位以内数字"/>
+        <qry_item field="USER_NAME" title="人员名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="USER_STA" title="人员状态" type="combobox" edt_dict="USER_STA"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="USER_TYPE" title="人员类型" type="combobox" edt_dict="USER_TYPE"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="POST_ID" title="人员岗位"  width="100"
+                  type="combobox"
+                  edt_req="[{
+		            service:'P0001041'
+		          }]"
+                  edt_panelHeight="100"
+                  edt_valueField="POST_ID"
+                  edt_textField="POST_NAME"
+                edt_extItems="[{'POST_NAME':'全部','POST_ID':''}]"/>
+        <qry_item field="ORG_CODE" title="机构名称"  width="100"
+              type="combotree"
+              edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+              edt_panelWidth="250"
+              edt_panelHeight="300"
+              edt_nodeId="ORG_CODE"
+              edt_nodeName="ORG_CODE_NAME"
+              edt_parNode="PAR_ORG"
+              edt_treeType="1"
+            />
+        <qry_item field="MOBILE" title="手机号" edt_validType="mobile;length[0,32]"/>
+        <btn_item text="新增" service="P0001002" title="新增人员信息" handler="userInfoAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0001003" title="修改人员信息" handler="userInfoModify" iconCls="icon-edit"/>
+        <btn_item text="全部人员密码重置"   handler="batchAdd" iconCls="icon-add"/>
+        <btn_item text="状态变更" service="P0001005" title="人员状态变更" handler="userStatusModify" iconCls="icon-reload"/>
+        <btn_item text="岗位分配" title="岗位分配" handler="jobAllocate" iconCls="icon-acct" id="jobAllocateBtn"/>
+        <btn_item text="注销" service="P0001005" title="注销" handler="closeUser" iconCls="icon-end"/>
+
+        <col_item  field="USER_CODE" title="ID号" type="input" width="60" edt_width="140" primary_key="1" edit_flag="1"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" width="100" edt_width="140" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="USER_TYPE" title="人员类型" type="combobox" width="60" edt_width="144" edt_dict="USER_TYPE"
+                  edt_required="true"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" edit_flag="1" width="60" edt_width="140"
+                  edt_dict="USER_STA" edt_required="true"/>
+        <col_item field="ORG_CODE" title="机构名称" edt_required="true" edt_width="140" width="100"
+                  type="combotree"
+                  edt_req="[{service:'P0001031'}]"
+                  edt_panelWidth="250"
+                  edt_panelHeight="200"
+                  edt_nodeId="ORG_CODE"
+                  edt_nodeName="ORG_CODE_NAME"
+                  edt_parNode="PAR_ORG"
+                  edt_treeType="1"
+                />
+        <col_item field="POST_ID" title="人员岗位" edt_required="true" edt_width="140" width="100"
+                  type="combobox"
+                  edt_req="[{
+		            service:'P0001041',
+		            POST_STA:'1'
+		          }]"
+                  edt_panelHeight="100"
+                  edt_valueField="POST_ID"
+                  edt_textField="POST_NAME"
+                />
+        <col_item field="MAIN_POST_NAME" title="主岗位" type="input" width="80" edt_width="140" />
+        <col_item field="POST_LVL" title="岗位级别" type="combobox" edt_dict="POST_LVL" />
+
+        <col_item field="OPEN_DATE" title="开户日期" type="input" width="80" edt_width="140" edit_flag="3"/>
+        <col_item field="OFF_TEL" title="办公电话" type="input" width="120" edt_width="140" edt_validType="tel;length[0,32]"/>
+        <col_item field="MOBILE" title="手机号" type="input"  width="120" edt_width="140" edt_validType="mobile;length[0,32]"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" width="150" edt_width="140" edt_validType="email;length[0,32]"/>
+    </view>
+    <!--人员信息管理view   end-->
+    <!--人员信息新增view   start-->
+    <view id="UPM_userInfoAddForm" render="form" title="人员信息新增">
+        <conf colNumbers="2" service="P0001002"/>
+        <col_item field="ORG_CODE" title="机构名称" edt_required="true" edt_width="140" edt_isClear="true"
+                  type="combotree"
+                  edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+                  edt_panelWidth="230"
+                  edt_panelHeight="250"
+                  edt_nodeId="ORG_CODE"
+                  edt_nodeName="ORG_CODE_NAME"
+                  edt_parNode="PAR_ORG"
+                  edt_treeType="1"
+        />
+        <col_item field="USER_NAME" title="人员名称" type="input" edt_width="140" edt_required="true"
+                  edt_validType="val[1,64]"  width="300"/>
+        <col_item field="POST_ID" title="人员岗位" edt_required="true" edt_width="140" width="100"
+                  type="combobox"
+                  edt_panelHeight="100"
+                  edt_req="[{
+		            service:'P0001045',
+		            POST_STA:'1'
+		          }]"
+                  edt_valueField="POST_ID"
+                  edt_textField="POST_NAME"
+        />
+        <col_item edt_id="userCode" field="USER_CODE" title="ID号" type="input"  edt_width="140" width="300" edt_required="true"
+                  edt_validType="numberex[10,10,0]" edt_invalidMessage="请输入10位以内数字" edt_disabled="true"/>
+        <col_item field="USER_TYPE" title="人员类型" type="combobox" edt_width="140" edt_isClear="true" edt_required="true"
+                  edt_dict="USER_TYPE" edt_defaultValue="0"/>
+        <col_item field="USER_PASS" title="登录密码" type="password" edt_inputType="password" edt_isValid="0" edt_width="140" edt_required="true"
+                  edt_validType="numchar[6,25]" />
+        <col_item field="USER_STA" title="人员状态" type="combobox" edt_width="140" edt_isClear="true" edt_required="true"
+                  edt_dict="USER_STA"/>
+        <col_item field="OFF_TEL" title="办公电话" type="input" edt_width="140" edt_validType="tel;length[0,32]" />
+        <col_item field="MOBILE" title="手机号" edt_required="true" type="input" edt_width="140" edt_validType="mobile;length[0,32]"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" edt_width="140" edt_validType="email;length[0,32]" />
+    </view>
+    <!--人员信息新增view   end-->
+        <!--人员信息修改view   start-->
+    <view id="UPM_userInfoUpdateForm" render="form" title="人员信息修改">
+        <conf colNumbers="2" service="P0001003"/>
+        <col_item field="USER_CODE" title="ID号" type="input"  edt_width="140" edt_required="true"
+                  edit_flag="2" />
+        <col_item field="USER_NAME" title="人员名称" type="input" edt_width="140" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="USER_TYPE" title="人员类型" type="combobox" edt_isClear="true" edt_width="140" edt_required="true"
+                  edt_dict="USER_TYPE"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" edt_isClear="true" edt_width="140" edt_required="true"
+                  edt_dict="USER_STA"/>
+        <col_item field="ORG_CODE" title="机构名称" edt_required="true" edt_isClear="true" edt_width="140"
+                  type="combotree"
+                  edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+                  edt_panelWidth="230"
+                  edt_panelHeight="250"
+                  edt_nodeId="ORG_CODE"
+                  edt_nodeName="ORG_CODE_NAME"
+                  edt_parNode="PAR_ORG"
+                  edt_treeType="1"
+                />
+        <col_item field="OFF_TEL" title="办公电话" type="input" edt_width="140" edt_validType="tel;length[0,32]"/>
+        <col_item field="MOBILE" title="手机号"  edt_required="true" type="input" edt_width="140" edt_validType="mobile;length[0,32]"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" edt_width="140" edt_validType="email;length[0,32]"/>
+    </view>
+    <!--人员信息修改view   end-->
+    <!--人员状态修改view   start-->
+    <view id="UPM_userStatusModifyForm" render="form" title="人员状态修改" colNumbers="2">
+        <conf colNumbers="2" service="P0001005"/>
+        <col_item field="USER_CODE" title="ID号" type="input" edit_flag="2"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" edit_flag="2"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" width="60" edt_required="true" edt_dict="USER_STA"/>
+    </view>
+    <!--人员状态修改view   end-->
+
+    <!--角色信息管理view   start-->
+    <view id="UUM_roleManage" title="角色信息" render="datagrid">
+        <conf service="P0001011" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+        <!--qry_item field="ROLE_ID" title="角色编号" type="input" edt_validType="zint[18]"/-->
+        <qry_item field="ROLE_NAME" title="角色名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="ROLE_STA" title="角色状态" type="combobox" edt_dict="ROLE_STA"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" service="P0001012" title="新增角色信息" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0001013" title="修改角色信息" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0001014" handler="commonDelete" iconCls="icon-remove"/>
+        <!--<btn_item text="角色用户管理" title="角色用户管理" handler="uum_roleUserInsert" iconCls="icon-regist"/>-->
+        <!--<btn_item text="授权权限设置" title="授权权限设置" handler="rolePermSet" iconCls="icon-list"/>-->
+        <col_item field="ROLE_ID" title="角色编号" sortType='number' width="100" type="input" edit_flag="3"/>
+        <col_item field="ROLE_NAME" title="角色名称" width="120" type="input" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="ROLE_STA" title="角色状态" width="120" type="combobox" edt_required="true" edt_dict="ROLE_STA"
+                  primary_key="0" formatter="function(value){ return getSysDictOpt('ROLE_STA',value); }"/>
+        <col_item field="REMARK" title="备注" edt_width="340" width="360" edt_height="100" colspan="4" type="textarea" primary_key="0"
+                  edt_validType="val[1,400]" />
+    </view>
+    <!--角色信息管理view   end-->
+
+    <!--岗位分配view   start-->
+    <view id="UUM_jobAllocate" render="datagrid" title="人员岗位分配">
+        <conf service="P0001008"  colNumbers="3" fit="true" fallParas="[{enable:true}]" />
+        <qry_item field="USER_CODE" title="ID号" type="input" edt_validType="zint[18]"/>
+        <qry_item field="USER_NAME" title="人员名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="USER_TYPE" title="人员类型" type="combobox" edt_dict="USER_TYPE"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="POST_ID" title="人员岗位" type="combobox" edt_req="[{
+		            service:'P0001041'
+		          }]"
+                  edt_panelHeight="200"
+                  edt_valueField="POST_ID"
+                  edt_textField="POST_NAME" edt_extItems="[{'POST_NAME':'全部','POST_ID':''}]"/>
+        <btn_item text="岗位分配" title="岗位分配" handler="jobAllocate" iconCls="icon-edit"/>
+        <col_item field="USER_CODE" title="ID号" type="input" sortType="number" width="60" edt_width="140" primary_key="1" edit_flag="2"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" width="100" edt_width="140" edt_required="true"
+                  edt_validType="val[1,32]"/>
+        <col_item field="USER_TYPE" title="人员类型" type="combobox" width="60" edt_width="144" edt_dict="USER_TYPE"
+                  edt_required="true"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" width="60" edt_width="144" edit_flag="2"
+                  edt_dict="USER_STA" edt_required="true"/>
+        <col_item field="POST_ID" title="人员岗位" edt_required="true" edt_width="140" width="100"
+                  type="combobox"
+                  edt_req="[{
+		            service:'P0001041',
+		            POST_STA:'1'
+		          }]"
+                  edt_panelHeight="200"
+                  edt_valueField="POST_ID"
+                  edt_textField="POST_NAME"
+                />
+        <col_item field="MAIN_POST_NAME" title="主岗位" type="input" width="80" edt_width="140" />
+        <col_item field="OPEN_DATE" title="开户日期" type="input" width="80" edt_width="140" edit_flag="3"/>
+        <col_item field="OFF_TEL" title="办公电话" type="input" width="120" edt_width="140" edt_validType="tel"/>
+        <col_item field="MOBILE" title="手机号" type="input" width="120" edt_width="140" edt_validType="mobile"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" width="150" colspan="4" edt_width="362"
+                  edt_validType="email"/>
+    </view>
+    <view id="UUM_job" title="" render="datagrid">
+        <conf service="P0001051" pageSize="10" colNumbers="2" singleSelect="false"/>
+        <btn_item text="新增" title="人员新增岗位" handler="operAddJob" iconCls="icon-add"/>
+        <btn_item text="删除" handler="operDelJob" iconCls="icon-remove"/>
+        <btn_item text="设置主岗位" handler="setPrimaryJob" iconCls=""/>
+        <col_item width="100" type="input" checkbox="true"/>
+        <col_item field="USER_CODE" title="ID号" width="100" type="input"/>
+        <col_item field="POST_ID" title="岗位编号" width="100" type="input" edit_flag="2"/>
+        <col_item field="POST_NAME" title="岗位名称" width="100" type="input"/>
+        <col_item field="POST_STA" title="岗位状态" width="150" type="input"
+                  formatter="function(value){ return getSysDictOpt('POST_STA',value); }"/>
+      <col_item field="MAIN_FLAG" title="主岗位" width="150" type="input"
+      formatter="function(value){ return getSysDictOpt('MAIN_FLAG',value); }"/>
+    </view>
+    <view id="UUM_POST_IDS" title="" render="datagrid">
+        <conf service="P0001052" pageSize="10" required="true" colNumbers="2" singleSelect="false"
+              multiple="true" idField="POST_ID" onSelect="checkExcluJob" enableCheckAll="false"/>
+        <qry_item field="POST_NAME" title="岗位名称" type="input" edt_validType="val[0,64]"/>
+        <col_item field="USER_CODE"  width="50" checkbox="true"/>
+        <col_item field="POST_ID" title="岗位编号" width="100" type="input"/>
+        <col_item field="POST_NAME" title="岗位名称" width="150" type="input"/>
+        <col_item field="POST_STA" title="岗位状态" width="100" type="input"
+                  formatter="function(value,row,index){return getSysDictOpt('POST_STA',value);}"/>
+    </view>
+
+    <!--岗位分配view   end-->
+
+    <!--角色分配view   start-->
+    <view id="UUM_roleAllocate" render="datagrid" title="人员角色分配">
+        <conf service="P0001008" colNumbers="3" fit="true" fallParas="[{enable:true}]" />
+        <qry_item field="USER_CODE" title="ID号"  type="input" edt_validType="zint[18]"/>
+        <qry_item field="USER_NAME" title="人员名称"  type="input" edt_validType="val[0,64]"/>
+
+        <qry_item field="ROLE_ID" title="人员角色"   width="100"
+                  type="combobox"
+                  edt_req="[{service:'P0001011',ROLE_STA:'1'}]"
+                  edt_panelHeight="150"
+                  edt_panelWidth="150"
+                  edt_valueField="ROLE_ID"
+                  edt_textField="ROLE_NAME"
+                />
+        <qry_item field="USER_TYPE" title="人员类型"  type="combobox" edt_dict="USER_TYPE"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="USER_STA"  title="人员状态" type="combobox" edt_dict="USER_STA"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+
+        <btn_item text="角色分配" title="角色分配" handler="roleAllocate" iconCls="icon-edit"/>
+        <col_item field="USER_CODE" title="ID号" sortType="number" type="input" width="60" edt_width="140" primary_key="1" edit_flag="2"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" width="100" edt_width="140" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="ORG_NAME" title="机构名称" type="input" width="60" edt_width="140"/>
+        <col_item field="ROLES_NAME" title="人员角色" type="input" width="120" edt_width="140" edt_validType="mobile"
+                  edit_flag="2"/>
+        <col_item field="USER_TYPE" title="人员类型" type="combobox" width="60" edt_width="144" edt_dict="USER_TYPE"
+                  edt_required="true"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" width="60" edt_width="144" edit_flag="2"
+                  edt_dict="USER_STA" edt_required="true"/>
+        <col_item field="OPEN_DATE" title="开户日期" type="input" width="80" edt_width="140" edit_flag="3"/>
+        <col_item field="OFF_TEL" title="办公电话" type="input" width="120" edt_width="140" edt_validType="tel"/>
+        <col_item field="MOBILE" title="手机号" type="input" width="120" edt_width="140" edt_validType="mobile"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" width="150" colspan="4" edt_width="362"
+                  edt_validType="email"/>
+
+    </view>
+    <view id="UUM_role" title="" render="datagrid">
+        <conf service="P0001055" pageSize="10" colNumbers="2" singleSelect="false"/>
+        <btn_item text="新增" title="人员新增角色" handler="operAddRole" iconCls="icon-add"/>
+        <btn_item text="删除" handler="operDelRole" iconCls="icon-remove"/>
+        <col_item width="100" type="input" checkbox="true"/>
+        <col_item field="USER_CODE" title="ID号" width="100" type="input"/>
+        <col_item field="ROLE_ID" title="角色编号" width="100" type="input"/>
+        <col_item field="ROLE_NAME" title="角色名称" width="100" type="input"/>
+        <col_item field="ROLE_STA" title="角色状态" width="120" type="combobox" edt_required="true" edt_dict="ROLE_STA"
+                  primary_key="0"/>
+    </view>
+    <!--角色分配view   end-->
+
+    <!--权限信息管理view   start--><!-- addConsType -->
+    <view id="UUM_permissionManage" title="权限信息" render="treegrid">
+        <conf fit="true" service="P0002255" singleSelect="true"
+              loadFilter="dataFilter" idField="PERM_ID" treeField="PERM_NAME"
+              onLoadSuccess="loadTreeSuccess" required="true" colNumbers="3"
+              border="false" onClickRow="clickRow"/>
+        <qry_item field="PERM_TYPE" title="权限类型" type="combobox" edt_dict="PERM_TYPE" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="PERM_NAME" title="权限名称" edt_editable="true" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="PERM_STA" title="权限状态" type="combobox" edt_dict="COMM_STA" edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+
+        <btn_item text="新增约束" title="新增约束" handler="addConsType" iconCls="icon-add"/>
+        <btn_item text="新增按钮" title="新增按钮信息" handler="addButtonInfo" iconCls="icon-add"/>
+        <btn_item text="修改按钮" title="修改按钮信息" handler="updateButtonInfo" iconCls="icon-edit"/>
+        <btn_item text="删除按钮" handler="delPermInfo" iconCls="icon-remove"/>
+        <btn_item text="新增列" title="新增列信息" handler="addColInfo" iconCls="icon-add"/>
+        <btn_item text="修改列" title="修改列信息" handler="updateColInfo" iconCls="icon-edit"/>
+        <btn_item text="删除列" handler="delPermInfo" iconCls="icon-remove"/>
+        <btn_item id="sycn_comp" text="同步组件权限" title="同步组件权限" handler="syncCompPermData" iconCls="icon-reload"/>
+
+        <col_item field="PERM_ID" title="权限编号" width="150" edt_required="true" hidden="true"/>
+        <col_item field="PERM_NAME" title="权限名称" sortable="false" edt_required="true" type="input"/>
+        <col_item field="PAR_PERM" title="父权限" width="80"  type="input" hidden="true"/>
+        <col_item field="FLAG" title="标志" width="80" type="input" hidden="true"/>
+        <col_item field="PERM_TYPE" title="权限类型" width="120" sortable="false" type="combobox" edt_dict="PERM_TYPE" edt_required="true"/>
+        <col_item field="PERM_STA" title="权限状态" width="80" sortable="false" type="combobox" edt_dict="COMM_STA" edt_required="true"/>
+        <col_item field="PERM_VAL" title="权限值" width="160" sortable="false" type="input" edt_validType="val[1,512]" edt_required="true" hidden="true"/>
+        <col_item field="CONS_NAMES" title="关联约束" sortable="false" width="150" type="input" edit_flag="3"/>
+        <col_item field="REMARK" title="备注" width="300" sortable="false" type="input" primary_key="0" edt_validType="val[1,512]"/>
+    </view>
+    <!--权限信息管理view   end-->
+
+    <!--岗位管理view   start-->
+    <view id="UUM_jobsManage" title="" render="datagrid">
+        <conf service="P0001045" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+        <qry_item field="POST_NAME" title="岗位名称" type="input" edt_validType='val[0,64]'/>
+        <qry_item field="POST_STA" title="岗位状态" type="combobox" edt_dict="POST_STA"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" handler="addJobs" iconCls="icon-add"/>
+        <btn_item text="修改" handler="updateJobs" iconCls="icon-edit"/>
+        <btn_item text="删除" handler="deleteJobs" iconCls="icon-remove"/>
+        <col_item field="POST_ID" title="岗位编号" sortType="number" width="100" type="input"/>
+        <col_item field="POST_NAME" title="岗位名称" width="200" type="input"/>
+        <col_item field="POST_STA" title="岗位状态" type="combobox" width="100" edt_width="144" edt_dict="POST_STA"
+                  edt_required="true"/>
+    </view>
+    <!--岗位管理view   end-->
+
+    <!--组织机构管理view   start-->
+    <view id="orgInfoForm" render="form" title="组织机构信息" colNumbers="2">
+        <conf colNumbers="2"/>
+        <col_item field="ORG_CODE" title="机构代码" type="input" edt_required="true" edt_validType="val[1,8]"/>
+        <col_item field="ORG_LVL" title="机构级别" type="input" hidden="true"/>
+        <col_item field="PAR_ORG" title="上级机构" type="input" hidden="true"/>
+        <col_item field="ORG_NAME" title="机构名称" edt_validType="val[1,64]" type="input" edt_required="true"/>
+        <col_item field="ORG_STA" title="机构状态" type="combobox" edt_dict="COMM_STA" edt_required="true"/>
+        <col_item field="ORG_TYPE" title="机构类型" type="combobox" edt_dict="OPP_ORG_TYPE" edt_required="true"/>
+        <col_item field="ORG_BIZ_CLS" title="业务类别" type="combobox" edt_dict="ORG_BIZ_CLS" edt_required="true"/>
+        <col_item field="ORG_CLS" title="机构类别" type="combobox" edt_dict="ORG_CLS" edt_required="true"/>
+        <col_item field="ORG_CON" title="联系人" type="input" edt_validType="val[1,64]"/>
+        <col_item field="ORG_TEL" title="联系电话" type="input" edt_validType="tel"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" edt_validType="email[32]"
+                  edt_invalidMessage="请输入32位以内的有效邮箱地址！"/>
+        <col_item field="ORG_FAX" title="传真号码" type="input" edt_validType="val[1,32]"/>
+        <col_item field="ZIP_CODE" title="邮政编码" type="input" edt_validType="zint[8]"/>
+        <col_item field="ORG_AREA" title="所在区号" type="input" edt_validType="int[8]"/>
+        <col_item field="ORG_PROVINCE_ZIP" title="所在省份编号" type="input" edt_validType="val[1,8]"/>
+        <col_item field="ORG_CITY_ZIP" title="所在省市编号" type="input" edt_validType="val[1,8]"/>
+        <col_item field="ORG_ADDR" title="联系地址" colspan="2" type="input" edt_validType="val[1,256]"/>
+        <col_item field="REMARK" title="备注" colspan="2" type="input" edt_validType="val[1,256]"/>
+    </view>
+    <!--组织机构管理view   end-->
+    <!--特殊权限定义管理view   start-->
+    <view id="UUM_spePermDefine" render="datagrid" title="特殊权限定义管理">
+        <conf service="P0002211" pageSize="10" colNumbers="2" pagination="true" fit="true"/>
+        <qry_item field="PRE_PERM_ID" title="特殊权限定义编号" type="input" edt_validType="zint[18]"/>
+        <qry_item field="PRE_PERM_NAME" title="特殊权限名称" type="input" edt_validType="val[0,32]"/>
+        <btn_item text="新增" service="P0002212" title="新增特殊权限" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0002213" title="修改特殊权限" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0002214" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="PRE_PERM_ID" title="特殊权限定义编号" sortType="number" type="input" width="300" edit_flag="3"/>
+        <col_item field="PRE_PERM_NAME" title="特殊权限名称" type="input" width="300"  edt_required="true"
+                  edt_validType="val[1,32]"/>
+    </view>
+    <!--特殊权限定义管理view   end-->
+    <!--约束限制管理view   start-->
+    <view id="UUM_consManage" render="datagrid" title="约束限制管理">
+        <conf service="P0002201" pageSize="10" colNumbers="4" pagination="true" fit="true"/>
+        <qry_item field="CONS_ID" title="约束编号" type="input" edt_validType="zint[18]"/>
+        <qry_item field="CONS_NAME" title="约束名称" type="input" edt_validType="val[0,32]"/>
+        <qry_item field="CONS_TYPE" title="约束类型" type="combobox" edt_dict="CONS_TYPE"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <qry_item field="CONS_STATE" title="约束状态" type="combobox" edt_dict="CONS_STATE"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="新增" service="P0002202" title="新增约束限制" handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="P0002203" title="修改约束限制" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="P0002204" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="CONS_ID" title="约束编号" sortType="number"  type="input" edit_flag="3"/>
+        <col_item field="CONS_NAME" title="约束名称" type="input" width="100" edt_width="140" edt_required="true"
+                  edt_validType="val[1,32]"/>
+        <col_item field="CONS_TYPE" title="约束类型" type="combobox" width="140" edt_width="144" edt_required="true"
+                  edt_dict="CONS_TYPE" edit_flag="1"/>
+        <col_item field="CONS_STATE" title="约束状态" type="combobox" width="120" edt_width="144" edt_required="true"
+                  edt_dict="CONS_STATE"/>
+    </view>
+    <!--特殊权限定义管理view   end-->
+
+    <!--人员岗位互斥设置view   start-->
+    <view id="UUM_jobExclu" render="datagrid" title="岗位互斥设置">
+        <conf service="P0001045" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+        <qry_item field="POST_NAME" title="岗位名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="POST_STA" title="岗位状态" type="combobox" edt_dict="POST_STA"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <btn_item text="岗位互斥" title="岗位互斥" handler="jobExclu" iconCls="icon-regist"/>
+        <col_item field="POST_ID" title="岗位编号" type="input" sortType="number" width="100" edt_width="140"/>
+        <col_item field="POST_NAME" title="岗位名称" type="input" width="120" edt_width="140" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="POST_STA" title="岗位状态" type="combobox" width="100" edt_width="144" edt_dict="POST_STA"
+                  edt_required="true"/>
+    </view>
+    <view id="UUM_ExcluJobInfo" title="" render="datagrid">
+        <conf service="P0001065" pageSize="10" colNumbers="2" singleSelect="false" fit="true"/>
+        <btn_item text="新增" title="新增互斥岗位" handler="addExcluJob" iconCls="icon-add"/>
+        <btn_item text="删除" handler="delExcluJob" iconCls="icon-remove"/>
+        <col_item width="100" type="input" checkbox="true"/>
+        <col_item field="POST_ID" title="岗位编号" width="100" type="input"/>
+        <col_item field="POST_EXCLU_ID" title="互斥岗位编号" sortType="number" width="100" type="input"/>
+        <col_item field="POST_NAME" title="互斥岗位名称" width="100" type="input"/>
+        <!--col_item field="POST_STA" title="互斥岗位状态" width="150" type="combobox" edt_dict="POST_STA"/-->
+    </view>
+    <!--人员岗位互斥设置view   end-->
+
+    <!--岗位管理查询view   start-->
+    <view id="UUM_jobsManage_search" title="" render="datagrid">
+        <conf service="P0001045" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+        <qry_item field="POST_NAME" title="岗位名称" type="input" edt_validType='val[1,64]'/>
+        <qry_item field="POST_STA" title="岗位状态" type="combobox" edt_dict="POST_STA"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <col_item field="POST_ID" width="100" type="input" hidden="true"/>
+        <col_item field="POST_NAME" title="岗位名称" width="200" type="input"/>
+        <col_item field="POST_STA" title="岗位状态" width="150" type="input"
+                  formatter="function(value){ return getSysDictOpt('POST_STA',value); }"/>
+    </view>
+    <!--岗位管理查询view   end-->
+
+    <!--人员资料查询view   start-->
+    <view id="UUM_empInfoManage_search" render="datagrid" title="人员信息管理"
+          script="../../opp/js/manage-platform-func.js">
+        <conf service="P0001008" colNumbers="3" fit="true" fallParas="[{enable:true}]"/>
+        <qry_item field="USER_CODE" title="ID号" type="input" edt_validType="zint[18]"/>
+        <qry_item field="USER_NAME" title="人员名称" type="input" edt_validType="val[0,64]"/>
+        <qry_item field="USER_TYPE" title="人员类型" type="combobox" edt_dict="USER_TYPE"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <col_item field="USER_CODE" title="ID号" type="input" width="60" edt_width="140" primary_key="1" edit_flag="2"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" width="100" edt_width="140" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="USER_TYPE" title="人员类型" type="combobox" width="60" edt_width="144" edt_dict="USER_TYPE"
+                  edt_required="true"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" width="60" edt_width="140" edit_flag="2"
+                  edt_dict="USER_STA" edt_required="true"/>
+        <col_item field="ORG_CODE" title="机构名称" edt_required="true" edt_width="140" width="100"
+                  type="combotree"
+                  edt_req="[{service:'P0001031',ORG_STA:'1'}]"
+                  edt_panelWidth="250"
+                  edt_panelHeight="300"
+                  edt_nodeId="ORG_CODE"
+                  edt_nodeName="ORG_NAME"
+                  edt_parNode="PAR_ORG"
+                  edt_treeType="1"
+                />
+        <col_item field="POST_ID" title="人员岗位" edt_required="true" edt_width="140" width="100"
+                  type="combobox"
+                  edt_req="[{service:'P0001041',POST_STA:'1'}]"
+                  edt_valueField="POST_ID"
+                  edt_textField="POST_NAME"
+                />
+        <col_item field="OPEN_DATE" title="开户日期" type="input" width="80" edt_width="140" edit_flag="3"/>
+        <col_item field="OFF_TEL" title="办公电话" type="input" width="120" edt_width="140" edt_validType="tel"/>
+        <col_item field="MOBILE" title="手机号" type="input" width="120" edt_width="140" edt_validType="mobile"/>
+        <col_item field="EMAIL" title="电子邮箱" type="input" width="150" edt_width="140" edt_validType="email"/>
+    </view>
+    <!--人员资料查询view   end-->
+
+    <!--角色信息查询view   start-->
+    <view id="UUM_roleManage_search" title="角色信息" render="datagrid">
+        <conf service="P0001011" pageSize="10" colNumbers="3" pagination="true" fit="true"/>
+        <qry_item field="ROLE_ID" title="角色编号" type="input" edt_validType="zint[18]"/>
+        <qry_item field="ROLE_NAME" title="角色名称" type="input" edt_validType="val[1,64]"/>
+        <qry_item field="ROLE_STA" title="角色状态" type="combobox" edt_dict="ROLE_STA"
+                  edt_extItems="[{'dict_des':'全部','dict_val':''}]"/>
+        <col_item field="ROLE_ID" title="角色编号" width="100" type="input" edit_flag="3"/>
+        <col_item field="ROLE_NAME" title="角色名称" width="120" type="input" edt_required="true"
+                  edt_validType="val[1,64]"/>
+        <col_item field="ROLE_STA" title="角色状态" width="120" type="combobox" edt_required="true" edt_dict="ROLE_STA"
+                  primary_key="0" formatter="function(value){ return getSysDictOpt('ROLE_STA',value); }"/>
+        <col_item field="REMARK" title="备注" width="300" colspan="4" type="textarea" primary_key="0"
+                  edt_validType="val[1,400]"/>
+    </view>
+    <!--角色信息查询view   end-->
+
+    <!--按钮资料修改view   start-->
+    <view id="UPM_userStatusModifyForm" render="form" title="人员状态修改" colNumbers="2">
+        <conf colNumbers="2" service="P0001005"/>
+        <col_item field="USER_CODE" title="ID号" type="input" edit_flag="2"/>
+        <col_item field="USER_NAME" title="人员名称" type="input" edit_flag="2"/>
+        <col_item field="USER_STA" title="人员状态" type="combobox" width="60" edt_required="true" edt_dict="USER_STA"/>
+    </view>
+    <!--按钮资料修改view   end-->
+
+</views>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DynamicMapper.HistoricTaskDetailEntity">
+
+	<insert id="BpmHistoricTaskDetailInsert"
+		parameterType="hashmap">
+		insert into UWK_HI_TASKDETAIL (
+		TASK_ID,
+		CREATE_TIME,
+		PROC_INST_ID,
+		ATTR_1,
+		ATTR_2,
+		ATTR_3,
+		ATTR_4,
+		ATTR_5,
+		ATTR_6,
+		ATTR_7,
+		ATTR_8,
+		ATTR_9,
+		ATTR_10)
+		values (
+		#{detail.taskId, jdbcType=VARCHAR},
+		#{detail.createTime, jdbcType=TIMESTAMP},
+		#{detail.processInstanceId, jdbcType=VARCHAR},
+		#{detail.attribute1, jdbcType=VARCHAR},
+		#{detail.attribute2, jdbcType=VARCHAR},
+		#{detail.attribute3, jdbcType=VARCHAR},
+		#{detail.attribute4, jdbcType=VARCHAR},
+		#{detail.attribute5, jdbcType=VARCHAR},
+		#{detail.attribute6, jdbcType=VARCHAR},
+		#{detail.attribute7, jdbcType=VARCHAR},
+		#{detail.attribute8, jdbcType=VARCHAR},
+		#{detail.attribute9, jdbcType=VARCHAR},
+		#{detail.attribute10, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="BpmHistoricTaskDetailUpdate"
+		parameterType="hashmap">
+		update UWK_HI_TASKDETAIL
+		set
+		ATTR_1 = #{detail.attribute1, jdbcType=VARCHAR},
+		ATTR_2 = #{detail.attribute2, jdbcType=VARCHAR},
+		ATTR_3 = #{detail.attribute3, jdbcType=VARCHAR},
+		ATTR_4 = #{detail.attribute4, jdbcType=VARCHAR},
+		ATTR_5 = #{detail.attribute5, jdbcType=VARCHAR},
+		ATTR_6 = #{detail.attribute6, jdbcType=VARCHAR},
+		ATTR_7 = #{detail.attribute7, jdbcType=VARCHAR},
+		ATTR_8 = #{detail.attribute8, jdbcType=VARCHAR},
+		ATTR_9 = #{detail.attribute9, jdbcType=VARCHAR},
+		ATTR_10 = #{detail.attribute10, jdbcType=VARCHAR}
+		where TASK_ID = #{detail.taskId, jdbcType=VARCHAR}
+	</update>
+
+	<resultMap id="historicTaskDetailResultMap"
+		type="com.szkingdom.frame.bpm.kworkflow.entity.HistoricTaskDetailEntity">
+		<id property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+		<result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="attribute1" column="ATTR_1" jdbcType="VARCHAR" />
+		<result property="attribute1" column="ATTR_1" jdbcType="VARCHAR" />
+		<result property="attribute2" column="ATTR_2" jdbcType="VARCHAR" />
+		<result property="attribute3" column="ATTR_3" jdbcType="VARCHAR" />
+		<result property="attribute4" column="ATTR_4" jdbcType="VARCHAR" />
+		<result property="attribute5" column="ATTR_5" jdbcType="VARCHAR" />
+		<result property="attribute6" column="ATTR_6" jdbcType="VARCHAR" />
+		<result property="attribute7" column="ATTR_7" jdbcType="VARCHAR" />
+		<result property="attribute8" column="ATTR_8" jdbcType="VARCHAR" />
+		<result property="attribute9" column="ATTR_9" jdbcType="VARCHAR" />
+		<result property="attribute10" column="ATTR_10" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<delete id="BpmHistoricTaskDetailDelete" parameterType="hashmap">
+		delete from UWK_HI_TASKDETAIL
+		where TASK_ID =
+		#{taskId,jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="BpmTaskDetailDeleteByProcessInstanceId" parameterType="hashmap">
+		delete from UWK_HI_TASKDETAIL
+		where PROC_INST_ID =
+		#{processInstanceId,jdbcType=VARCHAR}
+	</delete>
+
+
+	<select id="BpmHistoricTaskDetailSelect"
+		parameterType="hashmap" resultMap="historicTaskDetailResultMap">
+		select * from UWK_HI_TASKDETAIL
+		where TASK_ID = #{taskId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

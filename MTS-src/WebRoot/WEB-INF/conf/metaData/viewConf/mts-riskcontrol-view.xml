@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<view id="riskCtrlType_info" render="form" title="风控分类信息" colNumbers="2">
+		<conf colNumbers="1"/>
+		<col_item field="TYPE_ID" title="风控类型编号" type="input" edt_required="true" edt_validType="int[12]" hidden="true"/>
+		<col_item field="TYPE_NAME" title="风控类型名称" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="PAR_TYPE_ID" title="父风控类型编号" type="input" hidden="true"/>
+		<col_item field="TYPE_LVL" title="风控类型级别" type="input" hidden="true"/>
+		<col_item field="RISK_TYPE_STATUS" title="风控类型状态" type="combobox" edt_dict="RISK_TYPE_STATUS" edt_required="true"
+				  edt_autoFill="true"/>
+		<col_item field="CTRL_TYPE" title="控制类型" type="combobox" edt_dict="CTRL_TYPE"  edt_autoFill="true" edt_panelHeight="150"/>
+		<col_item field="CTRL_SUB_TYPE" title="控制子类型" type="combobox" edt_dict="CTRL_SUB_TYPE"
+				  edt_autoFill="true"/>
+		<col_item field="OP_ID" title="操作员编号"  type="input" edit_flag="3"/>
+		<col_item field="UP_DATE" title="更新日期"  type="datebox" edit_flag="3"/>
+		<col_item field="REMARK" title="备注 " type="input" edt_validType="val[1,200]" />
+	</view>
+
+	<view id="mts_riskCfg_info_table"  render="datagrid" title="风控配置信息" >
+		<conf service="M0000041" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+
+		<qry_item field="RISK_ID" title="风控编号"  type="input"/>
+
+		<btn_item text="新增" service="M0000042" title="新增风控配置信息" handler="riskCfgInfo_add" iconCls="icon-add"  />
+		<btn_item text="删除" service="M0000044" title="删除风控配置信息"  handler="commonDelete" iconCls="icon-remove"  />
+
+		<col_item field="RISK_ID" title="风控编号" type="input"  edt_validType="int[18]" edit_flag="3"/>
+		<col_item field="TYPE_ID" title="风控类型"  type="input"/>
+		<col_item field="CUACCT_ID" title="资金账号"  type="input"/>
+        <col_item field="RISK_LVL" title="优先级"  type="input"/>
+        <col_item field="DIRECTION" title="比较类型" type="combobox" edt_dict="DIRECTION"  edt_autoFill="true"/>
+        <col_item field="EFFECT_RANGE" title="作用范围" type="combobox" edt_dict="EFFECT_RANGE"  edt_autoFill="true"/>
+        <col_item field="IS_USE" title="启用风控" type="combobox" edt_dict="YES_OR_NO"  edt_autoFill="true"/>
+        <col_item field="MSG_HINT" title="消息提醒" type="combobox" edt_dict="YES_OR_NO"  edt_autoFill="true"/>
+        <col_item field="RISK_DESC" title="风控说明" type="input" width="100" />
+        <col_item field="POINT1" title="阀值一" type="input" />
+        <col_item field="POINT1_DO" title="触警操作" type="combobox" edt_dict="POINT_DO"  edt_autoFill="true"/>
+        <col_item field="POINT2" title="阀值二" type="input" />
+        <col_item field="POINT2_DO" title="触警操作" type="combobox" edt_dict="POINT_DO"  edt_autoFill="true"/>
+        <col_item field="POINT3" title="阀值二" type="input" />
+        <col_item field="POINT3_DO" title="触警操作" type="combobox" edt_dict="POINT_DO"  />
+        <col_item field="CONTROL_TYPE" title="控制方式" type="combobox" edt_dict="CONTROL_TYPE" />
+        <col_item field="CONTROL_TYPE_VAL" title="控制方式值" type="input" formatter="function(value){
+			return getAbbreviationSpan(value,20);
+         }"/>
+		<col_item field="OP_ID" title="操作员"  type="input" edit_flag="3"/>
+		<col_item field="UP_DATE" title="更新日期"  type="datebox" edit_flag="3"/>
+		<col_item field="REMARK" title="备注" type="input"  edt_validType="val[1,200]" colspan="4"/>
+
+	</view>
+
+	<view id="mst_limit_trade_info" render="datagrid" title="查询正常交易的柜员信息" >
+		<conf req="[{service:'M0000073',TRADE_STA:'0'}]" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true"/>
+		<qry_item field="OP_ID" title="操作员编号" type="input" edt_validType="val[32]"/>
+		<btn_item text="禁止交易" service="M0000074" title="禁止交易"  handler="banTrade" iconCls="icon-lock"  />
+		<col_item field="POST_ID" title="岗位编号" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="POST_NAME" title="岗位名称" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="OP_ID" title="操作员编号" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="OP_NAME" title="操作员名称" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="TRADE_STA" title="交易状态"  type="combobox" edt_dict="TRADE_STA"  edit_flag="3"/>
+		<col_item field="UP_DATE" title="更新日期"  type="datebox" edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间 " type="input" edit_flag="3"/>
+	</view>
+	<view id="mst_recovery_trade_info" render="datagrid" title="查询禁止交易的柜员信息" >
+		<conf req="[{service:'M0000073',TRADE_STA:'1'}]" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true"/>
+		<qry_item field="OP_ID" title="操作员编号" type="input" edt_validType="val[32]"/>
+		<btn_item text="恢复交易" service="M0000075" title="恢复交易"  handler="recoveryTrade" iconCls="icon-unlock"  />
+		<col_item field="POST_ID" title="岗位编号" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="POST_NAME" title="岗位名称" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="OP_ID" title="操作员编号" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="OP_NAME" title="操作员名称" type="input" edt_required="true" edt_validType="val[1,64]"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
+		<col_item field="TRADE_STA" title="交易状态"  type="combobox" edt_dict="TRADE_STA"  edit_flag="3"/>
+		<col_item field="UP_DATE" title="更新日期"  type="datebox" edit_flag="3"/>
+		<col_item field="UP_TIME" title="更新时间 " type="input" edit_flag="3"/>
+	</view>
+
+	<!--查询正常状态交易员-->
+	<view id="mst_QueryUseTrader_table" render="datagrid">
+		<conf  pageSize="10" colNumbers="3" fit="true"  fallParas="[{enable:true}]" singleSelect="false"
+			  req="[{service:'P0001008',USER_STA:'1',POST_ID:getSysParamValuebyCode('TRADER_POST_ID')}]"/>
+		<col_item  field="ID" type="input" checkbox="true"/>
+		<col_item  field="USER_CODE" title="ID号" type="input" width="60" />
+		<col_item field="USER_NAME" title="人员名称" type="input" width="80"
+				  edt_validType="val[1,64]"/>
+		<col_item field="ORG_CODE" title="机构名称" edt_required="true" width="80"
+				  type="combotree"
+				  edt_req="[{service:'P0001031'}]"
+				  edt_panelWidth="250"
+				  edt_panelHeight="200"
+				  edt_nodeId="ORG_CODE"
+				  edt_nodeName="ORG_CODE_NAME"
+				  edt_parNode="PAR_ORG"
+				  edt_treeType="1"/>
+	</view>
+   <!--交易持股风险查询-->
+	<view id="mst_QueryUseTraderStockRisk_table" render="datagrid" title="" script="../../common/js/common.js">
+		<conf req="[{service:'M0000053', OP_ID:g_user.userId, USER_POST:g_user.USER_POST}]" pageSize="500" colNumbers="4" fit="true"
+			  fallParas="[{enable:true}]" 	 sortName="HOLD_PROFIT" />
+		<col_item field="OP_ID" title="交易员代码"  type="input" />
+		<col_item field="OP_NAME" title="交易员名称"  type="input"/>
+		<col_item field="INST_ID" title="产品代码"  type="input"/>
+		<col_item field="INST_NAME" title="产品名称"  type="input"/>
+		<col_item field="STK_PRICE" title="当前价" type="input" align="right"
+				  formatter="function(value){ return toThousands(parseFloat(value).toFixed(4)); }"/>
+		<col_item field="COST_PRICE" title="成本价"  type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="HOLD_PROFIT" title="持仓盈亏" type="input" align="right" sortType="number"
+				  formatter="holdProfitColor"/>
+
+		<col_item field="PROFIT_RATIO" title="盈亏比例" type="input" align="right"
+				  formatter="function(value,row,index){
+						return fontRedBoldGreenThinColor(value,row,index);
+				  }"/>
+
+		<col_item field="INST_LAST_BAL" title="产品昨日余额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_BAL" title="产品余额"  type="input"   ealign="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_AVL" title="产品可用额"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="INST_TRD_FRZ" title="产品交易冻结数"  type="input"  align="right"
+				  formatter="function(value){return toThousands(value);}"/>
+		<col_item field="MKT_VALUE" title="产品市值" type="input" align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}"/>
+		<col_item field="UP_DATE" title="更新日期"  type="input" edit_flag="3"/>
+		<col_item field="REMARK" title="备注"  type="input" edit_flag="3"/>
+	</view>
+</views>

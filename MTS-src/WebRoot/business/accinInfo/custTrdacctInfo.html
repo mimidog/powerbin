@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>客户交易账号信息管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.cust-form-table{
+  border: 0px;
+}
+.cust-form-label {
+  text-align: right;
+  vertical-align: text-bottom;
+  font-weight: bold;
+  font-size: 12px;
+  vertical-align: bottom;
+}
+</style>
+<script type="text/javascript">
+//查询资金账号信息
+function queryCuacctInfo(rowIndex, rowData) {
+    $('#cuacctId').combobox('clear');
+    if(rowData['CUST_ID'] !=undefined || $.trim(rowData['CUST_ID']) !=''){
+        $('#cuacctId').combobox({
+            req:[{
+                service:'M0000001',
+                CUST_ID:rowData['CUST_ID'],
+                CUACCT_STATUS:'0'
+            }]
+        });
+    }
+}
+//当选择交易市场时
+function maketIdSel(rec) {
+    if(rec['dict_val']=='1'){
+        $('#stkBdId').combobox('clear').combobox('setDict','SH_STKBD');
+    }else{
+        $('#stkBdId').combobox('clear').combobox('setDict','SZ_STKBD');
+    }
+}
+
+//交易账户新增
+function custTradeInfo_add() {
+    $('#custTrdacctInfo_form').form('clear');
+    using('dialog',function () {
+        $("#custTrdacctInfo_Dialog").dialog({
+            title: '新增交易账户',
+            width: 580,
+            height: 350,
+            modal: true,
+            resizable: true,
+            onOpen: function() {
+
+            },
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function () {
+                    if($('#stkBdId').combobox('getValue')=='1'){
+                        var reg= /^[A-Za-z]/;
+                        if (!reg.test($("#trdacctId").val()) || (($("#trdacctId").val()).length !=10)){
+                            alert("第一个字符必须是字母开头的10位字符串");
+                            return;
+                        }
+                    }else if($('#stkBdId').combobox('getValue')=='3'){
+                        var reg= /^[0]/;
+                        if (!reg.test($("#trdacctId").val()) || (($("#trdacctId").val()).length !=10)){
+                            alert("第一个字符必须是0开头的10位字符串");
+                            return;
+                        }
+                    }
+
+                    $('#custTrdacctInfo_form').form('submit',{
+                        req:[{
+                            service:'M0000006'
+                        }],
+                        success:function(){
+                            alert('交易账户新增成功！');
+                            $("#custTrdacctInfo_Dialog").dialog('close');
+                            $('#mts_custTrdacctInfo_table').datagrid('reload');
+                        }
+                    });
+
+
+                }
+            },
+                {
+                    text: '取消',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        $('#custTrdacctInfo_Dialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    })
+}
+//交易账户修改
+function custTradeInfo_mod(e) {
+    var row = e.data.target.datagrid("getSelected");
+    if (row == null) {
+        alert('提示', "请选择一条数据！");
+        return false;
+    }
+    var $dialog = $.builder.buildCommonDialog.createCommonDialog(e.data.target, { w: '580px', h: '440px' }, modify, e.data.title || '修改', "icon-edit");
+    var req = e.data.req;
+    if (e.data.req && typeof e.data.req == "string")
+        req = eval("(" + e.data.req + ")");
+    var columns = e.data.target.datagrid("getOriginalColumns");
+    if (req && !req[0].service) {
+        req[0]["service"] = "M0000007";
+    }
+
+    var aconfig = {
+        common: true,
+        render: "form",
+        colNumbers: 2,
+        modify: true,
+        req: req,
+        queryCols: [{ text: "", collapsed: true, cols: columns }]
+    };
+    $.parser.director($dialog, { config: aconfig, record: row });
+}
+/**修改回调**/
+function modify(e) {
+
+    var d = $(document).find('div[id^="PrivateCommonDialogId"]:visible');
+    var dialogId = d.attr("id").split("*");
+    if (d.find("form").form('validate') == false) {
+        return;
+    }
+
+    var paramJson = kui.serialize2Json(kui.serialize(d.find("form")))//系列化表单json
+    paramJson["service"] = "M0000007";
+
+    if(paramJson['STKBD']=='1'){
+        var reg= /^[A-Za-z]/;
+        if (!reg.test(paramJson['TRDACCT']) || ((paramJson['TRDACCT']).length !=10)){
+            alert("第一个字符必须是字母开头的10位字符串");
+            return;
+        }
+    }else if(paramJson['STKBD']=='3'){
+        var reg= /^[0]/;
+        if (!reg.test(paramJson['TRDACCT']) || ((paramJson['TRDACCT']).length !=10)){
+            alert("第一个字符必须是0开头的10位字符串");
+            return;
+        }
+    }
+
+
+
+    var omsRs=commonRequest({
+        service:'M0000045',
+        CUST_ID:paramJson['CUST_ID'],
+        CUACCT_ID: paramJson['CUACCT_ID'],
+        TRDACCT: paramJson['TRDACCT']
+    })
+    if(omsRs.length>0){
+        alert('该交易账户在下单或委托数据，不允许进行删除操作！');
+        return;
+    }
+
+
+    d.find("form").form('submit', {
+        req: [paramJson],
+        success: function () {
+            $('#' + dialogId[1]).datagrid('reload');
+            d.dialog("close");
+        }
+    });
+}
+
+</script>
+</head>
+<body>
+<table id="mts_custTrdacctInfo_table" class="kui-datagrid"></table>
+<div id="custTrdacctInfo_Dialog" style="display: none;">
+  <form id="custTrdacctInfo_form" class="kui-form">
+    <table class="cust-form-table" style="width:100%;">
+      <tr>
+          <td class="cust-form-label" style="width: 120px;">客户代码：</td>
+          <td>
+              <input name="CUST_ID" class="kui-combogrid"  kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 280,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'CUST_ID',
+                                    textField: 'CUST_NAME',
+                                    req: [{
+                                        service: 'M0000009',
+                                        CUST_STATUS:'0'
+                                    }],
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '客户代码', field: 'CUST_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                title: '客户简称', field: 'CUST_NAME', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field:'CUST_ID',title:'客户代码',sortable:true,sortType:'number'},
+                                        {field:'CUST_NAME',title:'客户简称'},
+                                        {field:'ORG_NAME',title:'机构名称'},
+                                        {field:'CUST_TYPE',title:'客户类型',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_TYPE',value);
+                                          }
+                                        },
+                                        {field:'CUST_LVL',title:'客户级别',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_LVL',value);
+                                          }
+                                        },
+                                        {field:'CUST_STATUS',title:'客户状态',
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('CUST_STATUS',value);
+                                          }
+                                        }
+                                    ]],onClickRow:queryCuacctInfo"/>
+
+          </td>
+          <td class="cust-form-label" style="width: 120px;">资金账号：</td>
+          <td>
+            <input id="cuacctId" name="CUACCT_ID" class="kui-combobox" kui-options="required:true,valueField:'CUACCT_ID',textField:'CUACCT_ID'" />
+          </td>
+      </tr>
+      <tr>
+          <td class="cust-form-label" style="width: 120px;">交易市场：</td>
+          <td>
+            <input  name="MAKET_ID"
+                   class="kui-combobox" kui-options="required:true,autoFill:true,dict:'MAKET',onSelect:maketIdSel" />
+          </td>
+          <td class="cust-form-label" style="width: 120px;">交易板块：</td>
+          <td>
+            <input id="stkBdId" name="STKBD"
+                   class="kui-combobox" kui-options="required:true,autoFill:true,dict:'STKBD'" />
+          </td>
+      </tr>
+      <tr>
+        <td class="cust-form-label" style="width: 120px;">交易账号：</td>
+        <td>
+          <input  id="trdacctId" name="TRDACCT"
+                 class="kui-validatebox" kui-options="required:true,validType:'val[1,32]'" />
+        </td>
+        <td class="cust-form-label" style="width: 120px;">交易账号状态：</td>
+        <td>
+          <input name="STK_STATUS"
+                 class="kui-combobox" kui-options="required:true,autoFill:true,dict:'STK_STATUS'" />
+        </td>
+      </tr>
+      <tr>
+          <td class="cust-form-label" style="width: 120px;">交易单元：</td>
+          <td>
+              <input name="STKPBU"
+                     class="kui-validatebox" kui-options="validType:'val[1,8]'" />
+          </td>
+          <td class="cust-form-label" style="width: 120px;">证件类型：</td>
+          <td>
+              <input name="ID_TYPE"
+                     class="kui-combobox" kui-options="dict:'ID_TYPE'" />
+          </td>
+       </tr>
+       <tr>
+          <td class="cust-form-label" style="width: 120px;">证件号码：</td>
+          <td colspan="3" >
+              <input name="ID_CODE" style="width: 400px;"
+                     class="kui-validatebox" kui-options="validType:'val[1,40]'" />
+          </td>
+        </tr>
+        <tr>
+            <td class="cust-form-label" style="width: 120px;">证件地址：</td>
+            <td colspan="3">
+                <input name="ID_ADDR"   style="width: 400px;"
+                       class="kui-validatebox" kui-options="validType:'val[1,120]'" />
+            </td>
+        </tr>
+        <tr>
+            <td class="cust-form-label" style="width: 120px;">发证机关：</td>
+            <td colspan="3" >
+                <input name="ID_ISS_AGCY" style="width: 400px;"
+                       class="kui-validatebox" kui-options="validType:'val[1,64]'" />
+            </td>
+        </tr>
+        <tr>
+            <td class="cust-form-label" style="width: 120px;">证件有效日期：</td>
+            <td>
+                <input name="ID_EXP_DATE" class="kui-datebox"  />
+            </td>
+            <td class="cust-form-label" style="width: 80px;">开户日期：</td>
+            <td>
+                <input name="OPEN_DATE" class="kui-datebox"  />
+            </td>
+        </tr>
+        <tr>
+            <td class="cust-form-label" style="width: 120px;">销户日期：</td>
+            <td>
+                <input name="CLOSE_DATE" class="kui-datebox"  />
+            </td>
+            <td class="cust-form-label" style="width: 120px;">一码通编号：</td>
+            <td>
+                <input name="YMT_CODE"  class="kui-validatebox" kui-options="validType:'val[1,20]'"  />
+            </td>
+        </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>menu - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>菜单</h3>
+
+<p>使用$.fn.menu.defaults重载默认值。</p>
+
+<img src="images/menu_ex.png"/>
+
+
+
+<h4>使用方法</h4>
+
+<h5>创建菜单</h5>
+
+<p>
+使用HTML标签创建菜单必须对&lt;div&gt;标签引用'kjaxui-menu'类，每个菜单项都将使用&lt;div&gt;标签创建。 为菜单添加'iconCls'属性可以指定一个显示在菜单项左侧的图标。
+对菜单引用'menu-sep'类将生成一条菜单分隔线。
+</p>
+
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="mm"</span> <span style="color:red;">class</span><span style="color:blue">="kjaxui-menu"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">120px;</span><span style="color:blue;">"&gt;</span>
+		<span style="color:blue">&lt;div&gt;</span>New<span style="color:blue">&lt;/div&gt;</span>
+		<span style="color:blue">&lt;div&gt;</span>
+			<span style="color:blue">&lt;span&gt;</span>Open<span style="color:blue">&lt;/span&gt;</span>
+			<span style="color:blue">&lt;div</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">150px;</span><span style="color:blue;">"&gt;</span>
+				<span style="color:blue">&lt;div&gt;</span><span style="color:blue">&lt;b&gt;</span>Word<span style="color:blue">&lt;/b&gt;</span><span style="color:blue">&lt;/div&gt;</span>
+				<span style="color:blue">&lt;div&gt;</span>Excel<span style="color:blue">&lt;/div&gt;</span>
+				<span style="color:blue">&lt;div&gt;</span>PowerPoint<span style="color:blue">&lt;/div&gt;</span>
+			<span style="color:blue">&lt;/div&gt;</span>
+		<span style="color:blue">&lt;/div&gt;</span>
+		<span style="color:blue">&lt;div</span> <span style="color:red">iconCls</span><span style="color:blue">="icon-save">Save&lt;/div&gt;</span>
+		<span style="color:blue">&lt;div</span> <span style="color:red">class</span><span style="color:blue">="menu-sep">&lt;/div&gt;</span>
+		<span style="color:blue">&lt;div&gt;</span>Exit<span style="color:blue">&lt;/div&gt;</span>
+	<span style="color:blue">&lt;/div&gt;</span>
+</pre>
+
+<p>使用脚本创建菜单并且监听'onClick'事件</p>
+
+<pre class="code">
+	$(<span style="color:blue">'#mm'</span>).menu({
+		onClick:function(item){
+			<span style="color:green">//...</span>
+		}
+	});
+</pre>
+
+
+
+<br/>
+
+<h5>显示菜单</h5>
+
+<p>当一个菜单创建完毕，它是隐藏而不可见的，调用'show'方法可以显示菜单。</p>
+
+<pre class="code">
+	$(<span style="color:blue">'#mm'</span>).menu(<span style="color:blue">'show'</span>, {
+	  left: <span style="color:red">200</span>,
+	  top: <span style="color:red">100</span>
+	});
+</pre>
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>zIndex（堆叠顺序）</td>
+
+<td>number（数字）</td>
+
+<td>菜单的z-index样式,从第一个菜单开始递增。</td>
+
+<td>110000</td>
+
+</tr>
+
+<tr>
+
+<td>left（左边距）</td>
+
+<td>number（数字）</td>
+
+
+
+<td>菜单的左边距。</td>
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>top（顶边距）</td>
+
+<td>number</td>
+
+<td>菜单的顶边距。</td>
+
+<td>0</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>事件</h4>
+
+<table class="doc-table">
+
+
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+
+
+<td>onShow</td>
+
+<td>none</td>
+
+<td>当一个菜单被显示后触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onHide</td>
+
+<td>none</td>
+
+<td>在一个菜单被隐藏后触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onClick</td>
+
+
+
+<td>item</td>
+
+<td>当一个菜单被点击时触发。
+<pre>
+<span style="color:green">
+&lt;div class="kjaxui-menu" data-options="onClick:menuHandler" style="width:120px;"&gt;
+	&lt;div data-options="name:'new'"&gt;New&lt;/div&gt;
+	&lt;div data-options="name:'save',iconCls:'icon-save'"&gt;Save&lt;/div&gt;
+	&lt;div data-options="name:'print',iconCls:'icon-print'"&gt;Print&lt;/div&gt;
+	&lt;div class="menu-sep"&gt;&lt;/div&gt;
+	&lt;div data-options="name:'exit'"&gt;Exit&lt;/div&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+	function menuHandler(item){
+		alert(item.name)
+	}
+&lt;/script&gt;
+</span>	
+</pre>
+</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>show</td>
+
+<td>pos</td>
+
+<td>在一个特定的位置显示菜单。<br />
+
+pos参数有2个属性：<br />
+
+left：新的左边距。<br />
+
+top：新的顶边距。<br /></td>
+
+
+
+</tr>
+
+<tr>
+
+<td>hide</td>
+
+<td>none</td>
+
+<td>隐藏一个菜单。</td>
+
+</tr>
+
+<tr>
+
+<td>destroy</td>
+
+<td>none</td>
+
+<td>清除一个菜单。</td>
+
+</tr>
+
+<tr>
+
+<td>getItem</td>
+
+<td>itemEl</td>
+
+<td>获取菜单项数据并将其返回, 数据包含以下属性：<br />
+
+target：DOM对象，菜单项目。<br />
+
+id：字符串，分配给元素的ID。<br />
+
+text：字符串，菜单项的文本。<br />
+
+href：字符串，超链接地址。<br />
+
+disabled：布尔型，菜单项是启用还是禁用。<br/>
+
+onclick：函数, 当用户点击菜单时将要执行的函数。<br />
+
+iconCls：字符串，图标css类。
+<pre>
+<span style="color:green">
+&lt;div id="mm" class="kjaxui-menu" style="width:120px"&gt;
+	&lt;div&gt;New&lt;/div&gt;
+	&lt;div id="m-open"&gt;Open&lt;/div&gt;
+	&lt;div&gt;Save&lt;/div&gt;
+&lt;/div&gt;
+
+var itemEl = $('#m-open')[0];  // the menu item element
+var item = $('#mm').menu('getItem', itemEl);
+console.log(item);
+</span>	
+</pre>
+
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>setText</td>
+
+<td>param</td>
+
+<td>设置特定的菜单文本，'param'参数包含2个属性：<br />
+
+
+
+target：DOM对象，将要被设置的菜单项。<br />
+
+text：字符串，新的文本值。
+
+<pre>
+<span style="color:green">
+var item = $('#mm').menu('findItem', 'Save');
+$('#mm').menu('setText', {
+	target: item.target,
+	text: 'Saving'
+});
+</span>	
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>setIcon</td>
+
+<td>param</td>
+
+<td>设置特定的菜单项图标，'param'参数包含2个属性：<br />
+
+target：DOM对象，菜单项目。<br />
+
+iconCls: 新的图标css类。
+<pre>
+<span style="color:green">
+$('#mm').menu('setIcon', {
+	target: $('#m-open')[0],
+	iconCls: 'icon-closed'
+});
+</span>	
+</pre>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>findItem</td>
+
+<td>text</td>
+
+<td>查找特定的菜单项，和getItem方法返回的对象相同。
+<pre>
+<span style="color:green">
+// find 'Open' item and disable it
+var item = $('#mm').menu('findItem', 'Open');
+$('#mm').menu('disableItem', item.target);
+</span>	
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>appendItem</td>
+
+<td>options</td>
+
+<td>添加菜单，'param'参数包含以下属性：<br />
+
+parent: 待添加新菜单的DOM对象，如果没有被设置，新菜单项将会被作为顶级菜单添加。<br />
+
+
+
+text：字符串，菜单项文本。<br />
+
+href：字符串，超链接地址。<br />
+
+onclick：字符串或者函数，当用户点击菜单项时将要被执行的脚本代码或者函数。<br/>
+
+iconCls: string, the icon class.
+<pre>
+<span style="color:green">
+// append a top menu item
+$('#mm').menu('appendItem', {
+	text: 'New Item',
+	iconCls: 'icon-ok',
+	onclick: function(){alert('New Item')}
+});
+
+// append a sub menu item
+var item = $('#mm').menu('findItem', 'Open');  // find 'Open' item
+$('#mm').menu('appendItem', {
+	parent: item.target,  // the parent item element
+	text: 'Open Excel',
+	iconCls: 'icon-excel',
+	onclick: function(){alert('Open Excel')}
+});
+</span>	
+</pre>
+</td>
+
+</tr>
+
+<tr>
+
+<td>removeItem</td>
+
+<td>itemEl</td>
+
+<td>移除特定的菜单项。</td>
+
+</tr>
+
+<tr>
+
+<td>enableItem</td>
+
+<td>itemEl</td>
+
+<td>启用菜单项。</td>
+
+</tr>
+
+<tr>
+
+<td>disableItem</td>
+
+<td>itemEl</td>
+
+<td>禁用菜单项。</td>
+
+</tr>
+
+
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

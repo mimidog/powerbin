@@ -1,0 +1,464 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>风控信息配置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.form-label {
+    text-align: right;
+    vertical-align: text-bottom;
+    line-height: 24px;
+    vertical-align: bottom;
+}
+.table-head{padding-right:17px;background-color:#7db2d1;color: #ffffff;font-weight: bold;}
+.table-body{height:100px;overflow-y:scroll; border: #0099FF solid 1px;}
+.table-body table tr:nth-child(2n+1){background-color:#f2f2f2;}
+.sel-bg-color{background-color:#9df39f;}
+</style>
+<script type="text/javascript">
+//维度数据
+var dimenData
+
+//存储已经添加控制方式值
+var ctrlTypeVals=new mapObject();
+
+
+function loadRiskTypeCtrlInfo(data) {
+ dimenData= getRiskCtrlTypeInfo(data['id']);
+}
+
+function getRiskCtrlTypeInfo(riskTypeId){
+    var dimensionData = null;
+    ajaxRequest({
+        async:false,
+        req:[
+            {service:'M0000037',TYPE_ID:riskTypeId}
+        ],
+        func:function(data,head){
+            dimensionData = data[0][0];
+        },
+        error:function(){
+            dimensionData = null;
+        }
+    });
+    return dimensionData;
+}
+//新增方法
+function riskCfgInfo_add() {
+
+    if(dimenData ==undefined || dimenData.CTRL_SUB_TYPE ==undefined || dimenData.TYPE_LVL.length !=12){
+        alert('提示信息','请选择目录树的叶节点','warning');
+        return ;
+    }
+
+  if(dimenData.CTRL_SUB_TYPE=='1'){
+      $('span.point_des').text('万元');
+  }else if(dimenData.CTRL_SUB_TYPE=='2'){
+      $('span.point_des').text('%');
+  }
+
+  using('dialog',function () {
+      $("#riskcfgInfo_Dialog").dialog({
+          title: '增加风控配置信息',
+          width: 650,
+          height: 530,
+          modal: true,
+          resizable: true,
+          onOpen: function() {
+              //清空控制方式值数组
+              ctrlTypeVals.clear();
+              //默认控制方式：1
+              ctrlTypeSel(1);
+          },
+          buttons: [{
+              text: '确定',
+              iconCls: 'icon-ok',
+              handler: function () {
+
+
+                if(!$('#riskcfgInfo_form').form('validate')){
+                     return ;
+                 }
+
+                if($('#ctrlType').combobox('getValue')=='1' && ctrlTypeVals.getAllKey().toString()==''){
+                    alert('未添加证券产品信息');
+                    return;
+                }
+
+                  if($('#ctrlType').combobox('getValue')=='2'){
+                      //统计证券产品类型信息
+                      calcStkTypeInfo();
+                  }
+
+                  if($('#ctrlType').combobox('getValue')=='2' && ctrlTypeVals.getAllKey().toString() == ''){
+                      alert('未选择证券类别信息');
+                      return;
+                  }
+                  //这两个值存储在隐藏域中
+                  $('#riskcfgInfo_form').find(':input[name=TYPE_ID]').val(dimenData['TYPE_ID']);
+                  $('#riskcfgInfo_form').find(':input[name=CONTROL_TYPE_VAL]').val(ctrlTypeVals.getAllKey().toString());
+
+
+                  $('#riskcfgInfo_form').form('submit',{
+                      req:[{
+                          service:'M0000042'
+                      }],
+                      success:function(){
+
+                          alert('风控配置信息添加成功！');
+                          $("#riskcfgInfo_Dialog").dialog('close');
+                          $('#mts_riskCfg_info_table').datagrid('reload');
+                      }
+                  });
+
+              }
+          },
+              {
+                  text: '取消',
+                  iconCls: 'icon-cancel',
+                  handler: function () {
+                      $("#riskcfgInfo_Dialog").dialog('close');
+                  }
+              }
+          ]
+      });
+  })
+
+}
+
+//控制方式选择事件
+function ctrlTypeSel(ctrlTypeVal) {
+
+    $('#ctrlCont_1').empty();
+    $('#ctrlCont_2').hide();
+
+    //清空控制方式值数组
+    ctrlTypeVals.clear();
+
+  if(ctrlTypeVal ==1){
+      $('#ctrlCont_1').append(' <div class="table-head">\n' +
+                          '        <table>\n' +
+                          '            <colgroup>\n' +
+                          '                <col style="width: 80px;" />\n' +
+                          '                <col />\n' +
+                          '            </colgroup>\n' +
+                          '            <thead>\n' +
+                          '            <tr><th>证券代码</th><th>证券名称</th></tr>\n' +
+                          '            </thead>\n' +
+                          '        </table>\n' +
+                          '    </div>');
+
+      $('#ctrlCont_1').append('<div class="table-body">\n' +
+                              '     <table id="stkInfo_con">\n' +
+                              '         <colgroup><col style="width: 80px;" /><col /></colgroup>\n' +
+                              '         <tbody>\n' +
+                              '         </tbody>\n' +
+                              '     </table>\n' +
+                              '</div>');
+      $('#ctrlCont_2').show();
+
+
+  }else if(ctrlTypeVal ==2){
+      $('#ctrlCont_1').append('<div id="stkTypeList" style="border:solid 1px #3366f9;overflow-y: auto;height: 140px;"></div>');
+      //证券类别字典项
+      var secCls=kui.getSysDict('SECURITY_CLS');
+      for(var i=0;i<secCls.length;i++){
+          $('#stkTypeList').append('<input type="checkbox" name="STK_CLS_'+secCls[i].dict_val+'" value="'+secCls[i].dict_val+'">'
+                                   +secCls[i].dict_des+'<br/>');
+      }
+
+  }
+}
+//统计证券产品类型信息
+function calcStkTypeInfo() {
+    $('#stkTypeList').find(':checked').each(function () {
+            ctrlTypeVals.setAt($(this).val(),$(this).val());
+
+    })
+}
+
+
+//添加证券信息
+function addStkInfo() {
+   if($('#inStkId').combo('getValue')==''){
+       alert('请输入证券代码');
+       return;
+   }
+    if(ctrlTypeVals.lookUp($('#inStkId').combo('getValue')) !=undefined
+        && ctrlTypeVals.lookUp($('#inStkId').combo('getValue')) !=''){
+
+        alert('您添加的证券信息已经存在！');
+        //清空证券代码选择框
+        $('#inStkId').combo('clear');
+        return;
+    }
+
+   var trObject='<tr><td>'+$('#inStkId').combo('getValue')+'</td>' +
+       '<td>'+$('#inStkId').combo('getText')+'</td></tr>';
+
+    $('#stkInfo_con').find('tbody').append(trObject);
+
+    //判断是否没添加过的证券信息，再添加
+    ctrlTypeVals.setAt($('#inStkId').combo('getValue'),$('#inStkId').combo('getText'));
+
+    //清空证券代码选择框
+    $('#inStkId').combo('clear');
+     //删除已经选择的样式
+    $(this).find('td').removeClass('sel-bg-color');
+
+    $('#stkInfo_con').find('tr').click(function () {
+        $(this).find('td').addClass('sel-bg-color');
+    });
+
+}
+//删除证券信息
+function deleteStkInfo() {
+    //判断当前在没有选中行
+    if($('#stkInfo_con').find('td.sel-bg-color').length==0){
+        alert('当前没有选中的证券信息！');
+        return;
+    }
+
+    ctrlTypeVals.remove($($('#stkInfo_con').find('td.sel-bg-color')[0]).text());
+    $('#stkInfo_con').find('td.sel-bg-color').parent().remove();
+
+}
+
+</script>
+</head>
+<body>
+
+<div id="main_layout" class="kui-layout" kui-options="fit:true">
+    <div kui-options="region:'west'" style="width:200px;" title="风控类型结构">
+        <ul id="riskType_tree" class="kui-tree" kui-options="animate:true,req:[{service:'M0000037'}],
+        conf:{
+        nodeId:'TYPE_ID',
+        nodeName:'TYPE_ID,TYPE_NAME',
+        treeType:'1',
+        parNode:'PAR_TYPE_ID'
+        },
+        onClick:loadRiskTypeCtrlInfo,
+        onLoadSuccess:function(node, data){
+        	$('#riskType_tree').tree('collapseAll');
+        	$('#riskType_tree').find('.tree-title').each(function(){
+        		var txt = $(this).text() ;
+        		if(txt.length > 12){
+        			$(this).text(txt.substring(0,20)+'...');
+        		}
+        	});
+        }"></ul>
+    </div>
+    <div kui-options="region:'center'">
+        <table id="mts_riskCfg_info_table" class="kui-datagrid"></table>
+
+    </div>
+</div>
+
+<!--新增与修改对话框 -->
+<div id="riskcfgInfo_Dialog" style="display: none;">
+    <form id="riskcfgInfo_form" class="kui-form">
+        <!--要提交不用显示的字段-->
+        <input type="hidden" name="TYPE_ID" />
+        <input type="hidden" name="CONTROL_TYPE_VAL" />
+
+        <table class="form-table" style="width:100%;">
+            <tr  height="50" style="vertical-align: text-top">
+                <td class="form-label">优先级：</td>
+                <td colspan="3" style="padding-left: 10px;">
+                    <input name="RISK_LVL" class="kui-slider"  style="width:480px" kui-options="
+                            showTip: false,
+                            min:1,
+                            max:9,
+                            rule: [1,2,3,4,5,6,7,8,9],
+                            tipFormatter: function(value){
+                                return value+'级';
+                            },
+                            onChange: function(value){
+
+                            }" >
+                </td>
+
+            </tr>
+            <tr>
+                <td class="form-label">比较类型：</td>
+                <td>
+                    <input name="DIRECTION"
+                           class="kui-combobox" kui-options="required:true,autoFill:false,dict:'DIRECTION'" />
+                </td>
+
+                <td class="form-label">作用范围：</td>
+                <td>
+                    <input name="EFFECT_RANGE"
+                           class="kui-combobox" kui-options="required:true,autoFill:false,dict:'EFFECT_RANGE'" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-label">启用风控：</td>
+                <td>
+                    <input name="IS_USE"
+                           class="kui-combobox" kui-options="required:true,autoFill:false,dict:'YES_OR_NO'" />
+
+
+                <td class="form-label">消息提醒：</td>
+                <td>
+                    <input name="MSG_HINT"
+                           class="kui-combobox" kui-options="required:true,autoFill:false,dict:'YES_OR_NO'" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-label">风控说明：</td>
+                <td colspan="3">
+                    <input name="RISK_DESC"
+                           class="kui-validatebox" kui-options="required:true,validType:'val[1,120]'"
+                    style="width: 450px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <fieldset class="kui-fieldset" kui-options="title:'阀值组',collapsed:true,animation:true">
+                        <table style="width:100%;">
+                            <tr>
+                                <td class="form-label">阀值一：</td>
+                                <td>
+                                    <input name="POINT1"
+                                           class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]'"/>
+                                    <span class="point_des"></span>
+                                </td>
+                                <td class="form-label">触警操作：</td>
+                                <td>
+                                    <input name="POINT1_DO"
+                                           class="kui-combobox" kui-options="required:true,autoFill:false,dict:'POINT_DO'" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="form-label">阀值二：</td>
+                                <td>
+                                    <input name="POINT2"
+                                           class="kui-validatebox" kui-options="required:false,validType:'numberex[10,15,4]'"/>
+                                    <span class="point_des"></span>
+                                </td>
+                                <td class="form-label">触警操作：</td>
+                                <td>
+                                    <input name="POINT2_DO"
+                                           class="kui-combobox" kui-options="required:false,autoFill:false,dict:'POINT_DO'" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="form-label">阀值三：</td>
+                                <td>
+                                    <input name="POINT3"
+                                           class="kui-validatebox" kui-options="required:false,validType:'numberex[10,15,4]'"/>
+                                    <span class="point_des"></span>
+                                </td>
+                                <td class="form-label">触警操作：</td>
+                                <td>
+                                    <input name="POINT3_DO"
+                                           class="kui-combobox" kui-options="required:false,autoFill:false,dict:'POINT_DO'" />
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                  <fieldset class="kui-fieldset" kui-options="title:'控制条件',collapsed:'true',animation:'true'">
+                      <table style="width:100%">
+                          <tr>
+                            <td style="vertical-align: text-top">
+                                <table style="width:300px;">
+                                    <tr>
+                                        <td class="form-label">控制方式</td>
+                                        <td>
+                                            <input id="ctrlType" name="CONTROL_TYPE"
+                                                   class="kui-combobox" kui-options="required:true,autoFill:true,dict:'CONTROL_TYPE',onChange:ctrlTypeSel"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-label">资金账号</td>
+                                        <td>
+                                            <input  id="cuacctId" name="CUACCT_ID"
+                                                   class="kui-combogrid" kui-options="panelWidth:450,
+                                                  panelHeight:240,
+                                                  multiple:true,
+                                                  idField: 'CUACCT_ID',
+                                                  textField: 'CUACCT_ID',
+                                                  req:[{ service:'M0000001'}],
+                                                  queryCols:[{
+                                                    'text':'查询',
+                                                    'icon':'icon-search',
+                                                    collapsed:true,
+                                                    cols:[{
+                                                      title:'资金账号',
+                                                      field:'CUACCT_ID',
+                                                      editor:{
+                                                        type:'text',
+                                                        options:{
+                                                          validType:'val[1,32]'
+                                                        }
+                                                      }
+                                                    }]
+                                                  }],
+                                                  columns: [[
+                                                        {field:'CUST_ID',title:'客户代码'},
+                                                        {field:'CUACCT_ID',title:'资金账号'},
+                                                        {field:'OPEN_DATE',title:'开户日期'},
+                                                        {field:'CLOSE_DATE',title:'销户日期'}
+                                                    ]]"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 300px;">
+                               <div id="ctrlCont_1">
+
+                               </div>
+                                <div id="ctrlCont_2" style="display: none">
+                                   证券代码:<input id="inStkId"
+                                               class="kui-combogrid" kui-options="panelWidth:450,
+                                                  panelHeight:240,
+                                                  idField: 'STK_ID',
+                                                  textField: 'STK_NAME',
+                                                  req:[{ service:'M0000028'}],
+                                                  queryCols:[{
+                                                    'text':'查询',
+                                                    'icon':'icon-search',
+                                                    collapsed:true,
+                                                    cols:[{
+                                                      title:'证券代码',
+                                                      field:'STK_ID',
+                                                      editor:{
+                                                        type:'text',
+                                                        options:{
+                                                          validType:'val[1,32]'
+                                                        }
+                                                      }
+                                                    }]
+                                                  }],
+                                                  columns: [[
+                                                        {field:'STK_ID',title:'证券代码'},
+                                                        {field:'STK_NAME',title:'证券名称'},
+                                                    ]]"/>
+
+                                    <button onclick="addStkInfo()">增加</button>
+                                    <button onclick="deleteStkInfo()">删除</button>
+                                </div>
+                            </td>
+                          </tr>
+                      </table>
+                  </fieldset>
+              </td>
+            </tr>
+
+        </table>
+
+    </form>
+</div>
+
+
+</body>
+</html>

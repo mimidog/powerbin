@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>jquery.autocomplete自动完成插件</title>
+
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+	<script type="text/javascript" src="localdata_friends.js"></script>
+
+
+</head>
+
+<body>
+   <p><span>输入姓名：</span> <span><input type="text" id="txtUser" style="width:300px;" class="kui-autocomplete" kui-options="selectFirst:true,
+			minLength:1,
+			max: 12,
+			source:datafriends,
+			autoFill: false,
+			mustMatch: false,
+			matchContains: false,
+			scrollHeight: 500"/></span></p>
+   
+</body>
+<script type="text/javascript">
+	window.onresize = function(){
+		alert(document.documentElement.clientHeight);
+	}
+	alert(document.documentElement.clientHeight);
+</script>
+</html>

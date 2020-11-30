@@ -1,0 +1,17 @@
+﻿{
+	"ANSWERS": [{
+		"ANS_MSG_HDR": {"MSG_CODE":"0","MSG_TEXT":"","MSG_LEVEL":"","RESULT_NUM":"2","MSG_ID":"","PACKAGE_FLAG":"0","DATA_ROWS":"25","BPM_ROWS":"0","RUN_TIMES":"3","MSG_TRACE":""},
+		"ANS_COMM_DATA": [
+			[{"MENU_ID": "400101010", "MENU_NAME": "现金存款", "MENU_SPELL": "XJCK"},
+			{"MENU_ID": "400101011", "MENU_NAME": "现金取款", "MENU_SPELL": "XJQK"},
+			{"MENU_ID": "400101020", "MENU_NAME": "支票存款", "MENU_SPELL": "ZPCK"},
+			{"MENU_ID": "400101021", "MENU_NAME": "支票取款", "MENU_SPELL": "ZPQK"},
+			{"MENU_ID": "400101030", "MENU_NAME": "存折存款", "MENU_SPELL": "CZCK"},
+			{"MENU_ID": "400101031", "MENU_NAME": "存折取款", "MENU_SPELL": "CZQK"},
+			{"MENU_ID": "400105010", "MENU_NAME": "现金红冲", "MENU_SPELL": "XJHC"},
+			{"MENU_ID": "400105011", "MENU_NAME": "现金蓝补", "MENU_SPELL": "XJLB"},
+			{"MENU_ID": "400105020", "MENU_NAME": "支票红冲", "MENU_SPELL": "ZPHC"},
+			{"MENU_ID": "400105021", "MENU_NAME": "支票蓝补", "MENU_SPELL": "ZPLB"}]
+		]
+	}]
+}

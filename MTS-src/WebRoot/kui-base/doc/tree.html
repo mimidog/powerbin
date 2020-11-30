@@ -1,0 +1,932 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>tree - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+<div style="padding:10px">
+<h3>树形菜单</h3>
+<p>使用$.fn.tree.defaults重载默认值。</p>
+<img src="images/tree.png"/>
+<h4>依赖关系</h4>
+<ul>
+	<li>一般拖动</li>
+
+	<li>拖动至容器</li>
+</ul>
+<h4>使用方法</h4>
+
+<p>树形菜单可以用&lt;ul&gt;标签定义，它可以定义叶子节点和子节点，代码示例如下：</p>
+
+<pre class="code">
+	<span style="color:blue">&lt;ul</span> <span style="color:red">id</span>=<span style="color:blue">"tt"&gt;</span>
+	  <span style="color:blue">&lt;li&gt;</span>
+	    <span style="color:blue">&lt;span&gt;</span>Folder<span style="color:blue">&lt;/span&gt;</span>
+	    <span style="color:blue">&lt;ul&gt;</span>
+	      <span style="color:blue">&lt;li&gt;</span>
+	        <span style="color:blue">&lt;span&gt;</span>Sub Folder 1<span style="color:blue">&lt;/span&gt;</span>
+	        <span style="color:blue">&lt;ul&gt;</span>
+	          <span style="color:blue">&lt;li&gt;</span>
+	            <span style="color:blue">&lt;span&gt;&lt;a</span> <span style="color:red">href</span><span style="color:blue">="#"&gt;</span>File 11<span style="color:blue">&lt;/a&gt;&lt;/span&gt;</span>
+	          <span style="color:blue">&lt;/li&gt;</span>
+	          <span style="color:blue">&lt;li&gt;</span>
+	            <span style="color:blue">&lt;span&gt;</span>File 12<span style="color:blue">&lt;/span&gt;</span>
+	          <span style="color:blue">&lt;/li&gt;</span>
+	          <span style="color:blue">&lt;li&gt;</span>
+	            <span style="color:blue">&lt;span&gt;</span>File 13<span style="color:blue">&lt;/span&gt;</span>
+	          <span style="color:blue">&lt;/li&gt;</span>
+	        <span style="color:blue">&lt;/ul&gt;</span>
+	      <span style="color:blue">&lt;/li&gt;</span>
+	      <span style="color:blue">&lt;li&gt;</span>
+	        <span style="color:blue">&lt;span&gt;</span>File 2<span style="color:blue">&lt;/span&gt;</span>
+	      <span style="color:blue">&lt;/li&gt;</span>
+	      <span style="color:blue">&lt;li&gt;</span>
+	        <span style="color:blue">&lt;span&gt;</span>File 3<span style="color:blue">&lt;/span&gt;</span>
+	      <span style="color:blue">&lt;/li&gt;</span>
+	    <span style="color:blue">&lt;/ul&gt;</span>
+	  <span style="color:blue">&lt;/li&gt;</span>
+	  <span style="color:blue">&lt;li&gt;</span>
+	    <span style="color:blue">&lt;span&gt;</span>File21<span style="color:blue">&lt;/span&gt;</span>
+	  <span style="color:blue">&lt;/li&gt;</span>
+	<span style="color:blue">&lt;/ul&gt;</span>
+</pre>
+
+<p>也可以用不带&lt;li&gt;的&lt;ul&gt;标签来定义：</p>
+
+<pre class="code">
+	<span style="color:blue">&lt;ul</span> <span style="color:red">id</span><span style="color:blue">="tt"&gt;&lt;/ul&gt;</span>
+</pre>
+
+<pre class="code">
+	$(<span style="color:blue">'#tt'</span>).tree({
+		url:<span style="color:blue">'tree_data.json'</span>
+	});
+</pre>
+
+
+
+<h4>树形菜单的数据格式</h4>
+
+<p>每个节点都拥有以下属性：</p>
+
+<ul>
+
+<li>id：节点id，对载入远程数据很重要。</li>
+
+<li>text：显示在节点的文本。</li>
+
+<li>state：节点状态，'open' or 'closed'，默认为'open'。当设置为'closed'时，拥有子节点的节点将会从远程站点载入它们。</li>
+
+<li>checked：表明节点是否被选择。</li>
+
+<li>attributes：可以为节点添加的自定义属性。</li>
+
+
+
+<li>children：子节点，必须用数组定义。</li>
+
+</ul>
+
+<p>示例代码：</p>
+
+<pre class="code">
+	[{
+		<span style="color:blue">"id"</span>:1,
+		<span style="color:blue">"text"</span>:<span style="color:blue">"Folder1"</span>,
+		<span style="color:blue">"iconCls"</span>:<span style="color:blue">"icon-save"</span>,
+		<span style="color:blue">"children"</span>:[{
+			<span style="color:blue">"text"</span>:<span style="color:blue">"File1"</span>,
+			<span style="color:blue">"checked"</span>:true
+		},{
+			<span style="color:blue">"text"</span>:<span style="color:blue">"Books"</span>,
+			<span style="color:blue">"state"</span>:<span style="color:blue">"open"</span>,
+			<span style="color:blue">"attributes"</span>:{
+				<span style="color:blue">"url"</span>:<span style="color:blue">"/demo/book/abc"</span>,
+				<span style="color:blue">"price"</span>:100
+			},
+			<span style="color:blue">"children"</span>:[{
+				<span style="color:blue">"text"</span>:<span style="color:blue">"PhotoShop"</span>,
+				<span style="color:blue">"checked"</span>:true
+			},{
+				<span style="color:blue">"id"</span>: 8,
+				<span style="color:blue">"text"</span>:<span style="color:blue">"Sub Bookds"</span>,
+				<span style="color:blue">"state"</span>:<span style="color:blue">"closed"</span>
+			}]
+		}]
+	},{
+		<span style="color:blue">"text"</span>:<span style="color:blue">"Languages"</span>,
+		<span style="color:blue">"state"</span>:<span style="color:blue">"closed"</span>,
+		<span style="color:blue">"children"</span>:[{
+			<span style="color:blue">"text"</span>:<span style="color:blue">"Java"</span>
+		},{
+			<span style="color:blue">"text"</span>:<span style="color:blue">"C#"</span>
+		}]
+	}]
+</pre>
+
+
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+
+
+<td>url（超链接）</td>
+
+<td>string（字符串）</td>
+
+<td>用以载入远程数据的超链接地址。</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>method（方法）</td>
+
+<td>string（字符串）</td>
+
+<td>获取数据的HTTP方法。</td>
+
+<td>post</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>animate（动画）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义当节点打开或关闭时是否显示动画效果。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>checkbox（复选框）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否在每个节点之前显示复选框。</td>
+
+
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>cascadeCheck（级联选择）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否支持级联选择。</td>
+
+<td>true</td>
+
+</tr>
+
+<tr>
+
+<td>onlyLeafCheck（只选叶子节点）</td>
+
+<td>boolean（布尔型）</td>
+
+
+
+<td>定义是否只在叶子节点之前显示复选框。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>dnd（拖放）</td>
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否支持拖放。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+<td>data（数据）</td>
+<td>array（数组）</td>
+<td>将被载入的节点数据。<br/>
+<pre style="color:green">
+$('#tt').tree({
+	data: [{
+		text: 'Item1',
+		state: 'closed',
+		children: [{
+			text: 'Item11'
+		},{
+			text: 'Item12'
+		}]
+	},{
+		text: 'Item2'
+	}]
+});
+</pre>
+</td>
+<td>null</td>
+</tr>
+<tr>
+<td>lines（节点间连接的虚线）</td>
+<td>boolean（布尔型）</td>
+<td>图标显示为加减，并显示节点间相连的虚线。</td>
+<td>false</td>
+</tr>
+<tr>
+<td>loader</td>
+<td>function(param,success,error)</td>
+<td>定义如何从远程服务器获取数据。函数参数：<br/>
+param:传到服务器的参数对象。<br/>
+success(data):成功得到数据后执行的回调函数。<br/>
+error():失败时执行的回调函数。
+</td>
+<td>json loader</td>
+</tr>
+<tr>
+<td>loadFilter</td>
+<td>function(data,parent)</td>
+<td>返回过滤后用以显示的数据，返回的数据是标准的树格式。函数参数：<br/>
+data:用以加载的原始数据。<br/>
+parent:DOM对象，指明父节点。
+</td>
+<td>json loader</td>
+</tr>
+<tr>
+<td>bex</td>
+<td>string</td>
+<td>请求后台的bex
+</td>
+<td>""</td>
+</tr>
+</tr>
+<tr>
+<td>field</td>
+<td>object</td>
+<td>field:{'id':'id','parentid':'parentid','text':'text'}<br/>
+id为当前节点的value值<br/>
+parentid为当前节点的父节点<br/>
+text为当前节点显示的文本
+</td>
+<td>{}</td>
+</tr>
+</table>
+
+
+
+<h4>事件</h4>
+
+<p>多数事件回调函数都有'node'参数，该参数包含如下属性：</p>
+
+<ul>
+
+<li>id：节点的唯一标识。</li>
+
+<li>text：显示在节点上的文本。</li>
+
+<li>checked：节点是否被选择。</li>
+
+<li>attributes：节点的自定义属性。</li>
+
+<li>target：目标DOM对象。</li>
+
+</ul>
+
+
+
+<table class="doc-table">
+
+
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>onClick</td>
+
+<td>node</td>
+
+<td>当用户点击节点时触发，node参数包含如下属性：<br />
+
+id：节点id。<br />
+
+
+
+text：显示在节点上的文本。<br />
+
+checked：节点是否被选择。<br />
+
+attributes：节点的自定义属性。<br />
+
+target：被点击的目标DOM对象。</td>
+
+</tr>
+
+<tr>
+
+<td>onDblClick</td>
+
+<td>node</td>
+
+<td>当用户双击节点时触发。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>onBeforeLoad</td>
+
+<td>node, param</td>
+
+<td>在请求载入数据之前触发，返回false将取消载入。</td>
+
+</tr>
+
+<tr>
+
+<td>onLoadSuccess</td>
+
+<td>node, data</td>
+
+<td>当数据载入成功时触发。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>onLoadError</td>
+
+<td>arguments</td>
+
+<td>当数据载入失败时触发，arguments参数跟jQuery.ajax的'error'函数一样。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeExpand</td>
+
+<td>node</td>
+
+<td>在节点打开之前触发，返回false将取消打开。</td>
+
+</tr>
+
+<tr>
+
+<td>onExpand</td>
+
+
+
+<td>node</td>
+
+<td>在节点被打开时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeCollapse</td>
+
+<td>node</td>
+
+<td>在节点被关闭之前触发，返回false将取消关闭。</td>
+
+</tr>
+
+<tr>
+
+<td>onCollapse</td>
+
+<td>node</td>
+
+
+
+<td>当节点被关闭时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onCheck</td>
+
+<td>node, checked</td>
+
+<td>当用户点击复选框时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeSelect</td>
+
+<td>node</td>
+
+<td>在节点被选择之前触发，返回false将取消选择。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>onSelect</td>
+
+<td>node</td>
+
+<td>当节点被选择时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onContextMenu</td>
+
+<td>e, node</td>
+
+<td>当节点被鼠标右键点击时触发。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>onDrop</td>
+
+<td>target, source, point</td>
+
+<td>当节点位置被（拖动）更换时触发。<br />
+
+target：DOM对象，需要被拖动动的目标节点。<br />
+
+source：原始节点。<br />
+
+point：指明拖动方式，可选值：'append'，'top'或者'bottom'。</td>
+
+</tr>
+
+<tr>
+
+<td>onBeforeEdit</td>
+
+
+
+<td>node</td>
+
+<td>在编辑节点之前触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onAfterEdit</td>
+
+<td>node</td>
+
+<td>在编辑节点之后触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onCancelEdit</td>
+
+<td>node</td>
+
+
+
+<td>当取消编辑时触发。</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>方法</h4>
+<table class="doc-table">
+
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>options</td>
+
+<td>none</td>
+
+<td>返回树形菜单属性对象。</td>
+
+</tr>
+
+<tr>
+
+<td>loadData</td>
+
+<td>data</td>
+
+<td>载入树形菜单数据。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>getNode</td>
+
+<td>target</td>
+
+<td>获取特定的节点对象。</td>
+
+</tr>
+
+<tr>
+
+<td>getData</td>
+
+<td>target</td>
+
+<td>获取特定的节点数据，包括它的子节点。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>reload</td>
+
+<td>target</td>
+
+<td>重新载入树形菜单数据。</td>
+
+</tr>
+
+<tr>
+
+<td>getRoot</td>
+
+<td>none</td>
+
+<td>获取根节点，返回节点对象。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>getRoots</td>
+
+<td>none</td>
+
+<td>获取根节点，返回节点数组。</td>
+
+</tr>
+
+<tr>
+
+<td>getParent</td>
+
+<td>target</td>
+
+<td>获取父节点，target是一个节点DOM对象。</td>
+
+</tr>
+
+<tr>
+
+<td>getChildren</td>
+
+
+
+<td>target</td>
+
+<td>获取子节点，target参数是一个节点DOM对象。</td>
+
+</tr>
+
+<tr>
+
+<td>getChecked</td>
+
+<td>none</td>
+
+<td>获取所有被选择的节点。</td>
+
+</tr>
+
+<tr>
+
+<td>getSelected</td>
+
+<td>none</td>
+
+
+
+<td>获取被选择的节点并返回，如果没有节点被选择则返回null。</td>
+
+</tr>
+
+<tr>
+
+<td>isLeaf</td>
+
+<td>target</td>
+
+<td>判断指定的节点是否是叶子节点，target参数是一个节点DOM对象。</td>
+
+</tr>
+
+<tr>
+
+<td>find</td>
+
+<td>id</td>
+
+<td>查找指定的节点并返回节点对象。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>select</td>
+
+<td>target</td>
+
+<td>选择一个节点，target参数是一个节点DOM对象。</td>
+
+</tr>
+
+<tr>
+
+<td>check</td>
+
+<td>target</td>
+
+<td>设置指定的节点为已选择状态。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>uncheck</td>
+
+<td>target</td>
+
+<td>设置指定的节点为未选择状态。<</td>
+
+</tr>
+
+<tr>
+
+<td>collapse</td>
+
+<td>target</td>
+
+<td>关闭节点，target参数是一个节点DOM对象。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>expand</td>
+
+<td>target</td>
+
+<td>打开节点，target参数是一个节点DOM对象。</td>
+
+</tr>
+
+<tr>
+
+<td>collapseAll</td>
+
+<td>target</td>
+
+<td>关闭所有的节点。</td>
+
+</tr>
+
+<tr>
+
+<td>expandAll</td>
+
+
+
+<td>target</td>
+
+<td>打开所有的节点。</td>
+
+</tr>
+
+<tr>
+
+<td>expandTo</td>
+
+<td>target</td>
+
+<td>打开从根节点到指定节点之间的所有节点。</td>
+
+</tr>
+
+<tr>
+
+<td>append</td>
+
+<td>param</td>
+
+
+
+<td>添加若干子节点到一个父节点，param参数有2个属性：<br />
+
+parent：DOM对象，将要被添加子节点的父节点，如果未指定，子节点将被添加至根节点。<br />
+
+data：数组，节点数据。</td>
+
+</tr>
+
+<tr>
+
+<td>toggle</td>
+
+<td>target</td>
+
+<td>打开或关闭节点的触发器，target参数是一个节点DOM对象。</td>
+
+</tr>
+
+<tr>
+
+<td>insert</td>
+
+
+
+<td>param</td>
+
+<td>在一个指定节点之前或之后插入节点，'param'参数包含如下属性：<br />
+
+before：DOM对象，在某个节点之前插入。<br />
+
+after: DOM对象，在某个节点之后插入。<br />
+
+data：对象，节点数据。</td>
+
+</tr>
+
+<tr>
+
+<td>remove</td>
+
+<td>target</td>
+
+<td>移除一个节点和它的子节点，target参数是一个节点DOM对象。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>pop</td>
+
+<td>target</td>
+
+<td>移除一个节点和它的子节点，该方法跟remove方法一样，不同的是它将返回被移除的节点数据。</td>
+
+</tr>
+
+<tr>
+
+<td>update</td>
+
+<td>param</td>
+
+<td>更新指定的节点，param参数有如下属性：<br />
+
+target(DOM对象，将被更新的目标节点)，id，text，iconCls，checked等。</td>
+
+
+
+</tr>
+
+<tr>
+
+<td>enableDnd</td>
+
+<td>none</td>
+
+<td>启用拖动特性。</td>
+
+</tr>
+
+<tr>
+
+<td>disableDnd</td>
+
+<td>none</td>
+
+<td>禁用拖动特性。</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>beginEdit</td>
+
+<td>nodeEl</td>
+
+<td>开始编辑节点。</td>
+
+</tr>
+
+<tr>
+
+<td>endEdit</td>
+
+<td>nodeEl</td>
+
+<td>结束编辑节点。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>cancelEdit</td>
+
+<td>nodeEl</td>
+
+<td>取消编辑节点。</td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

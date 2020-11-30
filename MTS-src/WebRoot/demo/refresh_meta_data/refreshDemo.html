@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Basic Calendar - KINGDOM UI Demo</title>
+<link rel="stylesheet" type="text/css"
+	href="../../kui-base/themes/icon.css">
+<script type="text/javascript"
+	src="../../kui-base/js/core/jquery-1.8.3.min.js">
+</script>
+<script type="text/javascript"
+	src="../../kui-base/js/core/kui.loader.js">
+</script>
+<script language="javascript" type="text/javascript">
+
+function refresh() {
+    
+    var code = $("#content2refresh").attr("value");
+    var params = {
+        code4refresh: code,
+        flag: 1
+    };
+    $.ajax({
+        url: "../../refreshMetaData",
+        type: "POST",
+        cache: false,
+        async: true,
+        data: params,
+        dataType: 'text',
+        success: function(msg) {
+            console.log("successed ! ");
+            alert(msg);
+        },
+        error: function(a, b, c) {
+            alert(b)
+        }
+    
+    })
+}
+</script>
+
+<style type="text/css">
+h2 {
+	text-align: center;
+	overflow: hidden;
+	padding: 10;
+	margin: 10;
+	color: transparent;
+	-webkit-text-stroke: 4px red;
+	-webkit-box-reflect: below 5px;
+	
+	/* -webkit-text-stroke: 2px transparent; */
+	
+}
+
+ 
+</style>
+</head>
+<body>
+	<h2>刷新元数据页面</h2>
+	<br>
+	<div id="body">
+		<div class="submitRefresh">
+			<select id="content2refresh" name="selse">
+				
+				<option value="service">服务</option>
+				<option value="bex">bex</option>
+				<option value="fix">fix协议</option>
+				<option value="view">视图</option>
+				<option value="commonParam">公共参数</option>
+				<option value="all">所有</option>
+			</select>
+			 <a id="refreshButton" class="kui-linkbutton" onclick="refresh()">点击刷新</a>
+
+
+		</div>
+	</div>
+
+
+
+	<script>
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+.progressbar {
+  border-width: 1px;
+  border-style: solid;
+  /*-moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;*/
+  overflow: hidden;
+}
+.progressbar-text {
+  text-align: center;
+  position: absolute;
+}
+.progressbar-value {
+  position: relative;
+  overflow: hidden;
+  width: 0;
+  /*-moz-border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;*/
+}
+.progressbar {
+  border-color: #f4e0cc;
+  background-image: -moz-linear-gradient(top, #f3e6cf, #fefcf6); /* Firefox */ 
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f3e6cf), color-stop(1, #fefcf6)); /* Saf4+, Chrome */ 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3e6cf', endColorstr='#fefcf6', GradientType='0'); /* IE*/
+}
+.progressbar-text {
+  color: #000000;
+}
+.progressbar-value .progressbar-text {
+  background-color: #FBEC88;border-top:1px solid #fef5e1;
+   background-image: -moz-linear-gradient(top, #fee68d, #fbb830); /* Firefox */ 
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fee68d), color-stop(1, #fbb830)); /* Saf4+, Chrome */ 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fee68d', endColorstr='#fbb830', GradientType='0'); /* IE*/
+  color: #000000;
+}

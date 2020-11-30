@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+
+    <bex bex_code="QUERY_SERIAL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="QUERY_SERIAL" attr2="mts"/>
+    <bex bex_code="UPDATE_SERIAL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="UPDATE_SERIAL" attr2="mts"/>
+    <bex bex_code="INSERT_SERIAL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="INSERT_SERIAL" attr2="mts"/>
+    <bex bex_code="DELETE_SERIAL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="DELETE_SERIAL" attr2="mts"/>
+</bexs>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+
+    <atom atom_code="createCuacctSerialAtom" atom_name="生成资金账号"
+          atom_method="createCuacctSerial"  atom_class="com.szkingdom.business.mts.SerialGeneratorAtom"
+          attr1="" attr2=""/>
+
+    <atom atom_code="createCustIdSerialAtom" atom_name="生成客户代码"
+          atom_method="createCustIdSerial"  atom_class="com.szkingdom.business.mts.SerialGeneratorAtom"
+          attr1="" attr2=""/>
+
+    <atom atom_code="createEmpIdAtom" atom_name="生成人员ID号"
+          atom_method="createEmpId"  atom_class="com.szkingdom.business.mts.SerialGeneratorAtom"
+          attr1="" attr2=""/>
+
+</atoms>

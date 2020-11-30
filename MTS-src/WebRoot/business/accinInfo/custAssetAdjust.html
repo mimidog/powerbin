@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>客户股份调整</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.cust-form-table{
+    border: 0px;
+}
+.cust-form-label {
+    text-align: right;
+    vertical-align: text-bottom;
+    font-weight: bold;
+    font-size: 12px;
+    vertical-align: bottom;
+}
+</style>
+<script type="text/javascript">
+//存储当前查询到一级资金持仓信息
+var assetHodRs=[];
+//资金账号选择事件
+function cuacctId_Select(value) {
+    assetInfoForm_clear();
+
+    $('#cuacctId').val(value);
+    //通过资金账号去【资金账号表】中查找客户号
+    var fundRs=commonRequest({
+        service:'M0000001',
+        CUACCT_ID:value
+    });
+
+    //查询客户交易账号信息
+     $('#trdacct').combobox({
+         req:[{service:'M0000005',CUST_ID:fundRs[0].CUST_ID,CUACCT_ID:fundRs[0].CUACCT_ID}]
+     });
+}
+//交易账号选择事件
+function trdacct_Select(value) {
+    //查询客户持仓产品信息
+    $('#instId').combobox({
+        req:[{service:'M0000059',CUACCT_ID:$('#cuacctId').val(),TRDACCT:$('#trdacct').combobox('getValue')}]
+    });
+    
+}
+//证券代码选择事件
+function instId_Select(rec) {
+
+   assetHodRs=commonRequest($.extend({},{service:'M0000059',CUACCT_ID:$('#cuacctId').val(),
+                                TRDACCT:$('#trdacct').combobox('getValue'),
+                                    INST_ID:rec['INST_ID']}));
+   if(assetHodRs.length>0){
+       drawAssetInfo(assetHodRs)
+   }
+}
+//渲染资金信息
+function drawAssetInfo(assetHodRs) {
+    $('#assetHoldInfo_table').find('td[name]').each(function () {
+        if($(this).attr('decimal_bit')){
+            $(this).text(toThousands(Number(assetHodRs[0][$(this).attr('name')]).toFixed($(this).attr('decimal_bit'))));
+        }else{
+            $(this).text(assetHodRs[0][$(this).attr('name')]);
+        }
+    });
+}
+//资金调整持仓表单清空
+function assetInfoForm_clear() {
+    $('#assetAdjustInfo_form').form('clear');
+    $('#assetHoldInfo_table').find('td[name]').each(function () {
+        $(this).text('');
+    });
+}
+//资金一级持仓信息提交
+function fundInfoForm_submit(){
+    if($('#assetAdjustInfo_form').form('validate')==false){
+        return false
+    }
+
+    var adustAssetVal=thousandsToString($('#adjustAsset').val());
+
+    var assetHodRsMap=assetHodRs[0];
+
+    if($('#callotDirect').combobox('getValue') =='1'){
+        assetHodRsMap['INST_BAL']=parseFloat(assetHodRsMap['INST_BAL'])+parseFloat(adustAssetVal);
+        assetHodRsMap['INST_AVL']=parseFloat(assetHodRsMap['INST_AVL'])+parseFloat(adustAssetVal);
+        assetHodRsMap['UNUSE_AMOUNT']=parseFloat(assetHodRsMap['UNUSE_AMOUNT'])+parseFloat(adustAssetVal);
+        assetHodRsMap['CALLOT_IN_ASSET']=parseFloat(assetHodRsMap['CALLOT_IN_ASSET'])+parseFloat(adustAssetVal);
+    }else{
+        assetHodRsMap['INST_BAL']=parseFloat(assetHodRsMap['INST_BAL'])-parseFloat(adustAssetVal);
+        assetHodRsMap['INST_AVL']=parseFloat(assetHodRsMap['INST_AVL'])-parseFloat(adustAssetVal);
+        assetHodRsMap['UNUSE_AMOUNT']=parseFloat(assetHodRsMap['UNUSE_AMOUNT'])-parseFloat(adustAssetVal);
+        assetHodRsMap['CALLOT_OUT_ASSET']=parseFloat(assetHodRsMap['CALLOT_OUT_ASSET'])+parseFloat(adustAssetVal);
+    }
+    if(assetHodRsMap['INST_BAL']<0 || assetHodRsMap['FUND_AVL']<0 || assetHodRsMap['UNUSE_AMOUNT']<0) {
+        $.message.alert('操作提示', '产品余额、可用余额、未分配额度可能存在小于0的情况', 'error',function () {
+            assetInfoForm_clear();
+
+        });
+        return;
+    }
+    assetHodRsMap['REMARK']=$('#assetAdjustInfo_form').find(':input[name=REMARK]').val();
+
+    //合并功能号【修改一级股份账号持仓】
+    $.extend(assetHodRsMap,{service:'M0000060'});
+    ajaxRequest({
+        async:false,
+        req:[assetHodRsMap],
+        func:function(data){
+            alert('客户股份额度调整成功！');
+            writeCustAssetLog(assetHodRsMap)
+            assetInfoForm_clear();
+        }
+    });
+
+}
+//写入客户股份流水信息
+function writeCustAssetLog(assetHodRsMap) {
+    commonRequest({
+        service:'M0000106',
+        FLOW_TYPE:'2',      //1-资金流水，2-股份流水
+        CALLOT_DIRECT:$('#callotDirect').combobox('getValue'), //1-转入，2-转出
+        USE_AMOUNT: thousandsToString($('#adjustAsset').val()),
+        CUACCT_ID:assetHodRsMap['CUACCT_ID'],
+        TRDACCT:assetHodRsMap['TRDACCT'],
+        STK_ID:assetHodRsMap['INST_ID'],
+
+    })
+}
+</script>
+
+</head>
+<body>
+<div class="kui-panel" title="客户持仓股份信息">
+<table style="width:100%;" cellpadding="0" cellspacing="0">
+    <tr>
+        <td width="400">
+            <fieldset class="kui-fieldset" kui-options="title:'股份调整',collapsed:false,animation:true" style="height: 370px;">
+                <form id="assetAdjustInfo_form" class="kui-form">
+                    <table class="cust-form-table" style="width:100%;">
+                        <tr>
+                            <td class="cust-form-label" style="width:120px;">资金账号：</td>
+                            <td >
+                                <input id="cuacctId" name="CUACCT_ID" class="kui-autocomplete"  kui-options="required:true,
+                                minLength:1,max: 32,req:[{service:'M0000001'}], keyField:'CUACCT_ID', params:'CUACCT_ID',
+                                sourceField:'CUACCT_ID', mustMatch:true,matchCase:false, matchContains:false,
+                                scrollHeight:100,onSelect:cuacctId_Select"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cust-form-label" style="width:120px;">交易账号：</td>
+                            <td >
+                                <input id="trdacct" name="TRDACCT" class="kui-combobox"  kui-options="required:true,
+                                 valueField:'TRDACCT',textField:'TRDACCT',
+                                 panelHeight:60,onSelect:trdacct_Select" style="width:170px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cust-form-label" style="width:120px;">产品名称：</td>
+                            <td >
+                                <input id="instId" name="INST_ID" class="kui-combobox"  kui-options="required:true,
+                                 valueField:'INST_ID',textField:'INST_NAME',
+                                 panelHeight:100,onSelect:instId_Select" style="width:170px;"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="cust-form-label" >调整方向：</td>
+                            <td >
+                                <input id="callotDirect" name="CALLOT_DIRECT" class="kui-combobox" kui-options="required:true,
+                                    autoFill:'true',dict:'CALLOT_DIRECT',isClear:false,value:'1'" style="width:170px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cust-form-label" >调整股份数：</td>
+                            <td >
+                                <input id="adjustAsset" name="ADJUST_ASSET" class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                    invalidMessage:'请入不要起过15位整数位的数字'"
+                                     onblur="this.value=toThousands(this.value)"
+                                       onfocus="this.value=thousandsToString(this.value)"
+                                       style="width:170px;" autocomplete="off"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cust-form-label">备注：</td>
+                            <td>
+                                <input name="REMARK" class="kui-validatebox" kui-options="validType:'val[1,200]'"
+                                       autocomplete="off" style="width:170px;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div style="text-align: center;margin-top: 20px;">
+                    <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-ok'" onclick="fundInfoForm_submit()">提交</a>
+                    <a href="#" class="kui-linkbutton" kui-options="iconCls:'icon-cancel'" onclick="assetInfoForm_clear()">清空</a>
+                </div>
+                <div style="padding-top: 20px;color: #0099FF;font-weight: bold">
+                   注：调整方向为调入时，录入的调整股份为增加股份，<br>
+                   &nbsp;&nbsp; &nbsp;&nbsp; 调整方向为调出时，录入的调整股份为减少股份。
+                </div>
+            </fieldset>
+        </td>
+        <td>
+            <fieldset class="kui-fieldset" kui-options="title:'信息显示',collapsed:false,animation:true" style="width:400px;height: 370px;">
+                <table id="assetHoldInfo_table" class="cust-form-table" style="width:100%;">
+                    <tr>
+                        <td class="cust-form-label" style="width:120px;">客户代码：</td>
+                        <td name="CUST_ID"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label" style="width:120px;">客户简称：</td>
+                        <td name="CUST_NAME"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">资金账号：</td>
+                        <td name="CUACCT_ID"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">交易账户：</td>
+                        <td name="TRDACCT"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">产品名称：</td>
+                        <td name="INST_NAME"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">成本价：</td>
+                        <td name="COST_PRICE" decimal_bit="4"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">产品余额：</td>
+                        <td name="INST_BAL" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">产品可用额：</td>
+                        <td name="INST_AVL" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">未分配额度：</td>
+                        <td name="UNUSE_AMOUNT" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">昨日余额：</td>
+                        <td name="INST_LAST_BAL" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">交易冻结数：</td>
+                        <td name="INST_TRD_FRZ" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">长期冻结数：</td>
+                        <td name="INST_LONG_FRZ" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">在途数：</td>
+                        <td name="INST_OTD" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">在途可用数：</td>
+                        <td name="INST_BAL_OTD" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">转入股份数：</td>
+                        <td name="CALLOT_IN_ASSET" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">转出股份数：</td>
+                        <td name="CALLOT_OUT_ASSET" decimal_bit="0"></td>
+                    </tr>
+                    <tr>
+                        <td class="cust-form-label">备注：</td>
+                        <td name="REMARK"></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+    </tr>
+</table>
+</div>
+
+
+</body>
+</html>

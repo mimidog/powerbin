@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+     <!--查询资金账号信息-->
+    <select id="query_T_CUACCT" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT K.CUST_ID, (SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=K.CUST_ID) AS CUST_NAME,
+                K.CUACCT_ID,K.CURRENCY,K.PAY_TYPE, K.PAY_ORG, K.PAY_ID,K.CUACCT_STATUS,K.CUACCT_LVL,K.OPEN_DATE,
+                K.CLOSE_DATE, K.UP_DATE, K.REMARK
+        FROM T_CUACCT K,T_CUST_BASE_INFO T
+        WHERE T.CUST_ID=K.CUST_ID
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and K.CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and K.CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="CUACCT_STATUS !='' and CUACCT_STATUS != null">
+                and K.CUACCT_STATUS ='${CUACCT_STATUS}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                 ${PERMISSION_SQL}
+            </if>
+            <if test="TEL !='' and TEL != null">
+                and T.TEL ='${TEL}'
+            </if>
+    </select>
+    <!--插入资金账号信息-->
+    <insert id="insert_T_CUACCT" parameterType="hashmap">
+       INSERT INTO T_CUACCT (CUST_ID, CUACCT_ID,CURRENCY,PAY_TYPE, PAY_ORG, PAY_ID, CUACCT_STATUS, CUACCT_LVL, OPEN_DATE,
+                             CLOSE_DATE, UP_DATE, REMARK)
+              VALUES ('${CUST_ID}', '${CUACCT_ID}','${CURRENCY}', '${PAY_TYPE}', '${PAY_ORG}', '${PAY_ID}',
+                      '${CUACCT_STATUS}','${CUACCT_LVL}','${OPEN_DATE}', '${CLOSE_DATE}', '${UP_DATE}', '${REMARK}')
+    </insert>
+    <!--修改资金账号信息-->
+    <update id="update_T_CUACCT" parameterType="hashmap">
+        UPDATE T_CUACCT SET
+              CURRENCY='${CURRENCY}',PAY_TYPE='${PAY_TYPE}',PAY_ORG='${PAY_ORG}',PAY_ID='${PAY_ID}',
+            CUACCT_STATUS='${CUACCT_STATUS}',OPEN_DATE='${OPEN_DATE}',CLOSE_DATE='${CLOSE_DATE}',UP_DATE='${UP_DATE}',
+            REMARK='${REMARK}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+        </where>
+    </update>
+    <!--删除资金账号信息-->
+    <delete id="delete_T_CUACCT" parameterType="hashmap">
+        DELETE FROM T_CUACCT
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询交易账号信息-->
+    <select id="query_T_TRDACCT" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT  K.CUST_ID,(SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=K.CUST_ID) AS CUST_NAME,
+                K.CUACCT_ID,K.MAKET_ID, K.STKBD, K.TRDACCT, K.STK_STATUS, K.STKPBU, K.ID_TYPE, K.ID_CODE,K.ID_ADDR,
+                K.ID_ISS_AGCY,K.ID_EXP_DATE,K.OPEN_DATE,K.CLOSE_DATE,K.UP_DATE, K.YMT_CODE
+        FROM T_TRDACCT K,T_CUST_BASE_INFO T
+        WHERE T.CUST_ID=K.CUST_ID
+
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and K.CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and K.CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="STKBD !='' and STKBD != null">
+                and K.STKBD ='${STKBD}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and K.TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="TEL !='' and TEL != null">
+                and T.TEL ='${TEL}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+    </select>
+    <!--插入交易账号信息-->
+    <insert id="insert_T_TRDACCT" parameterType="hashmap">
+        INSERT INTO T_TRDACCT (CUST_ID, CUACCT_ID, MAKET_ID, STKBD, TRDACCT, STK_STATUS, STKPBU, ID_TYPE, ID_CODE,ID_ADDR,
+                               ID_ISS_AGCY, ID_EXP_DATE, OPEN_DATE, CLOSE_DATE, UP_DATE, YMT_CODE)
+        VALUES ('${CUST_ID}', '${CUACCT_ID}','${MAKET_ID}', '${STKBD}', '${TRDACCT}','${STK_STATUS}','${STKPBU}',
+                '${ID_TYPE}','${ID_CODE}','${ID_ADDR}', '${ID_ISS_AGCY}','${ID_EXP_DATE}','${OPEN_DATE}','${CLOSE_DATE}',
+                '${UP_DATE}', '${YMT_CODE}')
+    </insert>
+    <!--修改资金账号信息-->
+    <update id="update_T_TRDACCT" parameterType="hashmap">
+        UPDATE T_TRDACCT SET
+        MAKET_ID='${MAKET_ID}',TRDACCT ='${TRDACCT}',STK_STATUS='${STK_STATUS}',STKPBU='${STKPBU}',ID_TYPE='${ID_TYPE}',ID_ADDR='${ID_ADDR}',
+            ID_CODE='${ID_CODE}',ID_ISS_AGCY='${ID_ISS_AGCY}',ID_EXP_DATE='${ID_EXP_DATE}',OPEN_DATE='${OPEN_DATE}',
+            CLOSE_DATE='${CLOSE_DATE}',UP_DATE='${UP_DATE}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="STKBD !='' and STKBD != null">
+                and STKBD ='${STKBD}'
+            </if>
+        </where>
+    </update>
+    <!--删除交易账号信息-->
+    <delete id="delete_T_TRDACCT" parameterType="hashmap">
+        DELETE FROM T_TRDACCT
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="STKBD !='' and STKBD != null">
+                and STKBD ='${STKBD}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT ='${TRDACCT}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询客户基本信息与开户信息-->
+    <select id="query_T_CUSTOMER_OPEN_INFO" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT T2.CUST_ID, CUST_NAME, CUST_TYPE, OP_SECU, OP_DEP, CUST_STATUS, CUST_LVL, OPEN_DATE,
+            CLOSE_DATE, CHANNEL, T1.UP_DATE, ORG_CODE,T1.RISK_CONTROLLER,
+            (SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=RISK_CONTROLLER) AS RISK_CONTROLLER_NAME,
+            T1.CUST_DIRECTOR,
+        (SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=CUST_DIRECTOR) AS CUST_DIRECTOR_NAME,
+            (SELECT ORG_NAME FROM kdbase..UPM_ORG K WHERE K.ORG_CODE=T1.ORG_CODE) AS ORG_NAME,
+            ID_TYPE, ID_CODE, ID_ADDR, ID_EXP_DATE, ID_ISS_AGCY, TEL, TEL2, WEBCHAT, EMAIL,
+        PRO_MATERIAL, PRO_MATERIAL2,T1.REMARK
+        FROM  T_CUSTOMER T1,T_CUST_BASE_INFO T2
+        <where>
+            T1.CUST_ID=T2.CUST_ID
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and T2.CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="TEL !='' and TEL != null">
+                and T2.TEL ='${TEL}'
+            </if>
+            <if test="CUST_NAME !='' and CUST_NAME != null">
+                and CUST_NAME like '${CUST_NAME}%'
+            </if>
+            <if test="CUST_TYPE !='' and CUST_TYPE != null">
+                and CUST_TYPE ='${CUST_TYPE}'
+            </if>
+            <if test="CUST_STATUS !='' and TRDACCT != null">
+                and CUST_STATUS ='${CUST_STATUS}'
+            </if>
+            <if test="OPEN_DATE !='' and OPEN_DATE != null">
+                and OPEN_DATE ='${OPEN_DATE}'
+            </if>
+            <if test="CLOSE_DATE !='' and CLOSE_DATE != null">
+                and CLOSE_DATE ='${CLOSE_DATE}'
+            </if>
+            <if test="ORG_CODE !='' and ORG_CODE != null">
+                and ORG_CODE ='${ORG_CODE}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+    </select>
+
+
+    <!--查询客户开户信息-->
+    <select id="query_T_CUSTOMER" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, CUST_NAME, CUST_TYPE, OP_SECU, OP_DEP, CUST_STATUS, CUST_LVL, OPEN_DATE,
+                CLOSE_DATE, CHANNEL, UP_DATE, ORG_CODE,RISK_CONTROLLER,
+                ISNULL((SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=RISK_CONTROLLER),'') AS RISK_CONTROLLER_NAME,
+                CUST_DIRECTOR,
+             ISNULL((SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=CUST_DIRECTOR),'') AS CUST_DIRECTOR_NAME,
+        REMARK
+        FROM  T_CUSTOMER
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUST_NAME !='' and CUST_NAME != null">
+                and CUST_NAME like '${CUST_NAME}%'
+            </if>
+            <if test="CUST_TYPE !='' and CUST_TYPE != null">
+                and CUST_TYPE ='${CUST_TYPE}'
+            </if>
+            <if test="CUST_STATUS !='' and TRDACCT != null">
+                and CUST_STATUS ='${CUST_STATUS}'
+            </if>
+            <if test="OPEN_DATE !='' and OPEN_DATE != null">
+                and OPEN_DATE ='${OPEN_DATE}'
+            </if>
+            <if test="CLOSE_DATE !='' and CLOSE_DATE != null">
+                and CLOSE_DATE ='${CLOSE_DATE}'
+            </if>
+            <if test="ORG_CODE !='' and ORG_CODE != null">
+                and ORG_CODE ='${ORG_CODE}'
+            </if>
+        </where>
+    </select>
+    <!--插入客户开户信息-->
+    <insert id="insert_T_CUSTOMER" parameterType="hashmap">
+        INSERT INTO T_CUSTOMER (CUST_ID, CUST_NAME, CUST_TYPE, OP_SECU, OP_DEP, CUST_STATUS, CUST_LVL,
+                               OPEN_DATE, CLOSE_DATE, CHANNEL, UP_DATE, ORG_CODE,
+                                RISK_CONTROLLER,CUST_DIRECTOR, REMARK)
+        VALUES ('${CUST_ID}','${CUST_NAME}','${CUST_TYPE}','${OP_SECU}','${OP_DEP}','${CUST_STATUS}',
+               '${CUST_LVL}','${OPEN_DATE}','${CLOSE_DATE}','${CHANNEL}','${UP_DATE}','${ORG_CODE}',
+                '${RISK_CONTROLLER}','${CUST_DIRECTOR}','${REMARK}')
+    </insert>
+    <!--修改客户开户信息-->
+    <update id="update_T_CUSTOMER" parameterType="hashmap">
+        UPDATE T_CUSTOMER SET CUST_ID='${CUST_ID}',CUST_NAME='${CUST_NAME}',CUST_TYPE='${CUST_TYPE}',
+                              OP_SECU='${OP_SECU}',OP_DEP='${OP_DEP}',CUST_STATUS='${CUST_STATUS}',
+                              CUST_LVL='${CUST_LVL}', OPEN_DATE='${OPEN_DATE}',CLOSE_DATE='${CLOSE_DATE}',
+                              CHANNEL='${CHANNEL}',UP_DATE='${UP_DATE}',ORG_CODE ='${ORG_CODE}',
+                              RISK_CONTROLLER='${RISK_CONTROLLER}',CUST_DIRECTOR='${CUST_DIRECTOR}',
+                              REMARK = '${REMARK}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+        </where>
+    </update>
+    <!--删除客户开户信息-->
+    <delete id="delete_T_CUSTOMER" parameterType="hashmap">
+        DELETE FROM T_CUSTOMER
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询个人客户基本信息-->
+    <select id="query_T_CUST_BASE_INFO" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, ID_TYPE, ID_CODE, ID_ADDR, ID_EXP_DATE, ID_ISS_AGCY, TEL, TEL2, WEBCHAT, EMAIL,
+                PRO_MATERIAL, PRO_MATERIAL2, UP_DATE, REMARK
+        FROM T_CUST_BASE_INFO
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+
+            <if test="ID_TYPE !='' and ID_TYPE != null">
+                and ID_TYPE ='${ID_TYPE}'
+            </if>
+            <if test="ID_CODE !='' and ID_CODE != null">
+                and ID_CODE ='${ID_CODE}'
+            </if>
+        </where>
+    </select>
+    <!--插入个人客户基本信息-->
+    <insert id="insert_T_CUST_BASE_INFO" parameterType="hashmap">
+        INSERT INTO T_CUST_BASE_INFO (CUST_ID, ID_TYPE, ID_CODE, ID_ADDR, ID_EXP_DATE, ID_ISS_AGCY, TEL, TEL2,
+                                      WEBCHAT, EMAIL, PRO_MATERIAL, PRO_MATERIAL2, UP_DATE, REMARK)
+        VALUES ('${CUST_ID}','${ID_TYPE}','${ID_CODE}','${ID_ADDR}','${ID_EXP_DATE}','${ID_ISS_AGCY}','${TEL}',
+                '${TEL2}', '${WEBCHAT}','${EMAIL}','${PRO_MATERIAL}','${PRO_MATERIAL2}','${UP_DATE}','${REMARK}')
+    </insert>
+    <!--修改个人客户基本信息-->
+    <update id="update_T_CUST_BASE_INFO" parameterType="hashmap">
+        UPDATE T_CUST_BASE_INFO SET CUST_ID = '${CUST_ID}',ID_TYPE = '${ID_TYPE}',ID_CODE = '${ID_CODE}',
+                                    ID_ADDR = '${ID_ADDR}',ID_EXP_DATE = '${ID_EXP_DATE}',ID_ISS_AGCY = '${ID_ISS_AGCY}',
+                                    TEL = '${TEL}',TEL2 = '${TEL2}',WEBCHAT = '${WEBCHAT}',EMAIL = '${EMAIL}',
+                                    PRO_MATERIAL = '${PRO_MATERIAL}',PRO_MATERIAL2 = '${PRO_MATERIAL2}',
+                                    UP_DATE = '${UP_DATE}',REMARK = '${REMARK}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+        </where>
+    </update>
+    <!--删除个人客户基本信息-->
+    <delete id="delete_T_CUST_BASE_INFO" parameterType="hashmap">
+        DELETE FROM T_CUST_BASE_INFO
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询资金子账户设置信息-->
+    <select id="query_T_CUACCT_SUB" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT K.CUST_ID,(SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=K.CUST_ID) AS CUST_NAME,
+                K.CUACCT_ID,K.OP_ID,
+                (SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=K.OP_ID) AS OP_NAME,
+                K.EFT_DATE, K.EXP_DATE, K.UP_DATE,K.REMARK
+        FROM T_CUACCT_SUB K
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and K.CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and K.CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and K.OP_ID ='${OP_ID}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+    </select>
+    <!--插入资金子账户设置信息-->
+    <insert id="insert_T_CUACCT_SUB" parameterType="hashmap">
+        INSERT INTO T_CUACCT_SUB (CUST_ID, CUACCT_ID, OP_ID, EFT_DATE, EXP_DATE, UP_DATE, REMARK)
+        VALUES ('${CUST_ID}','${CUACCT_ID}','${OP_ID}','${EFT_DATE}','${EXP_DATE}','${UP_DATE}','${REMARK}')
+    </insert>
+    <!--修改资金子账户设置信息-->
+    <update id="update_T_CUACCT_SUB" parameterType="hashmap">
+        UPDATE T_CUACCT_SUB SET CUST_ID = '${CUST_ID}',CUACCT_ID = '${CUACCT_ID}',OP_ID = '${OP_ID}',
+                                EFT_DATE = '${EFT_DATE}',EXP_DATE = '${EXP_DATE}',UP_DATE = '${UP_DATE}',
+                                REMARK = '${REMARK}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID ='${OP_ID}'
+            </if>
+        </where>
+    </update>
+    <!--删除资金子账户设置信息-->
+    <delete id="delete_T_CUACCT_SUB" parameterType="hashmap">
+        DELETE FROM T_CUACCT_SUB
+        <where>
+            <if test="CUST_ID !='' and CUST_ID !=null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID !=null">
+                and CUACCT_ID = '${CUACCT_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID !=null">
+                and OP_ID = '${OP_ID}'
+            </if>
+        </where>
+    </delete>
+
+</mapper>

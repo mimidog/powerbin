@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Flow Task - KINGDOM UI Demo</title>
+   <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+   <link rel="stylesheet" type="text/css" href="css/task.css">
+   <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+   <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+	<script type="text/javascript">
+		function callBack(){
+			var f = $("#aa").flow("getForm","#myForm");
+			//alert(f.find("input[name='userName']").val());
+			//alert($("#aa").flow("getCurrStep"));
+			
+			
+			
+			if(true){
+				$("#tt").flow("goBack");
+			}
+			
+		}
+		window.$ready = function(){
+			using("combobox");
+			$("input:eq(0)").bind("click",function(){
+				$("#tt").flow("showToolButtom");
+			});
+			$("input:eq(1)").bind("click",function(){
+				$("#tt").flow("hideToolButtom");
+			});
+			$("input:eq(2)").bind("click",function(){
+				$("#tt").flow("disable",4);
+			});
+			$("input:eq(3)").bind("click",function(){
+				$("#tt").flow("enable",4);
+			});
+			$("input:eq(4)").bind("click",function(){
+				var f = $("#tt").flow("getForm","#myForm");
+				f.find("input[name='userName']").val("11");
+			});
+			using("flow",function(){
+				var t = $("#tt").flow({
+					width:"600",
+					showButtom:true,
+					showIndex:1,
+					panelHeight:100,
+					stepNum:5,
+					frameHeight:"90",
+					imgPath:"../../frame/images/steps/",
+					data:[{title:"第一步",url:"a1.html",img:"step-icon-pic1.png"},
+					      {title:"第二步",url:"a2.html",img:"step-icon-pic2.png"},
+					      {title:"第三步",url:"a3.html",img:"step-icon-pic3.png"},
+						  {title:"第四步",url:"a4.html",img:"step-icon-pic4.png"},
+					      {title:"第五步",url:"a5.html",img:"step-icon-pic5.png"},
+					      {title:"第六步",url:"a6.html",img:"step-icon-pic6.png"}],
+					nextCallblack:callBack
+				});
+				var intval = window.setInterval(function(){				
+						var f = t.flow("getForm","#myForm");
+						f.find("input[name='userName']").val("11333");
+						window.clearInterval(intval);
+				},100);
+				
+			});
+			
+		}
+	</script>
+</head>
+<body>
+	<h2>Basic Flow</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Fill the form and submit it.</div>
+	</div>
+	<input type="button" value="显示按钮"/><input type="button" value="隐藏按钮"/>
+	<input type="button" value="流程5图标不可点击"/><input type="button" value="流程5图标可点击"/>
+	<input type="button" value="向表单设值"/>
+	<div style="margin:10px 0;"></div>
+	<!-- <div class="kui-panel" title="Flow Demo" style="width:1000px;">
+		<div id="aa" class="kui-flow" kui-options='width:"600",showButtom:true,showIndex:1,panelHeight:100,stepNum:5,frameHeight:"90",imgPath:"../../frame/images/steps/",data:[{title:"第一步",url:"a1.html",img:"step-icon-pic1.png"},
+					         {title:"第二步",url:"a2.html",img:"step-icon-pic2.png"},
+					         {title:"第三步",url:"a3.html",img:"step-icon-pic3.png"},
+					         {title:"第四步",url:"a4.html",img:"step-icon-pic4.png"},
+					         {title:"第五步",url:"a5.html",img:"step-icon-pic5.png"},
+					         {title:"第六步",url:"a6.html",img:"step-icon-pic6.png"}],
+					         clickCallblack:callBack'>
+		</div>
+	</div> -->
+	
+	
+	<div id="tt"></div>
+</body>
+</html>

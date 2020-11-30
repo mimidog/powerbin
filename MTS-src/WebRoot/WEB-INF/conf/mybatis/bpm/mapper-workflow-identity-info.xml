@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="DynamicMapper">
+  
+  <!-- INFO INSERT -->
+
+  <insert id="BpmIdentityInfoInsert" parameterType="map">
+    insert into UWK_ID_INFO (INFO_ID, REV, USER_ID, TYPE, INFO_KEY, VALUE, PASSWORD, PARENT_ID)
+    values (
+      #{id ,jdbcType=VARCHAR},
+      1,
+      #{userId ,jdbcType=VARCHAR},
+      #{type ,jdbcType=VARCHAR},
+      #{key ,jdbcType=VARCHAR},
+      #{value ,jdbcType=VARCHAR},
+      #{passwordBytes ,jdbcType=BLOB},
+      #{parentId ,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <!-- INFO UPDATE -->
+  <update id="BpmIdentityInfoUpdate" parameterType="map">
+    update UWK_ID_INFO 
+    set REV = #{revisionNext ,jdbcType=INTEGER},
+        VALUE = #{value ,jdbcType=VARCHAR},
+        PASSWORD = #{passwordBytes ,jdbcType=BLOB}
+    where INFO_ID = #{id}
+      and REV = #{revision}
+  </update>
+  
+  <!-- INFO DELETE -->
+
+  <delete id="BpmIdentityInfoDelete" parameterType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.IdentityInfoEntity">
+    delete from UWK_ID_INFO
+    where INFO_ID = #{id} and REV = #{revision}
+  </delete>
+
+  
+  <!-- INFO SELECT -->
+
+  <select id="BpmIdentityInfoSelectById" parameterType="string" resultType="hashMap">
+    select * from UWK_ID_INFO where INFO_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="BpmIdentityInfoSelectByUserIdAndKey" parameterType="map" resultType="hashMap">
+    select * from UWK_ID_INFO 
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+      and INFO_KEY =  #{key,jdbcType=VARCHAR}
+      and PARENT_ID is null
+  </select>
+  
+  <select id="BpmIdentityInfoSelectKeysByUserIdAndType" parameterType="map" resultType="hashMap">
+    select INFO_KEY from UWK_ID_INFO
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+      and TYPE =  #{type,jdbcType=VARCHAR}
+      and PARENT_ID is null
+  </select>
+  
+  <select id="BpmIdentityInfoSelectByUserId" parameterType="map" resultType="hashMap">
+    select * from UWK_ID_INFO where USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="BpmIdentityInfoSelectDetails" parameterType="map" resultType="hashMap">
+    select * from UWK_ID_INFO where PARENT_ID = #{parentId,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

@@ -1,0 +1,58 @@
+.kui-flow{
+	display: -webkit-box;
+	display: -moz-box;
+	-webkit-box-orient: horizontal;
+	-moz-box-orient: horizontal;
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	margin:0.3em;
+}
+.f-paster{
+	width:6.5em;
+	display: -webkit-box;
+	display: -moz-box;
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	-webkit-box-align: center;
+	-moz-box-align: center;
+}
+.f-icon-todo{
+	display: inline-block;
+    height: 38px;
+    width: 38px;
+	background: url(../../../../frame/images/steps/step-bg-todo.png) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.f-icon-done{
+	display: inline-block;
+    height: 38px;
+    width: 38px;
+	background: url(../../../../frame/images/steps/step-bg-done.png) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	cursor: pointer;
+}
+.f-icon-ing{
+	display: inline-block;
+    height: 38px;
+    width: 38px;
+	background: url(../../../../frame/images/steps/step-bg-doing.png) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	cursor: pointer;
+}
+.f-arrow{
+	width:41px;
+	height:12px;
+	display: inline-block;
+	background:url(../../../../frame/images/steps/step-arrow-doing.png);
+}
+.step-img{
+	margin-left:6px;
+	margin-top:6px;
+}
+.f-text{
+	font-size: 0.8em;
+	margin-top: 0.4em;
+}
+.f-color-b{
+	color: blue;
+}
+.f-color{
+	color: black;
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+    <service service_code="M0000037" service_title="查询风控类型信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryRiskControlTypeCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000038" service_title="新增风控类型信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addRiskControlTypeCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000039" service_title="修改风控类型信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="2">
+        <businesses>
+            <service_business business_code="modRiskControlTypeCfgInfoAtom" business_type="3" business_cat="1"/>
+            <service_business business_code="modRiskControlTypeCfgStaInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000040" service_title="删除风控类型信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delRiskControlTypeCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000041" service_title="查询风控配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryRiskCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000042" service_title="新增风控配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addRiskCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000043" service_title="修改风控配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modRiskCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000044" service_title="删除风控配置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delRiskCfgInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000073" service_title="查询操作员交易行为控制信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryTradeActCtrlAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000074" service_title="新增操作员交易行为控制信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addTradeActCtrlAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000075" service_title="修改操作员交易行为控制信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modTradeActCtrlAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+</services>

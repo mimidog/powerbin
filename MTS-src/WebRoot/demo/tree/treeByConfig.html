@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>formByConfig</title>
+  
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <!--link rel="stylesheet" type="text/css" href="../demo.css"-->
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui-core.js"></script>
+  <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+  <script type="text/javascript">
+  	function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+    }
+    var serviceQ = getQueryString('service');//查询树的servic
+    var updservice = getQueryString('updservice');//修改树的service
+		var conf;
+    /**
+    树的拖拽
+    当节点被放置的时候触发.
+		target: DOM 对象,这个节点是被放置的目标.
+		source: 拖动的源节点.
+		point:指明drop操作,可用值有: 'append','top' or 'bottom'
+    */
+    function onDrop(target, source, point){
+    	var nodeId = conf.nodeId;//树结构id列名
+    	var treeType = conf.treeType;//1：父子，2：级别
+    	var parNode = conf.parNode;//树节点累列名
+    	var lvlNode = conf.lvlNode;//级别列名
+    	var lvlLength = conf.lvlLength;//级别长度
+    	var tar_menu_id = conf.tar_menu_id;//目标菜单编号
+    	var tar_opt_type = conf.tar_opt_type;//目标操作类型：1、调整到目标菜单之上 2、调整到目标菜单之下 3、调整到目标菜单下级最后
+    	
+    	var queryreq = {"service":serviceQ};//查询service
+    	var uptreq = {"service":updservice};//更新service
+    	
+    	var id = $(target).attr("node-id");//被放置的目标节点id
+    	var sid = source.id;//拖动的节点id
+    	
+    	//传递到后台的参数对象
+    	var param = {};
+    	
+    	param[nodeId]=sid;//菜单编号
+    	param[tar_menu_id]=id;//目标菜单编号
+    	//追加
+    	if(point=='append'){
+    		 param[tar_opt_type] = 3;
+    	}else if(point=='top'){
+    		 param[tar_opt_type] = 1;
+    	}else if(point=='bottom'){
+    		 param[tar_opt_type] = 2;
+    	}
+    	
+		 var req=[];
+		 var req0 = $.extend({},uptreq,param);//组装req
+		 //req0 = jsonArryToString(req0);
+		 //req0 = eval(req0);
+		 req.push(req0);
+		 var resFunc = function(rtnData) {
+	      var data = rtnData[0].data[0];//数据
+	      var tree =$($(document).find('.tree')[0]);
+	      $(tree).tree("reload");
+	   }
+	    
+  	ajaxRequest({
+      func: resFunc,//回调函数
+      req:req,
+      error:function(e){
+      	alert("请求失败！"+e);
+      }
+  	});
+  	
+  }
+    
+    //alert(updservice);
+    $(function(){
+    	  	
+				//请求数据成功后动态生成表单
+		  var resFunc = function(rtnData) {
+
+		      var data = rtnData[0].data[0];//数据
+		    	
+   	      using(['tree',"linkbutton"],function(){
+
+		      		conf = rtnData[0].config.conf;//配置信息
+		      		var toolbar = rtnData[0].config.btn;//按钮
+		      		
+		      		var checkbox = conf.checkbox||false;
+		      		var service = conf.service;
+		      		
+		      		//按钮
+		      		var btndiv = $("<div style='height:40px;'></div>").appendTo($('body'));
+		      		//树
+		      		var treediv = $("<div style='width:300;float:left'></div>").appendTo($('body'));
+		      		
+		      		//树
+		      		var formdiv = $("<div style='float:right'></div>").appendTo($('body'));
+		      		
+		      		onDrop.conf = conf;
+		      		conf.onDrop=onDrop;
+		      		var tree = $("<ul></ul>").appendTo(treediv);
+
+		          conf.req = [{"service":service}];
+		          $(tree).tree(conf);
+									      		
+		      		for(var i = 0; i < toolbar.length; i++){
+					      var btn = toolbar[i];
+					      var a = $("<a href=\"javascript:void(0)\"> </a>");
+					      var b = a.css("float","left").appendTo($(btndiv)).linkbutton({"text":btn.text});
+					      try{
+					        eval(btn.handler);
+					      }catch(e){
+					        alert('请定义' + btn.handler + '函数');
+					        return false;
+					      }
+					      //serviceQ用于对树进行操作后刷新树
+					      b.bind('click',{target:$(tree),req:[{"service":btn.service,"id":"menu_id","reloadService":serviceQ}]},eval(btn.handler));
+					    }					    
+
+		        });
+		  }
+		  var p = {
+		      func: resFunc,//回调函数
+		      req: [{
+		      	"service":serviceQ
+		      }],
+		      error:function(e){
+		      	alert("请求失败！"+e);
+		      }
+		  }
+		  ajaxRequest(p);
+      
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>

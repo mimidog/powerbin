@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>propertygrid - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>属性表格</h3>
+
+<p>继承$.fn.datagrid.defaults，使用$.fn.propertygrid.defaults重载默认值。</p>
+
+
+
+<h4>依赖关系</h4>
+
+<ul>
+
+	<li>数据表格</li>
+
+</ul>
+
+
+
+<h4>使用方法</h4>
+
+<textarea name="code-propertygrid" class="html">
+	<table id="pg"></table>
+</textarea>
+
+<textarea name="code-propertygrid" class="js">
+	$('#pg').propertygrid({
+		url:'propertygrid_data.json',
+		showGroup:true
+	});
+</textarea>
+
+
+
+<h4>属性</h4>
+
+<p>属性继承数据表格，以下是属性表格独有的属性。</p>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>showGroup（显示分组）</td>
+
+
+
+<td>boolean（布尔型）</td>
+
+<td>定义是否显示属性分组。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>groupField（分组字段）</td>
+
+<td>string（字符串）</td>
+
+<td>定义要分组的字段名称。</td>
+
+<td>group</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>groupFormatter（分组格式）</td>
+
+<td>function（函数）</td>
+
+<td>定义如何格式化分组中的值。</td>
+
+<td></td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+	</body>
+</html>

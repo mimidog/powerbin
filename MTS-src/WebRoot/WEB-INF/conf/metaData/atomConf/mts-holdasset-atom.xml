@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+	<atom atom_code="queryfundAssetInfoAtom" atom_name="查询客户股份二级持仓信息"
+		  atom_method="queryfundAssetInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryFunInfoAtom" atom_name="查询客户资金一级持仓信息"
+		  atom_method="queryFunInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+	<atom atom_code="initFunInfoAtom" atom_name="初始化客户资金一级持仓信息"
+		  atom_method="initFunInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+	<atom atom_code="modFunInfoAtom" atom_name="修改客户资金一级持仓信息"
+		  atom_method="modFunInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+
+	<atom atom_code="queryFunInfosubAtom" atom_name="查询客户资金二级持仓信息"
+		  atom_method="queryFunInfosub"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+	<atom atom_code="initFunInfosubAtom" atom_name="初始化客户资金二级持仓信息"
+		  atom_method="initFunInfosub"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+	<atom atom_code="modFunInfosubAtom" atom_name="修改客户资金二级持仓信息"
+		  atom_method="modFunInfosub"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addMtsAssetAtom" atom_name="新增客户股份一级持仓信息"
+		  atom_method="addMtsAsset"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+	<atom atom_code="queryMtsAssetAtom" atom_name="查询客户股份一级持仓信息"
+		  atom_method="queryMtsAsset"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+	<atom atom_code="modMtsAssetAtom" atom_name="修改客户股份一级持仓信息"
+		  atom_method="modMtsAsset"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addMtsAssetSubAtom" atom_name="新增客户股份二级持仓信息"
+		  atom_method="addMtsAssetSub"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+	<atom atom_code="modMtsAssetSubAtom" atom_name="修改客户股份二级持仓信息"
+		  atom_method="modMtsAssetSub"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="clacfundAssetInfoAtom" atom_name="计算一个柜员持仓的总市值"
+		  atom_method="clacfundAssetInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="clearFundHolderAtom" atom_name="日切清算资金持仓信息"
+		  atom_method="clearFundHolder"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="clearAssetHolderAtom" atom_name="日切清算股份持仓信息"
+		  atom_method="clearAssetHolder"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryTradeDayClearSumAtom" atom_name="查询易员日结汇总信息"
+		  atom_method="queryTradeDayClearSum"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryTradeDayClearDetailAtom" atom_name="查询交易员日结明细信息"
+		  atom_method="queryTradeDayClearDetail"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="clearTraderDaySettleAtom" atom_name="清算交易员日结信息"
+		  atom_method="clearTraderDaySettle"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="clearBreforeDataReadyAtom" atom_name="清算前数据准备"
+		  atom_method="clearBreforeDataReady"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="regressClearFundInfoAtom" atom_name="回退资金持仓信息"
+		  atom_method="regressClearFundInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="regressClearAssetInfoAtom" atom_name="回退股份持仓信息"
+		  atom_method="regressClearAssetInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="tradeCostClearAtom" atom_name="交易费用清算"
+		  atom_method="tradeCostClear"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="calcTraderTotalCostAtom" atom_name="计算交易员费用汇总信息"
+		  atom_method="calcTraderTotalCost"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addTraderFundAssetLogAtom" atom_name="新增交易员资金股份流水"
+		  atom_method="addTraderFundAssetLog"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryTraderSurplusSumInfoAtom" atom_name="查询交易员盈亏汇总信息"
+		  atom_method="queryTraderSurplusSumInfo"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="addCustFundAssetLogfoAtom" atom_name="新增客户资金股份流水"
+		  atom_method="addCustFundAssetLog"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryHoldStockMaketTotalAtom" atom_name="统计持仓产品的市值"
+		  atom_method="queryHoldStockMaketTotal"  atom_class="com.szkingdom.business.mts.CustHoldAssetManager"
+		  attr1="" attr2=""/>
+</atoms>
+ 

@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Basic ProgressBar - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+ <script type="text/javascript">
+		function start(){
+			var value = $('#p').progressbar('getValue');
+			if (value < 100){
+				value += Math.floor(Math.random() * 10);
+				$('#p').progressbar('setValue', value);
+				setTimeout(arguments.callee, 200);
+			}
+			//alert($('#p1').value);
+		};
+		
+		function start1(){
+			var Option=$('#p1').progressbar('options');
+			alert("属性value："+Option.value);
+			alert("属性width："+Option.width);
+			alert("属性text："+Option.text);
+			}
+		function resize(){
+			var Option=$('#p1').progressbar('resize',600);
+			}
+		function getValue(){
+			alert($('#p2').progressbar('getValue'));
+			}
+		function setValue(){
+			$('#p2').progressbar('setValue',50);
+			}
+		$(function(){
+			
+			kuiloader.load('progressbar', function(){        //载入特定模块   
+          			$('#p2').progressbar({   
+				   width:400,
+           value: 60,
+           text:'{value}!!!',
+           onChange:function(){
+           	  alert("值改变了");
+           	} 
+          
+       }); 
+       
+      $('#p2').progressbar({
+      	 width:400,
+         value: 60
+      	})
+     });  
+
+       /*$('#p2').progressbar({ 
+        onChange:function{
+           	  alert("值改变了");
+           	} 
+			 });*/
+			 
+			 
+			});
+	</script>
+</head>
+<body>
+	<h2>进度条测试</h2>
+	 <ul>
+	 	<li>value属性</li>
+	 	<li>text属性</li>
+	 	<li>width属性</li>
+	 	<li>options方法</li>
+	 	<li>getValue方法</li>
+	 	<li>setValue方法</li>
+	 	<li>resize方法</li>
+	 	<li>onChange时间</li>
+	 	</ul>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>点击下面按钮来展示下面进度条相关信息</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="#" class="kui-linkbutton" onclick="start()">Start</a>
+	</div>
+	<div id="p" class="kui-progressbar" style="width:400px;"></div>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>采用class绘制</div>
+	</div>
+	<div style="margin:10px 0;">
+		<a href="#" id="cc" class="kui-linkbutton" onclick="start1()">通过方法option方法获得属性对象</a>
+		<a href="#" class="kui-linkbutton" onclick="resize()">通过方法resize方法改变宽度</a>
+	</div>
+  <div id="p1" class="kui-progressbar" kui-options="value:40,text:'{value}#'" style="width:400px;margin:10px 0;"></div>
+  
+  <div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>采用id绘制</div>	
+	</div>
+	<div style="margin:10px 0;">
+		<a href="#" class="kui-linkbutton" onclick="getValue()">返回当前进度值</a>
+		<a href="#" class="kui-linkbutton" onclick="setValue()">改变当前进度值</a>
+	</div>
+  <div id="p2" style="margin:10px 0;"></div>
+</body>
+</html>

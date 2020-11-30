@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views>
+	<view id="roleConfig_view" render="datagrid" title="角色类型查询" >
+		<conf service="P0001011" colNumbers="3" singleSelect="true" remoteSort="false" sortName="user_code" sortOrder="asc"/>
+		<qry_item field="role_code" title="角色编号" grp="查询" type="input"/>
+    	<qry_item field="role_sta" title="角色状态" grp="查询" type="combobox" edt_dict="role_sta"/>
+		<col_item field="role_code" title="角色编号"  hidden="true"/>
+    	<col_item field="role_name" title="角色名称" type="input"/>
+    	<col_item field="role_sta" title="角色状态" type="input"/>
+		<col_item field="remark" title="用户角色" type="input"/>
+	</view>
+	
+	<view id="print_register" title="" render="datagrid">
+		<conf req="[]" pagination="false" showRowDetail="false" singleSelect="true" rowEdit="true" border="false"/>
+		<btn_item text="打印" req="[{}]" handler="printHandler" iconCls="icon-print"/>
+        <btn_item text="预览" req="[{}]" handler="previewHandler" iconCls="icon-edit"/>
+		<btn_item text="删除" req="[{}]" handler="deleteHandler" iconCls="icon-remove"/>
+		<col_item field="PARAM_ID" type="input" title="字段" width="70" edit_flag="1"/>
+		<col_item field="PARAM_LABEL" type="input" title="字段名称" width="70" edit_flag="1"/>
+		<col_item field="PARAM_VALUE" type="input" title="打印值" width="120"/>
+		<col_item field="LOCATION" type="input" title="坐标" width="100"/>
+	</view>
+
+</views>

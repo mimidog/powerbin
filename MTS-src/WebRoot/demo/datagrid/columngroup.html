@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Column Group - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Column Group</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>The header cells can be merged. Useful to group columns under a category.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<table class="kui-datagrid" title="Column Group" style="width:700px;height:350px"
+			kui-options="rownumbers:true,singleSelect:true,url:'../datagrid/datagrid_data1.json'">
+		<thead>
+			<tr>
+				<th kui-options="field:'itemid',width:80" rowspan="3">Item ID</th>
+				<th kui-options="field:'productid',width:100" rowspan="3">Product</th>
+				<th colspan="6">Item Details</th>
+			</tr>
+			<tr>
+				<th kui-options="title:'id1'" colspan="2">Item Details1</th>
+				<th colspan="2">Item Details2</th>
+			</tr>
+			<!--<tr>
+				<th kui-options="field:'itemid',width:80,sortable:'true'" rowspan="2">Item ID</th>
+				<th kui-options="field:'productid',width:100,sortable:'true'" rowspan="2">Product</th>
+				<th colspan="4">Item Details</th>
+			</tr>-->
+			<tr>
+				<th kui-options="field:'listprice',width:80,align:'right',sortable:'true'">List Price</th>
+				<th kui-options="field:'unitcost',width:80,align:'left',sortable:'true'">Unit Cost</th>
+				<th kui-options="field:'attr1',width:150,align:'center',sortable:'true'">Attribute</th>
+				<th kui-options="field:'status',width:60,align:'center',sortable:'true'">Status</th>
+			</tr>
+		</thead>
+	</table>
+
+</body>
+</html>

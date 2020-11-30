@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>行情订阅配置信息</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.form-label {
+    text-align: right;
+}
+.form-table tr{
+    line-height: 22px;
+}
+</style>
+<script type="text/javascript">
+//新增操作
+function subscrbie_add() {
+    $('#MAKET_SUBSCRBIE_SET_Form').form('clear');
+    $('#stkCode').combogrid('disable');
+
+    using('dialog', function () {
+        $('#MAKET_SUBSCRBIE_SET_Dialog').dialog({
+            title:'新增',
+            width:300,
+            height:260,
+            modal:true,
+            buttons:[
+                {
+                    text:'确定',
+                    iconCls:'icon-ok',
+                    handler:function () {
+                        $('#MAKET_SUBSCRBIE_SET_Form').form('submit',{
+                            req:[{
+                                service:'M0001011',
+                                SS_CODE:$('#ssMaket').combobox('getValue')+$('#stkCode').combogrid('getValue')
+                            }],
+                            success:function(){
+                                alert('行情订阅信息新增成功！');
+                                $("#MAKET_SUBSCRBIE_SET_Dialog").dialog('close');
+                                $('#MAKET_SUBSCRBIE_SET_table').datagrid('reload');
+                            }
+                        });
+                    }
+                },
+                {
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#MAKET_SUBSCRBIE_SET_Dialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    });
+}
+//市场代码操作
+function ssMarket_chg(newVal) {
+
+    $('#stkCode').combogrid('clear');
+
+    var maketVal='-1';
+    if(newVal=='sh'){
+      maketVal='1'
+    }else if(newVal=='sz'){
+        maketVal='0'
+    }
+    $('#stkCode').combogrid('enable');
+    $('#stkCode').combogrid({
+        req: [{
+            service: 'M0000028',
+            MARKET_ID:maketVal
+        }]
+    }).combogrid('grid').datagrid('reload');
+}
+//修改操作
+function subscrbie_edit() {
+
+    var selRow=$('#MAKET_SUBSCRBIE_SET_table').datagrid('getSelected');
+    if (selRow == null) {
+        alert("请选中表格中的一条数据！");
+        return;
+    }
+    $('#MAKET_SUBSCRBIE_SET_Form').form('clear').form('load',selRow);
+
+    using('dialog', function () {
+        $('#MAKET_SUBSCRBIE_SET_Dialog').dialog({
+            title:'修改',
+            width:300,
+            height:260,
+            modal:true,
+            buttons:[
+                {
+                    text:'确定',
+                    iconCls:'icon-ok',
+                    handler:function () {
+                        $('#MAKET_SUBSCRBIE_SET_Form').form('submit',{
+                            req:[{
+                                service:'M0001012',
+                                SS_CODE:$('#ssMaket').combobox('getValue')+$('#stkCode').combogrid('getValue')
+                            }],
+                            success:function(){
+                                alert('行情订阅信息修改成功！');
+                                $("#MAKET_SUBSCRBIE_SET_Dialog").dialog('close');
+                                $('#MAKET_SUBSCRBIE_SET_table').datagrid('reload');
+                            }
+                        });
+                    }
+                },
+                {
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#MAKET_SUBSCRBIE_SET_Dialog').dialog('close');
+                    }
+                }
+            ]
+        });
+    });
+}
+</script>
+</head>
+<body>
+<table id="MAKET_SUBSCRBIE_SET_table" class="kui-datagrid"></table>
+
+<!--行情订阅配置信息对话框-->
+<div id="MAKET_SUBSCRBIE_SET_Dialog" style="display: none;">
+    <form id="MAKET_SUBSCRBIE_SET_Form" class="kui-form">
+        <table class="form-table" style="width:100%; margin-top:20px;">
+            <tr>
+                <td class="form-label">行情类型：</td>
+                <td >
+                    <input  name="SS_TYPE" class="kui-combobox" kui-options="required:true,dict:'SS_TYPE'" />
+                </td>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-label">市场代码：</td>
+                <td>
+                    <input id="ssMaket" name="SS_MARKET" class="kui-combobox" kui-options="required:true,dict:'SS_MARKET',
+                        onChange:ssMarket_chg" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-label">证券代码：</td>
+                <td>
+                    <input  id="stkCode" name="STK_CODE"  class="kui-combogrid" kui-options="required:true,panelHeight: 250,
+                                    panelHeight: 250,
+                                    panelWidth: 450,
+                                    singleSelect: true,
+                                    fitColumns: true,
+                                    idField: 'STK_ID',
+                                    textField: 'STK_NAME',
+                                    req: [{
+                                        service: 'M0000028'
+                                    }],
+                                    queryCols: [{
+                                        'text': '查询',
+                                         cols: [{
+                                                title: '证券代码', field: 'STK_ID', width: '60', editor: {
+                                                    type: 'text',
+                                                    options: {
+                                                        validType: 'val[1,32]',
+                                                        width: 100
+                                                    }
+                                                }
+                                            }]
+                                    }],
+                                    columns: [[
+                                        {field:'STK_ID',title:'证券代码',width:70,sortable:true,sortType:'number'},
+                                        {field:'STK_NAME',title:'证券名称',width:70},
+                                        {field:'MARKET_ID',title:'交易市场',width:70,
+                                          formatter: function(value,row,index){
+                                            return getSysDictOpt('MARKET',value);
+                                          }
+                                        },
+                                          {field:'STKBD',title:'交易板块',
+                                           formatter: function(value,row,index){
+                                            return getSysDictOpt('STKBD',value);
+                                          }}
+                                    ]]"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-label">备注：</td>
+                <td>
+                    <input name="REMARK"  class="kui-validatebox" kui-options="validType:'val[1,120]'"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

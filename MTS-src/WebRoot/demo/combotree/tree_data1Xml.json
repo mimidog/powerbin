@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><requests><![CDATA[
+[
+    {
+        "service": {
+            "flag": "0",
+            "serialNo": ""
+        },
+        "message": [
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            },
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            }
+        ],
+        "config": {},
+        "data": [
+            [
+                {
+                    "id": 1,
+                    "text": "My Documents",
+                    "iconCls": "icon-ok",
+                    "pid": ""
+                },
+                {
+                    "id": 11,
+                    "text": "Photos",
+                    "state": "closed",
+                    "pid": "1"
+                },
+                {
+                    "id": 111,
+                    "text": "Friend",
+                    "pid": "11"
+                },
+                {
+                    "id": 112,
+                    "text": "Wife",
+                    "pid": "11"
+                },
+                {
+                    "id": 113,
+                    "text": "Company",
+                    "pid": "11"
+                },
+                {
+                    "id": 12,
+                    "text": "Program Files",
+                    "pid": ""
+                },
+                {
+                    "id": 121,
+                    "text": "Intel",
+                    "pid": "12"
+                },
+                {
+                    "id": 122,
+                    "text": "Java",
+                    "pid": "12"
+                },
+                {
+                    "id": 122,
+                    "text": "Java",
+                    "pid": "12",
+                    "attributes": {
+                        "p1": "Custom Attribute1",
+                        "p2": "Custom Attribute2"
+                    }
+                },
+                {
+                    "id": 123,
+                    "text": "Microsoft Office",
+                    "pid": "12"
+                },
+                {
+                    "id": 124,
+                    "text": "Games",
+                    "checked": true,
+                    "pid": "12"
+                },
+                {
+                    "id": 13,
+                    "text": "index.html"
+                },
+                {
+                    "id": 14,
+                    "text": "about.html",
+                    "pid": ""
+                },
+                {
+                    "id": 15,
+                    "text": "welcome.html",
+                    "pid": ""
+                }
+            ],
+            [
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                },
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                }
+            ]
+        ]
+    },
+    {
+        "service": {
+            "flag": "1",
+            "serialNo": ""
+        },
+        "message": [
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            },
+            {
+                "flag": "1",
+                "prompt": "成功",
+                "rows": "2",
+                "times": "100ms"
+            }
+        ],
+        "config": {},
+        "data": [
+            [
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                },
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                }
+            ],
+            [
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                },
+                {
+                    "khxm": "heyz",
+                    "khbh": "123"
+                }
+            ]
+        ]
+    }
+]
+]]></requests>

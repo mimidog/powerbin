@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ExecutionEntity">
+
+  <!-- EXECUTION INSERT -->
+
+  <insert id="BpmExecutionInsert" parameterType="hashmap">
+    insert into UWK_RU_EXECUTION (EXECUTION_ID, REV, PROC_INST_ID, BUSINESS_KEY, PROC_DEF_ID, ACT_ID, IS_ACTIVE, 
+    	IS_CONCURRENT, IS_SCOPE,IS_EVENT_SCOPE, PARENT_ID, SUPER_EXEC, SUSPENSION_STATE, CACHED_ENT_STATE, CREATE_TIME)
+    values (
+      #{execution.id ,jdbcType=VARCHAR},
+      1,
+      #{execution.processInstanceId, jdbcType=VARCHAR},
+      #{execution.businessKey, jdbcType=VARCHAR},
+      #{execution.processDefinitionId ,jdbcType=VARCHAR},
+      #{execution.activityId ,jdbcType=VARCHAR},
+      #{execution.isActive ,jdbcType=BOOLEAN},
+      #{execution.isConcurrent ,jdbcType=BOOLEAN},
+      #{execution.isScope ,jdbcType=BOOLEAN},
+      #{execution.isEventScope ,jdbcType=BOOLEAN},
+      #{execution.parentId, jdbcType=VARCHAR},
+      #{execution.superExecutionId, jdbcType=VARCHAR},
+      #{execution.suspensionState, jdbcType=INTEGER},
+      #{execution.cachedEntityState, jdbcType=INTEGER},
+      #{execution.createTime ,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <!-- EXECUTION UPDATE -->
+  
+  <update id="BpmExecutionUpdate" parameterType="hashmap">
+    update UWK_RU_EXECUTION set
+      REV = #{execution.revisionNext, jdbcType=INTEGER},
+      BUSINESS_KEY = #{execution.businessKey, jdbcType=VARCHAR},
+      PROC_DEF_ID = #{execution.processDefinitionId, jdbcType=VARCHAR},
+      ACT_ID = #{execution.activityId, jdbcType=VARCHAR},
+      IS_ACTIVE = #{execution.isActive, jdbcType=BOOLEAN},
+      IS_CONCURRENT = #{execution.isConcurrent, jdbcType=BOOLEAN},
+      IS_SCOPE = #{execution.isScope, jdbcType=BOOLEAN},
+      IS_EVENT_SCOPE = #{execution.isEventScope, jdbcType=BOOLEAN},
+      PARENT_ID = #{execution.parentId, jdbcType=VARCHAR},
+      SUPER_EXEC = #{execution.superExecutionId, jdbcType=VARCHAR},
+      SUSPENSION_STATE = #{execution.suspensionState, jdbcType=INTEGER},
+      CACHED_ENT_STATE = #{execution.cachedEntityState, jdbcType=INTEGER}
+    where EXECUTION_ID = #{execution.id, jdbcType=VARCHAR}    and REV = #{execution.revision, jdbcType=INTEGER}
+  </update>
+  
+  <!-- EXECUTION DELETE -->
+  
+  <delete id="BpmExecutionDelete" parameterType="hashmap">
+    delete from UWK_RU_EXECUTION where EXECUTION_ID = #{execution.id} and REV = #{execution.revision}
+  </delete>
+  
+  <resultMap id="executionResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ExecutionEntity">
+    <id property="id" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID" jdbcType="VARCHAR" />
+    <result property="isActive" column="IS_ACTIVE" jdbcType="BOOLEAN" />
+    <result property="isConcurrent" column="IS_CONCURRENT" jdbcType="BOOLEAN" />
+    <result property="isScope" column="IS_SCOPE" jdbcType="BOOLEAN" />
+    <result property="isEventScope" column="IS_EVENT_SCOPE" jdbcType="BOOLEAN" />
+    <result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
+    <result property="superExecutionId" column="SUPER_EXEC" jdbcType="VARCHAR" />
+    <result property="suspensionState" column="SUSPENSION_STATE" jdbcType="INTEGER"/>
+    <result property="cachedEntityState" column="CACHED_ENT_STATE" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <resultMap id="executionAndVariablesResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.ExecutionEntity">
+    <id property="id" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID" jdbcType="VARCHAR" />
+    <result property="isActive" column="IS_ACTIVE" jdbcType="BOOLEAN" />
+    <result property="isConcurrent" column="IS_CONCURRENT" jdbcType="BOOLEAN" />
+    <result property="isScope" column="IS_SCOPE" jdbcType="BOOLEAN" />
+    <result property="isEventScope" column="IS_EVENT_SCOPE" jdbcType="BOOLEAN" />
+    <result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
+    <result property="superExecutionId" column="SUPER_EXEC" jdbcType="VARCHAR" />
+    <result property="suspensionState" column="SUSPENSION_STATE" jdbcType="INTEGER"/>
+    <result property="cachedEntityState" column="CACHED_ENT_STATE" jdbcType="INTEGER"/>
+    <collection property="queryVariables" column="VAR_ID" javaType="ArrayList" ofType="com.szkingdom.frame.bpm.engine.impl.persistence.entity.VariableInstanceEntity">
+      <id property="id" column="VAR_ID"/>
+      <result property="name" column="VAR_NAME" javaType="String" jdbcType="VARCHAR" />
+      <result property="type" column="VAR_TYPE" typeHandler="VariableTypeTypeHandler"/>
+      <result property="revision" column="VAR_REV" jdbcType="INTEGER" />
+      <result property="processInstanceId" column="VAR_PROC_INST_ID" jdbcType="VARCHAR" />
+      <result property="executionId" column="VAR_EXECUTION_ID" jdbcType="VARCHAR" />
+      <result property="taskId" column="VAR_TASK_ID" jdbcType="VARCHAR" />
+      <result property="byteArrayRef" column="VAR_BYTEARRAY_ID" typeHandler="ByteArrayRefTypeHandler"/>
+      <result property="doubleValue" column="VAR_DOUBLE" jdbcType="DOUBLE" />
+      <result property="textValue" column="VAR_TEXT" jdbcType="VARCHAR" />
+      <result property="textValue2" column="VAR_TEXT2" jdbcType="VARCHAR" />
+      <result property="longValue" column="VAR_LONG" jdbcType="BIGINT" />
+    </collection>
+  </resultMap>
+  
+  <!-- EXECUTION SELECT -->
+  
+  <select id="BpmExecutionSelect" parameterType="hashmap" resultMap="executionResultMap">
+    select * from UWK_RU_EXECUTION where EXECUTION_ID = #{id}
+  </select>
+  
+  <select id="BpmExecutionsSelectByParentExecutionId" parameterType="hashmap" resultMap="executionResultMap">
+    select * from UWK_RU_EXECUTION
+    where PARENT_ID = #{parentId}
+  </select>
+  
+  <select id="BpmExecutionsSelectByProcessInstanceId" parameterType="hashmap" resultMap="executionResultMap">
+    select * from UWK_RU_EXECUTION
+    where PROC_INST_ID = #{processInstanceId}
+  </select>
+  
+  <select id="BpmExecutionProcessInstanceIdsSelectByProcessDefinitionId" parameterType="hashmap" resultType="string">
+    select EXECUTION_ID
+    from UWK_RU_EXECUTION
+    where PROC_DEF_ID = #{processDefinitionId} and PARENT_ID is null
+  </select>
+  
+  <select id="BpmExecutionsSelectByQueryCriteria" parameterType="hashmap" resultMap="executionResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select distinct RES.* <include refid="bpm.limitBetween"/>, P.PROCDEF_KEY as ProcessDefinitionKey, P.PROCDEF_ID as ProcessDefinitionId 
+    <include refid="selectExecutionsByQueryCriteriaSql"/>
+	<include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmExecutionCountSelectByQueryCriteria" parameterType="hashmap" resultType="long">
+    select distinct count(RES.EXECUTION_ID)
+    <include refid="selectExecutionsByQueryCriteriaSql"/>
+  </select>
+  
+  <select id="BpmExecutionSelectProcessInstanceByQueryCriteria" parameterType="hashmap" resultMap="executionResultMap">
+    <include refid="bpm.limitBefore"/>
+    select distinct RES.* <include refid="bpm.limitBetween"/>, P.PROCDEF_KEY as ProcessDefinitionKey, P.PROCDEF_ID as ProcessDefinitionId
+    <include refid="selectExecutionsByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmExecutionSelectProcessInstanceCountByQueryCriteria" parameterType="hashmap" resultType="long">
+    select distinct count(RES.EXECUTION_ID)
+    <include refid="selectExecutionsByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectExecutionsByQueryCriteriaSql">  
+    from UWK_RU_EXECUTION RES
+    inner join UWK_RE_PROCDEF P on RES.PROC_DEF_ID = P.PROCDEF_ID
+    <include refid="commonSelectExecutionsByQueryCriteriaSql"/>
+  </sql>
+  
+  <select id="BpmProcessInstanceWithVariablesSelectByQueryCriteria" parameterType="hashmap" resultMap="executionAndVariablesResultMap">
+	<include refid="bpm.limitBefore"/>
+	select distinct RES.*,
+    P.PROCDEF_KEY    as ProcessDefinitionKey,
+    P.PROCDEF_ID     as ProcessDefinitionId
+    <if test="criteria.includeProcessVariables">, 
+    VAR.VARIABLE_ID  as VAR_ID,
+    VAR.VNAME        as VAR_NAME,
+    VAR.VTYPE       as VAR_TYPE,
+    VAR.REV          as VAR_REV,
+    VAR.PROC_INST_ID as VAR_PROC_INST_ID,
+    VAR.EXECUTION_ID as VAR_EXECUTION_ID,
+    VAR.TASK_ID      as VAR_TASK_ID,
+    VAR.BYTEARRAY_ID as VAR_BYTEARRAY_ID,
+    VAR.DOUBLETYPE   as VAR_DOUBLE,
+    VAR.TEXTTYPE     as VAR_TEXT,
+    VAR.TEXT2TYPE    as VAR_TEXT2,
+    VAR.LONGTYPE     as VAR_LONG
+    </if>
+    <include refid="bpm.limitBetween"/>
+    <include refid="selectProcessInstanceWithVariablesByQueryCriteriaSql"/> 
+	<include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <select id="BpmProcessInstanceWithVariablesSelectByQueryCriteria_MSSQL" parameterType="hashmap" resultMap="executionAndVariablesResultMap">
+    <include refid="bpm.limitBefore"/>
+    select distinct TEMPRES_EXECUTION_ID as EXECUTION_ID, TEMPP_KEY as ProcessDefinitionKey, TEMPP_ID as ProcessDefinitionId,
+    TEMPRES_REV as REV, TEMPRES_ACT_ID as ACT_ID,
+    TEMPRES_BUSINESS_KEY as BUSINESS_KEY, TEMPRES_IS_ACTIVE as IS_ACTIVE,
+    TEMPRES_IS_CONCURRENT as IS_CONCURRENT, TEMPRES_IS_SCOPE as IS_SCOPE,
+    TEMPRES_IS_EVENT_SCOPE as IS_EVENT_SCOPE, TEMPRES_PARENT_ID as PARENT_ID, 
+    TEMPRES_PROC_INST_ID as PROC_INST_ID, TEMPRES_SUPER_EXEC as SUPER_EXEC, 
+    TEMPRES_SUSPENSION_STATE as SUSPENSION_STATE, TEMPRES_CACHED_ENT_STATE as CACHED_ENT_STATE,
+    TEMPVAR_ID as VAR_ID, TEMPVAR_NAME as VAR_NAME, TEMPVAR_TYPE as VAR_TYPE, TEMPVAR_REV as VAR_REV,
+    TEMPVAR_PROC_INST_ID as VAR_PROC_INST_ID, TEMPVAR_EXECUTION_ID as VAR_EXECUTION_ID, TEMPVAR_TASK_ID as VAR_TASK_ID,
+    TEMPVAR_BYTEARRAY_ID as VAR_BYTEARRAY_ID, TEMPVAR_DOUBLE as VAR_DOUBLE, 
+    TEMPVAR_TEXT as VAR_TEXT, TEMPVAR_TEXT2 as VAR_TEXT2, TEMPVAR_LONG as VAR_LONG
+    <include refid="bpm.limitOuterJoinBetween"/>
+    RES.EXECUTION_ID as TEMPRES_EXECUTION_ID, RES.REV as TEMPRES_REV, P.PROCDEF_KEY as TEMPP_KEY, P.PROCDEF_ID as TEMPP_ID,
+    RES.ACT_ID as TEMPRES_ACT_ID, RES.PROC_INST_ID as TEMPRES_PROC_INST_ID, 
+    RES.BUSINESS_KEY as TEMPRES_BUSINESS_KEY, RES.IS_ACTIVE as TEMPRES_IS_ACTIVE,
+    RES.IS_CONCURRENT as TEMPRES_IS_CONCURRENT, RES.IS_SCOPE as TEMPRES_IS_SCOPE,
+    RES.IS_EVENT_SCOPE as TEMPRES_IS_EVENT_SCOPE, RES.PARENT_ID as TEMPRES_PARENT_ID,
+    RES.SUPER_EXEC as TEMPRES_SUPER_EXEC, RES.SUSPENSION_STATE as TEMPRES_SUSPENSION_STATE,
+    RES.CACHED_ENT_STATE as TEMPRES_CACHED_ENT_STATE,
+    VAR.VARIABLE_ID as TEMPVAR_ID, VAR.VNAME as TEMPVAR_NAME, VAR.VTYPE as TEMPVAR_TYPE, VAR.REV as TEMPVAR_REV,
+    VAR.PROC_INST_ID as TEMPVAR_PROC_INST_ID, VAR.EXECUTION_ID as TEMPVAR_EXECUTION_ID, VAR.TASK_ID as TEMPVAR_TASK_ID,
+    VAR.BYTEARRAY_ID as TEMPVAR_BYTEARRAY_ID, VAR.DOUBLETYPE as TEMPVAR_DOUBLE, 
+    VAR.TEXTTYPE as TEMPVAR_TEXT, VAR.TEXT2TYPE as TEMPVAR_TEXT2, VAR.LONGTYPE as TEMPVAR_LONG
+    <include refid="selectProcessInstanceWithVariablesByQueryCriteriaSql"/> 
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+  
+  <sql id="selectProcessInstanceWithVariablesByQueryCriteriaSql">  
+    from UWK_RU_EXECUTION RES
+    inner join UWK_RE_PROCDEF P on RES.PROC_DEF_ID = P.PROCDEF_ID
+    <if test="criteria.includeProcessVariables">
+      left outer join UWK_RU_VARIABLE VAR ON RES.PROC_INST_ID = VAR.EXECUTION_ID and VAR.TASK_ID is null
+    </if>
+    <include refid="commonSelectExecutionsByQueryCriteriaSql"/>
+  </sql>
+  
+  <sql id="commonSelectExecutionsByQueryCriteriaSql">
+   <if test="criteria.queryVariableValues != null">
+    <foreach collection="criteria.queryVariableValues" index="index" item="queryVariableValue">
+      <choose>
+        <when test="queryVariableValue.local">
+          inner join UWK_RU_VARIABLE A${index} on RES.EXECUTION_ID = A${index}.EXECUTION_ID
+        </when>
+        <otherwise>
+          inner join UWK_RU_VARIABLE A${index} on RES.PROC_INST_ID = A${index}.PROC_INST_ID
+        </otherwise>
+      </choose> 
+    </foreach>
+    </if>
+    <if test="criteria.eventSubscriptions != null">
+    	 <foreach collection="criteria.eventSubscriptions" index="index" item="eventSubscriptionValue">
+    	 	inner join UWK_RU_EVENT_SUBSCR EVT${index} on RES.EXECUTION_ID = EVT${index}.EXECUTION_ID
+	    </foreach>
+    </if>
+    <if test="criteria.businessKey != null and criteria.isIncludeChildExecutionsWithBusinessKeyQuery">
+        inner join UWK_RU_EXECUTION INST on RES.PROC_INST_ID = INST.EXECUTION_ID
+    </if>
+    <where>
+      <if test="criteria.onlyProcessInstances">
+        RES.PARENT_ID is null
+      </if>
+      <if test="criteria.processDefinitionId != null">
+        and P.PROCDEF_ID = #{criteria.processDefinitionId}
+      </if>
+      <if test="criteria.processDefinitionKey != null">
+        and P.PROCDEF_KEY = #{criteria.processDefinitionKey}
+      </if>
+      <if test="criteria.processDefinitionName != null">
+        and P.PROCDEF_NAME = #{criteria.processDefinitionName}
+      </if>
+      <if test="criteria.executionId != null">
+        and RES.EXECUTION_ID = #{criteria.executionId}
+      </if>
+      <if test="criteria.processInstanceId != null">
+        and RES.PROC_INST_ID = #{criteria.processInstanceId}
+      </if>
+      <if test="criteria.processInstanceIds != null and !criteria.processInstanceIds.isEmpty()">
+        and RES.PROC_INST_ID in
+        <foreach item="item" index="index" collection="criteria.processInstanceIds" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="criteria.businessKey != null and !criteria.isIncludeChildExecutionsWithBusinessKeyQuery">
+        and RES.BUSINESS_KEY = #{criteria.businessKey}
+      </if>
+      <if test="criteria.businessKey != null and criteria.isIncludeChildExecutionsWithBusinessKeyQuery">
+        and INST.BUSINESS_KEY = #{criteria.businessKey}
+      </if>
+      <if test="criteria.activityId != null">
+        and RES.ACT_ID = #{criteria.activityId} and IS_ACTIVE = #{criteria.isActive}
+      </if>
+      <if test="criteria.parentId != null">
+        and RES.PARENT_ID = #{criteria.parentId}
+      </if>
+      <if test="criteria.superProcessInstanceId != null">
+        <!-- A sub process instance is stored under a certain *execution*, potentially nested.
+             A sub process instance is NOT stored under the process instanc, hence the following: -->
+        and RES.SUPER_EXEC IN (select EXECUTION_ID from UWK_RU_EXECUTION where PROC_INST_ID = #{criteria.superProcessInstanceId})
+      </if>
+      <if test="criteria.subProcessInstanceId != null">
+        and RES.EXECUTION_ID = (select PROC_INST_ID from UWK_RU_EXECUTION where EXECUTION_ID = (select SUPER_EXEC from UWK_RU_EXECUTION where EXECUTION_ID = #{criteria.subProcessInstanceId}))
+      </if>
+      <if test="criteria.excludeSubprocesses">
+        and RES.SUPER_EXEC is null
+      </if>
+      <if test="criteria.suspensionState != null">
+      	<if test="criteria.suspensionState.stateCode == 1">
+        	and (RES.SUSPENSION_STATE = 1)
+        </if>
+        <if test="criteria.suspensionState.stateCode == 2">
+        	and (RES.SUSPENSION_STATE = 2)
+        </if>
+      </if>
+      <if test="criteria.involvedUser != null">
+        and EXISTS(select IDENTITY_ID from UWK_RU_IDENTITYLINK I where I.PROC_INST_ID = RES.EXECUTION_ID and I.USER_ID = #{criteria.involvedUser})
+      </if>
+      <!-- PLEASE NOTE: If you change anything have a look into the HistoricVariableInstance & HistoricProcessInstance, the same query object is used there! -->
+      <if test="criteria.queryVariableValues != null">
+      <foreach collection="criteria.queryVariableValues" index="index" item="queryVariableValue">
+        <if test="!queryVariableValue.local">
+          <!-- When process instance variable is queried for, only process variables are taken into account -->
+          and A${index}.EXECUTION_ID = A${index}.PROC_INST_ID
+        </if>
+        <if test="queryVariableValue.name != null">
+          <!-- Match-all variable-names when name is null -->
+          and A${index}.NAME= #{queryVariableValue.name}
+        </if>
+        <if test="queryVariableValue.type != null and !queryVariableValue.type.equals('null')">
+        <!-- When operator is not-equals or type of value is null, type doesn't matter! -->
+          and A${index}.TYPE_ = #{queryVariableValue.type}
+        </if>
+      	<if test="queryVariableValue.textValue != null &amp;&amp; queryVariableValue.longValue == null &amp;&amp; queryVariableValue.doubleValue == null">
+          <choose>
+            <when test="queryVariableValue.operator.equals('EQUALS_IGNORE_CASE') || queryVariableValue.operator.equals('NOT_EQUALS_IGNORE_CASE')">
+              and lower(A${index}.TEXTTYPE)
+            </when>
+            <otherwise>
+              and A${index}.TEXTTYPE
+            </otherwise>
+          </choose>
+	      <choose>
+	        <when test="queryVariableValue.operator.equals('LIKE')">LIKE</when>
+	        <otherwise><include refid="executionVariableOperator" /></otherwise>
+	      </choose>
+  	      #{queryVariableValue.textValue}
+      	</if>
+      	<if test="queryVariableValue.textValue2 != null">
+	      and A${index}.TEXT2TYPE
+	      <choose>
+	        <when test="queryVariableValue.operator.equals('LIKE')">LIKE</when>
+	        <otherwise><include refid="executionVariableOperator" /></otherwise>
+	      </choose>
+	        #{queryVariableValue.textValue2}
+      	</if>
+      	<if test="queryVariableValue.longValue != null">
+	      and A${index}.LONGTYPE
+	      <include refid="executionVariableOperator" />
+	      #{queryVariableValue.longValue}
+      	</if>
+      	<if test="queryVariableValue.doubleValue != null">
+	      and A${index}.DOUBLETYPE
+	      <include refid="executionVariableOperator" />
+	      #{queryVariableValue.doubleValue}
+      	</if>
+      	<!-- Null variable type -->
+      	<if test="queryVariableValue.textValue == null &amp;&amp; queryVariableValue.textValue2 == null &amp;&amp; queryVariableValue.longValue == null &amp;&amp; queryVariableValue.doubleValue == null">
+          <choose>
+	        <when test="queryVariableValue.operator.equals('NOT_EQUALS')">
+	          and (A${index}.TEXTTYPE is not null or A${index}.TEXT2TYPE is not null or A${index}.LONGTYPE is not null or A${index}.DOUBLETYPE is not null or A${index}.BYTEARRAY_ID is not null)
+	        </when>
+	        <otherwise>
+			  and A${index}.TEXTTYPE is null and A${index}.TEXT2TYPE is null and A${index}.LONGTYPE is null and A${index}.DOUBLETYPE is null and A${index}.BYTEARRAY_EXECUTION_ID is null
+	        </otherwise>
+	      </choose>
+      	</if>
+      </foreach>
+      </if>
+      <!-- event subscriptions -->
+      <if test="eventSubscriptions != null">
+    	 <foreach collection="eventSubscriptions" index="index" item="eventSubscriptionValue">
+    	    and (EVT${index}.EVENT_TYPE = #{eventSubscriptionValue.eventType} and EVT${index}.EVENT_NAME = #{eventSubscriptionValue.eventName}) 
+	    </foreach>
+      </if>
+    </where>
+  </sql>
+  
+  <sql id="executionVariableOperator">
+    <choose>
+   	  <when test="queryVariableValue.operator.equals('EQUALS')">=</when>
+   	  <when test="queryVariableValue.operator.equals('EQUALS_IGNORE_CASE')">=</when>
+   	  <when test="queryVariableValue.operator.equals('NOT_EQUALS')">&lt;&gt;</when>
+   	  <when test="queryVariableValue.operator.equals('NOT_EQUALS_IGNORE_CASE')">&lt;&gt;</when>
+   	  <when test="queryVariableValue.operator.equals('GREATER_THAN')">&gt;</when>
+   	  <when test="queryVariableValue.operator.equals('GREATER_THAN_OR_EQUAL')">&gt;=</when>
+   	  <when test="queryVariableValue.operator.equals('LESS_THAN')">&lt;</when>
+   	  <when test="queryVariableValue.operator.equals('LESS_THAN_OR_EQUAL')">&lt;=</when>
+   </choose>
+  </sql>
+  
+  <select id="BpmExcutionSubProcessInstanceSelectBySuperExecutionId" parameterType="hashmap" resultMap="executionResultMap">
+    select *
+    from UWK_RU_EXECUTION
+    where SUPER_EXEC = #{superExecutionId}
+  </select>
+  
+   <select id="BpmExecutionSelectByNativeQuery" parameterType="java.util.Map" resultMap="executionResultMap">
+  	<if test="resultType == 'LIST_PAGE'">
+  		<include refid="bpm.limitBefore"/>
+  	</if>
+    ${sql}
+    <if test="resultType == 'LIST_PAGE'">
+    	<include refid="bpm.limitAfter"/>
+    </if>
+  </select>
+
+  <select id="BpmExecutionSelectCountByNativeQuery" parameterType="java.util.Map" resultType="long">
+    ${sql}
+  </select>
+  
+</mapper>

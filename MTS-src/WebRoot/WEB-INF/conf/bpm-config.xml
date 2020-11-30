@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- 变量查询条件配置 -->
+<kingdom>
+	<!-- 开户待办业务变量查询条件配置 scope=process表示全局变量；scope=task表示局部按量-->
+	<query name="custReadyTaskQuery">
+		<param code="ORG_CODE" name="机构代码" dataType="String" operation="In" bex="orgMenuChildQuery" scope="process"/>
+		<param code="ORG_NAME" name="机构名称" dataType="String" operation="Like" scope="process"/>
+		<param code="businessName" name="业务类别" dataType="String" operation="Like" scope="process"/>
+    	<param code="BUS_TYPE" name="业务类别" dataType="String" operation="Like" scope="process"/>
+		<param code="CUST_CODE" name="客户标识" dataType="String" operation="Like" scope="process"/>
+		<param code="CUST_NAME" name="客户名称" dataType="String" operation="Like" scope="process"/>
+		<param code="CHANNEL" name="业务受理渠道" dataType="String" operation="Equals" scope="process"/>
+	</query>
+	
+	<!-- 开户已办业务变量查询条件配置 -->
+	<query name="custDoneTaskQuery">
+		<param code="ORG_CODE" name="机构代码" dataType="String" operation="In" bex="orgMenuChildQuery" scope="process"/>
+		<param code="ORG_NAME" name="机构名称" dataType="String" operation="Like" scope="process"/>
+		<param code="businessName" name="业务类别" dataType="String" operation="Like" scope="process"/>
+    	<param code="BUS_TYPE" name="业务类别" dataType="String" operation="Like" scope="process"/>
+		<param code="CUST_CODE" name="客户标识" dataType="String" operation="Like" scope="process"/>
+		<param code="CUST_NAME" name="客户名称" dataType="String" operation="Like" scope="process"/>
+		<param code="CHANNEL" name="业务受理渠道" dataType="String" operation="Equals" scope="process"/>
+		<param code="EVALUATE_VAL" name="评价得分" dataType="String" operation="Equals" scope="process"/>
+		<param code="CUST_ORG" name="客户机构" dataType="String" operation="Equals" scope="process"/>
+	</query>
+	
+		<!-- 查询正在办理的业务 -->
+	<query name="custDoingBusinessQuery">	
+		<param code="CUST_CODE" name="客户标识" dataType="String" operation="Like" scope="process"/>		
+	</query>
+	
+	<!-- 运算符说明 -->
+	<operations>
+		<operation code="Equals" name="等于"/>
+		<operation code="NotEquals" name="不等于"/>
+		<operation code="Like" name="模糊查询"/>
+		<operation code="GreaterThan" name="大于"/>
+		<operation code="GreaterThanOrEqual" name="大于等于"/>
+		<operation code="LessThan" name="小于"/>
+		<operation code="LessThanOrEqual" name="小于等于"/>
+		<operation code="In" name="包含于"/>
+	</operations>
+	
+	<!-- 数据类型 -->
+	<dataTypes>
+		<!-- 8种基本类型  -->
+		<dataType code="byte" name="字节"/>
+		<dataType code="short" name="短整形"/>
+		<dataType code="int" name="整形"/>
+		<dataType code="long" name="长整形"/>
+		<dataType code="fload" name="浮点型"/>
+		<dataType code="double" name="双精度"/>
+		<dataType code="char" name="字符型"/>
+		<dataType code="boolean" name="布尔型"/>		
+		<dataType code="String" name="字符串"/>
+	</dataTypes>
+	
+	
+		
+	<!-- 
+		开户流程全局变量对应属性配置 
+	-->
+	<processExtension name="custExtension" processDefinitionKey="openCust" update="true">
+		<param code="ORG_CODE" name="机构代码" attribute="attribute1"/>
+		<param code="ORG_NAME" name="机构名称" attribute="attribute2"/>
+		<param code="businessName" name="业务类别" attribute="attribute3"/>
+    	<param code="BUS_TYPE" name="业务类别" attribute="attribute4"/>
+		<param code="CUST_CODE" name="客户标识" attribute="attribute5"/>
+		<param code="CUST_NAME" name="客户名称" attribute="attribute6"/>
+		<param code="CHANNEL" name="业务受理渠道" attribute="attribute7"/>
+		<param code="result" name="复核结果" attribute="attribute8"/>
+		<param code="EVALUATE_VAL" name="评价得分" attribute="attribute9"/>
+		<param code="CUST_ORG" name="客户机构" attribute="attribute10"/>
+		<param code="reviewTxt" name="复核备注" attribute="attribute11"/>
+		<param code="BIZ_SNO" name="业务流水号" attribute="attribute12"/>
+		<param code="OP_ORG_CODE" name="操作员机构代码" attribute="attribute13"/>
+	</processExtension>
+	
+	<!-- 
+		开户流程局部变量对应属性配置 
+	-->
+	<taskExtension name="custExtension" processDefinitionKey="openCust" update="true">
+		<param code="checkWay" name="复核类型" attribute="attribute1"/>
+	</taskExtension>
+	
+</kingdom>

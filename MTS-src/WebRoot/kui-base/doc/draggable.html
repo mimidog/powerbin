@@ -1,0 +1,323 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>draggable - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>可拖动</h3>
+
+<p>使用$.fn.draggable.defaults重载默认值。</p>
+
+
+
+<h4>使用方法</h4>
+
+<h5>创建可拖动</h5>
+
+<p>1. 使用标签创建。对input标签引用'kjaxui-draggable'类。</p>
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="dd"</span> <span style="color:red">class</span><span style="color:blue">="kjaxui-draggable"</span> <span style="color:red">data-options</span><span style="color:blue">="handle:</span><span style="color:red">'#title'</span><span style="color:blue">"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">100px;</span><span style="color:blue">height:</span><span style="color:red">100px;</span><span style="color:blue">"&gt;</span>
+	    <span style="color:blue">&lt;div</span>  <span style="color:red">id</span><span style="color:blue">="title"</span> <span style="color:red">style</span><span style="color:blue">="background:#ccc;"&gt;title&lt;/div&gt;</span>
+	<span style="color:blue">&lt;/div&gt;</span>
+</pre>
+<p>2. 使用脚本创建。</p>
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="dd"</span> <span style="color:red">style</span><span style="color:blue">="width:</span><span style="color:red">100px;</span><span style="color:blue">height:</span><span style="color:red">100px;</span><span style="color:blue">"&gt;</span>
+		<span style="color:blue">&lt;div</span>  <span style="color:red">id</span><span style="color:blue">="title"</span> <span style="color:red">style</span><span style="color:blue">="background:#ccc;"&gt;title&lt;/div&gt;</span>
+	<span style="color:blue">&lt;/div&gt;</span>
+</pre>
+<pre class="code">
+	$(<span style="color:blue">'#dd'</span>).draggable({
+		handle:<span style="color:red">'#title'</span>
+	});
+</pre>
+
+
+
+<h4>属性</h4>
+<table class="doc-table">
+<tbody><tr>
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>proxy（替代）</td>
+
+<td>string,function</td>
+
+<td>拖动时的替代元素，当被设置为'clone'时，将使用该元素的一个复制元素来作为替代元素。如果指定了一个函数, 它将返回一个jquery对象。
+<pre>
+<span style="color:green">
+$('.dragitem').draggable({
+	proxy: function(source){
+		var p = $('&lt;div style="border:1px solid #ccc;width:80px"&gt;&lt;/div&gt;');
+		p.html($(source).html()).appendTo('body');
+		return p;
+	}
+});
+</span>
+</pre>
+</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>revert（复原）</td>
+
+
+
+<td>boolean（布尔型）</td>
+
+<td>如果设置为true, 当拖动停止时元素将返回它的初始位置。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>cursor（指针）</td>
+
+<td>string（字符串）</td>
+
+<td>拖动时的CSS指针。</td>
+
+<td>move</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>deltaX（水平增量，X轴）</td>
+
+<td>number（数字）</td>
+
+<td>被拖动元素对应于当前指针的水平位置。</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>deltaY（垂直增量，y轴）</td>
+
+<td>number（数字）</td>
+
+<td>被拖动元素对应于当前指针的垂直位置。</td>
+
+
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>handle（句柄）</td>
+
+<td>selector（选择器）</td>
+
+<td>开始拖动的句柄。</td>
+
+<td>null</td>
+
+</tr>
+
+<tr>
+
+<td>disabled（停止拖动）</td>
+
+<td>boolean（布尔型）</td>
+
+
+
+<td>当设置为true时停止拖动。</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>edge（边缘）</td>
+
+<td>number（数字）</td>
+
+<td>可以在其中拖动的容器的宽度</td>
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>axis（拖动轴）</td>
+
+
+
+<td>string（字符串）</td>
+
+<td>可用值为'v'或者'h',当设置为空时，元素可以同时在水平和垂直方法拖动。</td>
+
+<td>null</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>事件</h4>
+
+<table class="doc-table">
+
+
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>onBeforeDrag</td>
+
+<td>e</td>
+
+<td>在拖动之前触发，返回false将取消拖动。</td>
+
+</tr>
+
+<tr>
+
+
+
+<td>onStartDrag</td>
+
+<td>e</td>
+
+<td>当目标对象开始被拖动时触发。</td>
+
+</tr>
+
+<tr>
+
+<td>onDrag</td>
+
+<td>e</td>
+
+<td>在拖动过程中触发，当不能再拖动时返回false。</td>
+
+</tr>
+
+<tr>
+
+<td>onStopDrag</td>
+
+
+
+<td>e</td>
+
+<td>当拖动停止时触发。</td>
+
+</tr>
+
+</table>
+
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>options</td>
+
+<td>none</td>
+
+<td>返回属性对象。</td>
+
+</tr>
+
+<tr>
+
+<td>proxy</td>
+
+<td>none</td>
+
+
+
+<td>如果替代元素被设置，返回将被用于拖动的替代元素。</td>
+
+</tr>
+
+<tr>
+
+<td>enable</td>
+
+<td>none</td>
+
+<td>允许拖动。</td>
+
+</tr>
+
+<tr>
+
+<td>disable</td>
+
+<td>none</td>
+
+<td>禁止拖动。</td>
+
+
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+	</body>
+</html>

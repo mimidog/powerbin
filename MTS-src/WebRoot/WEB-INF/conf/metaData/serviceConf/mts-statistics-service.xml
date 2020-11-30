@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+    <service service_code="M0000081" service_title="操作日志查询" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryOperationLogAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+</services>

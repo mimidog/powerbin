@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+		<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+		<style type="text/css">
+		</style>
+		<style media="print">
+			.noprint{
+				display: none;
+			}
+			
+		</style>
+		<script type="text/javascript">
+			function bodyOnBeforePrint(){
+				//$(".print-area").css({"width":"100%","height":"1123px","background":"#CCC"});
+			}
+			$(function(){
+				var obj = window.dialogArguments;
+				alert(obj.params.OPEN_DATE);
+				$("#print").click(function(){
+					window.print();
+				});
+			});
+		</script>
+	</head>
+	<body onbeforeprint="bodyOnBeforePrint();">
+		<div class="print-area" style="position:relative;height:400px;width:100%;">
+			<h1>asdfkaafaklsdfjalsdfjl</h1>
+			<span>卡卡的发卡的立法宽带计费</span>
+			<span style="position:absolute;bottom:3px;right:3px;font-weight:bold;">中信证券</span>
+		</div>
+		<input type="button" value="打印" id="print" style="position:absolute;top:2px;left:380px;">
+	</body>
+</html>

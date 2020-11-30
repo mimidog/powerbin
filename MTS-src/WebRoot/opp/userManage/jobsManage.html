@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>岗位管理</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript">
+window.$ready=function(){
+  using('datagrid');
+}
+
+function deleteJobs(){
+	var rows = $('#UUM_jobsManage').datagrid('getSelections');
+    if(rows.length==0){
+      alert('请选择一条数据！');
+      return false ;
+    }
+    
+    var POST_ID = rows[0]['POST_ID'];
+    if(rows[0]['POST_STA']=='3'){
+		alert('不能删除该岗位！');
+		return false;
+	}
+  confirm('提示信息','是否确认删除?',function(isOK){
+    if(isOK){
+          $(".l-btn").linkbutton("disable");
+    	
+      ajaxRequest({
+            req:[{
+                  service:'P0001008',
+                  POST_ID:POST_ID,
+                  page:1,
+                  rows:999999999,
+                  pageoffset:1,
+                  pagecount:999999999,
+                  USER_NAME:"",
+                  USER_STA:"1",
+                  PAGE_RECNUM:1,
+                  PAGE_RECCNT:100
+                }],
+                error:function(){
+                  alert('删除岗位失败！');
+                },
+                func:function(data){                    
+                    if(data[0] && data[0].length>0){
+                      alert("当前岗位已被分配使用，请解除分配后再删除。");
+                      $(".l-btn").linkbutton("enable");
+                    }else{
+                      _deleteJob();
+                    }
+                }
+          });
+    }
+  });
+  function _deleteJob(){
+    ajaxRequest({
+      req:[{
+        service:'P0001044',
+        POST_ID:POST_ID
+      }],
+      error:function(){
+          alert('删除岗位失败！');
+            $(".l-btn").linkbutton("enable");
+      },
+      func:function(data){
+        alert("删除岗位信息成功！");
+        $(".l-btn").linkbutton("enable");
+        $('#UUM_jobsManage').datagrid('reload');
+      }
+    });
+  }
+}
+
+function updateJobs(){
+	var rows = $('#UUM_jobsManage').datagrid('getSelections');
+    if(rows.length==0){
+      alert('请选择一条数据！');
+      return false ;
+    }
+	if(rows[0]['POST_STA']=='3'){
+		alert('不能修改该岗位！');
+		return false;
+	}
+    $("#MOD_POST_NAME").focus();
+    $("#POST_ID").val(rows[0]['POST_ID']);
+    $("#MOD_POST_NAME").val(rows[0]['POST_NAME']);
+    $("#MOD_POST_STA").combobox("setValue",rows[0]['POST_STA']);
+    using('dialog', function () {
+        var dialogU=$('#updateJobsDialog');
+        dialogU.dialog({
+          title:'修改岗位信息',
+          width:300,
+          height:160,
+          modal:true,
+          iconCls:'icon-edit',
+          buttons:[
+            {
+              text:'保存',
+              iconCls:'icon-save',
+              handler:function () {
+                   if(rows[0]['POST_NAME'] !=$.trim($("#MOD_POST_NAME").val())){
+                       /*by zhaosj 2016/07/13 添加已经有岗位名称的判断*/
+                       var rs = commonRequest({
+                           service:'P0001045',
+                           FULL_POST_NAME:$.trim($("#MOD_POST_NAME").val())
+                       });
+                       if(rs.length>0){
+                           alert("该岗位名称已经存在！");
+                           return;
+                       }
+                   }
+
+            	  if(!$("#updateJobsForm").form('validate')) return false;
+            	  var post_id = $("#POST_ID").val();
+            	  var post_name = $("#MOD_POST_NAME").val();
+            	  var post_sta = $("#MOD_POST_STA").combobox("getValue");
+                  dialogU.find(".l-btn").linkbutton("disable");
+            	  ajaxRequest({
+                      req:[{
+                    	  service:'P0001043',
+                    	  POST_NAME:post_name,
+                    	  POST_STA:post_sta,
+                    	  POST_ID:post_id
+                      }],
+                      func:function(data){
+						  alert("修改岗位信息成功！");
+                          dialogU.find(".l-btn").linkbutton("enable");
+                          $('#updateJobsDialog').dialog('close');
+                          $('#UUM_jobsManage').datagrid('reload');
+                      },
+                      error:function(e){
+                          alert("修改岗位信息失败！");
+                          dialogU.find(".l-btn").linkbutton("enable");
+                      }
+                    });
+              }
+            },
+            {
+              text:'取消',
+              iconCls:'icon-cancel',
+              handler:function () {
+            	  $('#updateJobsDialog').dialog('close');
+            	  $("#updateJobsForm")[0].reset();
+              }
+            }
+          ]
+        });
+      });
+}
+
+function addJobs(){
+	$("#POST_NAME").focus();
+	using('dialog', function () {
+        var d=$('#addJobsDialog');
+        d.dialog({
+          title:'新增岗位',
+          width:300,
+          height:160,
+          modal:true,
+          iconCls:'icon-add',
+          buttons:[
+            {
+              text:'保存',
+              iconCls:'icon-save',
+              handler:function () {
+
+                  /*by zhaosj 2016/07/13 添加已经有岗位名称的判断*/
+                 var rs = commonRequest({
+                      service:'P0001045',
+                     FULL_POST_NAME:$('#POST_NAME').val()
+                  });
+                  if(rs.length>0){
+                      alert("该岗位名称已经存在！");
+                      return;
+                  }
+
+            	  if(!$("#addJobsForm").form('validate')) return false;
+            	  var post_name = $("#POST_NAME").val();
+            	  var post_sta = $("#POST_STA").combobox("getValue");
+                  d.find(".l-btn").linkbutton("disable");
+            	  ajaxRequest({
+                      req:[{
+                    	  service:'P0001042',
+                    	  POST_NAME:post_name,
+                    	  POST_STA:post_sta
+                      }],
+                      func:function(data){
+                          $.message.alert("新增岗位信息成功！");
+                          d.find(".l-btn").linkbutton("enable");
+                          $('#addJobsDialog').dialog('close');
+                          $('#UUM_jobsManage').datagrid('reload');
+                          $("#addJobsForm").form("reset");
+                      },
+                      error:function(e){
+                          //$.message.alert("新增岗位信息失败！");
+                          d.find(".l-btn").linkbutton("enable");
+                      }
+                    });
+              }
+            },
+            {
+              text:'取消',
+              iconCls:'icon-cancel',
+              handler:function () {
+            	  $('#addJobsDialog').dialog('close');
+            	  $("#addJobsForm").form("reset");
+              }
+            }
+          ],
+          onClose:function(){
+        	  $("#addJobsForm").form("reset");
+          }
+        });
+      });
+}
+</script>
+</head>
+<body>
+
+<table id="UUM_jobsManage" title=" " class="kui-datagrid" ></table>
+
+<div id="addJobsDialog" style="display: none;">
+<form class="kui-form" id="addJobsForm">
+  <table width="100%">
+      <tr>
+        <td style="width: 100px">岗位名称：</td>
+        <td style="width: 200px">
+          <input name="POST_NAME" id="POST_NAME" class="kui-validatebox" style="width:145px" kui-options="required:'true',validType:'val[1,64]'"> </input>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 100px">岗位状态：</td>
+        <td >
+          <input class="kui-combobox" kui-options="dict:'POST_STA',required:'true'" name="POST_STA" id="POST_STA" style="width:150px"> </input>
+        </td>
+      </tr>
+    </table></form>
+</div>
+<div id="updateJobsDialog" style="display: none;">
+<form class="kui-form" id="updateJobsForm">
+  <table width="100%">
+      <input  name="POST_ID" id="POST_ID" type="hidden" > </input>
+      <tr>
+        <td style="width: 100px">岗位名称：</td>
+        <td style="width: 200px">
+          <input name="MOD_POST_NAME" id="MOD_POST_NAME" class="kui-validatebox" style="width:145px" kui-options="required:'true',validType:'val[1,64]'"> </input>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 100px">岗位状态：</td>
+        <td >
+          <input class="kui-combobox" kui-options="dict:'POST_STA',required:'true'" name="MOD_POST_STA" id="MOD_POST_STA" style="width:150px"> </input>
+        </td>
+      </tr>
+    </table></form>
+</div>
+</body>
+</html>

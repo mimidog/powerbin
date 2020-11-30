@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+     <!--查询维度设置信息-->
+    <select id="query_T_TRADE_CFG" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT TRADE_ID, TRADE_NAME, TRADE_TYPE, TRADE_LVL, PAR_SUP_ID, CALC_TYPE, CALC_ID, CALC_CIRCLE,
+                LAST_DATE, TRADE_STATUS, SHARE_FLAG, TRADE_POWER, POOL_TYPE, SQL_DESC, MAX_QTY, PARAM1_VALUE,
+                PARAM2_VALUE, PARAM3_VALUE, PARAM1_NAME, PARAM2_NAME, PARAM3_NAME, FILE_PATH, OP_ID, UP_DATE, REMARK
+        FROM T_TRADE_CFG
+        <where>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                and TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="TRADE_NAME !='' and TRADE_NAME != null">
+                and TRADE_NAME LIKE  '${CUACCT_ID}%'
+            </if>
+            <if test="TRADE_TYPE !='' and TRADE_TYPE != null">
+                and TRADE_TYPE = '${TRADE_TYPE}'
+            </if>
+            <if test="TRADE_LVL !='' and TRADE_LVL != null">
+                and TRADE_LVL LIKE  '${TRADE_LVL}%'
+            </if>
+            <if test="TRADE_STATUS !='' and TRADE_STATUS != null">
+                and TRADE_STATUS ='${TRADE_STATUS}'
+            </if>
+
+        </where>
+    </select>
+    <!--插入维度设置信息-->
+    <insert id="insert_T_TRADE_CFG" parameterType="hashmap">
+      INSERT INTO T_TRADE_CFG (TRADE_ID, TRADE_NAME, TRADE_TYPE, TRADE_LVL, PAR_SUP_ID, CALC_TYPE, CALC_ID,
+                               CALC_CIRCLE, LAST_DATE, TRADE_STATUS, SHARE_FLAG, TRADE_POWER, POOL_TYPE, SQL_DESC,
+                               MAX_QTY, PARAM1_VALUE, PARAM2_VALUE, PARAM3_VALUE, PARAM1_NAME, PARAM2_NAME, PARAM3_NAME,
+                                FILE_PATH, OP_ID, UP_DATE, REMARK)
+            VALUES ('${TRADE_ID}', '${TRADE_NAME}', '${TRADE_TYPE}', '${TRADE_LVL}', '${PAR_SUP_ID}', '${CALC_TYPE}',
+                    '${CALC_ID}', '${CALC_CIRCLE}', '${LAST_DATE}', '${TRADE_STATUS}', '${SHARE_FLAG}',
+                        <choose>
+                            <when test="TRADE_POWER !='' and TRADE_POWER != null">
+                                CAST('${TRADE_POWER}' AS numeric(19, 4)),
+                            </when>
+                            <otherwise>
+                                0,
+                            </otherwise>
+                        </choose>
+
+                    '${POOL_TYPE}', '${SQL_DESC}', '${MAX_QTY}', '${PARAM1_VALUE}', '${PARAM2_VALUE}', '${PARAM3_VALUE}',
+                     '${PARAM1_NAME}', '${PARAM2_NAME}', '${PARAM3_NAME}', '${FILE_PATH}', '${OP_ID}', '${UP_DATE}',
+                    '${REMARK}')
+    </insert>
+    <!--修改维度设置信息-->
+    <update id="update_T_TRADE_CFG" parameterType="hashmap">
+        UPDATE T_TRADE_CFG  SET TRADE_NAME = '${TRADE_NAME}',TRADE_TYPE = '${TRADE_TYPE}',TRADE_LVL = '${TRADE_LVL}',
+                                PAR_SUP_ID = '${PAR_SUP_ID}',CALC_TYPE = '${CALC_TYPE}',CALC_ID = '${CALC_ID}',
+                                CALC_CIRCLE = '${CALC_CIRCLE}',LAST_DATE = '${LAST_DATE}',TRADE_STATUS = '${TRADE_STATUS}',
+                                SHARE_FLAG = '${SHARE_FLAG}',
+                                <choose>
+                                    <when test="TRADE_POWER !='' and TRADE_POWER != null">
+                                        TRADE_POWER=CAST('${TRADE_POWER}' AS numeric(19, 4)),
+                                    </when>
+                                    <otherwise>
+                                        TRADE_POWER=0,
+                                    </otherwise>
+                                </choose>
+                                POOL_TYPE = '${POOL_TYPE}',
+                                SQL_DESC = '${SQL_DESC}',MAX_QTY = '${MAX_QTY}',PARAM1_VALUE = '${PARAM1_VALUE}',
+                                PARAM2_VALUE = '${PARAM2_VALUE}',PARAM3_VALUE = '${PARAM3_VALUE}', PARAM1_NAME = '${PARAM1_NAME}',
+                                PARAM2_NAME = '${PARAM2_NAME}', PARAM3_NAME = '${PARAM3_NAME}',FILE_PATH = '${FILE_PATH}',
+                                OP_ID = '${OP_ID}',UP_DATE = '${UP_DATE}', REMARK = '${REMARK}'
+        <where>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                and TRADE_ID ='${TRADE_ID}'
+            </if>
+        </where>
+    </update>
+    <!--修改指定维度子节点的状态信息-->
+    <update id="update_T_TRADE_CFG_STA" parameterType="HashMap">
+        update T_TRADE_CFG set TRADE_STATUS = '${TRADE_STATUS}'
+        where TRADE_LVL LIKE (select TRADE_LVL from T_TRADE_CFG where TRADE_ID ='${TRADE_ID}')+'%'
+    </update>
+    <!--删除维度设置信息-->
+    <delete id="delete_T_TRADE_CFG" parameterType="hashmap">
+     DELETE FROM T_TRADE_CFG WHERE TRADE_LVL LIKE
+        (SELECT TRADE_LVL + '%' FROM T_TRADE_CFG WHERE TRADE_ID ='${TRADE_ID}')
+    </delete>
+
+    <!--查询维度证券信息-->
+    <select id="query_T_TRADE_STOCK" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT UP_DATE, T.TRADE_ID,(SELECT TRADE_NAME FROM T_TRADE_CFG T1 WHERE T.TRADE_ID=T1.TRADE_ID) AS TRADE_NAME,
+                (SELECT POOL_NAME FROM T_STK_POOL_CFG T2 WHERE T.TRADE_ID=T2.TRADE_ID) AS POOL_NAME,
+                T.STK_ID, (SELECT STK_NAME FROM T_STK_INFO T1 WHERE T1.STK_ID=T.STK_ID) AS STK_NAME,
+                STK_POWER, OP_ID,
+                (SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,ADD_DATE,
+                CASE LEN(ADD_TIME) WHEN 6 THEN substring(ADD_TIME,1,2)+':'+ substring(ADD_TIME,3,2)+':'+ substring(ADD_TIME,5,2)
+                ELSE '' END AS ADD_TIME,
+                REMARK, NEAR_AMT, ADD_FLAG,BEGIN_DATE, END_DATE, CHECK_ID, CHECK_DATE
+        FROM T_TRADE_STOCK T
+        <where>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                and TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="TRADE_ID_IN !='' and TRADE_ID_IN != null">
+                and TRADE_ID IN (${TRADE_ID_IN})
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                and UP_DATE = '${UP_DATE}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID = '${OP_ID}'
+            </if>
+        </where>
+    </select>
+    <!--插入维度证券信息-->
+    <insert id="insert_T_TRADE_STOCK" parameterType="hashmap">
+        INSERT INTO T_TRADE_STOCK (UP_DATE, TRADE_ID, STK_ID, STK_POWER, OP_ID, ADD_DATE, ADD_TIME, REMARK,
+                                    NEAR_AMT, ADD_FLAG, BEGIN_DATE, END_DATE, CHECK_ID, CHECK_DATE)
+                        VALUES ('${UP_DATE}', '${TRADE_ID}', '${STK_ID}', CAST('${STK_POWER}' AS NUMERIC(19,4)), '${OP_ID}',
+                        '${ADD_DATE}', '${ADD_TIME}', '${REMARK}', CAST('${NEAR_AMT}' AS NUMERIC(12)), '${ADD_FLAG}', '${BEGIN_DATE}',
+                         '${END_DATE}', '${CHECK_ID}', '${CHECK_DATE}')
+    </insert>
+    <!--修改维度证券信息-->
+    <update id="update_T_TRADE_STOCK" parameterType="hashmap">
+        UPDATE T_TRADE_STOCK  SET UP_DATE = '${UP_DATE}',TRADE_ID = '${TRADE_ID}',STK_ID = '${STK_ID}',
+                                  STK_POWER = CAST('${STK_POWER}' AS NUMERIC(19,4)),OP_ID = '${OP_ID}',ADD_DATE = '${ADD_DATE}',
+                                  ADD_TIME = '${ADD_TIME}', REMARK = '${REMARK}',NEAR_AMT = CAST('${NEAR_AMT}' AS NUMERIC(12)),
+                                  ADD_FLAG = '${ADD_FLAG}',BEGIN_DATE = '${BEGIN_DATE}',END_DATE = '${END_DATE}',
+                                  CHECK_ID = '${CHECK_ID}',CHECK_DATE = '${CHECK_DATE}'
+        <where>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                and TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+        </where>
+    </update>
+    <!--删除维度证券信息-->
+    <delete id="delete_T_TRADE_STOCK" parameterType="hashmap">
+        DELETE FROM T_TRADE_STOCK
+        <where>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                and TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询证券产品信息-->
+    <select id="query_T_STK_INFO" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT STK_ID, MARKET_ID, STKBD, STK_NAME, STK_ISIN, STK_CLS, STK_SUB_CLS, STK_STATUS, CURRENCY,
+              STK_UPLMT_RATIO, STK_LWLMT_RATIO, STK_UPLMT_PRICE, STK_LWLMT_PRICE, STK_UPLMT_QTY, STK_LWLMT_QTY,
+              STK_LOT_SIZE, STK_LOT_FLAG, STK_SPREAD, STK_FACE_VAL, STK_CAL_MKTVAL, STK_SUSPENDED, STK_CUSTODY_MODE,
+              STK_UNDL_CODE, UPD_DATE, STK_LEVEL, STK_DEADLINE, REMIND_MESSAGE
+      FROM T_STK_INFO
+      <where>
+          <if test="STK_ID !=null and STK_ID !=''">
+              and STK_ID ='${STK_ID}'
+          </if>
+          <if test="STK_ID_LIKE !=null and STK_ID_LIKE !=''">
+              and STK_ID like '${STK_ID_LIKE}%'
+          </if>
+          <if test="STK_NAME !=null and STK_NAME !=''">
+              and STK_NAME like '${STK_NAME}%'
+          </if>
+          <if test="MARKET_ID !=null and MARKET_ID !=''">
+              and MARKET_ID ='${MARKET_ID}'
+          </if>
+          <if test="STKBD !=null and STKBD !=''">
+              and STKBD ='${STKBD}'
+          </if>
+          <if test="STK_CLS !=null and STK_CLS !=''">
+              and STK_CLS ='${STK_CLS}'
+          </if>
+          <if test="STK_SUB_CLS !=null and STK_SUB_CLS !=''">
+              and STK_SUB_CLS ='${STK_SUB_CLS}'
+          </if>
+          <if test="CURRENCY !=null and CURRENCY !=''">
+              and CURRENCY ='${CURRENCY}'
+          </if>
+          <if test="STK_STATUS !=null and STK_STATUS !=''">
+              and STK_STATUS ='${STK_STATUS}'
+          </if>
+          <if test="STK_ISIN !=null and STK_ISIN !=''">
+              and STK_ISIN ='${STK_ISIN}'
+          </if>
+          <if test="STK_UNDL_CODE !=null and STK_UNDL_CODE !=''">
+              and STK_UNDL_CODE ='${STK_UNDL_CODE}'
+          </if>
+      </where>
+    </select>
+
+    <!--查询交易员分配股票池信息-->
+    <select id="query_T_STK_POOL_REL_OP" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT REC_ID, POOL_ID,(SELECT POOL_NAME FROM T_STK_POOL_CFG T1 WHERE T1.POOL_ID=T.POOL_ID) AS POOL_NAME,
+               OP_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=T.OP_ID) AS OP_NAME, UP_DATE, REMARK
+        FROM T_STK_POOL_REL_OP T
+        <where>
+            <if test="POOL_ID !=null and POOL_ID !=''">
+                and T.POOL_ID ='${POOL_ID}'
+            </if>
+            <if test="OP_ID !=null and OP_ID !=''">
+                and T.OP_ID ='${OP_ID}'
+            </if>
+            <if test="UP_DATE !=null and UP_DATE !=''">
+                and T.UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+    </select>
+    <!--插入交易员分配股票池信息-->
+    <insert id="insert_T_STK_POOL_REL_OP" parameterType="hashmap">
+      INSERT INTO T_STK_POOL_REL_OP (REC_ID, POOL_ID, OP_ID, UP_DATE, REMARK)
+        SELECT NEXT VALUE FOR SEQ_T_STK_POOL_REL_OP,T.* from (
+        <foreach collection="POOL_LIST" item="item" index="index" separator="UNION ALL">
+            (SELECT
+            '${item}' AS POOL_ID,
+            '${OP_ID}' AS OP_ID,
+            '${UP_DATE}' AS UP_DATE,
+            '${REMARK}' AS REMARK)
+        </foreach>) T
+    </insert>
+    <!--修改交易员分配股票池信息-->
+    <update id="update_T_STK_POOL_REL_OP" parameterType="hashmap">
+            UPDATE T_STK_POOL_REL_OP  SET POOL_ID ='${POOL_ID}',OP_ID='${OP_ID}',
+                                          UP_DATE = '${UP_DATE}',REMARK ='${REMARK}'
+
+        <where>
+            <if test="REC_ID !=null and REC_ID !=''">
+                and REC_ID ='${REC_ID}'
+            </if>
+        </where>
+    </update>
+    <!--删除交易员分配股票池信息-->
+    <delete id="delete_T_STK_POOL_REL_OP" parameterType="hashmap">
+        DELETE  from T_STK_POOL_REL_OP
+        <where>
+            <if test="REC_ID !=null and REC_ID !=''">
+                and REC_ID ='${REC_ID}'
+            </if>
+            <if test="POOL_ID !=null and POOL_ID !=''">
+                and POOL_ID ='${POOL_ID}'
+            </if>
+            <if test="POOL_IDS !=null and POOL_IDS !=''">
+                and POOL_ID IN (${POOL_IDS})
+            </if>
+            <if test="OP_ID !=null and OP_ID !=''">
+                and OP_ID ='${OP_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询股票池配置信息-->
+    <select id="query_T_STK_POOL_CFG" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT POOL_ID, POOL_NAME, POOL_TYPE, POOL_SCOPE,TRADE_ID, UP_DATE, REMARK
+        FROM T_STK_POOL_CFG
+        <where>
+            <if test="POOL_ID !=null and POOL_ID !=''">
+                and POOL_ID ='${POOL_ID}'
+            </if>
+            <if test="POOL_ID_IN !=null and POOL_ID_IN !=''">
+                and POOL_ID IN (${POOL_ID_IN})
+            </if>
+            <if test="POOL_TYPE !=null and POOL_TYPE !=''">
+                and POOL_TYPE ='${POOL_TYPE}'
+            </if>
+            <if test="POOL_SCOPE !=null and POOL_SCOPE !=''">
+                and POOL_SCOPE ='${POOL_SCOPE}'
+            </if>
+            <if test="TRADE_ID !=null and TRADE_ID !=''">
+                and TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="UNALLOT_STK_POOL !=null and UNALLOT_STK_POOL !=''">
+                and POOL_ID NOT IN(SELECT  POOL_ID FROM T_STK_POOL_REL_OP WHERE OP_ID='${OP_ID}')
+            </if>
+        </where>
+    </select>
+    <!--插入股票池配置信息-->
+    <insert id="insert_T_STK_POOL_CFG" parameterType="hashmap">
+        INSERT INTO T_STK_POOL_CFG (POOL_ID, POOL_NAME, POOL_TYPE,POOL_SCOPE, TRADE_ID,UP_DATE, REMARK)
+        VALUES ('${POOL_ID}','${POOL_NAME}','${POOL_TYPE}','${POOL_SCOPE}','${TRADE_ID}','${UP_DATE}','${REMARK}')
+    </insert>
+    <!--更新股票池配置信息-->
+    <update id="update_T_STK_POOL_CFG" parameterType="hashmap">
+        UPDATE T_STK_POOL_CFG SET POOL_NAME ='${POOL_NAME}',POOL_TYPE ='${POOL_TYPE}',POOL_SCOPE ='${POOL_SCOPE}',
+                                  TRADE_ID='${TRADE_ID}',UP_DATE='${UP_DATE}',REMARK ='${REMARK}'
+        <where>
+            <if test="POOL_ID !=null and POOL_ID !=''">
+                and POOL_ID ='${POOL_ID}'
+            </if>
+        </where>
+    </update>
+    <!--删除股票池配置信息-->
+    <delete id="delete_T_STK_POOL_CFG" parameterType="hashmap">
+        DELETE  from T_STK_POOL_CFG
+        <where>
+            <if test="POOL_ID !=null and POOL_ID !=''">
+                and POOL_ID ='${POOL_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <select id="query_T_STOCK_HQ"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+     SELECT  STK_ID, STK_NAME, STK_PRICE, YEST_PRICE, TODAY_PRICE, VOLUME, OUTER_SELL, INNER_BUY, BUY_ONE,BUY_ONE_VOLUME,
+            BUY_TWO, BUY_TWO_VOLUME, BUY_THREE, BUY_THREE_VOLUME, BUY_FOUR, BUY_FOUR_VOLUME, BUY_FIVE,BUY_FIVE_VOLUME,
+            SELL_ONE, SELL_ONE_VOLUME, SELL_TWO, SELL_TWO_VOLUME, SELL_THREE, SELL_THREE_VOLUME, SELL_FOUR,
+            SELL_FOUR_VOLUME, SELL_FIVE, SELL_FIVE_VOLUME, DATETIME,RATE,HIGHEST,LOWEST,LIMIT_UP,LIMIT_DOWN
+         FROM OPENROWSET('MSDASQL','DRIVER={MySQL ODBC 3.51 Driver};SERVER=${DB_IP};
+                          PORT=${DB_PORT};DATABASE=${DB_NAME};USER=${USER_ID};
+                          PASSWORD=${USER_PWD};STMT=set names gb2312;OPTION=2049',
+              ' call proc_stock_trend(''${STK_ID}'')')
+         ORDER BY DATETIME DESC;
+    </select>
+
+    <delete id="DELETE_T_STK_INFO" parameterType="java.util.HashMap">
+        DELETE T_STK_INFO WHERE STK_ID = '${STK_ID}'
+    </delete>
+    <insert id="INSERT_T_STK_INFO" parameterType="java.util.HashMap">
+        INSERT INTO T_STK_INFO (STK_ID, MARKET_ID, STKBD, STK_NAME, STK_ISIN, STK_CLS, STK_SUB_CLS, STK_STATUS, CURRENCY,
+            STK_UPLMT_RATIO, STK_LWLMT_RATIO, STK_UPLMT_PRICE, STK_LWLMT_PRICE, STK_UPLMT_QTY, STK_LWLMT_QTY,
+            STK_LOT_SIZE, STK_LOT_FLAG, STK_SPREAD, STK_FACE_VAL, STK_CAL_MKTVAL, STK_SUSPENDED,
+            STK_CUSTODY_MODE, STK_UNDL_CODE, STK_LEVEL, STK_DEADLINE, REMIND_MESSAGE, UPD_DATE)
+        VALUES ('${STK_ID}', '${MARKET_ID}', '${STKBD}', '${STK_NAME}', '${STK_ISIN}', '${STK_CLS}', '${STK_SUB_CLS}', '${STK_STATUS}', '${CURRENCY}',
+        '${STK_UPLMT_RATIO}', '${STK_LWLMT_RATIO}', '${STK_UPLMT_PRICE}', '${STK_LWLMT_PRICE}', '${STK_UPLMT_QTY}', '${STK_LWLMT_QTY}',
+        '${STK_LOT_SIZE}', '${STK_LOT_FLAG}', '${STK_SPREAD}', '${STK_FACE_VAL}', '${STK_CAL_MKTVAL}',
+        '${STK_SUSPENDED}', '${STK_CUSTODY_MODE}', '${STK_UNDL_CODE}', '${STK_LEVEL}', '${STK_DEADLINE}',
+        '${REMIND_MESSAGE}', CONVERT(VARCHAR(10), GETDATE(), 112))
+    </insert>
+    <update id="UPDATE_T_STK_INFO" parameterType="java.util.HashMap" >
+        UPDATE T_STK_INFO SET MARKET_ID = '${MARKET_ID}', STKBD = '${STKBD}', STK_NAME = '${STK_NAME}', STK_ISIN = '${STK_ISIN}',
+            STK_CLS = '${STK_CLS}', STK_SUB_CLS = '${STK_SUB_CLS}', STK_STATUS = '${STK_STATUS}', CURRENCY = '${CURRENCY}',
+            STK_UPLMT_RATIO = '${STK_UPLMT_RATIO}', STK_LWLMT_RATIO = '${STK_LWLMT_RATIO}', STK_UPLMT_PRICE = '${STK_UPLMT_PRICE}',
+            STK_LWLMT_PRICE = '${STK_LWLMT_PRICE}', STK_UPLMT_QTY = '${STK_UPLMT_QTY}', STK_LWLMT_QTY = '${STK_LWLMT_QTY}',
+            STK_LOT_SIZE = '${STK_LOT_SIZE}', STK_LOT_FLAG = '${STK_LOT_FLAG}', STK_SPREAD = '${STK_SPREAD}',
+            STK_FACE_VAL = '${STK_FACE_VAL}', STK_CAL_MKTVAL = '${STK_CAL_MKTVAL}', STK_SUSPENDED = '${STK_SUSPENDED}',
+            STK_CUSTODY_MODE = '${STK_CUSTODY_MODE}', STK_UNDL_CODE = '${STK_UNDL_CODE}', STK_LEVEL = '${STK_LEVEL}',
+            STK_DEADLINE = '${STK_DEADLINE}', REMIND_MESSAGE = '${REMIND_MESSAGE}', UPD_DATE = CONVERT(VARCHAR(10), GETDATE(), 112)
+        WHERE STK_ID = '${STK_ID}'
+    </update>
+    <!--更新加入股标池标志-->
+    <update id="UPDATE_T_STK_INFO_ISIN" parameterType="java.util.HashMap" >
+        UPDATE T_STK_INFO SET  STK_ISIN = '${STK_ISIN}'
+        WHERE STK_ID = '${STK_ID}'
+    </update>
+    <!--更新黑名单标志-->
+    <update id="UPDATE_T_STK_INFO_UNDL_CODE" parameterType="java.util.HashMap" >
+        UPDATE T_STK_INFO SET  STK_UNDL_CODE = '${STK_UNDL_CODE}'
+        WHERE STK_ID = '${STK_ID}'
+    </update>
+
+    <!--查询分配股票池产品信息-->
+    <select id="query_T_STK_POOL_PRODUCT" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT REC_ID, T.POOL_ID,(SELECT POOL_NAME FROM T_STK_POOL_CFG T1 WHERE T1.POOL_ID=T.POOL_ID) AS POOL_NAME,
+        K.TRADE_ID,(SELECT TRADE_NAME FROM T_TRADE_CFG K1 WHERE K1.TRADE_ID=K.TRADE_ID) AS TRADE_NAME,
+        M.STK_ID,(SELECT STK_NAME FROM T_STK_INFO M1 WHERE M1.STK_ID=M.STK_ID) AS STK_NAME,
+        T.OP_ID, (SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=T.OP_ID) AS OP_NAME,
+        M.NEAR_AMT,M.STK_POWER,M.ADD_FLAG,M.ADD_DATE,
+        CASE LEN(M.ADD_TIME) WHEN 6 THEN substring(M.ADD_TIME,1,2)+':'+ substring(M.ADD_TIME,3,2)+':'+ substring(M.ADD_TIME,5,2)
+        ELSE '' END AS ADD_TIME,M.BEGIN_DATE,M.END_DATE,
+        T.UP_DATE, T.REMARK
+        FROM T_STK_POOL_REL_OP T LEFT JOIN T_STK_POOL_CFG K
+        ON T.POOL_ID=K.POOL_ID
+        LEFT JOIN T_TRADE_STOCK M
+        on K.TRADE_ID=M.TRADE_ID
+        <where>
+            <if test="POOL_ID !=null and POOL_ID !=''">
+                and T.POOL_ID ='${POOL_ID}'
+            </if>
+            <if test="OP_ID !=null and OP_ID !=''">
+                and T.OP_ID ='${OP_ID}'
+            </if>
+            <if test="UP_DATE !=null and UP_DATE !=''">
+                and T.UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+    </select>
+    <!--买入建仓批量新增临时表-->
+    <insert id="batch_insert_T_TRADE_STOCK" parameterType="hashmap">
+        INSERT INTO T_TRADE_STOCK (TRADE_ID, STK_ID, STK_POWER, OP_ID, ADD_DATE, ADD_TIME,
+        NEAR_AMT, ADD_FLAG, BEGIN_DATE, END_DATE, CHECK_ID, CHECK_DATE,UP_DATE,REMARK)
+        select * from
+        (<foreach collection="TRADE_STOCK_BATCH_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.TRADE_ID}' AS TRADE_ID,
+                '${item.STK_ID}' AS STK_ID,
+                '${item.STK_POWER}' AS STK_POWER,
+                '${item.OP_ID}' AS OP_ID,
+                '${item.ADD_DATE}' AS ADD_DATE,
+                '${item.ADD_TIME}' AS ADD_TIME,
+                '${item.NEAR_AMT}' AS NEAR_AMT,
+                '${item.ADD_FLAG}' AS ADD_FLAG,
+                '${item.BEGIN_DATE}' AS BEGIN_DATE,
+                '${item.END_DATE}' AS END_DATE,
+                '${item.CHECK_ID}' AS CHECK_ID,
+                '${item.CHECK_DATE}' AS CHECK_DATE,
+                '${item.UP_DATE}' AS UP_DATE,
+                '${item.REMARK}' AS REMARK
+         </foreach>) T
+    </insert>
+
+</mapper>

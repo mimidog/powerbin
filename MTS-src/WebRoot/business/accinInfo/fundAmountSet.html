@@ -1,0 +1,299 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>交易额度设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.cust-form-table{
+  border: 0px;
+}
+.cust-form-label {
+  text-align: right;
+  font-weight: bold;
+  font-size: 12px;
+  vertical-align: bottom;
+}
+</style>
+<script type="text/javascript">
+
+var selFFund_arr=null;
+//额度计算是否校验通过
+var amountValid=true;
+
+
+//查询查询资金账号二级持仓下的柜员
+function queryFundDownEmp(rowIndex,rowData) {
+
+    selFFund_arr=rowData;
+  $('#mts_FUND_SUB_EMP_INFO_table').datagrid({
+      req:[{
+          service:'M0000055',
+          CUST_ID:rowData['CUST_ID'],
+          CUACCT_ID:rowData['CUACCT_ID']
+      }]
+  });
+}
+//调拨方向改变事件
+function callotDirect_chg(newVal) {
+    //未使用额度
+    var fFundVal=Number(thousandsToString($('#emp_fund_amount_form').find('td[cont=F_UNUSE_AMOUNT]').text())).toFixed(2);
+    //分配额度
+    var newUAmount=Number(thousandsToString($('#allotAmount').val())).toFixed(2);
+
+    var calcAmount=0;
+    //调拨方式：2-调出
+    if(newVal=='2'){
+        calcAmount=Number(fFundVal)-Number(newUAmount);
+        $('#directArrow').attr('src','../images/right-Arrow.jpg');
+        //调拨方式：1-调入
+    }else if(newVal=='1'){
+        calcAmount=Number(fFundVal)-Number(newUAmount);
+        $('#directArrow').attr('src','../images/left-Arrow.jpg');
+    }
+
+    $('#emp_fund_amount_form').find('td[cont=F_SPARE_AMOUNT]').text(toThousands(calcAmount));
+}
+//计算未分配置的额度
+function  calc_UnUseAmount(obj) {
+
+    $('#sFundBal').validatebox('validate');
+    //得到资金一级持仓未分配额度
+    var fFundVal=Number(thousandsToString($('#emp_fund_amount_form').find('td[cont=F_UNUSE_AMOUNT]').text())).toFixed(2);
+    //分配额度
+    var newUAmount=Number(thousandsToString(obj.value)).toFixed(2);
+
+
+    if($('#callotDirect').combobox('getValue')=='2' &&fFundVal-newUAmount<0){
+        alert('提示信息','额度调出时，分配额度不能大于未分配额度','warning');
+        amountValid=false;
+        return;
+    }
+    amountValid=true;
+
+    var calcAmount=0;
+     //调拨方式：2-调出
+    if($('#callotDirect').combobox('getValue')=='2'){
+        calcAmount=Number(fFundVal)-Number(newUAmount);
+        //调拨方式：1-调入
+    }else if($('#callotDirect').combobox('getValue')=='1'){
+        calcAmount=Number(fFundVal)+Number(newUAmount);
+    }
+
+    $('#emp_fund_amount_form').find('td[cont=F_SPARE_AMOUNT]').text(toThousands(calcAmount));
+}
+//计算使用额度
+function calcUseAmount() {
+    var calcAmount=0;
+   if($('#callotDirect').combobox('getValue')=='2'){
+       calcAmount=Number(thousandsToString($('#sFundBal').val()))+Number(thousandsToString($('#allotAmount').val()))
+   }else if($('#callotDirect').combobox('getValue')=='1'){
+       calcAmount=Number(thousandsToString($('#sFundBal').val()))-Number(thousandsToString($('#allotAmount').val()))
+   }
+   return calcAmount;
+}
+//额度设置
+function empAmount_set() {
+    var selRow = $("#mts_FUND_SUB_EMP_INFO_table").datagrid("getSelected");
+    if (selRow == null) {
+        alert("请选中一条数据！");
+        return;
+    }
+
+
+    $('#emp_fund_amount_form').form('clear');
+    $('#sFundBal').val(toThousands(Number(selRow['FUND_BAL']).toFixed(2)));
+    $('#allotAmount').val('0.00');
+
+    $('#emp_fund_amount_form').find('td[cont=OP_ID]').text(selRow['OP_ID']);
+    $('#emp_fund_amount_form').find('td[cont=OP_NAME]').text(selRow['OP_NAME']);
+
+    $('#emp_fund_amount_form').find('td[cont=F_FUND_BAL]').text(toThousands(Number(selFFund_arr['FUND_BAL']).toFixed(2)));
+    $('#emp_fund_amount_form').find('td[cont=F_UNUSE_AMOUNT]').text(toThousands(Number(selFFund_arr['UNUSE_AMOUNT']).toFixed(2)));
+
+    using('dialog',function () {
+        $("#emp_fund_amount_Dialog").dialog({
+            title: '资金账号额度设置',
+            width: 700,
+            height: 240,
+            modal: true,
+            resizable: true,
+            onOpen: function() {
+                //调拨方向默认2-调出
+                $('#callotDirect').combobox('setValue','2');
+            },
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function () {
+
+                     if($('#emp_fund_amount_form').form('validate')==false){
+                         return;
+                     }
+
+                    if($('#callotDirect').combobox('getValue')=='2' && Number(thousandsToString(selFFund_arr['UNUSE_AMOUNT']))==0){
+                        alert('【未分配额度】是0，不允许额度调出！');
+                        return;
+                    }
+
+                     if(amountValid==true){
+                         //未分配额度=剩余额度
+                         var uUseAmount=thousandsToString($('#emp_fund_amount_form').find('td[cont=F_SPARE_AMOUNT]').text());
+                         //新分配额度=原额度+新分配额度
+                         var useAmount=calcUseAmount();
+
+                         //转入资金与转出资金
+                         var callotInFund=0,callotOutFund=0;
+                         //调拨方式：2-调出
+                         if($('#callotDirect').combobox('getValue')=='2'){
+                             //转出资金 =已有转出资金+新分配额度
+                             callotOutFund=Number(thousandsToString(selRow['CALLOT_IN_FUND']))
+                                 +Number(thousandsToString($('#allotAmount').val()));
+                             //调拨方式：1-调入
+                         }else if($('#callotDirect').combobox('getValue')=='1'){
+                             //转入资金 =已有转入资金+新分配额度
+                             callotInFund=Number(thousandsToString(selRow['CALLOT_OUT_FUND']))
+                                 +Number(thousandsToString($('#allotAmount').val()));
+                         }
+
+
+                         var req = [ {service:'M0000056',CUST_ID:selRow['CUST_ID'],CUACCT_ID:selRow['CUACCT_ID'],
+                             UNUSE_AMOUNT:uUseAmount},
+                             {service:'M0000057',CUST_ID:selRow['CUST_ID'],CUACCT_ID:selRow['CUACCT_ID'],
+                                 OP_ID:selRow['OP_ID'],FUND_BAL:useAmount,FUND_AVL:useAmount,CALLOT_IN_FUND:callotOutFund==0 ? '' :callotOutFund,
+                                 CALLOT_OUT_FUND:callotInFund==0 ? '' : callotInFund}
+                         ]
+
+                         ajaxRequest({
+                             async:false,
+                             req:req,
+                             func:function(data){
+                                 alert('交易员额度设置成功！')
+                                 $("#emp_fund_amount_Dialog").dialog('close');
+                                 //资金账号二级持仓查询
+                                 $('#mts_FUND_SUB_EMP_INFO_table').datagrid('clean');
+                                 //资金账号一级持仓查询
+                                 $('#mts_FUND_AMOUNT_INFO_table').datagrid('reload');
+                                 writeTraderfundLog(selRow);
+                             }
+                         });
+                     }
+
+
+                }
+            },
+                {
+                    text: '取消',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        $("#emp_fund_amount_Dialog").dialog('close');
+                    }
+                }
+            ]
+        });
+    })
+}
+//写入交易员资金流水信息
+function writeTraderfundLog(selRow) {
+    commonRequest({
+        service:'M0000095',
+        FLOW_TYPE:'1',      //1-资金流水，2-股份流水
+        CALLOT_DIRECT:$('#callotDirect').combobox('getValue'),
+        USE_AMOUNT:thousandsToString($('#allotAmount').val()),
+        OP_ID:$('#emp_fund_amount_form').find('td[cont=OP_ID]').text(),
+        CUACCT_ID:selRow['CUACCT_ID']
+    })
+}
+</script>
+
+</head>
+<body>
+<div class="kui-layout" kui-options="fit:true" style="overflow: hidden;">
+  <div  kui-options="region:'west',border:true" style="width:530px">
+        <table id="mts_FUND_AMOUNT_INFO_table" class="kui-datagrid"></table>
+  </div>
+  <div  kui-options="region:'center',border:true">
+       <table id="mts_FUND_SUB_EMP_INFO_table" class="kui-datagrid"></table>
+  </div>
+</div>
+<div id="emp_fund_amount_Dialog" style="display: none;">
+
+  <form id="emp_fund_amount_form" class="kui-form">
+
+     <table class="cust-form-table" style="width:100%;">
+         <tr>
+             <td class="cust-form-label" style="width: 80px;">调拨方向：</td>
+             <td style="width: 80px;">
+                 <input id="callotDirect" name="CALLOT_DIRECT" class="kui-combobox" kui-options="required:true,
+                 autoFill:'true',dict:'CALLOT_DIRECT',isClear:false,onChange:callotDirect_chg"/>
+             </td>
+             <td class="cust-form-label" style="width: 150px;">交易员编号：</td>
+             <td cont="OP_ID">
+             </td>
+             <td class="cust-form-label" style="width: 80px;">交易员姓名：</td>
+             <td cont="OP_NAME">
+             </td>
+         </tr>
+     </table>
+     <table>
+        <tr>
+           <td style="width: 330px;">
+               <fieldset class="kui-fieldset" kui-options="title:'客户资金一级持仓信息',collapsed:false,animation:true"
+                    style="height: 80px;">
+                   <table class="cust-form-table" style="width:100%;">
+                       <tr>
+                           <td class="cust-form-label">总的资金余额：</td>
+                           <td cont="F_FUND_BAL">
+
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="cust-form-label">未分配额度：</td>
+                           <td cont="F_UNUSE_AMOUNT">
+
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="cust-form-label">剩余额度：</td>
+                           <td cont="F_SPARE_AMOUNT">0.0000</td>
+                       </tr>
+                   </table>
+               </fieldset>
+           </td>
+            <td width="40" style="text-align: center">
+                <img id="directArrow" src="../images/right-Arrow.jpg" height="25" width="35"/>
+            </td>
+           <td style="width: 330px;">
+                <fieldset class="kui-fieldset" kui-options="title:'客户资金二级持仓信息',collapsed:false,animation:true"
+                    style="height: 80px;">
+                    <table class="cust-form-table" style="width:100%;">
+                        <tr>
+                            <td class="cust-form-label">分配额度：</td>
+                            <td colspan="2">
+                                <input id="allotAmount" name="ALLOT_AMOUNT" class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                     invalidMessage:'请入不要起过15位整数位的数字'" value="0.00" autocomplete="off"
+                                       onblur="this.value=toThousands(this.value)"
+                                       onfocus="this.value=thousandsToString(this.value)"
+                                       onkeyup="calc_UnUseAmount(this)"/>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="cust-form-label">资金余额：</td>
+                            <td colspan="2">
+                                <input id="sFundBal" name="FUND_BAL" class="kui-validatebox" kui-options="required:true,validType:'numberex[10,15,4]',
+                                     invalidMessage:'请入不要起过15位整数位的数字',disabled:true" />
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

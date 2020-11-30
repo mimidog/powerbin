@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+    <title>人员销户</title>
+    <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+    <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+    <script type="text/javascript">
+        window.$ready=function(){
+            initTable();
+        }
+        function initTable(){
+            using('combogrid',function(){
+                $('#USER_CODE').combogrid({
+                    panelHeight:280,
+                    panelWidth:600,
+                    idField:'USER_CODE',
+                    textField:'USER_NAME',
+                    required:'true',
+                    fallParas:[{enable:true}],
+                    req:[{
+                        service:'P0001008'
+                    }],
+                    columns:[[
+                        {field:'USER_CODE',title:'ID号',width:70,sortable:true,sortType:"number"},
+                        {field:'USER_NAME',title:'人员名称',width:70},
+                        {field:'USER_TYPE',title:'人员类型',width:70,
+                            formatter: function(value,row,index){
+                                return getSysDictOpt('USER_TYPE',value);
+                            }
+                        },
+                        {field:'USER_STA',title:'人员状态',width:70,
+                            formatter: function(value,row,index){
+                                return getSysDictOpt('USER_STA',value);
+                            }},
+                        {field:'OPEN_DATE',title:'开户日期',width:70},
+                        {field:'OFF_TEL',title:'办公电话',width:70},
+                        {field:'MOBILE',title:'手机号'},
+                        {field:'EMAIL',title:'电子邮箱',width:120}
+                    ]],
+                    queryCols:[{
+                        text:'查询',
+                        cols:[{field:'USER_CODE',title:'ID号',
+                            editor:{
+                                type:'text',
+                                options:{
+                                    validType:'int[18]'
+                                }
+                            }
+                        },{field:'USER_NAME',title:'人员名称',
+                            editor:{
+                                type:'text',
+                                options:{
+                                    validType:'val[0,64]'
+                                }
+                            }
+                        },{field:'MOBILE',title:'手机号',
+                            editor:{
+                                type:'text',
+                                options:{
+                                    validType:'val[0,32]'
+                                }
+                            }
+                        }]
+                    }],
+                    onClear:function(){
+                        $('#USER_CODE').combogrid("grid").datagrid("clearSelections");
+                        $('#delLB').linkbutton('disable');
+                    },onClickRow:function (rowIndex, rowData) {
+                        $("#operDelAccountForm").form("load", rowData);
+                        $('#delLB').linkbutton('enable');
+                    }
+                })
+            })
+        }
+        function OperInfoClear() {
+            $('#USER_CODE').combogrid('clear');
+        }
+        function operDel() {
+        	if(!$('#operDelAccountForm').form('validate')){
+        		return false ;
+        	}
+            var result = $('#USER_CODE').val();
+            if (result == window.g_user['USER_CODE']) {
+                $('#operDelAccountForm').form('clear');
+                alert('不能注销自己！');
+            } else if (result == top.window.g_user.userId) {
+                $('#operDelAccountForm').form('clear');
+                alert('不能注销自己！');
+            } else {
+                confirm('提示信息', '确认要销户吗？', function (isOK) {
+                    if (isOK) {
+                        $('#delLB').linkbutton('disable');
+                        ajaxRequest({
+                            req:[
+                                {
+                                    service:'P0001005',
+                                    USER_CODE:result,
+                                    USER_STA:'9'
+                                }
+                            ],
+                            func:function (data) {
+                                $.message.alert("销户成功！");
+                                $('#operDelAccountForm').form('clear');
+                                $('#delLB').linkbutton('disable');
+                            },
+                            error:function(){
+                                $.message.alert("销户失败！");
+                                $('#delLB').linkbutton('enable');
+                            }
+                        });
+                    }
+                })
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div class="kui-panel" style="margin-top:20px;">
+    <form id="operDelAccountForm" class="kui-form">
+        <table style="width:500px;" cellpadding="4">
+            <tr>
+                <td align='right' style="width:80px">ID号:</td>
+                <td colspan="3">
+                    <select id="USER_CODE" style="width:125px;" ></select>
+                </td>
+            </tr>
+            <tr>
+                <td align='right'>人员类型:</td>
+                <td>
+                    <input name="USER_TYPE" type="text" kui-options="dict:'USER_TYPE',disabled:true"
+                           class="kui-combobox"/>
+                </td>
+                <td align='right'>人员状态:</td>
+                <td style="width:120px">
+                    <input name="USER_STA" type="text" kui-options="dict:'USER_STA',disabled:true"
+                           class="kui-combobox"/>
+                </td>
+            </tr>
+            <tr>
+                <td align='right'>机构名称:</td>
+                <td>
+                    <select class="kui-combotree" name='ORG_CODE' id="ORG_CODE" kui-options="
+			disabled:true,
+          singleSelect:true,
+          panelWidth:'250',
+          panelHeight:'150',
+          req:[{service:'P0001031',ORG_STA:'1'}],
+          conf:{nodeId:'ORG_CODE',nodeName:'ORG_CODE_NAME',parNode:'PAR_ORG',treeType:'1'},
+          onLoadSuccess:function(){$('#ORG_CODE').tree('collapseAll');}
+          ">
+                    </select>
+                </td>
+                <td align='right'>办公电话:</td>
+                <td>
+                    <input name="OFF_TEL" type="text" class="kui-validatebox" kui-options="disabled:true"/>
+                </td>
+            </tr>
+            <tr>
+                <td align='right'>手机号:</td>
+                <td>
+                    <input name="MOBILE" type="text" class="kui-validatebox" kui-options="disabled:true"/>
+                </td>
+                <td align='right'>电子邮箱:</td>
+                <td>
+                    <input name="EMAIL" type="text" class="kui-validatebox" kui-options="disabled:true"/>
+                </td>
+            </tr>
+            <tr>
+                <td align='right' colspan="4">
+                    <div style="margin-top: 10px;margin-bottom: 10px;" align='right'>
+                        <a class="kui-linkbutton" id="delLB" align='left'
+                           kui-options="iconCls:'icon-save',disabled:true" onclick="operDel()">销户</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

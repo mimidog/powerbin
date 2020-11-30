@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+    <!--统一审核配置表操作    start  -->
+	<select id="chkconfigQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT CHK_CFG_SN,SERVICE_CODE,ORG_CODE FROM CHK_CONFIG   
+        WHERE 1 = 1  
+        <if test="SERVICE_CODE != ''">
+            AND SERVICE_CODE like '${SERVICE_CODE}%'
+        </if>
+        <if test="ORG_CODE != ''">
+            AND ORG_CODE = '${ORG_CODE}'
+        </if>
+    </select>
+    <insert id="chkconfigInsert" parameterType="hashmap">
+		INSERT INTO CHK_CONFIG (CHK_CFG_SN, SERVICE_CODE, ORG_CODE)
+		VALUES ((NEXT VALUE FOR SEQ_CHK_CFG_SN),'${SERVICE_CODE}', '${ORG_CODE}')
+	</insert>
+	
+	<insert id="chkconfigInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO CHK_CONFIG (CHK_CFG_SN, SERVICE_CODE, ORG_CODE)
+		VALUES ('${ID}','${SERVICE_CODE}', '${ORG_CODE}')
+	</insert>
+	
+	<delete id="chkconfigDelete" parameterType="int">
+        DELETE FROM CHK_CONFIG WHERE CHK_CFG_SN=#{CHK_CFG_SN,jdbcType=INTEGER}
+    </delete>
+	<delete id="chklvlconfigMainDelete" parameterType="int">
+        DELETE FROM CHK_LVL_CONFIG WHERE CHK_CFG_SN=#{CHK_CFG_SN,jdbcType=INTEGER}
+    </delete>
+    <delete id="chkparaconfigMainDelete" parameterType="int">
+        DELETE FROM CHK_PARA_CONFIG WHERE CHK_CFG_SN=#{CHK_CFG_SN,jdbcType=INTEGER}
+    </delete>
+    <!--统一审核配置表操作    end  -->
+
+    <!--统一审核执行配置表操作    start  -->
+	<select id="chklvlconfigQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT CHK_LVL_SN,CHK_CFG_SN,CHK_TYPE,OP_CODES,OP_LVL FROM CHK_LVL_CONFIG WHERE 1=1
+		<if test="CHK_CFG_SN != ''">
+            AND CHK_CFG_SN = '${CHK_CFG_SN}'
+        </if>
+		ORDER BY OP_LVL
+    </select>
+    <insert id="chklvlconfigInsert" parameterType="hashmap">
+		INSERT INTO CHK_LVL_CONFIG (CHK_LVL_SN,CHK_CFG_SN,CHK_TYPE,OP_CODES,OP_LVL)
+		VALUES ((NEXT VALUE FOR SEQ_CHK_LVL_SN), '${CHK_CFG_SN}','${CHK_TYPE}','${OP_CODES}', ISNULL('${OP_LVL}',0))
+	</insert>
+	
+        <insert id="chklvlconfigInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO CHK_LVL_CONFIG (CHK_LVL_SN,CHK_CFG_SN,CHK_TYPE,OP_CODES,OP_LVL)
+		VALUES ('${ID}', '${CHK_CFG_SN}','${CHK_TYPE}','${OP_CODES}', ISNULL('${OP_LVL}',0))
+	</insert>
+    <update id="chklvlconfigUpdate" parameterType="hashmap">
+        UPDATE CHK_LVL_CONFIG SET
+            OP_CODES='${OP_CODES}',
+            OP_LVL=#{OP_LVL,jdbcType=INTEGER}
+        WHERE CHK_LVL_SN=#{CHK_LVL_SN,jdbcType=INTEGER}
+    </update>
+	<delete id="chklvlconfigDelete" parameterType="int">
+        DELETE FROM CHK_LVL_CONFIG WHERE CHK_LVL_SN=#{CHK_LVL_SN,jdbcType=INTEGER}
+    </delete>
+    <delete id="chkparaconfigSecDelete" parameterType="int">
+        DELETE FROM CHK_PARA_CONFIG WHERE CHK_LVL_SN=#{CHK_LVL_SN,jdbcType=INTEGER}
+    </delete>
+    <!--统一审核执行配置表操作    end  -->
+	
+	<!--统一审核参数配置表操作    start  -->
+	<select id="chkparaconfigQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT CHK_PARA_SN,CHK_LVL_SN,CHK_CFG_SN,LBM_PARA,LBM_PARA_OP,LBM_PARA_VALUE FROM CHK_PARA_CONFIG WHERE 1=1
+        <if test="CHK_CFG_SN != ''">
+            AND CHK_CFG_SN = '${CHK_CFG_SN}'
+        </if>
+        <if test="CHK_LVL_SN != ''">
+            AND CHK_LVL_SN = '${CHK_LVL_SN}'
+        </if>
+		ORDER BY LBM_PARA
+    </select>
+    <insert id="chkparaconfigInsert" parameterType="hashmap">
+		INSERT INTO CHK_PARA_CONFIG (CHK_PARA_SN,CHK_LVL_SN,CHK_CFG_SN,LBM_PARA,LBM_PARA_OP,LBM_PARA_VALUE)
+		VALUES (NEXT VALUE FOR SEQ_CHK_PARA_SN, '${CHK_LVL_SN}','${CHK_CFG_SN}','${LBM_PARA}', '${LBM_PARA_OP}','${LBM_PARA_VALUE}')
+	</insert>
+    <insert id="chkparaconfigInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO CHK_PARA_CONFIG (CHK_PARA_SN,CHK_LVL_SN,CHK_CFG_SN,LBM_PARA,LBM_PARA_OP,LBM_PARA_VALUE)
+		VALUES ('${ID}', '${CHK_LVL_SN}','${CHK_CFG_SN}','${LBM_PARA}', '${LBM_PARA_OP}','${LBM_PARA_VALUE}')
+    </insert>
+    <update id="chkparaconfigUpdate" parameterType="hashmap">
+        UPDATE CHK_PARA_CONFIG SET
+            LBM_PARA='${LBM_PARA}',
+            LBM_PARA_OP='${LBM_PARA_OP}',
+            LBM_PARA_VALUE= '${LBM_PARA_VALUE}'
+        WHERE CHK_PARA_SN=#{CHK_PARA_SN,jdbcType=INTEGER}
+    </update>
+	<delete id="chkparaconfigDelete" parameterType="int">
+        DELETE FROM CHK_PARA_CONFIG WHERE CHK_PARA_SN=#{CHK_PARA_SN,jdbcType=INTEGER}
+    </delete>
+    <!--统一审核参数配置表操作    end  -->
+    
+    <!--业务复核操作    start  -->
+    <select id="chklogQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT CHK_LOG_CN, CHK_CFG_SN, CHK_LVL_SN, SERVICE_CODE,
+        CONVERT(VARCHAR,SUB_DATE,120) AS SUB_DATE,
+        SUB_ORG_CODE, SUB_USER, 
+        REF_VIEW, JSON_PARA, CHK_USER,
+        CONVERT(VARCHAR,CHK_DATE,120) AS CHK_DATE,
+        CHK_RESULT FROM CHK_LOG WHERE 1=1
+        <if test="CHK_RESULT != ''">
+            AND CHK_RESULT = '${CHK_RESULT}'
+        </if>
+        <if test="CHK_CFG_SN != ''">
+            AND CHK_CFG_SN = '${CHK_CFG_SN}'
+        </if>
+        <if test="SUB_USER != ''">
+            AND SUB_USER = '${SUB_USER}'
+        </if>
+		ORDER BY CHK_CFG_SN,CHK_LVL_SN
+    </select>
+    
+    <insert id="chklogInsert" parameterType="hashmap">
+		INSERT INTO CHK_LOG (CHK_LOG_CN, CHK_CFG_SN, CHK_LVL_SN, SERVICE_CODE, 
+        SUB_DATE,SUB_ORG_CODE, SUB_USER, 
+        REF_VIEW, JSON_PARA,CHK_RESULT)
+		VALUES ((NEXT VALUE FOR SEQ_CHK_LOG_CN),'${CHK_CFG_SN}','${CHK_LVL_SN}','${SERVICE_CODE}',
+		GETDATE(),'${ORG_CODE}','${USER_CODE}',
+		(SELECT REVIEW_VIEW FROM UPM_SYS_SERVICE WHERE SERVICE_CODE = '${SERVICE_CODE}'),'${JSON_PARA}','1')
+	</insert>
+    
+    <insert id="chklogInsert_MSSQL" parameterType="hashmap">
+		INSERT INTO CHK_LOG (CHK_LOG_CN, CHK_CFG_SN, CHK_LVL_SN, SERVICE_CODE, 
+        SUB_DATE,SUB_ORG_CODE, SUB_USER, 
+        REF_VIEW, JSON_PARA,CHK_RESULT)
+		VALUES ('${ID}','${CHK_CFG_SN}','${CHK_LVL_SN}','${SERVICE_CODE}',
+		GETDATE(),'${ORG_CODE}','${USER_CODE}',
+		(SELECT REVIEW_VIEW FROM UPM_SYS_SERVICE WHERE SERVICE_CODE = '${SERVICE_CODE}'),'${JSON_PARA}','1')
+	</insert>
+    
+    <update id="chklogUpdate" parameterType="hashmap">
+        UPDATE CHK_LOG SET
+            CHK_USER='${USER_CODE}',
+            CHK_DATE=GETDATE(),
+            CHK_RESULT= '${CHK_RESULT}'
+        WHERE CHK_LOG_CN=#{CHK_LOG_CN,jdbcType=INTEGER}
+    </update>
+    
+    <select id="chkLvlHasQuery" parameterType="hashmap" resultType="java.util.HashMap">
+	    SELECT CHK_LVL_SN,CHK_CFG_SN,CHK_TYPE,OP_CODES,OP_LVL FROM CHK_LVL_CONFIG WHERE 
+	    CHK_CFG_SN = '${CHK_CFG_SN}' AND CHK_LVL_SN &gt; '${CHK_LVL_SN}' AND CHK_LVL_SN &gt; '${CHK_LVL_SN}'
+	    AND OP_LVL > (SELECT OP_LVL FROM CHK_LVL_CONFIG WHERE CHK_LVL_SN = '${CHK_LVL_SN}') 
+	    ORDER BY OP_LVL
+    </select>
+    <!--业务复核操作    end  -->
+    
+    
+</mapper>

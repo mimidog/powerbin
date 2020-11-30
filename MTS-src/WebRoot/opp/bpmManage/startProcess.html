@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>发起流程</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../../opp/css/startProcess.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="js/startProcess.js"></script>
+
+</head>
+<body>
+<div id="flowDiv" class="kui-panel" fit="true" title="发起流程" style="background:rgba(247,250,250,0.49);">
+</div>
+<div id="formDialog">
+    <div id="formDiv"></div>
+</div>
+<div id="flowPicture_showDialog" style="display:none;">
+    <iframe id="flowPicture_showDiv" scrolling="auto" frameborder="0" allowtransparency="true"
+            style="width:100%;height:99%;"></iframe>
+</div>
+<div id="DIV_shenpi" style="display: none;">
+    <form id="DIV_shenpiForm" class="kui-form">
+        <table>
+            <tr>
+                <td style="width: 100px">请假人:</td>
+                <td style="width: 250px">
+                    <input name="name" id="name" class="kui-validatebox" style="width:200px"
+                           kui-options="required:'true',validType:'val[1,64]'"> </input>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">请假天数:</td>
+                <td style="width: 250px">
+                    <input name="days" id="days" class="kui-validatebox" style="width:200px"
+                           kui-options="required:'true',validType:'zint[3]'"> </input>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">审批方式：</td>
+                <td style="width: 250px">
+                    <select class="kui-combobox"  kui-options="isClear:true" style="width: 200px" name="multiTaskType" id="multiTaskType">
+                        <option value="1"> 串行</option>
+                        <option value="2"> 并行</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">完成条件类型：</td>
+                <td style="width: 250px">
+                    <select class="kui-combobox"  style="width: 200px" kui-options="onSelect:changeNextState,isClear:true,onClear:clearFun" name="counterSignType" id="counterSignType">
+                        <option value="number">完成数量</option>
+                        <option value="rate">完成百分比</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">条件值：</td>
+                <td style="width: 250px">
+                    <input name="counterSignVal" id="counterSignVal" class="kui-textinput" style="width: 200px"
+                           kui-options="disabled:'true',validType:'numberex[10,6,3]',invalidMessage:'请输入6位以内或保留小数点后3位的非负数'"> </input>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">指定审批人:</td>
+                <td style="width: 250px"><select class="kui-combotree" id="countersignUsers"
+                                                 kui-options="
+                              required:true,
+                              width:'200',
+                              isClear:true,
+                              singleSelect:true,
+                              panelWidth:'250',
+                              panelHeight:'300',
+                              req:[{service:'P0001031',ORG_STA:'1'}],
+                              conf:{nodeId:'ORG_CODE',nodeName:'ORG_NAME',parNode:'PAR_ORG',treeType:'1'},
+                              onShowPanel:function (row, data){
+                                $('#countersignUsers').combotree('tree').tree('collapseAll');
+                                },
+                              onSelect:selectOrgUser,
+                              onClear:clearCountersignUser
+	          "></select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="float: left;margin:5px;">
+                        <div style="float: left; margin:5px;">
+                            <div style="text-align: center">待选择的审批人</div>
+                            <div>
+                                <select name="countersignUsersLeft" id="countersignUsersLeft" title="待选人" multiple="multiple"
+                                        size="5" style="width: 130px; height: 150px">
+                                    <option>
+                                        <font color="#4169e1">请选择指定审批人</font>
+                                    </option>
+                                </select>
+                            </div>
+                            </div>
+
+                        <div style="float: left;">
+                            <div style="margin:5px;text-align: center;vertical-align: middle;">
+                                <div style="width: 5px;height: 40px"></div>
+                                <input type="button" value="&gt;"
+                                       onclick="moveSingleItem(countersignUsersLeft, countersignUsersRight)">
+                                <br>
+                                <input type="button" value="&gt;&gt;"
+                                       onclick="moveAllItems(countersignUsersLeft, countersignUsersRight)">
+                                <br>
+                                <input type="button" value="&lt;&lt;"
+                                       onclick="moveAllItems(countersignUsersRight, countersignUsersLeft)">
+                                <br>
+                                <input type="button" value="&lt;"
+                                       onclick="moveSingleItem(countersignUsersRight, countersignUsersLeft)">
+
+                            </div>
+
+                        </div>
+                        <div style="float: left;margin:5px;">
+                            <div style="text-align: center">已选择的审批人</div>
+                            <div>
+                                <select name="countersignUsersRight" title="已选人" id="countersignUsersRight"
+                                        multiple="multiple" size="5"
+                                        style="width: 130px; height: 150px">
+                                    <option>
+                                        <font color="#4169e1">----请选择用户----</font>
+                                    </option>
+                                </select>
+                            </div>
+                            </div>
+                    </div>
+                </td>
+            </tr>
+
+
+        </table>
+    </form>
+</div>
+<div id="DIV_shenpi1" style="display: none;">
+    <form id="DIV_shenpiForm1" class="kui-form">
+        <table>
+            <tr>
+                <td style="width: 100px">请假人:</td>
+                <td style="width: 250px">
+                    <input name="name" id="name1" class="kui-validatebox" style="width:200px"
+                           kui-options="required:'true',validType:'val[1,64]'"> </input>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">请假天数:</td>
+                <td style="width: 250px">
+                    <input name="days" id="days1" class="kui-validatebox" style="width:200px"
+                           kui-options="required:'true',validType:'zint[3]'"> </input>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">指定审批人:</td>
+                <td style="width: 250px"><select class="kui-combotree" name="countersignUsers" id="countersignUsers1"
+                                                 kui-options="
+                              required:true,
+                              width:'200',
+                              isClear:true,
+                              singleSelect:true,
+                              panelWidth:'250',
+                              panelHeight:'300',
+                              req:[{service:'P0001031',ORG_STA:'1'}],
+                              conf:{nodeId:'ORG_CODE',nodeName:'ORG_NAME',parNode:'PAR_ORG',treeType:'1'},
+                              onShowPanel:function (row, data){
+                                $('#countersignUsers').combotree('tree').tree('collapseAll');
+                                },
+                              onSelect:selectOrgUser
+	          "></select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="float: left;margin:5px;">
+                        <div style="float: left; margin:5px;">
+                            <div style="text-align: center">待选择的审批人</div>
+                            <div>
+                                <select name="countersignUsersLeft" id="countersignUsersLeft1" title="待选人" multiple="multiple"
+                                        size="5" style="width: 130px; height: 150px">
+                                    <option>
+                                        <font color="#4169e1">请选择指定审批人</font>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="float: left;">
+                            <div style="margin:5px;text-align: center;vertical-align: middle;">
+                                <div style="width: 5px;height: 40px"></div>
+                                <input type="button" value="&gt;"
+                                       onclick="moveSingleItem(countersignUsersLeft, countersignUsersRight)">
+                                <br>
+                                <input type="button" value="&gt;&gt;"
+                                       onclick="moveAllItems(countersignUsersLeft, countersignUsersRight)">
+                                <br>
+                                <input type="button" value="&lt;&lt;"
+                                       onclick="moveAllItems(countersignUsersRight, countersignUsersLeft)">
+                                <br>
+                                <input type="button" value="&lt;"
+                                       onclick="moveSingleItem(countersignUsersRight, countersignUsersLeft)">
+
+                            </div>
+
+                        </div>
+                        <div style="float: left;margin:5px;">
+                            <div style="text-align: center">已选择的审批人</div>
+                            <div>
+                                <select name="countersignUsersRight" title="已选人" id="countersignUsersRight1"
+                                        multiple="multiple" size="5"
+                                        style="width: 130px; height: 150px">
+                                    <option>
+                                        <font color="#4169e1">----请选择用户----</font>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
+        </table>
+    </form>
+</div>
+<div id="DIV_shenpi2" style="display: none;">
+    <form id="DIV_shenpiForm2" class="kui-form">
+        <table>
+            <tr>
+                <td style="width: 100px">请假人:</td>
+                <td style="width: 250px">
+                    <input name="name" id="name2" class="kui-validatebox" style="width:200px"
+                           kui-options="required:'true',validType:'val[1,64]'"> </input>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">请假天数:</td>
+                <td style="width: 250px">
+                    <input name="days" id="days2" class="kui-validatebox" style="width:200px"
+                           kui-options="required:'true',validType:'zint[3]'"> </input>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">审批方式：</td>
+                <td style="width: 250px">
+                    <select class="kui-combobox" style="width: 200px" name="multiTaskType" id="multiTaskType1">
+                        <option value="1"> 串行<option>
+                        <option value="2"> 并行<option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">指定审批人:</td>
+                <td style="width: 250px"><select class="kui-combotree" name="countersignUsers" id="countersignUsers2"
+                                                 kui-options="
+                              required:true,
+                              width:'200',
+                              isClear:true,
+                              singleSelect:true,
+                              panelWidth:'250',
+                              panelHeight:'300',
+                              req:[{service:'P0001031',ORG_STA:'1'}],
+                              conf:{nodeId:'ORG_CODE',nodeName:'ORG_NAME',parNode:'PAR_ORG',treeType:'1'},
+                              onShowPanel:function (row, data){
+                                $('#countersignUsers').combotree('tree').tree('collapseAll');
+                                },
+                              onSelect:selectOrgUser
+	          "></select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="float: left;margin:5px;">
+                        <div style="float: left; margin:5px;">
+                            <div style="text-align: center">待选择的审批人</div>
+                            <div>
+                                <select name="countersignUsersLeft" id="countersignUsersLeft2" title="待选人" multiple="multiple"
+                                        size="5" style="width: 130px; height: 150px">
+                                    <option>
+                                        <font color="#4169e1">请选择指定审批人</font>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="float: left;">
+                            <div style="margin:5px;text-align: center;vertical-align: middle;">
+                                <div style="width: 5px;height: 40px"></div>
+                                <input type="button" value="&gt;"
+                                       onclick="moveSingleItem(countersignUsersLeft, countersignUsersRight)">
+                                <br>
+                                <input type="button" value="&gt;&gt;"
+                                       onclick="moveAllItems(countersignUsersLeft, countersignUsersRight)">
+                                <br>
+                                <input type="button" value="&lt;&lt;"
+                                       onclick="moveAllItems(countersignUsersRight, countersignUsersLeft)">
+                                <br>
+                                <input type="button" value="&lt;"
+                                       onclick="moveSingleItem(countersignUsersRight, countersignUsersLeft)">
+
+                            </div>
+
+                        </div>
+                        <div style="float: left;margin:5px;">
+                            <div style="text-align: center">已选择的审批人</div>
+                            <div>
+                                <select name="countersignUsersRight" title="已选人" id="countersignUsersRight2"
+                                        multiple="multiple" size="5"
+                                        style="width: 130px; height: 150px">
+                                    <option>
+                                        <font color="#4169e1">----请选择用户----</font>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
+        </table>
+    </form>
+</div>
+</body>
+</html>

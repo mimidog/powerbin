@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--序列生成SQL START-->
+    <bex bex_code="QRY_SEQ_BEX" bex_type="4" page_mode="2" bex_cate="1" attr1="QRY_SEQ" attr2="mts"/>
+    <!--获取指表中树状级别-->
+    <bex bex_code="mts_frameParMaxLvlQueryBex" bex_type="4" page_mode="2" bex_cate="1" attr1="frameParMaxLvlQuery"
+         attr2="mts"/>
+    <!--查询交易日历信息-->
+    <bex bex_code="QRY_CALENDAR_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="QRY_CALENDAR_INFO"
+         attr2="mts"/>
+    <!--查询系统日期信息-->
+    <bex bex_code="QRY_SYS_CONTROL_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="QRY_SYS_CONTROL_INFO"
+         attr2="mts"/>
+    <!--查询处理日期的下一交易日信息(TRD_DATE_FLAG==1,HANDLE_DATE当前日期)-->
+    <bex bex_code="QRY_NEXT_TRADING_DAY_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="QRY_NEXT_TRADING_DAY"
+         attr2="mts"/>
+    <!--查询处理日期的上一交易日信息 -->
+    <bex bex_code="QRY_LAST_TRADING_DAY_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="QRY_LAST_TRADING_DAY"
+         attr2="mts"/>
+
+    <!--更新系统日期信息-->
+    <bex bex_code="MOD_SYS_CONTROL_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="MOD_SYS_CONTROL_INFO"
+         attr2="mts"/>
+    <!--数据库备份-->
+    <bex bex_code="database_BACKUP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="database_BACKUP"
+         attr2="mts"/>
+
+    <!--查询操作员岗位变量申请信息-->
+    <bex bex_code="query_T_OPER_POST_LVL_CHG_APP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_OPER_POST_LVL_CHG_APP"
+         attr2="mts"/>
+    <!--新增操作员岗位变量申请信息-->
+    <bex bex_code="insert_T_OPER_POST_LVL_CHG_APP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_OPER_POST_LVL_CHG_APP"
+         attr2="mts"/>
+    <!--更新操作员岗位变量申请信息-->
+    <bex bex_code="update_T_OPER_POST_LVL_CHG_AUDIT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_OPER_POST_LVL_CHG_AUDIT"
+         attr2="mts"/>
+    <!--更新操作员表中岗位级别-->
+    <bex bex_code="update_UUM_USER_POST_LVL_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_UUM_USER_POST_LVL"
+         />
+
+    <!--查询行情订阅信息-->
+    <bex bex_code="qury_T_SUBSCRBIE_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="qury_T_SUBSCRBIE" attr2="mts"/>
+    <!--新增行情订阅信息-->
+    <bex bex_code="insert_T_SUBSCRBIE_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_SUBSCRBIE" attr2="mts"/>
+    <!--新增行情订阅信息-->
+    <bex bex_code="update_T_SUBSCRBIE_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_SUBSCRBIE" attr2="mts"/>
+    <!--新增行情订阅信息-->
+    <bex bex_code="delete_T_SUBSCRBIE_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_SUBSCRBIE" attr2="mts"/>
+
+</bexs>
+ 

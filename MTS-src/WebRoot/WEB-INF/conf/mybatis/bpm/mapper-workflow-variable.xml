@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.VariableInstanceEntity">
+
+	 <insert id="BpmVariableInsert"
+	    parameterType="hashMap">
+	    INSERT INTO UWK_RU_VARIABLE(VARIABLE_ID, REV, VTYPE, VNAME, PROC_INST_ID, EXECUTION_ID,
+	    TASK_ID, BYTEARRAY_ID, DOUBLETYPE, LONGTYPE, TEXTTYPE, TEXT2TYPE, CREATE_TIME)
+	    VALUES (
+	    #{variable.id, jdbcType=VARCHAR},
+	    1,
+		#{variable.type, typeHandler=VariableTypeTypeHandler},
+	    #{variable.name, jdbcType=VARCHAR},
+	    #{variable.processInstanceId, jdbcType=VARCHAR},
+	    #{variable.executionId, jdbcType=VARCHAR},
+	    #{variable.taskId, jdbcType=VARCHAR},
+	    #{variable.byteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+	    #{variable.doubleValue, jdbcType=DOUBLE},
+	    #{variable.longValue, jdbcType=BIGINT},
+	    #{variable.textValue, jdbcType=VARCHAR},
+	    #{variable.textValue2, jdbcType=VARCHAR},
+	    #{variable.createTime ,jdbcType=TIMESTAMP}
+	    )
+	  </insert>
+	
+	  <!-- VARIABLE INSTANCE UPDATE -->
+	
+	  <update id="BpmVariableUpdate"
+	    parameterType="hashMap">
+	    UPDATE UWK_RU_VARIABLE
+	    SET
+	    REV = #{variable.revisionNext, jdbcType=INTEGER},
+	    EXECUTION_ID = #{variable.executionId, jdbcType=VARCHAR},
+	    BYTEARRAY_ID = #{variable.byteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+	    VTYPE =  #{variable.type, typeHandler=VariableTypeTypeHandler },
+	    DOUBLETYPE = #{variable.doubleValue, jdbcType=DOUBLE},
+	    LONGTYPE = #{variable.longValue, jdbcType=BIGINT},
+	    TEXTTYPE = #{variable.textValue, jdbcType=VARCHAR},
+	    TEXT2TYPE = #{variable.textValue2, jdbcType=VARCHAR}
+	    WHERE VARIABLE_ID = #{variable.id, jdbcType=VARCHAR}
+	    AND REV = #{variable.revision, jdbcType=INTEGER}
+	  </update>
+	
+	  <!-- VARIABLE INSTANCE DELETE -->
+	
+	  <delete id="BpmVariableDelete"
+	    parameterType="hashMap">
+	    DELETE FROM UWK_RU_VARIABLE WHERE VARIABLE_ID = #{variable.id,
+	    jdbcType=VARCHAR} AND REV = #{variable.revision}
+	  </delete>
+	
+	
+	  <!-- VARIABLE INSTANCE RESULTMAP -->
+
+	  <resultMap id="variableInstanceResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.VariableInstanceEntity">
+	    <id property="id" column="VARIABLE_ID" jdbcType="VARCHAR" />
+	    <result property="revision" column="REV" jdbcType="INTEGER" />
+	    <result property="type" column="VTYPE" typeHandler="VariableTypeTypeHandler" />
+	    <result property="name" column="VNAME" javaType="String" jdbcType="VARCHAR" />
+	    <result property="processInstanceId" column="PROC_INST_ID" jdbcType="VARCHAR" />
+	    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+	    <result property="taskId" column="TASK_ID" jdbcType="VARCHAR" />
+	    <!-- <result property="activityId" column="ACTIVITY_ID_" jdbcType="VARCHAR" />
+	    <result property="isActive" column="IS_ACTIVE_" jdbcType="BOOLEAN" />
+	    <result property="isConcurrencyScope" column="IS_CONCURRENCY_SCOPE_" jdbcType="BOOLEAN" /> -->
+	    <result property="byteArrayRef" column="BYTEARRAY_ID" typeHandler="ByteArrayRefTypeHandler"/>
+	    <result property="doubleValue" column="DOUBLETYPE" jdbcType="DOUBLE" />
+	    <result property="textValue" column="TEXTTYPE" jdbcType="VARCHAR" />
+	    <result property="textValue2" column="TEXT2TYPE" jdbcType="VARCHAR" />
+	    <result property="longValue" column="LONGTYPE" jdbcType="BIGINT" />
+	  </resultMap>
+	
+	  <select id="BpmVariableSelect" parameterType="string"
+	    resultMap="variableInstanceResultMap">
+	    SELECT * FROM UWK_RU_VARIABLE WHERE VARIABLE_ID = #{id, jdbcType=VARCHAR}
+	  </select>
+	
+	  <select id="BpmVariableSelectByExecutionId"
+	    parameterType="hashMap"
+	    resultMap="variableInstanceResultMap">
+	    SELECT * FROM UWK_RU_VARIABLE
+	    WHERE EXECUTION_ID = #{executionId, jdbcType=VARCHAR}
+	    AND TASK_ID IS NULL
+	  </select>
+	  
+	  <select id="BpmVariableSelectByTaskId" parameterType="hashMap" resultMap="variableInstanceResultMap" >
+  		SELECT * FROM UWK_RU_VARIABLE V WHERE V.TASK_ID = #{taskId, jdbcType=VARCHAR}
+	</select>
+	  
+</mapper>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+
+
+	
+	<!-- KBSS平台系缓存配置 -->
+	<!--
+	<bean id="jdbcDataSource" parent="abstractDataSource"/>
+	<bean id="viewFilter" class="com.szkingdom.frame.config.ViewFilter"
+		scope="prototype">
+		<property name="filters">
+			<map>
+				<entry key="dictFilter" value-ref="bpDictCache" />
+				<entry key="dynamicDictFilter" value-ref="dynamicDictCache" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="cacheSchedule" class="com.szkingdom.frame.web.schedule.CacheSchedule"
+		init-method="initSetUp">
+		<property name="cacheMap">
+			<map>
+				<entry key="dictCache" value-ref="bpDictCache" />
+				<entry key="dynamicDictCache" value-ref="dynamicDictCache" />
+			</map>
+		</property>
+	</bean>
+	<bean id="deviceUserAuth" class="com.szkingdom.frame.cache.impl.DeviceUserAuth">
+		<property name="service" ref="genericMutipleService" />
+		<property name="serivceCode" value="${system.loginService}" />
+	</bean>
+	<bean id="bpDictRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+		<property name="requestParams">
+			<map>
+				<entry key="bex" value="${system.dictService}" />
+				<entry key="DICT_CODE" value="-1" />
+				<entry key="SUBSYS" value="${subsys.code}" />
+			</map>
+		</property>
+	</bean>
+	<bean id="bpDictCache" class="com.szkingdom.frame.cache.impl.BpDictCache">
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="request" ref="bpDictRquest" />
+		<property name="deviceUserAuth" ref="deviceUserAuth" />
+		<property name="keyCode" value="DD_ID" />	
+		<property name="pattern" value="(.*)\((.*)\)"/>
+	</bean>
+	
+	<bean id="dynamicDictCache" class="com.szkingdom.frame.cache.impl.DynamicDictCache">
+		<property name="deviceUserAuth" ref="deviceUserAuth" />
+		<property name="service" ref="genericMutipleService" />
+		<property name="requests">
+			<map>
+				
+			</map>
+		</property>
+	</bean>
+	<bean id="timeSliceRquest" class="com.szkingdom.frame.service.model.DynamicDictRequest">
+		<property name="dictVal" value="TMSL_ID" />
+		<property name="dictDes" value="TMSL_ID,TMSL_NAME" />
+		<property name="requestParams">
+			<map>
+				<entry key="service" value="${system.genericService}" />
+				<entry key="bex_codes" value="GeneralParameterQuery" />
+				<entry key="funcid" value="L1000504" />
+				<entry key="TABLE" value="OTC_TIME_SLICE" />
+				<entry key="F_FUNCTION" value="800002000" />
+				<entry key="FIELDS" value="TMSL_ID,TMSL_NAME" />
+			</map>
+		</property>
+	</bean>
+	-->
+
+	<!-- KJDP缓存配置 -->
+	<!--
+	<bean id="deviceUserAuth" class="com.szkingdom.frame.cache.impl.DeviceUserAuth">
+		<property name="service" ref="genericMutipleService" />
+		<property name="serivceCode" value="${system.loginService}" />
+	</bean>
+	<bean id="bpDictRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+		<property name="requestParams">
+			<map>
+				<entry key="bex" value="${system.bpDictService}" />
+				<entry key="DICT_CODE" value="-1" />
+				<entry key="SUBSYS" value="${subsys.code}" />
+			</map>
+		</property>
+	</bean>
+	<bean id="bpDictCache" class="com.szkingdom.frame.cache.impl.BpDictCache">
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="request" ref="bpDictRquest" />
+		<property name="deviceUserAuth" ref="deviceUserAuth" />
+		<property name="keyCode" value="DD_ID" />	
+		<property name="pattern" value="(.*)\((.*)\)"/>
+	</bean>
+	-->
+	<bean id="viewFilter" class="com.szkingdom.frame.config.ViewFilter"
+		scope="prototype">
+		<property name="filters">
+			<map>
+				<entry key="dictFilter" value-ref="dictCache" />
+				<!--entry key="bpDictFilter" value-ref="bpDictCache" /-->
+				<entry key="authFilter" value-ref="authCache" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="cacheSchedule" class="com.szkingdom.frame.web.schedule.CacheSchedule"
+		init-method="initSetUp">
+		<property name="cacheMap">
+			<map>
+				<entry key="dictCache" value-ref="dictCache" />
+				<!--entry key="bpDictCache" value-ref="bpDictCache" /-->
+				<entry key="sysServiceCache" value-ref="sysServiceCache" />
+				<!-- entry key="reviewCache" value-ref="reviewCache" / -->
+				<entry key="sysParamCache" value-ref="sysParamCache" />
+				<entry key="sysUserCache" value-ref="sysUserCache" />
+				<entry key="authCache" value-ref="authCache" />
+				<entry key="orgCache" value-ref="orgCache" />
+				
+			</map>
+		</property>
+	</bean>
+	<bean id="userCacheSchedule" class="com.szkingdom.frame.web.schedule.UserCacheSchedule" scope="prototype">
+		<property name="userCacheMap">
+			<map>
+				<entry key="authCache" value-ref="authCache" />
+			</map>
+		</property>
+	</bean>
+    <bean id="sysServiceRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+        <property name="requestParams">
+            <map>
+                <entry key="sysServiceQuery_bex" value="P0000071" />
+            </map>
+        </property>
+    </bean>
+    <bean id="sysServiceCache" class="com.szkingdom.frame.cache.impl.SysServiceCache">
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="request" ref="sysServiceRquest" />	
+	    <property name="keyCode" value="SERVICE_CODE" />
+	</bean>
+
+	<bean id="reviewRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+		<property name="requestParams">
+			<map>
+				<entry key="bex" value="chkconfigQuery" />
+				<entry key="SERVICE_CODE" value="" />
+				<entry key="ORG_CODE" value="" />
+			</map>
+		</property>
+	</bean>
+	<bean id="reviewLvlRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+		<property name="requestParams">
+			<map>
+				<entry key="bex" value="chklvlconfigQuery" />
+			</map>
+		</property>
+	</bean>
+	<bean id="reviewParaRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+		<property name="requestParams">
+			<map>
+				<entry key="bex" value="chkparaconfigQuery" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="reviewCache" class="com.szkingdom.frame.cache.impl.ReviewCache">
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="reviewConfigrequest" ref="reviewRquest" />
+		<property name="reviewLvlConfigrequest" ref="reviewLvlRquest" />
+		<property name="reviewParaConfigrequest" ref="reviewParaRquest" />
+	</bean>
+	
+	<bean id="sysParamRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+        <property name="requestParams">
+            <map>
+                <entry key="sysParamQuery_bex" value="P0000001" />
+                <entry key="PAR_CODE" value="-1" />
+            </map>
+        </property>
+    </bean>
+	<bean id="sysParamCache" class="com.szkingdom.frame.cache.impl.SysParamCache">
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="request" ref="sysParamRquest" />	
+	    <property name="keyCode" value="PAR_CODE" />
+	</bean>
+	
+	<bean id="authParamRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+        <property name="requestParams">
+            <map>
+                <entry key="authParamQuery_bex" value="P0002240" />
+                <entry key="MENU_ID" value="-1" />
+            </map>
+        </property>
+    </bean>
+	<bean id="authCache" class="com.szkingdom.frame.cache.impl.UserAuthCache">
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="request" ref="authParamRquest" />
+	</bean>
+	
+	<bean id="sysUserRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+        <property name="requestParams">
+            <map>
+                  <entry key="ExpireTime" value="-1" />
+            </map>
+        </property>
+    </bean>
+    
+	<bean id="sysUserCache" class="com.szkingdom.frame.cache.impl.SysUserCache">
+        <property name="bexBusinessImpl" ref="bexBusinessImpl" />
+        <property name="configLoader" ref="configLoader" />
+        <property name="request" ref="sysUserRquest" />
+    </bean>
+    
+
+	<bean id="dictRquest" class="com.szkingdom.frame.service.model.GenericRequest">
+		<property name="requestParams">
+			<map>
+				<entry key="bex" value="P0004011" />
+				<entry key="DICT_CODE" value="-1" />
+			</map>
+		</property>
+	</bean>
+	<bean id="dictCache" class="com.szkingdom.frame.cache.impl.DictCache">
+		<property name="bexBusinessImpl" ref="bexBusinessImpl" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="request" ref="dictRquest" />	
+		<property name="keyCode" value="DICT_CODE" />	
+	</bean>
+	
+		<bean id="orgRquest" class="com.szkingdom.frame.service.model.GenericServiceRequest">
+		<property name="requestParams">
+			<map>
+			    <entry key="service" value="P0001031" />
+			</map>
+		</property>
+	</bean>
+	<bean id="orgCache" class="com.szkingdom.frame.cache.impl.OrgCache">
+		<property name="service" ref="genericService" />
+		<property name="configLoader" ref="configLoader" />
+		<property name="request" ref="orgRquest" />	
+	</bean>
+</beans>

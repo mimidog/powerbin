@@ -1,0 +1,726 @@
+/**
+ *
+ * 门户图标样式表，包含了组件图标和菜单图标，业务有需要请自行修改
+ * 图标样式新增后还需到frame/js/combo-icon.js中相应数组变量中新增图标定义，这样就可以在程序界面中使用了
+ * @author liuqing 2014-9-15
+ *
+ */
+
+
+/*菜单图标样式*/
+.menu-button-icon{
+	background-image:url(../../frame/images/portal/ui-frame-menu-bg.png);
+	background-position:-100px -100px;
+	background-repeat: no-repeat;
+	height:50px;
+}
+.menu-button-icon:hover{
+	background-image:url(../../frame/images/portal/ui-frame-menu-bg2.png);
+}
+
+.menu-button-computer{
+    background-position: 17px 0 !important;
+}
+.menu-button-flag{
+    background-position: 17px -48px !important;
+}
+.menu-button-paper{
+    background-position: 17px -95px !important;
+}
+.menu-button-zoom{
+    background-position: 17px -142px !important;
+}
+.menu-button-disk{
+    background-position: 17px -191px !important;
+}
+.menu-button-head{
+    background-position: 17px -240px !important;
+}
+.menu-button-merge{
+    background-position: 17px -288px !important;
+}
+.menu-button-card{
+    background-position: 17px -335px !important;
+}
+.menu-button-tools{
+    background-position: 17px -383px !important;
+}
+.menu-button-up{
+    background-position: 17px -433px !important;
+}
+.menu-button-people{
+    background-position: 17px -481px !important;
+}
+.menu-button-time{
+    background-position: 17px -529px !important;
+}
+.menu-button-bag{
+    background-position: 17px -577px !important;
+}
+.menu-button-card2{
+    background-position: 17px -625px !important;
+}
+.menu-button-computer2{
+    background-position: 17px -673px !important;
+}
+.menu-button-percent{
+    background-position: 17px -721px !important;
+}
+.menu-button-userdetail{
+    background-position: 17px -769px !important;
+}
+.menu-button-paperstar{
+    background-position: 17px -817px !important;
+}
+.menu-button-edit{
+    background-position: 17px -865px !important;
+}
+.menu-button-counter{
+    background-position: 17px -913px !important;
+}
+.menu-button-useredit{
+    background-position: 17px -961px !important;
+}
+.menu-button-paperadd{
+    background-position: 17px -1009px !important;
+}
+
+/*组件图标样式*/
+.shortcut-icon-ruler {
+	background-image:url("../../opp/css/images/portal-icons/ruler.png") !important;
+}
+.shortcut-icon-book {
+	background-image:url("../../opp/css/images/portal-icons/book.png") !important;
+}
+.shortcut-icon-phone {
+	background-image:url("../../opp/css/images/portal-icons/phone.png") !important;
+}
+.shortcut-icon-desktop {
+	background-image:url("../../opp/css/images/portal-icons/desktop.png") !important;
+}
+.shortcut-icon-call {
+	background-image:url("../../opp/css/images/portal-icons/call.png") !important;
+}
+.shortcut-icon-filebox {
+	background-image:url("../../opp/css/images/portal-icons/filebox.png") !important;
+}
+.shortcut-icon-userlist {
+	background-image:url("../../opp/css/images/portal-icons/userlist.png") !important;
+}
+.shortcut-icon-giftbox {
+	background-image:url("../../opp/css/images/portal-icons/giftbox.png") !important;
+}
+.shortcut-icon-abc {
+	background-image:url("../../opp/css/images/portal-icons/abc.png") !important;
+}
+.shortcut-icon-count {
+	background-image:url("../../opp/css/images/portal-icons/count.png") !important;
+}
+.shortcut-icon-goldcup {
+	background-image:url("../../opp/css/images/portal-icons/goldcup.png") !important;
+}
+.shortcut-icon-paper {
+	background-image:url("../../opp/css/images/portal-icons/paper.png") !important;
+}
+.shortcut-icon-folder1 {
+	background-image:url("../../opp/css/images/portal-icons/folder1.png") !important;
+}
+.shortcut-icon-folder2 {
+	background-image:url("../../opp/css/images/portal-icons/folder2.png") !important;
+}
+.shortcut-icon-count2 {
+	background-image:url("../../opp/css/images/portal-icons/count2.png") !important;
+}
+.shortcut-icon-money {
+	background-image:url("../../opp/css/images/portal-icons/money.png") !important;
+}
+.shortcut-icon-coins {
+	background-image:url("../../opp/css/images/portal-icons/coins.png") !important;
+}
+.shortcut-icon-date {
+	background-image:url("../../opp/css/images/portal-icons/date.png") !important;
+}
+.shortcut-icon-count3 {
+	background-image:url("../../opp/css/images/portal-icons/count3.png") !important;
+}
+.shortcut-icon-light {
+	background-image:url("../../opp/css/images/portal-icons/light.png") !important;
+}
+.shortcut-icon-post {
+	background-image:url("../../opp/css/images/portal-icons/post.png") !important;
+}
+.shortcut-icon-tips {
+	background-image:url("../../opp/css/images/portal-icons/tips.png") !important;
+}
+.shortcut-icon-scan {
+	background-image:url("../../opp/css/images/portal-icons/scan.png") !important;
+}
+.shortcut-icon-moneytime {
+	background-image:url("../../opp/css/images/portal-icons/moneytime.png") !important;
+}
+.shortcut-icon-userinfo {
+	background-image:url("../../opp/css/images/portal-icons/userinfo.png") !important;
+}
+.shortcut-icon-earth {
+	background-image:url("../../opp/css/images/portal-icons/earth.png") !important;
+}
+.shortcut-icon-mappoint {
+	background-image:url("../../opp/css/images/portal-icons/mappoint.png") !important;
+}
+.shortcut-icon-edit {
+	background-image:url("../../opp/css/images/portal-icons/edit.png") !important;
+}
+.shortcut-icon-zoom {
+	background-image:url("../../opp/css/images/portal-icons/zoom.png") !important;
+}
+.shortcut-icon-persent {
+	background-image:url("../../opp/css/images/portal-icons/persent.png") !important;
+}
+.shortcut-icon-card {
+	background-image:url("../../opp/css/images/portal-icons/card.png") !important;
+}
+.shortcut-icon-count4 {
+	background-image:url("../../opp/css/images/portal-icons/count4.png") !important;
+}
+.shortcut-icon-stock {
+	background-image:url("../../opp/css/images/portal-icons/stock.png") !important;
+}
+.shortcut-icon-book2 {
+	background-image:url("../../opp/css/images/portal-icons/book2.png") !important;
+}
+.shortcut-icon-star {
+	background-image:url("../../opp/css/images/portal-icons/star.png") !important;
+}
+.shortcut-icon-toolset {
+	background-image:url("../../opp/css/images/portal-icons/toolset.png") !important;
+}
+.shortcut-icon-data {
+	background-image:url("../../opp/css/images/portal-icons/data.png") !important;
+}
+.shortcut-icon-conputer {
+	background-image:url("../../opp/css/images/portal-icons/conputer.png") !important;
+}
+.shortcut-icon-vipuser {
+	background-image:url("../../opp/css/images/portal-icons/vipuser.png") !important;
+}
+.shortcut-icon-video {
+	background-image:url("../../opp/css/images/portal-icons/video.png") !important;
+}
+.shortcut-icon-date2 {
+	background-image:url("../../opp/css/images/portal-icons/date2.png") !important;
+}
+.shortcut-icon-folderset {
+	background-image:url("../../opp/css/images/portal-icons/folderset.png") !important;
+}
+/* 新版组件图标定义*/
+.drag-body:hover{
+    background-size:contain;
+}
+.drag-body {
+    background-position:center 0;
+    background-repeat: no-repeat;
+}
+.shortcut-icon-dir {
+    background-image: url("../../opp/css/images/portal-icons/folder.png") !important;
+}
+.tools-icon-39 {
+	background-image:url("../../opp/css/images/portal-icons/comid-39.png") !important;
+}
+.tools-icon-41 {
+	background-image:url("../../opp/css/images/portal-icons/comid-41.png") !important;
+}
+.tools-icon-59 {
+	background-image:url("../../opp/css/images/portal-icons/comid-59.png") !important;
+}
+.tools-icon-62 {
+	background-image:url("../../opp/css/images/portal-icons/comid-62.png") !important;
+}
+.tools-icon-69 {
+	background-image:url("../../opp/css/images/portal-icons/comid-69.png") !important;
+}
+.tools-icon-73 {
+	background-image:url("../../opp/css/images/portal-icons/comid-73.png") !important;
+}
+.tools-icon-74 {
+	background-image:url("../../opp/css/images/portal-icons/comid-74.png") !important;
+}
+.tools-icon-75 {
+	background-image:url("../../opp/css/images/portal-icons/comid-75.png") !important;
+}
+.tools-icon-76 {
+	background-image:url("../../opp/css/images/portal-icons/comid-76.png") !important;
+}
+.tools-icon-77 {
+	background-image:url("../../opp/css/images/portal-icons/comid-77.png") !important;
+}
+.tools-icon-78 {
+	background-image:url("../../opp/css/images/portal-icons/comid-78.png") !important;
+}
+.tools-icon-79 {
+	background-image:url("../../opp/css/images/portal-icons/comid-79.png") !important;
+}
+.tools-icon-80 {
+	background-image:url("../../opp/css/images/portal-icons/comid-80.png") !important;
+}
+.tools-icon-82 {
+	background-image:url("../../opp/css/images/portal-icons/comid-82.png") !important;
+}
+.tools-icon-83 {
+	background-image:url("../../opp/css/images/portal-icons/comid-83.png") !important;
+}
+.tools-icon-84 {
+	background-image:url("../../opp/css/images/portal-icons/comid-84.png") !important;
+}
+.tools-icon-87 {
+	background-image:url("../../opp/css/images/portal-icons/comid-87.png") !important;
+}
+.tools-icon-88 {
+	background-image:url("../../opp/css/images/portal-icons/comid-88.png") !important;
+}
+.tools-icon-89 {
+	background-image:url("../../opp/css/images/portal-icons/comid-89.png") !important;
+}
+.tools-icon-90 {
+	background-image:url("../../opp/css/images/portal-icons/comid-90.png") !important;
+}
+.tools-icon-91 {
+	background-image:url("../../opp/css/images/portal-icons/comid-91.png") !important;
+}
+.tools-icon-92 {
+	background-image:url("../../opp/css/images/portal-icons/comid-92.png") !important;
+}
+.tools-icon-93 {
+	background-image:url("../../opp/css/images/portal-icons/comid-93.png") !important;
+}
+.tools-icon-94 {
+	background-image:url("../../opp/css/images/portal-icons/comid-94.png") !important;
+}
+.tools-icon-96 {
+	background-image:url("../../opp/css/images/portal-icons/comid-96.png") !important;
+}
+.tools-icon-98 {
+	background-image:url("../../opp/css/images/portal-icons/comid-98.png") !important;
+}
+.tools-icon-99 {
+	background-image:url("../../opp/css/images/portal-icons/comid-99.png") !important;
+}
+.tools-icon-100 {
+	background-image:url("../../opp/css/images/portal-icons/comid-100.png") !important;
+}
+.tools-icon-101 {
+	background-image:url("../../opp/css/images/portal-icons/comid-101.png") !important;
+}
+.tools-icon-102 {
+	background-image:url("../../opp/css/images/portal-icons/comid-102.png") !important;
+}
+.tools-icon-103 {
+	background-image:url("../../opp/css/images/portal-icons/comid-103.png") !important;
+}
+.tools-icon-104 {
+	background-image:url("../../opp/css/images/portal-icons/comid-104.png") !important;
+}
+.tools-icon-105 {
+	background-image:url("../../opp/css/images/portal-icons/comid-105.png") !important;
+}
+.tools-icon-106 {
+	background-image:url("../../opp/css/images/portal-icons/comid-106.png") !important;
+}
+.tools-icon-107 {
+	background-image:url("../../opp/css/images/portal-icons/comid-107.png") !important;
+}
+.tools-icon-108 {
+	background-image:url("../../opp/css/images/portal-icons/comid-108.png") !important;
+}
+.tools-icon-109 {
+	background-image:url("../../opp/css/images/portal-icons/comid-109.png") !important;
+}
+.tools-icon-111 {
+	background-image:url("../../opp/css/images/portal-icons/comid-111.png") !important;
+}
+.tools-icon-112 {
+	background-image:url("../../opp/css/images/portal-icons/comid-112.png") !important;
+}
+.tools-icon-113 {
+	background-image:url("../../opp/css/images/portal-icons/comid-113.png") !important;
+}
+.tools-icon-114 {
+	background-image:url("../../opp/css/images/portal-icons/comid-114.png") !important;
+}
+.tools-icon-115 {
+	background-image:url("../../opp/css/images/portal-icons/comid-115.png") !important;
+}
+.tools-icon-116 {
+	background-image:url("../../opp/css/images/portal-icons/comid-116.png") !important;
+}
+.tools-icon-117 {
+	background-image:url("../../opp/css/images/portal-icons/comid-117.png") !important;
+}
+.tools-icon-118 {
+	background-image:url("../../opp/css/images/portal-icons/comid-118.png") !important;
+}
+.tools-icon-119 {
+	background-image:url("../../opp/css/images/portal-icons/comid-119.png") !important;
+}
+.tools-icon-120 {
+	background-image:url("../../opp/css/images/portal-icons/comid-120.png") !important;
+}
+.tools-icon-121 {
+	background-image:url("../../opp/css/images/portal-icons/comid-121.png") !important;
+}
+.tools-icon-122 {
+	background-image:url("../../opp/css/images/portal-icons/comid-122.png") !important;
+}
+.tools-icon-123 {
+	background-image:url("../../opp/css/images/portal-icons/comid-123.png") !important;
+}
+.tools-icon-124 {
+	background-image:url("../../opp/css/images/portal-icons/comid-124.png") !important;
+}
+.tools-icon-125 {
+	background-image:url("../../opp/css/images/portal-icons/comid-125.png") !important;
+}
+.tools-icon-126 {
+	background-image:url("../../opp/css/images/portal-icons/comid-126.png") !important;
+}
+.tools-icon-127 {
+	background-image:url("../../opp/css/images/portal-icons/comid-127.png") !important;
+}
+.tools-icon-128 {
+	background-image:url("../../opp/css/images/portal-icons/comid-128.png") !important;
+}
+.tools-icon-129 {
+	background-image:url("../../opp/css/images/portal-icons/comid-129.png") !important;
+}
+.tools-icon-130 {
+	background-image:url("../../opp/css/images/portal-icons/comid-130.png") !important;
+}
+.tools-icon-132 {
+	background-image:url("../../opp/css/images/portal-icons/comid-132.png") !important;
+}
+.tools-icon-133 {
+	background-image:url("../../opp/css/images/portal-icons/comid-133.png") !important;
+}
+.tools-icon-134 {
+	background-image:url("../../opp/css/images/portal-icons/comid-134.png") !important;
+}
+.tools-icon-135 {
+	background-image:url("../../opp/css/images/portal-icons/comid-135.png") !important;
+}
+.tools-icon-136 {
+	background-image:url("../../opp/css/images/portal-icons/comid-136.png") !important;
+}
+.tools-icon-137 {
+	background-image:url("../../opp/css/images/portal-icons/comid-137.png") !important;
+}
+.tools-icon-138 {
+	background-image:url("../../opp/css/images/portal-icons/comid-138.png") !important;
+}
+.tools-icon-139 {
+	background-image:url("../../opp/css/images/portal-icons/comid-139.png") !important;
+}
+.tools-icon-140 {
+	background-image:url("../../opp/css/images/portal-icons/comid-140.png") !important;
+}
+.tools-icon-141 {
+	background-image:url("../../opp/css/images/portal-icons/comid-141.png") !important;
+}
+.tools-icon-142 {
+	background-image:url("../../opp/css/images/portal-icons/comid-142.png") !important;
+}
+.tools-icon-143 {
+	background-image:url("../../opp/css/images/portal-icons/comid-143.png") !important;
+}
+.tools-icon-145 {
+	background-image:url("../../opp/css/images/portal-icons/comid-145.png") !important;
+}
+.tools-icon-148 {
+	background-image:url("../../opp/css/images/portal-icons/comid-148.png") !important;
+}
+.tools-icon-154 {
+	background-image:url("../../opp/css/images/portal-icons/comid-154.png") !important;
+}
+.tools-icon-155 {
+	background-image:url("../../opp/css/images/portal-icons/comid-155.png") !important;
+}
+.tools-icon-157 {
+	background-image:url("../../opp/css/images/portal-icons/comid-157.png") !important;
+}
+.tools-icon-159 {
+	background-image:url("../../opp/css/images/portal-icons/comid-159.png") !important;
+}
+.tools-icon-160 {
+	background-image:url("../../opp/css/images/portal-icons/comid-160.png") !important;
+}
+.tools-icon-161 {
+	background-image:url("../../opp/css/images/portal-icons/comid-161.png") !important;
+}
+.tools-icon-162 {
+	background-image:url("../../opp/css/images/portal-icons/comid-162.png") !important;
+}
+.tools-icon-164 {
+	background-image:url("../../opp/css/images/portal-icons/comid-164.png") !important;
+}
+.tools-icon-171 {
+	background-image:url("../../opp/css/images/portal-icons/comid-171.png") !important;
+}
+.tools-icon-174 {
+	background-image:url("../../opp/css/images/portal-icons/comid-174.png") !important;
+}
+.tools-icon-175 {
+	background-image:url("../../opp/css/images/portal-icons/comid-175.png") !important;
+}
+.tools-icon-176 {
+	background-image:url("../../opp/css/images/portal-icons/comid-176.png") !important;
+}
+.tools-icon-177 {
+	background-image:url("../../opp/css/images/portal-icons/comid-176.png") !important;
+}
+.tools-icon-178 {
+	background-image:url("../../opp/css/images/portal-icons/comid-178.png") !important;
+}
+.tools-icon-179 {
+	background-image:url("../../opp/css/images/portal-icons/comid-179.png") !important;
+}
+.tools-icon-180 {
+	background-image:url("../../opp/css/images/portal-icons/comid-180.png") !important;
+}
+.tools-icon-181 {
+	background-image:url("../../opp/css/images/portal-icons/comid-181.png") !important;
+}
+.tools-icon-182 {
+	background-image:url("../../opp/css/images/portal-icons/comid-182.png") !important;
+}
+.tools-icon-183 {
+	background-image:url("../../opp/css/images/portal-icons/comid-183.png") !important;
+}
+.tools-icon-186 {
+	background-image:url("../../opp/css/images/portal-icons/comid-186.png") !important;
+}
+.tools-icon-187 {
+	background-image:url("../../opp/css/images/portal-icons/comid-187.png") !important;
+}
+.tools-icon-188 {
+	background-image:url("../../opp/css/images/portal-icons/comid-188.png") !important;
+}
+.tools-icon-190 {
+	background-image:url("../../opp/css/images/portal-icons/comid-190.png") !important;
+}
+.tools-icon-192 {
+	background-image:url("../../opp/css/images/portal-icons/comid-192.png") !important;
+}
+.tools-icon-193 {
+	background-image:url("../../opp/css/images/portal-icons/comid-193.png") !important;
+}
+.tools-icon-194 {
+	background-image:url("../../opp/css/images/portal-icons/comid-194.png") !important;
+}
+.tools-icon-195 {
+	background-image:url("../../opp/css/images/portal-icons/comid-195.png") !important;
+}
+.tools-icon-196 {
+	background-image:url("../../opp/css/images/portal-icons/comid-196.png") !important;
+}
+.tools-icon-197 {
+	background-image:url("../../opp/css/images/portal-icons/comid-197.png") !important;
+}
+.tools-icon-198 {
+	background-image:url("../../opp/css/images/portal-icons/comid-198.png") !important;
+}
+.tools-icon-199 {
+	background-image:url("../../opp/css/images/portal-icons/comid-199.png") !important;
+}
+.tools-icon-200 {
+	background-image:url("../../opp/css/images/portal-icons/comid-200.png") !important;
+}
+.tools-icon-201 {
+	background-image:url("../../opp/css/images/portal-icons/comid-201.png") !important;
+}
+.tools-icon-202 {
+	background-image:url("../../opp/css/images/portal-icons/comid-202.png") !important;
+}
+.tools-icon-203 {
+	background-image:url("../../opp/css/images/portal-icons/comid-203.png") !important;
+}
+.tools-icon-204 {
+	background-image:url("../../opp/css/images/portal-icons/comid-204.png") !important;
+}
+.tools-icon-205 {
+	background-image:url("../../opp/css/images/portal-icons/comid-205.png") !important;
+}
+.tools-icon-206 {
+	background-image:url("../../opp/css/images/portal-icons/comid-206.png") !important;
+}
+.tools-icon-208 {
+	background-image:url("../../opp/css/images/portal-icons/comid-208.png") !important;
+}
+.tools-icon-209 {
+	background-image:url("../../opp/css/images/portal-icons/comid-209.png") !important;
+}
+.tools-icon-210 {
+	background-image:url("../../opp/css/images/portal-icons/comid-210.png") !important;
+}
+.tools-icon-211 {
+	background-image:url("../../opp/css/images/portal-icons/comid-211.png") !important;
+}
+.tools-icon-212 {
+	background-image:url("../../opp/css/images/portal-icons/comid-212.png") !important;
+}
+.tools-icon-213 {
+	background-image:url("../../opp/css/images/portal-icons/comid-213.png") !important;
+}
+.tools-icon-214 {
+	background-image:url("../../opp/css/images/portal-icons/comid-214.png") !important;
+}
+.tools-icon-215 {
+	background-image:url("../../opp/css/images/portal-icons/comid-215.png") !important;
+}
+.tools-icon-216 {
+	background-image:url("../../opp/css/images/portal-icons/comid-216.png") !important;
+}
+.tools-icon-217 {
+	background-image:url("../../opp/css/images/portal-icons/comid-217.png") !important;
+}
+.tools-icon-218 {
+	background-image:url("../../opp/css/images/portal-icons/comid-218.png") !important;
+}
+.tools-icon-220 {
+	background-image:url("../../opp/css/images/portal-icons/comid-220.png") !important;
+}
+.tools-icon-221 {
+	background-image:url("../../opp/css/images/portal-icons/comid-221.png") !important;
+}
+.tools-icon-222 {
+	background-image:url("../../opp/css/images/portal-icons/comid-222.png") !important;
+}
+.tools-icon-223 {
+	background-image:url("../../opp/css/images/portal-icons/comid-223.png") !important;
+}
+.tools-icon-225 {
+	background-image:url("../../opp/css/images/portal-icons/comid-225.png") !important;
+}
+.tools-icon-236 {
+	background-image:url("../../opp/css/images/portal-icons/comid-236.png") !important;
+}
+.comid-neeq-01 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-01.png") !important;
+}
+.comid-neeq-02 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-02.png") !important;
+}
+.comid-neeq-03 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-03.png") !important;
+}
+.comid-neeq-04 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-04.png") !important;
+}
+.comid-neeq-05 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-05.png") !important;
+}
+.comid-neeq-06 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-06.png") !important;
+}
+.comid-neeq-07 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-07.png") !important;
+}
+.comid-neeq-08 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-08.png") !important;
+}
+.comid-neeq-09 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-09.png") !important;
+}
+.comid-neeq-10 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-10.png") !important;
+}
+.comid-neeq-11 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-11.png") !important;
+}
+.comid-neeq-12 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-12.png") !important;
+}
+.comid-neeq-13 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-13.png") !important;
+}
+.comid-neeq-14 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-14.png") !important;
+}
+.comid-neeq-15 {
+	background-image:url("../../opp/css/images/portal-icons/comid-neeq-15.png") !important;
+}
+.comid-hks-01 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-01.png") !important;
+}
+.comid-hks-02 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-02.png") !important;
+}
+.comid-hks-03 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-03.png") !important;
+}
+.comid-hks-04 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-04.png") !important;
+}
+.comid-hks-05 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-05.png") !important;
+}
+.comid-hks-06 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-06.png") !important;
+}
+.comid-hks-07 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-07.png") !important;
+}
+.comid-hks-08 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-08.png") !important;
+}
+.comid-hks-09 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-09.png") !important;
+}
+.comid-hks-10 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-10.png") !important;
+}
+.comid-hks-11 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-11.png") !important;
+}
+.comid-hks-12 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-12.png") !important;
+}
+.comid-hks-13 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-13.png") !important;
+}
+.comid-hks-14 {
+	background-image:url("../../opp/css/images/portal-icons/comid-hks-14.png") !important;
+}
+.comid-sh-01 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sh-01.png") !important;
+}
+.comid-sh-02 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sh-02.png") !important;
+}
+.comid-sh-03 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sh-03.png") !important;
+}
+.comid-sh-04 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sh-04.png") !important;
+}
+.comid-sz-01 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-01.png") !important;
+}
+.comid-sz-02 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-02.png") !important;
+}
+.comid-sz-03 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-03.png") !important;
+}
+.comid-sz-04 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-04.png") !important;
+}
+.comid-sz-05 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-05.png") !important;
+}
+.comid-sz-06 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-06.png") !important;
+}
+.comid-sz-07 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-07.png") !important;
+}
+.comid-sz-08 {
+	background-image:url("../../opp/css/images/portal-icons/comid-sz-08.png") !important;
+}

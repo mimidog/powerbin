@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+
+    <select id="QUERY_T_OP_LOG" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT LOG_ID, OP_THEME, OP_TYPE, OP_USER, OP_NAME, OP_ORG, UP_DATE, UP_TIME
+        FROM T_OP_LOG
+        <where>
+            <if test="OP_THEME != null and OP_THEME != ''">
+                AND OP_THEME = '${OP_THEME}'
+            </if>
+            <if test="OP_TYPE != null and OP_TYPE != ''">
+                AND OP_TYPE = '${OP_TYPE}'
+            </if>
+            <if test="OP_USER != null and OP_USER != ''">
+                AND OP_USER IN (
+                    SELECT G.ORG_CODE FROM kdbase..UPM_ORG G
+                    WHERE G.ORG_LVL LIKE (
+                        SELECT O.ORG_LVL
+                        FROM kdbase..UUM_USER U, kdbase..UPM_ORG O
+                        WHERE U.ORG_CODE = O.ORG_CODE
+                        AND U.USER_CODE = '${OP_USER}'
+                    ) + '%'
+                )
+            </if>
+            <if test="OP_ORG != null and OP_ORG != ''">
+                AND OP_ORG = '${OP_ORG}'
+            </if>
+            <if test="BEGIN_DATE != null and BEGIN_DATE != ''">
+                AND UP_DATE &gt;= '${BEGIN_DATE}'
+            </if>
+            <if test="END_DATE != null and END_DATE != ''">
+                AND UP_DATE &lt;= '${END_DATE}'
+            </if>
+        </where>
+    </select>
+
+    <insert id="INSERT_T_OP_LOG" parameterType="java.util.HashMap">
+        INSERT INTO T_OP_LOG (LOG_ID, OP_THEME, OP_TYPE, OP_USER, OP_NAME, OP_ORG, UP_DATE, UP_TIME)
+        VALUES (NEXT VALUE FOR SEQ_T_OP_LOG, '${OP_THEME}', '${OP_TYPE}', '${OP_USER}', '${OP_NAME}', '${OP_ORG}', CONVERT(VARCHAR(10), GETDATE(), 112), REPLACE(CONVERT(VARCHAR(10), GETDATE(), 108), ':', ''))
+    </insert>
+
+</mapper>

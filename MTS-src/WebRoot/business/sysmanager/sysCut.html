@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>系统日切</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../../business/sysmanager/css/business.transation.css" />
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+#taskExe_table tr{
+    font-size: 15px;
+    font-family: '微软雅黑', '宋体';
+    background-color: #FFFFFF;
+    font-weight: bold;
+}
+</style>
+<script type="text/javascript">
+
+var taskArr=[{EXE_NUM:'M0001005',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'mts数据库日切前备份',TASK_ERROR:'',TASK_STA:'等待'},
+             {EXE_NUM:'M0000066',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'订单信息归档',TASK_ERROR:'',TASK_STA:'等待'},
+             {EXE_NUM:'M0000068',TASK_IMG:'<div  class="tree-task-img tree-task-wait"></div>',TASK_CONT:'成交信息归档',TASK_ERROR:'',TASK_STA:'等待'}]
+//渲染任务表格
+function drawTaskTable(){
+
+    $.each(taskArr,function (idx,arrEle) {
+        $('#taskExe_table').append('<tr></tr>');
+        var tabRows=$('#taskExe_table').find("tr");
+        //行数
+        var tabRowsLen=$('#taskExe_table').find("tr").length;
+        //当前行对象
+        var curTrObj=$(tabRows).eq(tabRowsLen-1);
+
+        var tabRowsLen=tabRows.length;
+        //第二层数且索引
+        var secArrIdx=0;
+        for(var key in arrEle){
+            $(curTrObj).append('<td></td>');
+            switch (key){
+                case 'EXE_NUM':
+                    $(curTrObj).find('td:eq('+secArrIdx+')').attr(key,arrEle[key]).attr('width','5');
+                    break;
+                case 'TASK_IMG':
+                    $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','20');
+                    $(curTrObj).find('td:eq('+secArrIdx+')').html(arrEle[key]);
+                    break;
+                case 'TASK_CONT':
+                    $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','100');
+                    $(curTrObj).find('td:eq('+secArrIdx+')').html(arrEle[key]);
+                    break;
+                case 'TASK_ERROR':
+                    $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','300');
+                    break;
+                case 'TASK_STA':
+                    $(curTrObj).find('td:eq('+secArrIdx+')').attr('field',key).attr('width','30');
+                    $(curTrObj).find('td:eq('+secArrIdx+')').html(arrEle[key]);
+            }
+            secArrIdx++;
+        }
+
+    });
+}
+
+window.$ready=function () {
+    $('#task_main_div').height($(window).height()-$('#transactionInfo').height()-20);
+    queryNextDay();
+
+    //渲染任务表格
+    drawTaskTable();
+}
+//查询下一次交易日
+function queryNextDay() {
+    var rsCurDate=commonRequest({ service:'M0001001'});
+
+    var nextDateRs=commonRequest({ service:'M0001003',PHYSICAL_DATE:rsCurDate[0].SYSTEM_DATE,TRD_DATE_FLAG:'1'});
+    $('#sp_nextDay').text(nextDateRs[0].NEXT_TRD_DATE);
+}
+//日切任务处理
+function task_process() {
+
+    $('td[field=TASK_ERROR]').html('');
+    var tableRows=$('#taskExe_table').find("tr").length;
+    var curRowIdx=0
+    exeTask(curRowIdx);
+    function exeTask(curRowIdx) {
+        var domEle= $('#taskExe_table').find('tr:eq('+curRowIdx+')');
+
+        $(domEle).find('td[field=TASK_IMG]').find('div')
+            .removeClass('tree-task-wait')
+            .removeClass('tree-task-error')
+            .removeClass('tree-task-succ')
+            .addClass('tree-task-doing');
+        $(domEle).find('td[field=TASK_STA]').html('<img src="../images/indicator.medium.gif" height="24" width="24"/>');
+
+        ajaxRequest({
+            async: false,
+            noPrompt:true,
+            req: [{
+                service:  $(domEle).find('td[exe_num]').attr('exe_num')
+            }],
+            func: function(data) {
+                setTimeout(function () {
+                    $(domEle).find('td[field=TASK_IMG]').find('div').removeClass('tree-task-doing').addClass('tree-task-succ');
+                    $(domEle).find('td[field=TASK_STA]').html('<span style="color: #00ee00">完成</span>');
+                    curRowIdx++;
+                    if(curRowIdx<=tableRows-1){
+
+                        exeTask(curRowIdx);
+                    }else{
+                        //清空资金股份回退信息
+                        commonRequest({ service:'M0000089'});
+
+                        //日切日期
+                        commonRequest({ service:'M0001002'});
+
+                        //更新工具栏上日期
+                        top.window.kPortal.fn.setSysDate();
+                        //下一交易日
+                        queryNextDay();
+                    }
+                },1000);
+
+            },error:function (data) {
+
+                setTimeout(function () {
+                    $(domEle).find('td[field=TASK_IMG]').find('div').removeClass('tree-task-doing').addClass('tree-task-error');
+                    var retCode = data[0]["ANS_MSG_HDR"]["MSG_CODE"];
+                    var retMsg = data[0]["ANS_MSG_HDR"]["MSG_TEXT"];
+                    $(domEle).find('td[field=TASK_ERROR]').html(limitedWords({val:retMsg},50));
+                    $(domEle).find('td[field=TASK_STA]').html('<span style="color: red;">失败</span>');
+                },1000);
+            }
+        });
+
+    }
+}
+
+</script>
+
+</head>
+<body>
+
+<div class='div-transaction' id="transactionInfo">
+    <div id="process" class="process-frame" style="width: 100%;">
+
+        <div class="deal-btn" id="dealBtnControl">
+            <div class="deal-task-btn deal-trans-btn" id="transBtn"  style="float: right;
+               margin-right: 100px;" onclick="task_process()">
+                日切处理
+            </div>
+            <div style="width: 200px;margin-top: 5px;">下一个交易日：<span id="sp_nextDay"></span></div>
+        </div>
+    </div>
+    <div id="task_main_div" style="border: #3bbcf0 1px solid;">
+        <table id="taskExe_table" style="width:85%; margin-left: 100px;" cellspacing="0" cellpadding="0">
+
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

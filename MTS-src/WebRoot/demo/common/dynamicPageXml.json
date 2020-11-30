@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><requests>
+	<![CDATA[
+[
+{"service":{"flag":"1","serialNo":""},
+"message":[{"flag":"1","prompt":"成功","rows":"2","times":"100ms"},{"flag":"1","prompt":"成功","rows":"2","times":"100ms"}],
+"config":[
+    {
+        "id": "formId",
+        "title": "表单名",
+        "render": "kui-form",
+        "toolbar": [
+            {
+                "text": "确定",
+                "iconCls": "icon-ok",
+                "req": {
+                    "service": "modifyCustomerInfo",
+                    "param1": "aaa"
+                },
+                "handler": "function(){alert('111');}",
+                "callback": "function(data){}"
+            },
+            {
+                "text": "重置",
+                "iconCls": "icon-reset",
+                "req": {
+                    "service": "modifyCustomerInfo",
+                    "param1": "aaa",
+                    "param2": "bbb"
+                },
+                "handler": "function(){}",
+                "callback": "function(data){}"
+            }
+        ],
+        "colNumbers": 2,
+        "columns": [
+            {
+                "text": "分组1",
+                "expand": true,
+                "cols": [
+                    {
+                        "field": "khxb",
+                        "title": "客户性别:",
+                        "width": "120",
+                        "rowspan": 1,
+                        "colspan": 1,
+                        "editor": {
+                            "type": "combobox",
+                            "options": {
+                                "valueField": "sex",
+                                "textField": "sex_text",
+                                "req": [],
+                                "required": true
+                            }
+                        }
+                    },
+                    {
+                        "field": "email",
+                        "title": " 电子邮箱",
+                        "width": "120",
+                        "rowspan": 1,
+                        "colspan": 1,
+                        "editor": {
+                            "type": "validatebox",
+                            "options": {
+                                "required": true,
+                                "validType": "email",
+                                "disabled": false,
+                                "showMessage": true,
+                                "missingMessage": "必须输入！",
+                                "invalidMessage": "格式必须email格式!"
+                            }
+                        }
+                    },
+                    {
+                        "field": "email2",
+                        "title": " 电子邮箱2",
+                        "width": "120",
+                        "rowspan": 1,
+                        "colspan": 1,
+                        "editor": {
+                            "type": "validatebox",
+                            "options": {
+                                "required": true,
+                                "validType": "email",
+                                "disabled": false,
+                                "showMessage": true,
+                                "missingMessage": "必须输入！",
+                                "invalidMessage": "格式必须email格式!"
+                            }
+                        }
+                    },
+                    {
+                        "field": "email3",
+                        "title": " 电子邮箱3",
+                        "width": "120",
+                        "rowspan": 1,
+                        "colspan": 1,
+                        "editor": {
+                            "type": "validatebox",
+                            "options": {
+                                "required": true,
+                                "validType": "email",
+                                "disabled": false,
+                                "showMessage": true,
+                                "missingMessage": "必须输入！",
+                                "invalidMessage": "格式必须email格式!"
+                            }
+                        }
+                    },
+                    {
+                        "field": "email4",
+                        "title": " 电子邮箱4",
+                        "width": "120",
+                        "rowspan": 1,
+                        "colspan": 1,
+                        "editor": {
+                            "type": "validatebox",
+                            "options": {
+                                "required": true,
+                                "validType": "email",
+                                "disabled": false,
+                                "showMessage": true,
+                                "missingMessage": "必须输入！",
+                                "invalidMessage": "格式必须email格式!"
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+],
+"data":[[{"id":1,"text":"Folder1","iconCls":"icon-ok","pid":""}
+,{"id":2,"text":"File1-1","checked":false,"pid":"1"}
+,{"id":3,"text":"File1-2","checked":true,"pid":"1"}
+,{"id":21,"text":"File1-1-1","pid":"2"}
+,{"id":4,"text":"File2","checked":true,"pid":"","state": "closed"}]
+,[{"khxm":"heyz","khbh":"123"},{"khxm":"heyz","khbh":"123"}]]
+},
+{"service":{"flag":"1","serialNo":""},
+"message":[{"flag":"1","prompt":"成功","rows":"2","times":"100ms"},{"flag":"1","prompt":"成功","rows":"2","times":"100ms"}],
+"config":{},
+"data":[[{"khxm":"heyz","khbh":"123"},{"khxm":"heyz","khbh":"123"}],[{"khxm":"heyz","khbh":"123"},{"khxm":"heyz","khbh":"123"}]]
+}
+]
+]]></requests>

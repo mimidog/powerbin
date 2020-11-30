@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+
+    <service service_code="M0000001" service_title="查询客户资金账号信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryCustCuacctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000002" service_title="新增客户资金账号信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="2" attr1="mts">
+        <businesses>
+            <service_business business_code="addCustCuacctInfoAtom" business_type="3" business_cat="1"/>
+            <service_business business_code="initFunInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000003" service_title="修改客户资金账号信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modCustCuacctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000004" service_title="删除客户资金账号信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delCustCuacctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000005" service_title="查询客户交易账号信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryCustTrdacctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000006" service_title="新增客户交易账号信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addCustTrdacctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000007" service_title="修改客户交易账号信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modCustTrdacctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000008" service_title="修改客户交易账号信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delCustTrdacctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000009" service_title="查询个人客户开户信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryPerCustOpenAcctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000010" service_title="新增个人客户开户信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="addPerCustOpenAcctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000011" service_title="修改个人客户开户信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modPerCustOpenAcctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000012" service_title="删除个人客户开户信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delPerCustOpenAcctInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000013" service_title="查询资金子账户设置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryCustCuacctSubInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000014" service_title="新增资金子账户设置信息" arrange_type="1" service_type="2" service_cate="1"
+             result_position="2" attr1="mts">
+        <businesses>
+            <service_business business_code="addCustCuacctSubInfoAtom" business_type="3" business_cat="1"/>
+            <service_business business_code="initFunInfosubAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000015" service_title="修改资金子账户设置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modCustCuacctSubInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000016" service_title="删除资金子账户设置信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="delCustCuacctSubInfoAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+</services>

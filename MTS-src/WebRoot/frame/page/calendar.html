@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系统交易日历</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+    <link rel="stylesheet" type="text/css" href="../css/simple-calendar.css">
+    <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+    <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../common/js/common.js"></script>
+    <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+
+    <style>
+        #calendar{
+            width: 99.9%
+        }
+       /* .clearfix{
+            margin-bottom: 50px !important;
+        }*/
+    </style>
+</head>
+<body>
+<div class="clearfix">
+    <div id = 'calendar'></div>
+</div>
+</body>
+<script type="text/javascript" src="../js/calendar.js"></script>
+<script>
+    var myCalendar = null;
+   kuiloader.onReady = function() {
+       //调用服务,初始化日历数据
+       var newestYear = 2049;
+       myCalendar = new SimpleCalendar('#calendar',{
+           showLunarCalendar: false, //阴历
+           showLunarFestival: false, //农历节日
+           showSolarTerm: false,//节气
+           defaultYear :  parseInt(newestYear),
+           timeRange: {
+               startYear: parseInt(newestYear),
+               endYear: parseInt(newestYear)
+           }
+       });
+        //设置值,后续点击日历展示的时候会显示这些值
+       myCalendar.languageData.vocation.newest_year_data = [];
+       myCalendar.timeRange = { startYear : parseInt(newestYear),
+                                endYear : parseInt(newestYear)
+                              };
+       myCalendar.defaultYear = parseInt(newestYear);
+
+   }
+
+
+
+
+</script>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<views>
+	<!-- 人员数据授权 start -->
+	 <view id="AUTH_operTbl" title="" render="datagrid">
+	    <conf req="[{service:'P0001001', USER_STA:'1'}]" pageSize="10" colNumbers="2" singleSelect="true"  onClickRow="operFun"/>
+	    <qry_item field="USER_NAME" title="人员名称" type="input" edt_validType='val[1,64]'/>
+	    <col_item width="100" field="USER_CODE" title="ID号" type="input" />
+	    <col_item field="USER_NAME" title="人员名称" width="100" type="input"/>
+	    <col_item field="USER_TYPE" title="人员类型" width="100" type="input" formatter="function(value){ return getSysDictOpt('USER_TYPE',value); }"/>
+	  </view>
+	  <view id="AUTH_postTbl" title="" render="datagrid">
+	    <conf req="[{service: 'P0001045',POST_STA:'1',AUTH_TYPE:'2'}]" pageSize="10" colNumbers="2" singleSelect="true" onClickRow="postFun"/>
+	    <qry_item field="POST_NAME" title="岗位名称" type="input" edt_validType='val[1,64]'/>
+	    <col_item width="100" field="POST_ID" title="岗位编号" type="input" />
+	    <col_item field="POST_NAME" title="岗位名称" width="100" type="input"/>
+	    <col_item field="POST_STA" title="岗位状态" width="100" type="input" formatter="function(value){ return getSysDictOpt('POST_STA',value); }"/>
+	  </view>
+	  <view id="AUTH_orgTbl" title="" render="datagrid">
+	    <conf req="[{service:'P0001031',ORG_STA:'1'}]" pageSize="10" colNumbers="2" singleSelect="true" onClickRow="orgFun"/>
+	    <qry_item field="ORG_NAME" title="机构名称" type="input" edt_validType='val[1,64]'/>
+	    <col_item width="100" field="ORG_CODE" title="机构编号" type="input"/>
+	    <col_item field="ORG_NAME" title="机构名称" width="100" type="input"/>
+	    <col_item field="ORG_TYPE" title="机构类型" width="100" type="input" formatter="function(value){ return getSysDictOpt('ORG_TYPE',value); }"/>
+	  </view>
+	  <view id="AUTH_roleTbl" title="" render="datagrid">
+	    <conf req="[{service:'P0001011', ROLE_STA:'1'}]" pageSize="10" colNumbers="2" singleSelect="true" onClickRow="roleFun"/>
+	    <qry_item field="ROLE_NAME" title="角色名称" type="input" edt_validType='val[1,64]'/>
+	    <col_item width="100" field="ROLE_ID" title="角色编号" type="input" />
+	    <col_item field="ROLE_NAME" title="角色名称" width="100" type="input"/>
+	    <col_item field="ROLE_STA" title="角色状态" width="100" type="input" formatter="function(value){ return getSysDictOpt('ROLE_STA',value); }"/>
+	  </view>
+	  <view id="AUTH_DATAPERM" title="" render="datagrid">
+	    <conf req="[{service:'P0002265'}]" pageSize="10" colNumbers="2" singleSelect="true" fit="true"/>
+	    <qry_item field="EMPOWER_OBJ_TYPE" title="被授权对象类型" width="100" type="combobox" 
+				  edt_data="[{'dict_des':'人员','dict_val':'1'},{'dict_des':'岗位','dict_val':'4'}]"/>
+	    <qry_item field="EMPOWER_TYPE" title="授权类型" width="100" type="combobox" 
+	    		  edt_data="[{'dict_des':'使用权限','dict_val':'1'},{'dict_des':'授权权限','dict_val':'2'}]"/>
+	    <qry_item field="PERM_SET_ID" title="权限集" type="combobox" width="120" 
+                  edt_req="[{service:'P0002241'}]" edt_valueField="PERM_SET_ID" edt_panelHeight="150"
+                  edt_textField="PERM_SET_ID,PERM_SET_NAME" />
+	    <btn_item text="删除" req="[{service:'P0002264'}]" handler="commonDelete" iconCls="icon-remove"/>
+	    <col_item field="EMPOWER_SNO" title="授权记录号" width="100" type="input" sortType="number"/>
+	    <col_item field="EMPOWER_OBJ_TYPE" title="被授权对象类型" width="100" type="combobox" 
+				  edt_data="[{'dict_des':'人员','dict_val':'1'},{'dict_des':'岗位','dict_val':'4'}]"/>
+	    <col_item field="EMPOWER_OBJ_ID" title="被授权对象编号" width="100" type="input"  />
+	    <col_item field="EMPOWER_TYPE" title="授权类型" width="100" type="input" 
+	    		  edt_data="[{'dict_des':'使用权限','dict_val':'1'},{'dict_des':'授权权限','dict_val':'2'}]"/>
+	    <col_item field="PERM_SET_ID" title="权限集名称" type="combobox" width="120" 
+                  edt_req="[{service:'P0002241'}]" edt_valueField="PERM_SET_ID"
+                  edt_textField="PERM_SET_ID,PERM_SET_NAME" />  
+        <col_item field="CTRL_OBJ_TYPE" title="可管理对象类型" type="combobox" width="120" edt_dict="CTRL_OBJ_TYPE" />             
+	    <col_item field="CTRL_OBJ_ID" title="可管理对象名称" width="100" type="combobox" 
+	    		  edt_req="[{service:'P0002251'}]" edt_valueField="CTRL_OBJ_ID"
+                  edt_textField="CTRL_OBJ_ID,CTRL_OBJ_NAME"/>
+	    <col_item field="CTRL_OBJ_VAL" title="可管理对象取值" width="100" type="input" />
+	  </view>
+	<!-- 人员数据授权 end -->
+	
+</views>

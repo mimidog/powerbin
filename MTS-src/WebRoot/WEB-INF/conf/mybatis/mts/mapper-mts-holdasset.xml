@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+    <!--查询客户股份二级持仓信息-->
+    <select id="query_T_MTS_ASSET_SUB" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, OP_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,
+        CUACCT_ID,TRDACCT, INST_ID,(SELECT STK_NAME FROM T_STK_INFO WHERE STK_ID=INST_ID) AS INST_NAME,COST_PRICE,BUY_COST_AMT,
+        INST_LAST_BAL, INST_BAL, INST_AVL, INST_TRD_FRZ, INST_LONG_FRZ,
+        INST_OTD, INST_BAL_OTD, MKT_VALUE,CREATE_DATE,UP_DATE, REMARK,CALLOT_IN_ASSET,CALLOT_OUT_ASSET
+        FROM T_MTS_ASSET_SUB
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="OP_ID_IN !='' and OP_ID_IN != null">
+                and OP_ID IN (${OP_ID_IN})
+            </if>
+            <if test="PARAM_OP_ID !='' and PARAM_OP_ID != null">
+                and OP_ID = '${PARAM_OP_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                and INST_ID ='${INST_ID}'
+            </if>
+            <if test="INST_BAL !='' and INST_BAL != null">
+                and INST_BAL ='${INST_BAL}'
+            </if>
+            <if test="INST_AVL !='' and INST_AVL != null">
+                and INST_AVL ='${INST_AVL}'
+            </if>
+            <if test="INST_TRD_FRZ !='' and INST_TRD_FRZ != null">
+                and INST_TRD_FRZ ='${INST_TRD_FRZ}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+        ORDER  by UP_DATE desc
+    </select>
+
+    <!--客户资金一级持仓信息-->
+    <select id="query_T_FUND_INFO" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT F.CUST_ID, C.CUST_NAME,
+            F.CUACCT_ID, F.UNUSE_AMOUNT, F.FUND_LAST_BAL, F.FUND_BAL, F.FUND_AVL, F.FUND_TRD_FRZ,
+            F.FUND_LONG_FRZ, F.FUND_DEBT, F.FUND_OTD, F.FUND_CREDIT, F.FUND_BLN_ACCU, F.LAST_CAL_DATE,CAST(F.FUND_RATE AS VARCHAR) as FUND_RATE,
+             CAST(F.CREDIT_RATE AS VARCHAR) as CREDIT_RATE, F.UP_DATE, F.REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND
+        FROM T_FUND_INFO F, T_CUSTOMER C,T_CUST_BASE_INFO T
+        WHERE F.CUST_ID = C.CUST_ID AND C.CUST_ID=T.CUST_ID
+        <if test="CUST_ID !='' and CUST_ID != null">
+              AND F.CUST_ID ='${CUST_ID}'
+        </if>
+        <if test="CUACCT_ID !='' and CUACCT_ID != null">
+              AND F.CUACCT_ID ='${CUACCT_ID}'
+        </if>
+        <if test="TEL !='' and TEL != null">
+            AND T.TEL ='${TEL}'
+        </if>
+        <if test="PERMISSION_SQL != null and PERMISSION_SQL !=''">
+            ${PERMISSION_SQL}
+        </if>
+    </select>
+    <!--新增客户资金一级持仓信息-->
+    <insert id="insert_T_FUND_INFO" parameterType="hashmap">
+       INSERT INTO T_FUND_INFO (CUST_ID, CUACCT_ID,UNUSE_AMOUNT, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ, FUND_LONG_FRZ,
+             FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE, UP_DATE, REMARK,
+             CALLOT_IN_FUND,CALLOT_OUT_FUND)
+       VALUES ('${CUST_ID}', '${CUACCT_ID}', '${UNUSE_AMOUNT}','${FUND_LAST_BAL}', '${FUND_BAL}', '${FUND_AVL}', '${FUND_TRD_FRZ}',
+               '${FUND_LONG_FRZ}', '${FUND_DEBT}', '${FUND_OTD}', '${FUND_CREDIT}', '${FUND_BLN_ACCU}',
+                 '${LAST_CAL_DATE}', '${FUND_RATE}', '${CREDIT_RATE}', '${UP_DATE}', '${REMARK}',
+                 '${CALLOT_IN_FUND}','${CALLOT_OUT_FUND}')
+    </insert>
+    <!--修改客户资金一级持仓信息-->
+    <update id="update_T_FUND_INFO" parameterType="hashmap" >
+        UPDATE T_FUND_INFO  SET
+                   <if test="UNUSE_AMOUNT !='' and UNUSE_AMOUNT != null">
+                    UNUSE_AMOUNT = '${UNUSE_AMOUNT}',
+                   </if>
+                   <if test="FUND_LAST_BAL !='' and FUND_LAST_BAL != null">
+                        FUND_LAST_BAL = '${FUND_LAST_BAL}',
+                   </if>
+                    <if test="FUND_BAL !='' and FUND_BAL != null">
+                        FUND_BAL = '${FUND_BAL}',
+                    </if>
+                    <if test="FUND_AVL !='' and FUND_AVL != null">
+                        FUND_AVL = '${FUND_AVL}',
+                    </if>
+                    <if test="FUND_TRD_FRZ !='' and FUND_TRD_FRZ != null">
+                        FUND_TRD_FRZ = '${FUND_TRD_FRZ}',
+                    </if>
+                    <if test="FUND_LONG_FRZ !='' and FUND_LONG_FRZ != null">
+                        FUND_LONG_FRZ = '${FUND_LONG_FRZ}',
+                    </if>
+                    <if test="FUND_DEBT !='' and FUND_DEBT != null">
+                        FUND_DEBT = '${FUND_DEBT}',
+                    </if>
+                    <if test="FUND_OTD !='' and FUND_OTD != null">
+                        FUND_OTD = '${FUND_OTD}',
+                    </if>
+                    <if test="FUND_CREDIT !='' and FUND_CREDIT != null">
+                        FUND_CREDIT = '${FUND_CREDIT}',
+                    </if>
+                    <if test="FUND_BLN_ACCU !='' and FUND_BLN_ACCU != null">
+                        FUND_BLN_ACCU = '${FUND_BLN_ACCU}',
+                    </if>
+                    <if test="LAST_CAL_DATE !='' and LAST_CAL_DATE != null">
+                        LAST_CAL_DATE = '${LAST_CAL_DATE}',
+                    </if>
+                    <if test="FUND_RATE !='' and FUND_RATE != null">
+                        FUND_RATE = '${FUND_RATE}',
+                    </if>
+                    <if test="CREDIT_RATE !='' and CREDIT_RATE != null">
+                        CREDIT_RATE = '${CREDIT_RATE}',
+                    </if>
+                    <if test="UP_DATE !='' and UP_DATE != null">
+                        UP_DATE = '${UP_DATE}',
+                    </if>
+                    <if test="REMARK !='' and REMARK != null">
+                        REMARK = '${REMARK}',
+                    </if>
+                    <if test="CALLOT_IN_FUND !='' and CALLOT_IN_FUND != null">
+                        CALLOT_IN_FUND = '${CALLOT_IN_FUND}',
+                    </if>
+                    <if test="CALLOT_OUT_FUND !='' and CALLOT_OUT_FUND != null">
+                        CALLOT_OUT_FUND = '${CALLOT_OUT_FUND}',
+                    </if>
+                    CUST_ID = '${CUST_ID}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+        </where>
+    </update>
+
+    <!--查询客户资金二级持仓信息-->
+     <select id="query_T_FUND_INFO_SUB" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+         SELECT CUST_ID, OP_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,
+             CUACCT_ID,CALLOT_IN_FUND,CALLOT_OUT_FUND,FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ, FUND_LONG_FRZ, FUND_DEBT, FUND_OTD,
+             FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE, UP_DATE, REMARK
+                FROM T_FUND_INFO_SUB S,kdbase..UUM_USER T
+                 where S.OP_ID=T.USER_CODE
+             <if test="CUST_ID !='' and CUST_ID != null">
+                 and S.CUST_ID ='${CUST_ID}'
+             </if>
+             <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                 and S.OP_ID = '${OP_ID}'
+             </if>
+             <if test="QRY_OP_ID !='' and QRY_OP_ID != null">
+                 and S.OP_ID = '${QRY_OP_ID}'
+             </if>
+             <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                 and S.CUACCT_ID ='${CUACCT_ID}'
+             </if>
+             <if test="MOBILE !='' and MOBILE != null">
+                 AND T.MOBILE ='${MOBILE}'
+             </if>
+             <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                 ${PERMISSION_SQL}
+             </if>
+
+     </select>
+    <!--新增客户资金二级持仓信息-->
+    <insert id="insert_T_FUND_INFO_SUB" parameterType="hashmap">
+       INSERT INTO T_FUND_INFO_SUB (CUST_ID, OP_ID, CUACCT_ID, CALLOT_IN_FUND,CALLOT_OUT_FUND,FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ,
+                    FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE,
+                    CREDIT_RATE,UP_DATE, REMARK)
+       VALUES ('${CUST_ID}', '${OP_ID}', '${CUACCT_ID}','${CALLOT_IN_FUND}','${CALLOT_OUT_FUND}','${FUND_LAST_BAL}', '${FUND_BAL}', '${FUND_AVL}',
+               '${FUND_TRD_FRZ}', '${FUND_LONG_FRZ}', '${FUND_DEBT}', '${FUND_OTD}', '${FUND_CREDIT}',
+               '${FUND_BLN_ACCU}', '${LAST_CAL_DATE}', '${FUND_RATE}', '${CREDIT_RATE}','${UP_DATE}',
+               '${REMARK}')
+    </insert>
+    <!--修改客户资金二级持仓信息-->
+    <update id="update_T_FUND_INFO_SUB" parameterType="hashmap" >
+        UPDATE T_FUND_INFO_SUB  SET
+
+                <if test="CALLOT_IN_FUND !='' and CALLOT_IN_FUND != null">
+                    CALLOT_IN_FUND = '${CALLOT_IN_FUND}',
+                </if>
+                <if test="CALLOT_OUT_FUND !='' and CALLOT_OUT_FUND != null">
+                    CALLOT_OUT_FUND = '${CALLOT_OUT_FUND}',
+                </if>
+                <if test="FUND_LAST_BAL !='' and FUND_LAST_BAL != null">
+                    FUND_LAST_BAL = '${FUND_LAST_BAL}',
+                </if>
+                <if test="FUND_BAL !='' and FUND_BAL != null">
+                    FUND_BAL = '${FUND_BAL}',
+                </if>
+                <if test="FUND_AVL !='' and FUND_AVL != null">
+                    FUND_AVL = '${FUND_AVL}',
+                </if>
+                <if test="FUND_TRD_FRZ !='' and FUND_TRD_FRZ != null">
+                    FUND_TRD_FRZ = '${FUND_TRD_FRZ}',
+                </if>
+                <if test="FUND_LONG_FRZ !='' and FUND_LONG_FRZ != null">
+                    FUND_LONG_FRZ = '${FUND_LONG_FRZ}',
+                </if>
+                <if test="FUND_DEBT !='' and FUND_DEBT != null">
+                    FUND_DEBT = '${FUND_DEBT}',
+                </if>
+                <if test="FUND_OTD !='' and FUND_OTD != null">
+                    FUND_OTD = '${FUND_OTD}',
+                </if>
+                <if test="FUND_CREDIT !='' and FUND_CREDIT != null">
+                    FUND_CREDIT = '${FUND_CREDIT}',
+                </if>
+                <if test="FUND_BLN_ACCU !='' and FUND_BLN_ACCU != null">
+                    FUND_BLN_ACCU = '${FUND_BLN_ACCU}',
+                </if>
+                <if test="LAST_CAL_DATE !='' and LAST_CAL_DATE != null">
+                    LAST_CAL_DATE = '${LAST_CAL_DATE}',
+                </if>
+                <if test="FUND_RATE !='' and FUND_RATE != null">
+                    FUND_RATE = '${FUND_RATE}',
+                </if>
+                <if test="CREDIT_RATE !='' and CREDIT_RATE != null">
+                    CREDIT_RATE = '${CREDIT_RATE}',
+                </if>
+                <if test="UP_DATE !='' and UP_DATE != null">
+                    UP_DATE = '${UP_DATE}',
+                </if>
+                <if test="REMARK !='' and REMARK != null">
+                    REMARK = '${REMARK}',
+                </if>
+                CUST_ID = '${CUST_ID}',OP_ID='${OP_ID}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID ='${OP_ID}'
+            </if>
+        </where>
+    </update>
+
+    <!--新增客户股份一级持仓信息-->
+    <insert id="insert_T_MTS_ASSET" parameterType="hashmap">
+       INSERT INTO T_MTS_ASSET (CUST_ID,CUACCT_ID,TRDACCT, INST_ID,COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL,UNUSE_AMOUNT,INST_TRD_FRZ,
+                                  INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, UP_DATE, REMARK,CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+              VALUES ('${CUST_ID}','${CUACCT_ID}','${TRDACCT}', '${INST_ID}','${COST_PRICE}','${BUY_COST_AMT}','${INST_LAST_BAL}', '${INST_BAL}', '${INST_AVL}',
+                            '${UNUSE_AMOUNT}','${INST_TRD_FRZ}', '${INST_LONG_FRZ}', '${INST_OTD}', '${INST_BAL_OTD}',
+                             '${MKT_VALUE}', '${UP_DATE}', '${REMARK}','${CALLOT_IN_ASSET}','${CALLOT_OUT_ASSET}')
+    </insert>
+    <!--查询客户股份一级持仓信息-->
+    <select id="query_T_MTS_ASSET" parameterType="hashMap" resultType="java.util.HashMap">
+
+        SELECT F.CUST_ID,(SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=F.CUST_ID) AS  CUST_NAME,
+                CUACCT_ID,TRDACCT, INST_ID, (SELECT STK_NAME FROM T_STK_INFO WHERE STK_ID=INST_ID) AS INST_NAME,
+                F.BUY_COST_AMT,F.COST_PRICE,F.INST_LAST_BAL, F.INST_BAL, F.INST_AVL, F.UNUSE_AMOUNT,INST_TRD_FRZ,
+                F.INST_LONG_FRZ, F.INST_OTD, F.INST_BAL_OTD, F.MKT_VALUE, F.UP_DATE, F.REMARK,F.CALLOT_IN_ASSET,
+                F.CALLOT_OUT_ASSET
+                FROM T_MTS_ASSET F,T_CUST_BASE_INFO T
+            WHERE F.CUST_ID=T.CUST_ID
+
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and F.CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="TEL !='' and TEL != null">
+                and T.TEL ='${TEL}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and F.CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                and F.INST_ID ='${INST_ID}'
+            </if>
+            <if test="INST_BAL !='' and INST_BAL != null">
+                and F.INST_BAL ='${INST_BAL}'
+            </if>
+            <if test="INST_AVL !='' and INST_AVL != null">
+                and F.INST_AVL ='${INST_AVL}'
+            </if>
+            <if test="INST_TRD_FRZ !='' and INST_TRD_FRZ != null">
+                and F.INST_TRD_FRZ ='${INST_TRD_FRZ}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+
+          ORDER BY F.UP_DATE DESC
+    </select>
+    <!--修改客户股份一级持仓信息-->
+    <update id="update_T_MTS_ASSET" parameterType="hashmap" >
+        UPDATE T_MTS_ASSET  SET
+        <if test="COST_PRICE !='' and COST_PRICE != null">
+            COST_PRICE =CAST('${COST_PRICE}' AS NUMERIC(15,4)),
+        </if>
+        <if test="BUY_COST_AMT !='' and BUY_COST_AMT != null">
+            BUY_COST_AMT =CAST('${BUY_COST_AMT}' AS NUMERIC(15,4)),
+        </if>
+        <if test="INST_LAST_BAL !='' and INST_LAST_BAL != null">
+            INST_LAST_BAL =CAST('${INST_LAST_BAL}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_BAL !='' and INST_BAL != null">
+            INST_BAL = CAST('${INST_BAL}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_AVL !='' and INST_AVL != null">
+            INST_AVL = CAST('${INST_AVL}' AS NUMERIC(19,0)),
+        </if>
+        <if test="UNUSE_AMOUNT !='' and UNUSE_AMOUNT != null">
+            UNUSE_AMOUNT = CAST('${UNUSE_AMOUNT}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_TRD_FRZ !='' and INST_TRD_FRZ != null">
+            INST_TRD_FRZ =CAST('${INST_TRD_FRZ}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_LONG_FRZ !='' and INST_LONG_FRZ != null">
+            INST_LONG_FRZ = CAST('${INST_LONG_FRZ}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_OTD !='' and INST_OTD != null">
+            INST_OTD = CAST('${INST_OTD}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_BAL_OTD !='' and INST_BAL_OTD != null">
+            INST_BAL_OTD = CAST('${INST_BAL_OTD}' AS NUMERIC(19,0)),
+        </if>
+        <if test="MKT_VALUE !='' and MKT_VALUE != null">
+            MKT_VALUE =CAST('${MKT_VALUE}' AS NUMERIC(19,0)),
+        </if>
+        <if test="UP_DATE !='' and UP_DATE != null">
+            UP_DATE = '${UP_DATE}',
+        </if>
+        <if test="REMARK !='' and REMARK != null">
+            REMARK = '${REMARK}',
+        </if>
+        <if test="CALLOT_IN_ASSET !='' and CALLOT_IN_ASSET != null">
+            CALLOT_IN_ASSET = '${CALLOT_IN_ASSET}',
+        </if>
+        <if test="CALLOT_OUT_ASSET !='' and CALLOT_OUT_ASSET != null">
+            CALLOT_OUT_ASSET = '${CALLOT_OUT_ASSET}',
+        </if>
+        CUST_ID = '${CUST_ID}',CUACCT_ID='${CUACCT_ID}',TRDACCT = '${TRDACCT}',INST_ID='${INST_ID}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                and INST_ID ='${INST_ID}'
+            </if>
+        </where>
+    </update>
+
+    <!--新增客户股份二级持仓信息-->
+    <insert id="insert_T_MTS_ASSET_SUB" parameterType="hashmap" >
+        INSERT INTO T_MTS_ASSET_SUB (CUST_ID, OP_ID,CUACCT_ID,TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL, INST_TRD_FRZ,
+                                      INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, CREATE_DATE,UP_DATE, REMARK,
+                                        CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+        VALUES ('${CUST_ID}', '${OP_ID}', '${CUACCT_ID}','${TRDACCT}', '${INST_ID}','${COST_PRICE}','${BUY_COST_AMT}', '${INST_LAST_BAL}', '${INST_BAL}', '${INST_AVL}',
+                  '${INST_TRD_FRZ}', '${INST_LONG_FRZ}', '${INST_OTD}', '${INST_BAL_OTD}', '${MKT_VALUE}',
+                  '${CREATE_DATE}','${UP_DATE}','${REMARK}','${CALLOT_IN_ASSET}','${CALLOT_OUT_ASSET}')
+
+     </insert>
+    <!--修改客户股份二级持仓信息-->
+    <update id="update_T_MTS_ASSET_SUB" parameterType="hashmap" >
+        UPDATE T_MTS_ASSET_SUB  SET
+        <if test="COST_PRICE !='' and COST_PRICE != null">
+            COST_PRICE =CAST('${COST_PRICE}' AS NUMERIC(15,4)),
+        </if>
+        <if test="BUY_COST_AMT !='' and BUY_COST_AMT != null">
+            BUY_COST_AMT =CAST('${BUY_COST_AMT}' AS NUMERIC(15,4)),
+        </if>
+        <if test="INST_LAST_BAL !='' and INST_LAST_BAL != null">
+            INST_LAST_BAL =CAST('${INST_LAST_BAL}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_BAL !='' and INST_BAL != null">
+            INST_BAL = CAST('${INST_BAL}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_AVL !='' and INST_AVL != null">
+            INST_AVL = CAST('${INST_AVL}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_TRD_FRZ !='' and INST_TRD_FRZ != null">
+            INST_TRD_FRZ =CAST('${INST_TRD_FRZ}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_LONG_FRZ !='' and INST_LONG_FRZ != null">
+            INST_LONG_FRZ = CAST('${INST_LONG_FRZ}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_OTD !='' and INST_OTD != null">
+            INST_OTD = CAST('${INST_OTD}' AS NUMERIC(19,0)),
+        </if>
+        <if test="INST_BAL_OTD !='' and INST_BAL_OTD != null">
+            INST_BAL_OTD = CAST('${INST_BAL_OTD}' AS NUMERIC(19,0)),
+        </if>
+        <if test="MKT_VALUE !='' and MKT_VALUE != null">
+            MKT_VALUE =CAST('${MKT_VALUE}' AS NUMERIC(19,0)),
+        </if>
+        <if test="UP_DATE !='' and UP_DATE != null">
+            UP_DATE = '${UP_DATE}',
+        </if>
+        <if test="REMARK !='' and REMARK != null">
+            REMARK = '${REMARK}',
+        </if>
+        <if test="CALLOT_IN_ASSET !='' and CALLOT_IN_ASSET != null">
+            CALLOT_IN_ASSET = '${CALLOT_IN_ASSET}',
+        </if>
+        <if test="CALLOT_OUT_ASSET !='' and CALLOT_OUT_ASSET != null">
+            CALLOT_OUT_ASSET = '${CALLOT_OUT_ASSET}',
+        </if>
+        CUST_ID = '${CUST_ID}',TRDACCT = '${TRDACCT}',CUACCT_ID='${CUACCT_ID}',OP_ID='${OP_ID}',INST_ID='${INST_ID}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID ='${OP_ID}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                and INST_ID ='${INST_ID}'
+            </if>
+        </where>
+
+    </update>
+
+    <!--日切清算一级资金持仓可用资金-->
+    <update id="clear_T_FUND_INFO" parameterType="hashmap">
+        UPDATE T_FUND_INFO SET FUND_AVL=FUND_AVL+FUND_TRD_FRZ,FUND_TRD_FRZ=0
+    </update>
+    <!--日切清算二级资金持仓可用资金-->
+    <update id="clear_T_FUND_INFO_SUB" parameterType="hashmap">
+        UPDATE T_FUND_INFO_SUB SET FUND_AVL=FUND_AVL+FUND_TRD_FRZ,FUND_TRD_FRZ=0
+    </update>
+
+    <!--日切清算一级股份持仓可用股份-->
+    <update id="clear_T_MTS_ASSET" parameterType="hashmap">
+        UPDATE T_MTS_ASSET SET INST_AVL=INST_AVL+INST_TRD_FRZ,INST_TRD_FRZ=0
+    </update>
+    <!--日切清空一级股份持仓空股份数据-->
+    <delete id="del_emptyStock_T_MTS_ASSET" parameterType="hashmap">
+        DELETE FROM T_MTS_ASSET WHERE INST_BAL=0 AND INST_AVL=0 AND INST_TRD_FRZ=0
+    </delete>
+    <!--日切清算二级股份持仓可用股份-->
+    <update id="clear_T_MTS_ASSET_SUB" parameterType="hashmap">
+        UPDATE T_MTS_ASSET_SUB SET INST_AVL=INST_AVL+INST_TRD_FRZ,INST_TRD_FRZ=0
+    </update>
+    <!--日切清空二级股份持仓空股份数据-->
+    <delete id="del_emptyStock_T_MTS_ASSET_SUB" parameterType="hashmap">
+        DELETE FROM T_MTS_ASSET_SUB WHERE INST_BAL=0 AND INST_AVL=0 AND INST_TRD_FRZ=0
+    </delete>
+
+    <!--查询交易员日结汇总信息-->
+    <select id="query_T_TRADE_DAY_CLEAR_SUM" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT TRADE_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=TRADE_ID) AS TRADE_NAME ,
+                F.CUST_ID,(SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=F.CUST_ID) AS  CUST_NAME,
+                INIT_FUND,TRADE_CNT,TOTAL_ASSET, TOTAL_MARKET_VAL, FUND_BAL, FUND_AVL, MAX_BUY_AMOUNT, TOTAL_BUY_COST,
+                TOTAL_SELL_COST, TOTAL_COST, TOTAL_PROFIT, TOTAL_LOSS, SURPLUS_RATE,TOTAL_SURPLUS,
+                TRADE_DAY,TRADE_STA_DATE,TRADE_END_DATE,WIN_RATE,SUBJECT_CNT,DO_HAND_CNT,LOSS_HAND_CNT,HOLD_STOCK_SUM,
+                UP_DATE, REMARK
+        FROM T_TRADE_DAY_CLEAR_SUM F
+        <where>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                AND TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                AND CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="UP_DATE_BGN !='' and UP_DATE_BGN != null">
+                AND UP_DATE &gt;='${UP_DATE_BGN}'
+            </if>
+            <if test="UP_DATE_END !='' and UP_DATE_END != null">
+                AND UP_DATE &lt;='${UP_DATE_END}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                AND UP_DATE ='${UP_DATE}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+    </select>
+    <!--清空交易员日结汇总信息-->
+    <delete id="delete_T_TRADE_DAY_CLEAR_SUM" parameterType="hashmap">
+       delete  from T_TRADE_DAY_CLEAR_SUM
+       <where>
+           <if test="UP_DATE !='' and UP_DATE != null">
+               AND UP_DATE ='${UP_DATE}'
+           </if>
+       </where>
+    </delete>
+    <!--新增交易员日结汇总信息-->
+    <insert id="insert_T_TRADE_DAY_CLEAR_SUM" parameterType="hashmap">
+       INSERT INTO T_TRADE_DAY_CLEAR_SUM (TRADE_ID, CUST_ID, INIT_FUND, TRADE_CNT, TOTAL_ASSET, TOTAL_MARKET_VAL, FUND_BAL,
+          FUND_AVL, MAX_BUY_AMOUNT, TOTAL_BUY_COST, TOTAL_SELL_COST, TOTAL_COST, TOTAL_PROFIT, TOTAL_LOSS, SURPLUS_RATE,
+          TOTAL_SURPLUS, TRADE_DAY, TRADE_STA_DATE, TRADE_END_DATE, WIN_RATE, SUBJECT_CNT, DO_HAND_CNT,
+         LOSS_HAND_CNT, HOLD_STOCK_SUM, UP_DATE, REMARK)
+      SELECT K.OP_ID,K.CUST_ID,0 AS INIT_FUND,
+        (SELECT COUNT(1) FROM T_OMS T
+        WHERE DEPOS_QTY-UNMATCH_QTY>0 AND T.OP_ID=K.OP_ID AND T.CUST_ID=K.CUST_ID) AS TRADE_CNT,
+
+        0 AS TOTAL_ASSET ,
+        ISNULL((SELECT SUM(STK_PRICE*INST_BAL)
+        FROM  T_MTS_ASSET_SUB WHERE CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        AS TOTAL_MARKET_VAL,FUND_BAL,FUND_AVL,
+        (SELECT PAR_VAL FROM kdbase..UPM_SYSPARAM WHERE PAR_CODE='TRADER_BUY_QUOTA_LIMIT') AS MAX_BUY_AMOUNT,
+
+        ISNULL((SELECT SUM(BUY_COST) FROM T_MTS_FEE_SUB WHERE  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0) AS TOTAL_BUY_COST,
+        ISNULL((SELECT SUM(SELL_COST) FROM T_MTS_FEE_SUB WHERE  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)  AS TOTAL_SELL_COST,
+        ISNULL((SELECT SUM(BUY_COST) FROM T_MTS_FEE_SUB WHERE  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)+
+        ISNULL((SELECT SUM(SELL_COST) FROM T_MTS_FEE_SUB WHERE  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0) AS TOTAL_COST,
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  IS_FINISH=1 AND HOLD_PROFIT >0 AND CUST_ID=K.CUST_ID
+        AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        +
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  UP_DATE='${UP_DATE}' AND HOLD_PROFIT &gt;0  AND CUST_ID=K.CUST_ID
+        AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        AS TOTAL_PROFIT,
+
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  IS_FINISH=1 AND HOLD_PROFIT &gt;0
+        AND CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        +
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  UP_DATE='${UP_DATE}' AND HOLD_PROFIT &lt;0 AND CUST_ID=K.CUST_ID
+        AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        AS TOTAL_LOSS,
+        0 AS SURPLUS_RATE,
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  IS_FINISH=1 AND HOLD_PROFIT &gt;0 AND CUST_ID=K.CUST_ID
+        AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        +
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  UP_DATE='${UP_DATE}' AND HOLD_PROFIT &gt;0  AND CUST_ID=K.CUST_ID
+        AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)+
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  IS_FINISH=1 AND HOLD_PROFIT &gt;0
+        AND CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        +
+        ISNULL((SELECT SUM(HOLD_PROFIT) FROM T_MTS_FEE_SUB
+        WHERE  UP_DATE='${UP_DATE}' AND HOLD_PROFIT &lt;0 AND CUST_ID=K.CUST_ID
+        AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)
+        AS TOTAL_SURPLUS,
+
+        0 AS TRADE_DAY,
+        ISNULL((SELECT MIN(CREATE_DATE) FROM T_MTS_FEE_SUB WHERE  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)  AS TRADE_STA_DATE,
+        '${UP_DATE}' AS TRADE_END_DATE,
+        ISNULL((SELECT COUNT(*) FROM T_MTS_FEE_SUB WHERE HOLD_PROFIT &gt;0 AND (IS_FINISH=1 OR  UP_DATE='${UP_DATE}') AND  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0)*100.0/
+        ISNULL((SELECT COUNT(*) FROM T_MTS_FEE_SUB WHERE   (IS_FINISH=1 OR  UP_DATE='${UP_DATE}') AND CUST_ID=K.CUST_ID  AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),1) AS WIN_RATE,
+        ISNULL((SELECT COUNT(*) FROM T_MTS_FEE_SUB WHERE   (IS_FINISH=1 OR  UP_DATE='${UP_DATE}') AND CUST_ID=K.CUST_ID  AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),1) AS SUBJECT_CNT,
+        ISNULL((SELECT COUNT(*) FROM T_MTS_FEE_SUB WHERE HOLD_PROFIT &gt;0 AND (IS_FINISH=1 OR  UP_DATE='${UP_DATE}') AND  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0) AS DO_HAND_CNT,
+        ISNULL((SELECT COUNT(*) FROM T_MTS_FEE_SUB WHERE HOLD_PROFIT &gt;0 AND (IS_FINISH=1 OR  UP_DATE='${UP_DATE}') AND  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0) AS LOSS_HAND_CNT,
+        ISNULL((SELECT  COUNT(distinct INST_ID) FROM T_MTS_FEE_SUB WHERE  CUST_ID=K.CUST_ID AND OP_ID=K.OP_ID GROUP BY OP_ID,CUST_ID),0) AS HOLD_STOCK_SUM,
+        (SELECT SYSTEM_DATE FROM T_SYS_CONTROL) AS UP_DATE,''
+        FROM T_FUND_INFO_SUB K
+    </insert>
+
+    <!--交易员日结明细信息-->
+    <select id="query_T_TRADE_DAY_CLEAR_DETAIL" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT TRADE_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=TRADE_ID) AS TRADE_NAME ,
+        F.CUST_ID,(SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=F.CUST_ID) AS  CUST_NAME,
+        INST_ID, (SELECT STK_NAME FROM T_STK_INFO WHERE STK_ID=INST_ID) AS INST_NAME,
+        HOLD_CNT, STK_PRICE, TODAY_MARKET_VAL,COST_PRICE, HOLD_PROFIT, BUY_COST, SELL_COST, TOTAL_COST,
+        CREATE_DATE,IS_FINISH,UP_DATE, REMARK
+        FROM T_TRADE_DAY_CLEAR_DETAIL F
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                AND CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                AND CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                AND TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                AND INST_ID ='${INST_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                AND TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                AND UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+        ORDER  by UP_DATE desc
+    </select>
+    <!--清空交易员日结明细信息-->
+    <delete id="delete_T_TRADE_DAY_CLEAR_DETAIL" parameterType="hashmap">
+       delete  from   T_TRADE_DAY_CLEAR_DETAIL
+        <where>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                AND UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+    </delete>
+    <!--新增交易员日结明细信息-->
+    <insert id="insert_T_TRADE_DAY_CLEAR_DETAIL" parameterType="hashmap">
+        INSERT INTO T_TRADE_DAY_CLEAR_DETAIL (TRADE_ID, CUST_ID, INST_ID, HOLD_CNT, STK_PRICE, TODAY_MARKET_VAL,
+                      COST_PRICE, HOLD_PROFIT, BUY_COST, SELL_COST, TOTAL_COST, UP_DATE, REMARK,CREATE_DATE,IS_FINISH)
+         SELECT T1.OP_ID,T1.CUST_ID,T1.INST_ID,INST_BAL,T1.STK_PRICE,INST_BAL*T1.STK_PRICE,T1.COST_PRICE,HOLD_PROFIT=T2.HOLD_PROFIT,
+               T2.BUY_COST, T2.SELL_COST, TOTAL_COST= T2.BUY_COST+T2.SELL_COST, UP_DATE=T2.UP_DATE, REMARK='',T2.CREATE_DATE,IS_FINISH
+        FROM T_MTS_ASSET_SUB T1,T_MTS_FEE_SUB T2
+        WHERE T1.CUST_ID=T2.CUST_ID AND T1.OP_ID=T2.OP_ID AND   T1.TRDACCT=T2.TRDACCT
+                AND T1.INST_ID=T2.INST_ID  AND IS_FINISH='0'
+                AND T1.CREATE_DATE=T2.CREATE_DATE
+                AND T2. UP_DATE='${UP_DATE}'
+        UNION ALL
+        SELECT T1.OP_ID,T1.CUST_ID,T1.INST_ID,INST_BAL,T1.STK_PRICE,INST_BAL*T1.STK_PRICE,T1.COST_PRICE,
+                HOLD_PROFIT=INST_BAL*(STK_PRICE-COST_PRICE),
+                BUY_COST=0, SELL_COST=0, TOTAL_COST=0, UP_DATE='${UP_DATE}', REMARK='',T1.CREATE_DATE,IS_FINISH=0
+        FROM T_MTS_ASSET_SUB T1
+        WHERE T1.UP_DATE !='${UP_DATE}'
+        UNION
+        SELECT  OP_ID, CUST_ID, INST_ID, HOLD_CNT=0, STK_PRICE=0, TODAY_MARKET_VAL=0,
+                COST_PRICE, HOLD_PROFIT, BUY_COST, SELL_COST, TOTAL_COST=BUY_COST+SELL_COST, UP_DATE,
+                REMARK,CREATE_DATE,IS_FINISH
+        FROM T_MTS_FEE_SUB WHERE IS_FINISH='1' AND UP_DATE='${UP_DATE}'
+    </insert>
+
+    <!--更新二级股份收盘价信息-->
+    <update id="update_MTS_ASSET_SUB_STK_PRICE" parameterType="hashmap">
+        update T_MTS_ASSET_SUB set STK_PRICE=T2.stk_price
+        from T_MTS_ASSET_SUB T1, (select distinct stk_id ,stk_price
+                                  from OPENQUERY(my, 'select * from t_stk_hq_t') ) T2
+        WHERE T1.INST_ID=T2.stk_id
+    </update>
+
+    <!--新增客户二级费用信息-->
+    <insert id="insert_T_MTS_FEE_SUB" parameterType="hashmap">
+        INSERT INTO T_MTS_FEE_SUB (CUST_ID, OP_ID, TRDACCT, INST_ID, COST_PRICE, BUY_COST,SELL_COST, BUY_CNT,
+                    SELL_CNT, HOLD_PROFIT,CREATE_DATE,IS_FINISH,UP_DATE, REMARK)
+        select T1.CUST_ID,T1.OP_ID,T1.TRDACCT,T1.INST_ID,T1.COST_PRICE,
+                BUY_COST=SUM(CASE TRADE_DIRECT WHEN  '1' THEN PROC_COST+TRANSFER_COST+OTHER_COST  ELSE 0 END ),
+                SELL_COST=SUM(CASE TRADE_DIRECT  WHEN '2' THEN PROC_COST+TRANSFER_COST+OTHER_COST  ELSE 0 END ),
+                BUY_CNT=SUM(CASE TRADE_DIRECT  WHEN '1' THEN 1  ELSE 0 END ),
+                SELL_CNT=SUM(CASE TRADE_DIRECT  WHEN '2' THEN 1  ELSE 0 END ),
+                (CASE   WHEN INST_BAL>0  THEN INST_BAL*(T1.STK_PRICE-T1.COST_PRICE)
+                ELSE dbo.spGetHOLD_PROFIT(T1.OP_ID,T1.INST_ID) END )AS HOLD_PROFIT,
+                T1.CREATE_DATE,(CASE INST_BAL WHEN  0 THEN 1  ELSE 0 END ) AS IS_FINISH,
+                (SELECT SYSTEM_DATE FROM T_SYS_CONTROL) as UP_DATE,'' as REMARK
+        FROM T_MTS_ASSET_SUB T1,T_MATCH T2
+        WHERE T1.CUST_ID=T2.CUST_ID
+                AND T1.OP_ID=T2.OP_ID
+                AND T1.TRDACCT=T2.TRDACCT
+                AND T1.INST_ID=T2.STK_ID
+        GROUP BY T1.CUST_ID,T1.OP_ID,T1.TRDACCT,T1.INST_ID,T1.COST_PRICE,T1.CREATE_DATE,T1.INST_BAL,STK_PRICE
+        UNION ALL
+        select T1.CUST_ID,T1.OP_ID,T1.TRDACCT,T1.INST_ID,T1.COST_PRICE,
+              BUY_COST=0, SELL_COST=0,BUY_CNT=0,SELL_CNT=0,
+            (CASE   WHEN INST_BAL>0  THEN INST_BAL*(T1.STK_PRICE-T1.COST_PRICE)
+            ELSE dbo.spGetHOLD_PROFIT(T1.OP_ID,T1.INST_ID) END )AS HOLD_PROFIT,
+            T1.CREATE_DATE,(CASE INST_BAL WHEN  0 THEN 1  ELSE 0 END ) AS IS_FINISH,
+            (SELECT SYSTEM_DATE FROM T_SYS_CONTROL) as UP_DATE,'' as REMARK
+        FROM T_MTS_ASSET_SUB T1
+        WHERE T1.UP_DATE !='${UP_DATE}'
+    </insert>
+
+    <!--删除客户二级费用信息-->
+    <delete id="delete_T_MTS_FEE_SUB" parameterType="hashmap">
+        delete  from T_MTS_FEE_SUB
+        <where>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                AND UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+    </delete>
+    <!--数据权限-->
+    <select id="CALL_FUN_GET_DATA_PERMISSION" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT dbo.FUN_GET_DATA_PERMISSION('${OP_CODE}', '${T_CODE_ID}') AS PERMISSION_SQL
+    </select>
+
+    <!--查询客户资金一级持仓信息清算备份信息-->
+    <select id="query_T_FUND_INFO_CLEAR_BAK" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, CUACCT_ID, FUND_LAST_BAL, FUND_BAL, FUND_AVL, UNUSE_AMOUNT, FUND_TRD_FRZ, FUND_LONG_FRZ,
+               FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE,
+                UP_DATE, REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND
+        FROM T_FUND_INFO_CLEAR_BAK
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                AND CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                AND CUACCT_ID ='${CUACCT_ID}'
+            </if>
+        </where>
+    </select>
+    <!--插入客户资金一级持仓信息清算备份信息-->
+    <insert id="insert_T_FUND_INFO_CLEAR_BAK" parameterType="hashmap">
+      INSERT INTO T_FUND_INFO_CLEAR_BAK (CUST_ID, CUACCT_ID, FUND_LAST_BAL, FUND_BAL, FUND_AVL, UNUSE_AMOUNT,
+                    FUND_TRD_FRZ, FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE,
+                    FUND_RATE, CREDIT_RATE, UP_DATE, REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND)
+      SELECT CUST_ID, CUACCT_ID, FUND_LAST_BAL, FUND_BAL, FUND_AVL,UNUSE_AMOUNT,
+             FUND_TRD_FRZ, FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE,
+              FUND_RATE, CREDIT_RATE, UP_DATE, REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND
+      FROM T_FUND_INFO
+    </insert>
+    <!--删除客户资金一级持仓信息清算备份信息-->
+    <delete id="delete_T_FUND_INFO_CLEAR_BAK" parameterType="hashmap">
+        TRUNCATE TABLE T_FUND_INFO_CLEAR_BAK
+    </delete>
+
+    <!--删除客户资金一级持仓信息信息-->
+    <delete id="delete_T_FUND_INFO" parameterType="hashmap">
+        TRUNCATE TABLE T_FUND_INFO
+    </delete>
+    <!--还原客户资金一级持仓信息信息-->
+    <insert id="restore_T_FUND_INFO" parameterType="hashmap">
+      INSERT INTO T_FUND_INFO (CUST_ID, CUACCT_ID, FUND_LAST_BAL, FUND_BAL, FUND_AVL, UNUSE_AMOUNT,
+                    FUND_TRD_FRZ, FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE,
+                    FUND_RATE, CREDIT_RATE, UP_DATE, REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND)
+      SELECT CUST_ID, CUACCT_ID, FUND_LAST_BAL, FUND_BAL, FUND_AVL,UNUSE_AMOUNT,
+             FUND_TRD_FRZ, FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE,
+              FUND_RATE, CREDIT_RATE, UP_DATE, REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND
+      FROM T_FUND_INFO_CLEAR_BAK
+    </insert>
+
+    <!--查询客户资金二级持仓信息清算备份信息-->
+    <select id="query_T_FUND_INFO_SUB_CLEAR_BAK" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, OP_ID, CUACCT_ID,CALLOT_IN_FUND,CALLOT_OUT_FUND, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ, FUND_LONG_FRZ, FUND_DEBT,
+                FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE,UP_DATE, REMARK
+        FROM T_FUND_INFO_SUB_CLEAR_BAK
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                AND CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                AND OP_ID ='${OP_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                AND CUACCT_ID ='${CUACCT_ID}'
+            </if>
+        </where>
+    </select>
+    <!--插入客户资金二级持仓信息清算备份信息-->
+    <insert id="insert_T_FUND_INFO_SUB_CLEAR_BAK" parameterType="hashmap">
+     INSERT INTO T_FUND_INFO_SUB_CLEAR_BAK (CUST_ID, OP_ID, CUACCT_ID,CALLOT_IN_FUND,CALLOT_OUT_FUND, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ,
+               FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE,
+                UP_DATE, REMARK)
+        SELECT CUST_ID, OP_ID, CUACCT_ID,CALLOT_IN_FUND,CALLOT_OUT_FUND, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ,
+               FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE,
+               UP_DATE, REMARK
+        FROM T_FUND_INFO_SUB
+
+    </insert>
+    <!--删除客户资金二级持仓信息清算备份信息-->
+    <delete id="delete_T_FUND_INFO_SUB_CLEAR_BAK" parameterType="hashmap">
+        TRUNCATE TABLE T_FUND_INFO_SUB_CLEAR_BAK
+    </delete>
+
+    <!--删除客户资金二级持仓信息信息-->
+    <delete id="delete_T_FUND_INFO_SUB" parameterType="hashmap">
+        TRUNCATE TABLE T_FUND_INFO_SUB
+    </delete>
+    <!--还原客户资金二级持仓信息信息-->
+    <insert id="restore_T_FUND_INFO_SUB" parameterType="hashmap">
+        INSERT INTO T_FUND_INFO_SUB (CUST_ID, OP_ID, CUACCT_ID,CALLOT_IN_FUND,CALLOT_OUT_FUND, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ,
+               FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE,
+                UP_DATE, REMARK)
+        SELECT CUST_ID, OP_ID, CUACCT_ID,CALLOT_IN_FUND,CALLOT_OUT_FUND, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ,
+               FUND_LONG_FRZ, FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE,
+               UP_DATE, REMARK
+        FROM T_FUND_INFO_SUB_CLEAR_BAK
+    </insert>
+
+
+    <!--查询客户股份一级持仓信息清算备份信息-->
+    <select id="query_T_MTS_ASSET_CLEAR_BAK" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, CUACCT_ID,TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL, UNUSE_AMOUNT, INST_TRD_FRZ,
+               INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, UP_DATE, REMARK,CALLOT_IN_ASSET,CALLOT_OUT_ASSET
+        FROM T_MTS_ASSET_CLEAR_BAK
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                AND CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                AND CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                AND TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                AND INST_ID ='${INST_ID}'
+            </if>
+        </where>
+    </select>
+    <!--插入客户股份一级持仓信息清算备份信息-->
+    <insert id="insert_T_MTS_ASSET_CLEAR_BAK" parameterType="hashmap">
+       INSERT INTO T_MTS_ASSET_CLEAR_BAK (CUST_ID,CUACCT_ID,TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL,
+                    UNUSE_AMOUNT, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, UP_DATE, REMARK,
+                    CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+         SELECT CUST_ID, CUACCT_ID,TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL,
+                UNUSE_AMOUNT, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, UP_DATE, REMARK,
+                CALLOT_IN_ASSET,CALLOT_OUT_ASSET
+         FROM T_MTS_ASSET
+    </insert>
+    <!--删除客户股份一级持仓信息清算备份信息-->
+    <delete id="delete_T_MTS_ASSET_CLEAR_BAK" parameterType="hashmap">
+        TRUNCATE TABLE T_MTS_ASSET_CLEAR_BAK
+    </delete>
+
+    <!--删除客户股份一级持仓信息-->
+    <delete id="delete_T_MTS_ASSET" parameterType="hashmap">
+        TRUNCATE TABLE T_MTS_ASSET
+    </delete>
+    <!--还原客户股份一级持仓信息信息-->
+    <insert id="restore_T_MTS_ASSET" parameterType="hashmap">
+       INSERT INTO T_MTS_ASSET (CUST_ID,CUACCT_ID,TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL,
+                    UNUSE_AMOUNT, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, UP_DATE, REMARK,
+                    CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+         SELECT CUST_ID,CUACCT_ID,TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL,
+                UNUSE_AMOUNT, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, UP_DATE, REMARK,
+                  CALLOT_IN_ASSET,CALLOT_OUT_ASSET
+         FROM T_MTS_ASSET_CLEAR_BAK
+    </insert>
+
+    <!--查询客户股份二级持仓信息清算备份信息-->
+    <select id="query_T_MTS_ASSET_SUB_CLEAR_BAK" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, OP_ID,CUACCT_ID,TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL, INST_AVL, INST_TRD_FRZ,
+               INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, CREATE_DATE, UP_DATE, REMARK,
+                CALLOT_IN_ASSET,CALLOT_OUT_ASSET
+        FROM T_MTS_ASSET_SUB_CLEAR_BAK
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                AND CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                AND CUACCT_ID ='${CUACCT_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                AND OP_ID ='${OP_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                AND TRDACCT ='${TRDACCT}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                AND INST_ID ='${INST_ID}'
+            </if>
+        </where>
+    </select>
+    <!--插入客户股份二级持仓信息清算备份信息-->
+    <insert id="insert_T_MTS_ASSET_SUB_CLEAR_BAK" parameterType="hashmap">
+     INSERT INTO T_MTS_ASSET_SUB_CLEAR_BAK (CUST_ID, OP_ID,CUACCT_ID, TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL,
+                INST_AVL, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, CREATE_DATE, UP_DATE, REMARK,
+                CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+     SELECT CUST_ID, OP_ID,CUACCT_ID, TRDACCT, INST_ID, COST_PRICE,BUY_COST_AMT,INST_LAST_BAL, INST_BAL,
+             INST_AVL, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, CREATE_DATE, UP_DATE, REMARK,
+             CALLOT_IN_ASSET,CALLOT_OUT_ASSET
+     FROM T_MTS_ASSET_SUB
+    </insert>
+    <!--删除客户股份二级持仓信息清算备份信息-->
+    <delete id="delete_T_MTS_ASSET_SUB_CLEAR_BAK" parameterType="hashmap">
+        TRUNCATE TABLE T_MTS_ASSET_SUB_CLEAR_BAK
+    </delete>
+
+    <!--删除客户股份二级持仓信息-->
+    <delete id="delete_T_MTS_ASSET_SUB" parameterType="hashmap">
+        TRUNCATE TABLE T_MTS_ASSET_SUB
+    </delete>
+    <!--还原客户股份二级持仓信息信息-->
+    <insert id="restore_T_MTS_ASSET_SUB" parameterType="hashmap">
+     INSERT INTO T_MTS_ASSET_SUB (CUST_ID, OP_ID,CUACCT_ID,TRDACCT, INST_ID, COST_PRICE, INST_LAST_BAL, INST_BAL,
+                INST_AVL, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, CREATE_DATE, UP_DATE, REMARK,
+                CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+     SELECT CUST_ID, OP_ID,CUACCT_ID,TRDACCT, INST_ID, COST_PRICE, INST_LAST_BAL, INST_BAL,
+             INST_AVL, INST_TRD_FRZ, INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, CREATE_DATE, UP_DATE, REMARK,
+             CALLOT_IN_ASSET,CALLOT_OUT_ASSET
+     FROM T_MTS_ASSET_SUB_CLEAR_BAK
+    </insert>
+
+    <!--计算完结的二级持仓的持仓盈余-->
+    <select id="overSecHold_CALC_COSTPRICE"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT  dbo.spGetHOLD_PROFIT('${OP_ID}','${INST_ID}') AS HOLD_SURPLUS
+    </select>
+
+    <!--计算交易员费用汇总信息-->
+    <select id="calc_Trader_total_cost" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT TRADE_ID,sum(TOTAL_COST) as TOTAL_COST
+            FROM T_TRADE_DAY_CLEAR_SUM F
+        <where>
+            <if test="TRADE_ID !='' and TRADE_ID != null">
+                AND TRADE_ID ='${TRADE_ID}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                AND UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+        GROUP BY  TRADE_ID
+    </select>
+     <!--新增交易员资金股份流水信息-->
+    <insert id="insert_T_TRADER_FUND_ASSET_LOG" parameterType="hashmap">
+     INSERT INTO T_TRADER_FUND_ASSET_LOG (LOG_ID, FLOW_TYPE, CALLOT_DIRECT, USE_AMOUNT, CUACCT_ID,TRDACCT,STK_ID
+                                           ,OP_ID, BEGIN_DATE,END_DATE, UP_DATE, UP_TIME)
+      VALUES ('${LOG_ID}', '${FLOW_TYPE}', '${CALLOT_DIRECT}', '${USE_AMOUNT}', '${CUACCT_ID}','${TRDACCT}','${STK_ID}',
+            '${OP_ID}', '${BEGIN_DATE}','${END_DATE}', '${UP_DATE}', '${UP_TIME}')
+    </insert>
+    <!--新增交易员最早交易日期-->
+    <select id="query_trader_min_trdDate" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT MIN(BEGIN_DATE) AS TRD_BGN_DATE
+            FROM T_TRADER_FUND_ASSET_LOG
+        <where>
+            <if test="OP_ID !='' and OP_ID != null">
+                AND OP_ID ='${OP_ID}'
+            </if>
+        </where>
+    </select>
+    <!--查询交易员资金股份流水信息-->
+    <select id="query_T_TRADER_FUND_ASSET_LOG" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT LOG_ID, FLOW_TYPE, CALLOT_DIRECT, USE_AMOUNT,CUACCT_ID,TRDACCT,STK_ID, OP_ID,
+               BEGIN_DATE, END_DATE, UP_DATE, UP_TIME
+        FROM T_TRADER_FUND_ASSET_LOG
+        <where>
+            <if test="FLOW_TYPE !='' and FLOW_TYPE != null">
+                AND FLOW_TYPE ='${FLOW_TYPE}'
+            </if>
+            <if test="CALLOT_DIRECT !='' and CALLOT_DIRECT != null">
+                AND CALLOT_DIRECT ='${CALLOT_DIRECT}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                AND OP_ID ='${OP_ID}'
+            </if>
+        </where>
+        order by UP_DATE desc;
+    </select>
+
+    <!--查询交易员资金分类汇总信息-->
+    <select id="query_TRADER_FUND_GRP_SUM" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT  FUND_BUY_AMOUNT=SUM(CASE WHEN  FLOW_TYPE='1' AND CALLOT_DIRECT='1' THEN USE_AMOUNT  ELSE 0 END ),
+                FUND_SELL_AMOUNT=SUM(CASE WHEN  FLOW_TYPE='1' AND CALLOT_DIRECT='2' THEN USE_AMOUNT  ELSE 0 END )
+        FROM T_TRADER_FUND_ASSET_LOG
+        <where>
+            <if test="FLOW_TYPE !='' and FLOW_TYPE != null">
+                AND FLOW_TYPE ='${FLOW_TYPE}'
+            </if>
+            <if test="CALLOT_DIRECT !='' and CALLOT_DIRECT != null">
+                AND CALLOT_DIRECT ='${CALLOT_DIRECT}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                AND OP_ID ='${OP_ID}'
+            </if>
+        </where>
+    </select>
+    <!--查询交易员股份分类汇总信息-->
+    <select id="query_TRADER_ASSET_GRP_SUM" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT BUY_AMOUNT=SUM(BUY_AMOUNT),SELL_AMOUNT=SUM(SELL_AMOUNT),HOLD_AMOUNT=SUM(HOLD_AMOUNT),
+            NET_AMOUNT=	SUM(BUY_AMOUNT)-SUM(SELL_AMOUNT),
+            TRDACCT,STK_ID,OP_ID
+        FROM
+          (SELECT BUY_AMOUNT ,SELL_AMOUNT ,HOLD_AMOUNT ,K.TRDACCT,STK_ID,K.OP_ID
+        FROM
+          (SELECT  CALLOT_DIRECT, sum(CASE WHEN CALLOT_DIRECT=1 THEN USE_AMOUNT ELSE 0 END) AS BUY_AMOUNT,sum(CASE WHEN CALLOT_DIRECT=2 THEN USE_AMOUNT ELSE 0 END) AS SELL_AMOUNT,
+         HOLD_AMOUNT=0, TRDACCT, STK_ID, OP_ID
+            FROM T_TRADER_FUND_ASSET_LOG
+            WHERE FLOW_TYPE='2'
+            and OP_ID='${OP_ID}'
+            GROUP BY CALLOT_DIRECT,TRDACCT, STK_ID, OP_ID) K
+
+            LEFT JOIN T_MTS_ASSET_SUB T
+            ON K.OP_ID=T.OP_ID
+               AND K.STK_ID=T.INST_ID
+        UNION ALL
+        SELECT  BUY_AMOUNT=0,SELL_AMOUNT=0,HOLD_AMOUNT=INST_BAL,TRDACCT,INST_ID AS STK_ID,OP_ID
+          FROM T_MTS_ASSET_SUB
+          WHERE INST_ID NOT IN(SELECT STK_ID FROM T_TRADER_FUND_ASSET_LOG WHERE FLOW_TYPE='2')
+               and OP_ID='${OP_ID}') D
+          GROUP BY  TRDACCT,STK_ID, OP_ID
+    </select>
+
+    <!--查询交易员盈亏汇总信息-->
+    <select id="query_TRADER_SURPLUS_SUM_INFO"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        exec proTradeSurplusSumInfo '${OP_ID}','${CUACCT_ID}','${CUST_ID}','${LOGIN_OP_ID}','${ORG_CODE}'
+    </select>
+    <!--查询客户盈亏明细信息-->
+    <select id="query_CUST_SURPLUS_DETAIL_INFO"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        exec proCustSurplusSumDetail '${LOGIN_OP_ID}'
+    </select>
+    <!--账户盈亏汇总查询-->
+    <select id="query_CUST_SURPLUS_SUM_INFO"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        exec proCustSurplusSumMain '${LOGIN_OP_ID}'
+    </select>
+    <!--交易员盈亏图表查询-->
+    <select id="query_TRADE_SURPLUS_CHAR_INFO"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        exec procTradeXDayTotalInfo '${OP_ID}','${DATA_TYPE}','${WORK_BEG_DATE}','${WORK_END_DATE}'
+    </select>
+    <!--交易员交易信息清算-->
+    <select id="exe_proTradeDaySumClear"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        exec proTradeDaySumClear
+    </select>
+
+    <!--新增客户资金股份流水信息-->
+    <insert id="insert_T_CUST_FUND_ASSET_LOG" parameterType="hashmap">
+     INSERT INTO T_CUST_FUND_ASSET_LOG (LOG_ID, FLOW_TYPE, CALLOT_DIRECT, USE_AMOUNT, CUACCT_ID,
+                    TRDACCT, STK_ID, BEGIN_DATE, END_DATE, UP_DATE, UP_TIME)
+      VALUES ('${LOG_ID}', '${FLOW_TYPE}', '${CALLOT_DIRECT}', '${USE_AMOUNT}', '${CUACCT_ID}',
+      '${TRDACCT}', '${STK_ID}', '${BEGIN_DATE}', '${END_DATE}', '${UP_DATE}', '${UP_TIME}')
+    </insert>
+
+    <!--客户盈亏图表查询-->
+    <select id="query_CUST_SURPLUS_CHAR_INFO"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        exec procCuacctXDayTotalInfo '${CUACCT_ID}','${DATA_TYPE}','${WORK_BEG_DATE}','${WORK_END_DATE}'
+    </select>
+    <!--查询持仓产品市值总计-->
+    <select id="query_HOLD_STOCK_MAKET_TOTAL" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT  INST_ID,(SELECT STK_NAME FROM T_STK_INFO WHERE STK_ID=INST_ID) AS INST_NAME,
+                SUM(INST_BAL) AS TOTAL_INST_BAL, SUM(INST_AVL) AS TOTAL_INST_AVL
+        FROM T_MTS_ASSET_SUB
+        WHERE INST_AVL>0
+		GROUP BY INST_ID
+    </select>
+</mapper>

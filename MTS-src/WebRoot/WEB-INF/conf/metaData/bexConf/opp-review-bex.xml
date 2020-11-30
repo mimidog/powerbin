@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--统一审核配置表操作   start-->
+	<bex bex_code="chkconfigQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="chkconfigQuery"/>
+    <bex bex_code="chkconfigInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="chkconfigInsert">
+		<param para_code="SERVICE_CODE" para_name="服务代码"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="ORG_CODE" para_name="机构代码"  data_type="12" para_type="0" nullable="false"/>		
+    </bex> 	
+    <bex bex_code="chkconfigDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="chkconfigDelete">
+		<param para_code="CHK_CFG_SN" para_name="配置编号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="chklvlconfigMainDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="chklvlconfigMainDelete">
+		<param para_code="CHK_CFG_SN" para_name="配置编号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="chkparaconfigMainDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="chkparaconfigMainDelete">
+		<param para_code="CHK_CFG_SN" para_name="配置编号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--统一审核配置表操作   end-->
+    
+    <!--统一审核执行配置表操作   start-->
+	<bex bex_code="chklvlconfigQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="chklvlconfigQuery"/>
+    <bex bex_code="chklvlconfigInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="chklvlconfigInsert">
+    	<param para_code="CHK_CFG_SN" para_name="配置编号"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="CHK_TYPE" para_name="复核类型"  data_type="12" para_type="0" nullable="false"/>	
+		<param para_code="OP_CODES" para_name="复核对象"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="OP_LVL" para_name="复核顺序"  data_type="12" para_type="0" nullable="false"/>		
+    </bex>
+    <bex bex_code="chklvlconfigUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="chklvlconfigUpdate">
+    	<param para_code="CHK_LVL_SN" para_name="执行配置号"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="OP_CODES" para_name="复核对象"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="OP_LVL" para_name="复核顺序"  data_type="12" para_type="0" nullable="false"/>		
+    </bex> 	 	
+    <bex bex_code="chklvlconfigDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="chklvlconfigDelete">
+		<param para_code="CHK_LVL_SN" para_name="执行配置号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <bex bex_code="chkparaconfigSecDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="chkparaconfigSecDelete">
+		<param para_code="CHK_LVL_SN" para_name="执行配置号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--统一审核执行配置表操作   end-->
+
+	<!--统一审核参数配置操作   start-->
+	<bex bex_code="chkparaconfigQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="chkparaconfigQuery"/>
+    <bex bex_code="chkparaconfigInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="chkparaconfigInsert">
+    	<param para_code="CHK_LVL_SN" para_name="执行配置号"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="CHK_CFG_SN" para_name="配置编号"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LBM_PARA" para_name="参数名"  data_type="12" para_type="0" nullable="false"/>	
+		<param para_code="LBM_PARA_OP" para_name="运算符"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LBM_PARA_VALUE" para_name="运算值"  data_type="12" para_type="0" nullable="false"/>		
+    </bex>
+    <bex bex_code="chkparaconfigUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="chkparaconfigUpdate">
+    	<param para_code="CHK_PARA_SN" para_name="参数配置号"  data_type="12" para_type="0" nullable="false"/>
+    	<param para_code="LBM_PARA" para_name="参数名"  data_type="12" para_type="0" nullable="false"/>	
+		<param para_code="LBM_PARA_OP" para_name="运算符"  data_type="12" para_type="0" nullable="false"/>
+		<param para_code="LBM_PARA_VALUE" para_name="运算值"  data_type="12" para_type="0" nullable="false"/>		
+    </bex> 	 	
+    <bex bex_code="chkparaconfigDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="chkparaconfigDelete">
+		<param para_code="CHK_PARA_SN" para_name="参数配置号"  data_type="12" para_type="0" nullable="false"/>
+    </bex>
+    <!--统一审核参数配置操作   end-->
+    
+    <!--业务复核操作    start  -->
+    <bex bex_code="chklogQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="chkparaconfigQuery"/>
+    <bex bex_code="chklogInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="chklogInsert"/>
+    <bex bex_code="chklogUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="chklogUpdate"/>
+    <bex bex_code="chkLvlHasQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="chkLvlHasQuery"/>
+    <!--业务复核操作    end  -->
+    
+</bexs>
+ 

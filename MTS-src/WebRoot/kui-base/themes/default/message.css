@@ -1,0 +1,82 @@
+.messager-body {
+  padding: 10px;
+  overflow: hidden;
+}
+.messager-button {
+  text-align: center;
+  padding-top: 10px;
+}
+.messager-icon {
+  float: left;
+  width: 32px;
+  height: 32px;
+  margin: 0 10px 0px 0;
+}
+.messager-text {
+	margin-top:7px;
+}
+.messager-error {
+  background: url('images/messager_icons.png') no-repeat scroll -64px 0;
+}
+.messager-info {
+  background: url('images/messager_icons.png') no-repeat scroll 0 0;
+}
+.messager-question {
+  background: url('images/messager_icons.png') no-repeat scroll -32px 0;
+}
+.messager-warning {
+  background: url('images/messager_icons.png') no-repeat scroll -96px 0;
+}
+.messager-progress {
+  padding: 10px;
+}
+.messager-p-msg {
+  margin-bottom: 5px;
+}
+.messager-body .messager-input {
+  width: 100%;
+  padding: 1px 0;
+  border: 1px solid #95B8E7;
+}
+.messager-link{
+  float:right;
+  font-size:11px;
+  color:#3b8ada;
+  cursor:pointer;
+  text-decoration:underline;
+  margin-top:10px;
+}
+.messager-detail{
+  margin-top:5px;
+  display:none;
+  border:1px solid #95B8E7;
+  height:150px;
+  word-break:break-all;
+  font-size:11px;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+.window.message-loading{
+    background:transparent;
+    border-color:transparent;
+}
+.window  .messager-body.messager-loading-body{
+    border-color:transparent;
+    background: transparent;
+    border-top-width:0
+}
+.window .progress-mask-msg{
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    padding: 12px 5px 10px 30px;
+    width: auto;
+    height: 16px;
+    border-width: 2px;
+    border-style: solid;
+    background: #ffffff url('images/loading.gif') no-repeat scroll 5px center;
+    display: block;
+    left: 50%;
+    margin-left: -71.5px;
+    border-color: #95B8E7;
+}

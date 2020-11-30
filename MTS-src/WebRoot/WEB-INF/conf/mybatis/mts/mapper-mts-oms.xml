@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+     <!--查询订单管理信息-->
+    <select id="query_T_OMS" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT OMS_ID, OMS_DATE, OP_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,
+                TRADER_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=TRADER_ID) AS TRADER_NAME,
+                OMS_TYPE, CUST_ID,(SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=T2.CUST_ID) AS CUST_NAME,
+                T2.CUACCT_ID,T2.CUACCT_LVL,T2.STKBD,T2.TRDACCT,T2.STK_ID,(SELECT STK_NAME FROM T_STK_INFO T1 WHERE T1.STK_ID=T2.STK_ID) AS STK_NAME, OMS_PRICE,
+                OMS_QTY,DEPOS_PRICE, DEPOS_QTY,UNMATCH_QTY,PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,
+                CHANNEL,OMS_STATUS,TRADE_DIRECT,UP_DATE,UP_TIME, REMARK,ORDER_LVL
+        FROM T_OMS T2
+        <where>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="OMS_DATE !='' and OMS_DATE != null">
+                and OMS_DATE ='${OMS_DATE}'
+            </if>
+            <if test="ORDER_LVL !='' and ORDER_LVL != null">
+                and ORDER_LVL ='${ORDER_LVL}'
+            </if>
+            <if test="TRADER_ID !='' and TRADER_ID != null">
+                and TRADER_ID = '${TRADER_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID = '${CUACCT_ID}'
+            </if>
+            <if test="STKBD !='' and STKBD != null">
+                and STKBD = '${STKBD}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT = '${TRDACCT}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+            <if test="CHANNEL !='' and CHANNEL != null">
+                and CHANNEL =  '${CHANNEL}'
+            </if>
+            <if test="OMS_STATUS !='' and OMS_STATUS != null">
+                and OMS_STATUS ='${OMS_STATUS}'
+            </if>
+            <if test="UNMATCH_QTY_THAN_ZERO !='' and UNMATCH_QTY_THAN_ZERO != null">
+                and UNMATCH_QTY &gt;'${UNMATCH_QTY_THAN_ZERO}'
+            </if>
+            <if test="ORDER_TYPE !='' and ORDER_TYPE != null">
+                and ORDER_TYPE ='${ORDER_TYPE}'
+            </if>
+            <if test="ORDER_LVL !='' and ORDER_LVL != null">
+                and ORDER_LVL ='${ORDER_LVL}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+        order by CAST(OMS_ID AS BIGINT) desc
+    </select>
+    <!--插入订单管理信息-->
+    <insert id="insert_T_OMS" parameterType="hashmap">
+    INSERT INTO T_OMS (OMS_ID, OMS_DATE, OP_ID,TRADER_ID, OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,
+                        STK_ID, OMS_PRICE, OMS_QTY,DEPOS_PRICE,DEPOS_QTY, UNMATCH_QTY,PROC_COST,TRANSFER_COST,
+                        OTHER_COST,STAMP_TAX,ORDER_TYPE,CHANNEL, OMS_STATUS,TRADE_DIRECT,UP_DATE,UP_TIME,REMARK)
+     VALUES ('${OMS_ID}', '${OMS_DATE}', '${TRADER_ID}','${TRADER_ID}', '${OMS_TYPE}', '${CUST_ID}','${CUACCT_ID}','${CUACCT_LVL}',
+              '${STKBD}','${TRDACCT}','${STK_ID}', '${OMS_PRICE}','${OMS_QTY}', CAST('${DEPOS_PRICE}' AS NUMERIC(19,4)),
+              CAST('${DEPOS_QTY}' AS NUMERIC(19,0)),CAST('${UNMATCH_QTY}' AS NUMERIC(19,0)),
+            CAST('${PROC_COST}' AS NUMERIC(19,4)),CAST('${TRANSFER_COST}' AS NUMERIC(19,4)),CAST('${OTHER_COST}' AS NUMERIC(19,4)),
+            CAST('${STAMP_TAX}' AS NUMERIC(19,4)),
+            '${ORDER_TYPE}','${CHANNEL}','${OMS_STATUS}','${TRADE_DIRECT}', '${UP_DATE}','${UP_TIME}', '${REMARK}')
+    </insert>
+    <!--修改订单管理信息-->
+    <update id="update_T_OMS" parameterType="hashmap">
+        UPDATE T_OMS  SET
+        <if test="OP_ID !='' and OP_ID != null">
+            OP_ID = '${OP_ID}',
+        </if>
+        <if test="TRADER_ID !='' and TRADER_ID != null">
+            TRADER_ID='${TRADER_ID}',
+        </if>
+        <if test="OMS_TYPE !='' and OMS_TYPE != null">
+            OMS_TYPE='${OMS_TYPE}',
+        </if>
+        <if test="CUST_ID !='' and CUST_ID != null">
+            CUST_ID='${CUST_ID}',
+        </if>
+        <if test="CUACCT_ID !='' and CUACCT_ID != null">
+            CUACCT_ID='${CUACCT_ID}',
+        </if>
+        <if test="CUACCT_LVL !='' and CUACCT_LVL != null">
+            CUACCT_LVL='${CUACCT_LVL}',
+        </if>
+        <if test="STKBD !='' and STKBD != null">
+            STKBD='${STKBD}',
+        </if>
+        <if test="TRDACCT !='' and TRDACCT != null">
+            TRDACCT='${TRDACCT}',
+        </if>
+        <if test="STK_ID !='' and STK_ID != null">
+            STK_ID='${STK_ID}',
+        </if>
+        <if test="OMS_PRICE !='' and OMS_PRICE != null">
+            OMS_PRICE=CAST('${OMS_PRICE}' AS NUMERIC(19,4)),
+        </if>
+        <if test="OMS_QTY !='' and OMS_QTY != null">
+            OMS_QTY=CAST('${OMS_QTY}' AS NUMERIC(19,0)),
+        </if>
+        <if test="DEPOS_PRICE !='' and DEPOS_PRICE != null">
+            DEPOS_PRICE=CAST('${DEPOS_PRICE}' AS NUMERIC(19,4)),
+        </if>
+        <if test="DEPOS_QTY !='' and DEPOS_QTY != null">
+            DEPOS_QTY=CAST('${DEPOS_QTY}' AS NUMERIC(19,0)),
+        </if>
+        <if test="UNMATCH_QTY !='' and UNMATCH_QTY != null">
+            UNMATCH_QTY=CAST('${UNMATCH_QTY}' AS NUMERIC(19,0)),
+        </if>
+        <if test="PROC_COST !='' and PROC_COST != null">
+            PROC_COST=CAST('${PROC_COST}' AS NUMERIC(19,4)),
+        </if>
+        <if test="TRANSFER_COST !='' and TRANSFER_COST != null">
+            TRANSFER_COST=CAST('${TRANSFER_COST}' AS NUMERIC(19,4)),
+        </if>
+        <if test="OTHER_COST !='' and OTHER_COST != null">
+            OTHER_COST=CAST('${OTHER_COST}' AS NUMERIC(19,4)),
+        </if>
+        <if test="STAMP_TAX !='' and STAMP_TAX != null">
+            STAMP_TAX=CAST('${STAMP_TAX}' AS NUMERIC(19,4)),
+        </if>
+        <if test="ORDER_TYPE !='' and ORDER_TYPE != null">
+            ORDER_TYPE = '${ORDER_TYPE}',
+        </if>
+        <if test="CHANNEL !='' and CHANNEL != null">
+            CHANNEL = '${CHANNEL}',
+        </if>
+        <if test="OMS_STATUS !='' and OMS_STATUS != null">
+            OMS_STATUS = '${OMS_STATUS}',
+        </if>
+        <if test="TRADE_DIRECT !='' and TRADE_DIRECT != null">
+            TRADE_DIRECT = '${TRADE_DIRECT}',
+        </if>
+        <if test="UP_DATE !='' and UP_DATE != null">
+            UP_DATE = '${UP_DATE}',
+        </if>
+        <if test="UP_TIME !='' and UP_TIME != null">
+            UP_TIME = '${UP_TIME}',
+        </if>
+        <if test="REMARK !='' and REMARK != null">
+            REMARK = '${REMARK}',
+        </if>
+        <if test="ORDER_LVL !='' and ORDER_LVL != null">
+            ORDER_LVL = '${ORDER_LVL}',
+        </if>
+        <if test="OMS_ID !='' and OMS_ID != null">
+            OMS_ID = '${OMS_ID}'
+        </if>
+
+        <where>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID ='${STK_ID}'
+            </if>
+        </where>
+    </update>
+    <!--修改订单管理状态信息-->
+    <update id="MOD_T_OMS_ORDER_LVL" parameterType="hashmap">
+        UPDATE T_OMS  SET ORDER_LVL = '${ORDER_LVL}',REMARK='${REMARK}'
+        <where>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID ='${STK_ID}'
+            </if>
+            <if test="OMS_STATUS !='' and OMS_STATUS != null">
+                and OMS_STATUS ='${OMS_STATUS}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                and UP_DATE = '${UP_DATE}'
+            </if>
+        </where>
+    </update>
+    <!--删除订单管理信息-->
+    <delete id="delete_T_OMS" parameterType="hashmap">
+        DELETE FROM T_OMS
+        <where>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="OMS_DATE !='' and OMS_DATE != null">
+                and OMS_DATE ='${OMS_DATE}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                and UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+    </delete>
+
+    <!--查询订单成交信息-->
+    <select id="query_T_MATCH" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT MATCH_ID,OMS_ID, OMS_DATE, OP_ID, (SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,
+                TRADER_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=TRADER_ID) AS TRADER_NAME,
+               OMS_TYPE, CUST_ID,(SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=T2.CUST_ID) AS CUST_NAME,
+               STKBD,TRDACCT,CUACCT_ID,CUACCT_LVL,T2.STK_ID,(SELECT STK_NAME FROM T_STK_INFO T1 WHERE T1.STK_ID=T2.STK_ID) AS STK_NAME,
+               MATCH_PRICE, MATCH_QTY, MATCH_AMT,TRADE_DIRECT,PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,
+               CHANNEL, MATCH_STATUS,UP_DATE,UP_TIME, REMARK
+        FROM T_MATCH T2
+        <where>
+            <if test="MATCH_ID !='' and MATCH_ID != null">
+                and MATCH_ID ='${MATCH_ID}'
+            </if>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="OMS_DATE !='' and OMS_DATE != null">
+                and OMS_DATE ='${OMS_DATE}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="TRADER_ID !='' and TRADER_ID != null">
+                and TRADER_ID = '${TRADER_ID}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID = '${CUACCT_ID}'
+            </if>
+            <if test="STKBD !='' and STKBD != null">
+                and STKBD = '${STKBD}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT = '${TRDACCT}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+            <if test="CHANNEL !='' and CHANNEL != null">
+                and CHANNEL =  '${CHANNEL}'
+            </if>
+            <if test="OMS_STATUS !='' and OMS_STATUS != null">
+                and OMS_STATUS ='${OMS_STATUS}'
+            </if>
+            <if test="NOT_MATCH_ID !='' and NOT_MATCH_ID != null">
+                and MATCH_ID !='${NOT_MATCH_ID}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                and UP_DATE ='${UP_DATE}'
+            </if>
+            <if test="UP_DATE_THAN_EQ !='' and UP_DATE_THAN_EQ != null">
+                and UP_DATE &gt;='${UP_DATE_THAN_EQ}'
+            </if>
+            <if test="UP_DATE_LESS_EQ !='' and UP_DATE_LESS_EQ != null">
+                and UP_DATE &lt;='${UP_DATE_LESS_EQ}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+        order by CAST(OMS_ID AS BIGINT) desc
+    </select>
+    <!--插入订单成交信息-->
+    <insert id="insert_T_MATCH" parameterType="hashmap">
+        INSERT INTO T_MATCH (MATCH_ID,OMS_ID, OMS_DATE, OP_ID,TRADER_ID, OMS_TYPE, CUST_ID, CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,
+                              STK_ID, MATCH_PRICE, MATCH_QTY, MATCH_AMT, PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,
+                              ORDER_TYPE,CHANNEL, MATCH_STATUS,TRADE_DIRECT, UP_DATE,UP_TIME, REMARK)
+        VALUES ('${MATCH_ID}','${OMS_ID}', '${OMS_DATE}', '${OP_ID}', '${TRADER_ID}','${OMS_TYPE}', '${CUST_ID}',
+                '${CUACCT_ID}','${CUACCT_LVL}','${STKBD}','${TRDACCT}','${STK_ID}', CAST('${MATCH_PRICE}' AS NUMERIC(19,4)),
+                CAST('${MATCH_QTY}' AS NUMERIC(19,0)), CAST('${MATCH_AMT}' AS NUMERIC(19,4)),CAST('${PROC_COST}' AS NUMERIC(19,4)),
+                CAST('${TRANSFER_COST}' AS NUMERIC(19,4)),CAST('${OTHER_COST}' AS NUMERIC(19,4)),CAST('${STAMP_TAX}' AS NUMERIC(19,4)),'${ORDER_TYPE}',
+                '${CHANNEL}','${MATCH_STATUS}', '${TRADE_DIRECT}','${UP_DATE}','${UP_TIME}', '${REMARK}')
+    </insert>
+    <!--修改订单成交信息-->
+    <update id="update_T_MATCH" parameterType="hashmap">
+        UPDATE T_MATCH SET OMS_DATE = '${OMS_DATE}', OP_ID = '${OP_ID}',TRADER_ID='${TRADER_ID}',
+                            OMS_TYPE = '${OMS_TYPE}',CUST_ID = '${CUST_ID}',CUACCT_ID = '${CUACCT_ID}',CUACCT_LVL = '${CUACCT_LVL}',
+                             STKBD='${STKBD}',TRDACCT='${TRDACCT}',
+                            STK_ID = '${STK_ID}',MATCH_PRICE = CAST('${MATCH_PRICE}' AS NUMERIC(19,4)),
+                            MATCH_QTY = CAST('${MATCH_QTY}' AS NUMERIC(19,0)),MATCH_AMT = CAST('${MATCH_AMT}' AS NUMERIC(19,4)),
+                            PROC_COST=CAST('${PROC_COST}' AS NUMERIC(19,4)),TRANSFER_COST=CAST('${TRANSFER_COST}' AS NUMERIC(19,4)),
+                            OTHER_COST=CAST('${OTHER_COST}' AS NUMERIC(19,4)),STAMP_TAX=CAST('${STAMP_TAX}' AS NUMERIC(19,4)),
+                            ORDER_TYPE='${ORDER_TYPE}',CHANNEL = '${CHANNEL}',
+                            MATCH_STATUS = '${MATCH_STATUS}',TRADE_DIRECT='${TRADE_DIRECT}',
+                            UP_DATE = '${UP_DATE}',UP_TIME = '${UP_TIME}',REMARK = '${REMARK}'
+        <where>
+            <if test="MATCH_ID !='' and MATCH_ID != null">
+                and MATCH_ID ='${MATCH_ID}'
+            </if>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+
+        </where>
+    </update>
+    <!--删除订单成交信息-->
+    <delete id="delete_T_MATCH" parameterType="hashmap">
+        DELETE FROM T_MATCH
+        <where>
+            <if test="MATCH_ID !='' and MATCH_ID != null">
+                and MATCH_ID ='${MATCH_ID}'
+            </if>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="OMS_DATE !='' and OMS_DATE != null">
+                and OMS_DATE ='${OMS_DATE}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                and UP_DATE ='${UP_DATE}'
+            </if>
+        </where>
+    </delete>
+
+    <delete id="delete_single_T_MATCH" parameterType="hashmap">
+        EXEC spRBackMatchInfo '${MATCH_ID}'
+    </delete>
+
+    <!--买入建仓批量新增临时表-->
+    <insert id="insertBatch_T_BUY_BUILD_POS_TEMP" parameterType="hashmap">
+        INSERT INTO T_BUY_BUILD_POS_TEMP (STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE,
+        UP_TIME, REMARK)
+        select * from
+        (<foreach collection="BUY_BUILD_POS_LIST" item="item" separator="UNION ALL">
+        SELECT '${item.STK_ID}' AS STK_ID,
+        '${item.STK_NAME}' AS STK_NAME,
+        '${item.BUILD_PRICE}' AS BUILD_PRICE,
+        '1' AS TRADE_DIRECT,
+        REPLACE(LEFT('${item.UP_DATE_TIME}', 10), '-', '') AS UP_DATE,
+        REPLACE(RIGHT('${item.UP_DATE_TIME}', 5), ':', '') + '00' as UP_TIME,
+        '${item.REMARK}' AS REMARK
+         </foreach>) T
+        where T.UP_DATE=(SELECT SYSTEM_DATE FROM T_SYS_CONTROL)
+    </insert>
+    <!--清空买入建仓批量临时表-->
+    <delete id="clear_T_BUY_BUILD_POS_TEMP" parameterType="hashmap">
+        TRUNCATE TABLE T_BUY_BUILD_POS_TEMP
+    </delete>
+    <!--新增买入股票建仓信息-->
+    <insert id="insert_T_STOK_BUILD_POS_BUY" parameterType="hashmap">
+        INSERT INTO T_STOK_BUILD_POS (STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME,ORDER_TYPE,IS_OMS, REMARK,AUDIT_SIGNAL_STATE)
+        SELECT STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME,'0' as ORDER_TYPE,'0' as IS_OMS,REMARK,
+             '1' as AUDIT_SIGNAL_STATE
+        FROM T_BUY_BUILD_POS_TEMP
+        WHERE UP_DATE=(SELECT SYSTEM_DATE FROM T_SYS_CONTROL)
+             AND TRADE_DIRECT='1'
+        EXCEPT
+        SELECT STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME,'0' as ORDER_TYPE,'0' as IS_OMS,REMARK,
+        '1' as AUDIT_SIGNAL_STATE
+        FROM T_STOK_BUILD_POS
+        WHERE UP_DATE=(SELECT SYSTEM_DATE FROM T_SYS_CONTROL)
+            AND TRADE_DIRECT='1'
+    </insert>
+    <!--更新买方向股票建仓信息状态-->
+    <update id="update_T_STOK_BUILD_POS_BUY_STA" parameterType="hashmap">
+       update T_STOK_BUILD_POS set IS_OMS='${AFTER_IS_OMS}'
+       WHERE IS_OMS='${BEFORE_IS_OMS}' AND TRADE_DIRECT='${TRADE_DIRECT}'
+             and UP_DATE='${UP_DATE}'
+              AND  TRADE_DIRECT='1'
+              and AUDIT_SIGNAL_STATE='1'
+              and STK_ID IN (SELECT STK_ID FROM T_STK_INFO WHERE STK_ISIN='1')
+
+    </update>
+    <!--更新卖方向股票建仓信息状态-->
+    <update id="update_T_STOK_BUILD_POS_SELL_STA" parameterType="hashmap">
+       update T_STOK_BUILD_POS set IS_OMS='${AFTER_IS_OMS}'
+       WHERE IS_OMS='${BEFORE_IS_OMS}' AND TRADE_DIRECT='${TRADE_DIRECT}'
+             and UP_DATE='${UP_DATE}'
+             AND TRADE_DIRECT='2'
+             and AUDIT_SIGNAL_STATE='1'
+             and STK_ID IN (SELECT T1.INST_ID
+				        FROM T_MTS_ASSET_SUB T1,T_TRDACCT T2,T_CUACCT T3
+				       WHERE T1.CUST_ID=T2.CUST_ID AND T2.CUST_ID=T3.CUST_ID
+					         AND T1.CUACCT_ID=T2.CUACCT_ID AND T2.CUACCT_ID=T3.CUACCT_ID
+				             AND T1.TRDACCT=T2.TRDACCT
+					         AND T3.CUACCT_STATUS='0' AND T2.STK_STATUS='00')
+
+    </update>
+    <!--根据买入建仓信息插入到订单信息-->
+    <insert id="insert_OMS_BY_BUY_BUILD_POS" parameterType="hashmap">
+       INSERT INTO T_OMS (OMS_ID, OMS_DATE, OP_ID, OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,
+                          STK_ID, OMS_PRICE, OMS_QTY, DEPOS_PRICE,DEPOS_QTY, UNMATCH_QTY,PROC_COST,TRANSFER_COST,OTHER_COST,
+                          STAMP_TAX,ORDER_TYPE,CHANNEL, OMS_STATUS, TRADE_DIRECT, TRADER_ID, UP_DATE,UP_TIME, REMARK,ORDER_LVL)
+        SELECT (NEXT VALUE FOR SEQ_T_OMS) AS OMS_ID,T2.UP_DATE AS OMS_DATE,T1.OP_ID AS OP_ID,'2' AS OMS_TYPE,
+            T1.CUST_ID,T1.CUACCT_ID,T3.CUACCT_LVL,T5.STKBD,T5.TRDACCT,T2.STK_ID,T2.BUILD_PRICE,
+            FLOOR(T4.STK_LWLMT_QTY/100/T2.BUILD_PRICE) * 100 as OMS_QTY,
+            0 AS DEPOS_PRICE, 0 AS DEPOS_QTY,0 AS UNMATCH_QTY,'0' AS PROC_COST, '0' AS TRANSFER_COST,'0' AS OTHER_COST,
+            '0' AS STAMP_TAX,T2.ORDER_TYPE,'0' AS CHANNEL,'0' AS OMS_STATUS,T2.TRADE_DIRECT,T1.OP_ID AS TRADER_ID,
+            T2.UP_DATE AS UP_DATE,T2.UP_TIME AS UP_TIME,'' AS REMARK,'1' as ORDER_LVL
+            FROM T_CUACCT_SUB T1,T_CUACCT T3,T_STOK_BUILD_POS T2,T_STK_INFO T4,T_TRDACCT T5
+            WHERE T1.CUACCT_ID=T3.CUACCT_ID
+            AND T3.CUACCT_ID=T5.CUACCT_ID
+            AND T2.STK_ID=T4.STK_ID
+            AND T4.MARKET_ID=T5.MAKET_ID
+            AND T3.CUACCT_STATUS='0'
+            AND T5.STK_STATUS='00'
+            AND T2.IS_OMS='0'
+            AND T2.TRADE_DIRECT='1'
+            AND T2.AUDIT_SIGNAL_STATE='1'
+            AND T4.STK_ISIN='1'
+            AND T1.CUST_ID+T1.OP_ID
+            IN (SELECT TOP (FLOOR(T4.STK_UPLMT_QTY/STK_LWLMT_QTY)) CUST_ID+OP_ID
+            FROM (select FUND_AVL, CUST_ID,OP_ID from
+            (select  FUND_AVL, CUST_ID,OP_ID,Row_Number() OVER (partition by OP_ID ORDER BY FUND_AVL desc) rank
+            FROM T_FUND_INFO_SUB) t
+            where t.rank &lt;=3) cc
+            ORDER BY cc.FUND_AVL DESC)
+
+    </insert>
+
+    <!--卖出建仓批量新增临时表-->
+    <insert id="insertBatch_T_SELL_BUILD_POS_TEMP" parameterType="hashmap">
+        INSERT INTO T_SELL_BUILD_POS_TEMP (STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE,
+        UP_TIME, REMARK)
+        select * from
+        (<foreach collection="SELL_BUILD_POS_LIST" item="item" separator="UNION ALL">
+        SELECT '${item.STK_ID}' AS STK_ID,
+        '${item.STK_NAME}' AS STK_NAME,
+        '${item.BUILD_PRICE}' AS BUILD_PRICE,
+        '2' AS TRADE_DIRECT,
+        REPLACE(LEFT('${item.UP_DATE_TIME}', 10), '-', '') AS UP_DATE,
+        REPLACE(RIGHT('${item.UP_DATE_TIME}', 5), ':', '') + '00' as UP_TIME,
+        '${item.REMARK}' AS REMARK
+    </foreach>) T
+        where T.UP_DATE=(SELECT SYSTEM_DATE FROM T_SYS_CONTROL)
+    </insert>
+    <!--清空卖出建仓批量临时表-->
+    <delete id="clear_T_sell_BUILD_POS_TEMP" parameterType="hashmap">
+        TRUNCATE TABLE T_SELL_BUILD_POS_TEMP
+    </delete>
+    <!--新增卖出股票建仓信息-->
+    <insert id="insert_T_STOK_BUILD_POS_SELL" parameterType="hashmap">
+        INSERT INTO T_STOK_BUILD_POS (STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME,ORDER_TYPE, IS_OMS, REMARK,AUDIT_SIGNAL_STATE)
+        SELECT STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME,'0' as ORDER_TYPE,'0' as IS_OMS,REMARK,
+        '1' as AUDIT_SIGNAL_STATE
+        FROM T_SELL_BUILD_POS_TEMP
+        WHERE UP_DATE=(SELECT SYSTEM_DATE FROM T_SYS_CONTROL)
+             AND TRADE_DIRECT='2'
+        EXCEPT
+        SELECT STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME,'0' as ORDER_TYPE,'0' as IS_OMS,REMARK,
+         '1' as AUDIT_SIGNAL_STATE
+         FROM T_STOK_BUILD_POS
+        WHERE UP_DATE=(SELECT SYSTEM_DATE FROM T_SYS_CONTROL)
+            AND TRADE_DIRECT='2'
+    </insert>
+    <!--根据卖出建仓信息插入到订单信息-->
+    <insert id="insert_OMS_BY_SELL_BUILD_POS" parameterType="hashmap">
+         INSERT INTO T_OMS (OMS_ID, OMS_DATE, OP_ID, OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT, STK_ID, OMS_PRICE, OMS_QTY, DEPOS_PRICE,
+                           DEPOS_QTY, UNMATCH_QTY,PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,CHANNEL, OMS_STATUS, TRADE_DIRECT, TRADER_ID,
+                           UP_DATE,UP_TIME,REMARK,ORDER_LVL)
+           SELECT  (NEXT VALUE FOR SEQ_T_OMS) AS OMS_ID,dbo.spGetSysDate(1) AS OMS_DATE,
+                     S.OP_ID AS OP_ID,'2' AS OMS_TYPE, S.CUST_ID,S.CUACCT_ID,
+                     CUACCT_LVL='',D.STKBD,D.TRDACCT,P.STK_ID,P.BUILD_PRICE,
+                        CASE WHEN (P.SIGNAL_TYPE &lt;=1 OR (S.INST_AVL-ISNULL(dbo.spGetTraderSellOmsQty(S.OP_ID,S.CUACCT_ID,S.CUST_ID,D.TRDACCT,S.INST_ID),0))&lt;=1000)
+                        THEN
+                        FLOOR(S.INST_AVL-ISNULL(dbo.spGetTraderSellOmsQty(S.OP_ID,S.CUACCT_ID,S.CUST_ID,D.TRDACCT,S.INST_ID),0))
+                        WHEN  P.SIGNAL_TYPE=2
+                        THEN
+                        (S.INST_AVL-ISNULL(dbo.spGetTraderSellOmsQty(S.OP_ID,S.CUACCT_ID,S.CUST_ID,D.TRDACCT,S.INST_ID),0))*0.2
+                        ELSE
+                        (S.INST_AVL-ISNULL(dbo.spGetTraderSellOmsQty(S.OP_ID,S.CUACCT_ID,S.CUST_ID,D.TRDACCT,S.INST_ID),0))*0.1
+                        END
+                        AS OMS_QTY,
+                     0 AS DEPOS_PRICE, 0 AS DEPOS_QTY,0 AS UNMATCH_QTY, '0' AS PROC_COST,'0' AS TRANSFER_COST,
+                     '0' AS OTHER_COST,
+                     '0' AS STAMP_TAX,P.ORDER_TYPE,'0' AS CHANNEL,'0' AS OMS_STATUS,P.TRADE_DIRECT,
+                      S.OP_ID AS TRADER_ID,dbo.spGetSysDate(1)  AS UP_DATE,
+                     DATENAME(HH,getdate())+ DATENAME(MI,getdate())+ DATENAME(SECOND,getdate()) AS UP_TIME,
+                     '' AS REMARK,'1' as ORDER_LVL
+            FROM T_STOK_BUILD_POS P,T_MTS_ASSET_SUB S,T_TRDACCT D
+            WHERE S.CUACCT_ID=D.CUACCT_ID
+               AND  S.TRDACCT=D.TRDACCT
+               AND  P.STK_ID=S.INST_ID
+               AND  S.INST_AVL-ISNULL(dbo.spGetTraderSellOmsQty(S.OP_ID,S.CUACCT_ID,S.CUST_ID,D.TRDACCT,S.INST_ID),0)>0
+               AND  P.IS_OMS=0
+               AND  P.UP_DATE=dbo.spGetSysDate(1)
+               and  P.AUDIT_SIGNAL_STATE='1'
+               and  P.TRADE_DIRECT='2'
+    </insert>
+
+    <!--查询订单管理历史信息-->
+    <select id="query_T_OMS_HIS" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT OMS_ID, OMS_DATE, OP_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,
+                TRADER_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=TRADER_ID) AS TRADER_NAME,
+                OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,
+                 (SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=T2.CUST_ID) AS CUST_NAME,
+                T2.STK_ID,(SELECT STK_NAME FROM T_STK_INFO T1 WHERE T1.STK_ID=T2.STK_ID) AS STK_NAME, OMS_PRICE,
+                OMS_QTY,DEPOS_PRICE, DEPOS_QTY,UNMATCH_QTY,PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,
+                CHANNEL, OMS_STATUS,TRADE_DIRECT,UP_DATE,UP_TIME, REMARK
+                FROM T_OMS_HIS T2
+        <where>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="OMS_DATE !='' and OMS_DATE != null">
+                and OMS_DATE ='${OMS_DATE}'
+            </if>
+            <if test="TRADER_ID !='' and TRADER_ID != null">
+                and TRADER_ID = '${TRADER_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID = '${CUACCT_ID}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+            <if test="CHANNEL !='' and CHANNEL != null">
+                and CHANNEL =  '${CHANNEL}'
+            </if>
+            <if test="OMS_STATUS !='' and OMS_STATUS != null">
+                and OMS_STATUS ='${OMS_STATUS}'
+            </if>
+            <if test="OMS_DATE_BEGIN !='' and OMS_DATE_BEGIN != null">
+                and OMS_DATE &gt;='${OMS_DATE_BEGIN}'
+            </if>
+            <if test="OMS_DATE_END !='' and OMS_DATE_END != null">
+                and OMS_DATE &lt;='${OMS_DATE_END}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+        order by CAST(OMS_ID AS int) desc
+    </select>
+    <!--订单归档到历史表-->
+    <insert id="insert_T_OMS_HIS" parameterType="hashmap">
+     INSERT INTO T_OMS_HIS (OMS_ID, OMS_DATE, OP_ID,TRADER_ID, OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,STK_ID, OMS_PRICE, OMS_QTY,DEPOS_PRICE,DEPOS_QTY,
+                       UNMATCH_QTY,PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,CHANNEL, OMS_STATUS,TRADE_DIRECT,UP_DATE,UP_TIME,REMARK)
+       SELECT  T1.OMS_ID,T1.OMS_DATE,T1.OP_ID, T1.TRADER_ID,T1.OMS_TYPE, T1.CUST_ID, T1.CUACCT_ID,T1.CUACCT_LVL,T1.STKBD,T1.TRDACCT,T1.STK_ID, T1.OMS_PRICE, T1.OMS_QTY, T1.DEPOS_PRICE,
+              T1.DEPOS_QTY, T1.UNMATCH_QTY,T1.PROC_COST,T1.TRANSFER_COST,T1.OTHER_COST,T1.STAMP_TAX,T1.ORDER_TYPE,T1.CHANNEL, T1.OMS_STATUS,
+              T1.TRADE_DIRECT,T1.UP_DATE,T1.UP_TIME,T1.REMARK
+       FROM T_OMS T1
+      WHERE T1.UP_DATE='${UP_DATE}'
+    </insert>
+    <!--订单信息历史表-->
+    <select id="query_T_MATCH_HIS" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT MATCH_ID,OMS_ID, OMS_DATE, OP_ID, (SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,
+                TRADER_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=TRADER_ID) AS TRADER_NAME,
+                OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,T2.STK_ID,(SELECT STK_NAME FROM T_STK_INFO T1 WHERE T1.STK_ID=T2.STK_ID) AS STK_NAME,
+                MATCH_PRICE, MATCH_QTY, MATCH_AMT,TRADE_DIRECT,PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,
+                CHANNEL, MATCH_STATUS, UP_DATE,UP_TIME, REMARK
+        FROM T_MATCH_HIS T2
+        <where>
+            <if test="MATCH_ID !='' and MATCH_ID != null">
+                and MATCH_ID ='${MATCH_ID}'
+            </if>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID ='${OMS_ID}'
+            </if>
+            <if test="OMS_DATE !='' and OMS_DATE != null">
+                and OMS_DATE ='${OMS_DATE}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="TRADER_ID !='' and TRADER_ID != null">
+                and TRADER_ID = '${TRADER_ID}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID = '${CUACCT_ID}'
+            </if>
+            <if test="STKBD !='' and STKBD != null">
+                and STKBD = '${STKBD}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT = '${TRDACCT}'
+            </if>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+            <if test="CHANNEL !='' and CHANNEL != null">
+                and CHANNEL =  '${CHANNEL}'
+            </if>
+            <if test="OMS_STATUS !='' and OMS_STATUS != null">
+                and OMS_STATUS ='${OMS_STATUS}'
+            </if>
+            <if test="NOT_MATCH_ID !='' and NOT_MATCH_ID != null">
+                and MATCH_ID !='${NOT_MATCH_ID}'
+            </if>
+            <if test="UP_DATE !='' and UP_DATE != null">
+                and UP_DATE ='${UP_DATE}'
+            </if>
+            <if test="OMS_DATE_BEGIN !='' and OMS_DATE_BEGIN != null">
+                and OMS_DATE &gt;='${OMS_DATE_BEGIN}'
+            </if>
+            <if test="OMS_DATE_END !='' and OMS_DATE_END != null">
+                and OMS_DATE &lt;='${OMS_DATE_END}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+        order by UP_DATE desc,OMS_DATE desc
+    </select>
+    <!--成交信息归档到历史表-->
+    <insert id="insert_T_MATCH_HIS" parameterType="hashmap">
+      INSERT INTO T_MATCH_HIS (MATCH_ID,OMS_ID, OMS_DATE, OP_ID,TRADER_ID, OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,
+                          STKBD,TRDACCT,STK_ID, MATCH_PRICE, MATCH_QTY, MATCH_AMT,
+                         PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,CHANNEL, MATCH_STATUS,TRADE_DIRECT, UP_DATE,UP_TIME, REMARK)
+      select MATCH_ID,OMS_ID, OMS_DATE, OP_ID,TRADER_ID, OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,
+                         STKBD,TRDACCT,STK_ID, MATCH_PRICE, MATCH_QTY, MATCH_AMT,
+                         PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,ORDER_TYPE,CHANNEL, MATCH_STATUS,TRADE_DIRECT, UP_DATE,UP_TIME, REMARK
+       from  T_MATCH
+       WHERE UP_DATE='${UP_DATE}'
+    </insert>
+
+    <!--查询客户费用设置信息-->
+    <select id="query_T_OUTLAY_SET" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT K.OUTLAY_TYPE,K.CUACCT_LVL,K.CUST_ID, (SELECT T.CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=K.CUST_ID) AS CUST_NAME,
+                K.STK_CLS, K.TRADE_DIRECT,K.MIN_PROC_COST,K.PROC_COST, K.TRANSFER_COST,K.OTHER_COST, K.STAMP_TAX,
+                K. UP_DATE, K.UP_TIME
+        FROM T_OUTLAY_SET K
+        <where>
+            <if test="OUTLAY_TYPE !='' and OUTLAY_TYPE != null">
+                and OUTLAY_TYPE ='${OUTLAY_TYPE}'
+            </if>
+            <if test="CUACCT_LVL !='' and CUACCT_LVL != null">
+                and CUACCT_LVL ='${CUACCT_LVL}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="STK_CLS !='' and STK_CLS != null">
+                and STK_CLS ='${STK_CLS}'
+            </if>
+            <if test="TRADE_DIRECT !='' and TRADE_DIRECT != null">
+                and TRADE_DIRECT ='${TRADE_DIRECT}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+        </where>
+        ORDER BY K.OUTLAY_TYPE,K.CUACCT_LVL
+    </select>
+    <!--新增客户费用设置信息-->
+    <insert id="insert_T_OUTLAY_SET" parameterType="hashmap">
+        INSERT INTO T_OUTLAY_SET (OUTLAY_TYPE,CUACCT_LVL,CUST_ID, STK_CLS, TRADE_DIRECT,MIN_PROC_COST, PROC_COST,
+                                 TRANSFER_COST,OTHER_COST, STAMP_TAX,UP_DATE, UP_TIME)
+        VALUES ('${OUTLAY_TYPE}','${CUACCT_LVL}','${CUST_ID}', '${STK_CLS}', '${TRADE_DIRECT}',
+                  CAST('${MIN_PROC_COST}' AS NUMERIC(19,0)),CAST('${PROC_COST}' AS NUMERIC(19,8)),
+                 CAST('${TRANSFER_COST}' AS NUMERIC(19,8)),CAST('${OTHER_COST}' AS NUMERIC(19,8)),
+                 CAST('${STAMP_TAX}' AS NUMERIC(19,8)),'${UP_DATE}','${UP_TIME}')
+    </insert>
+    <!--修改客户费用设置信息-->
+    <update id="update_T_OUTLAY_SET" parameterType="hashmap">
+        UPDATE T_OUTLAY_SET  SET PROC_COST = CAST('${PROC_COST}' AS NUMERIC(19,8)),
+                                 MIN_PROC_COST =CAST('${MIN_PROC_COST}' AS NUMERIC(19,0)),
+                                 TRANSFER_COST = CAST('${TRANSFER_COST}' AS NUMERIC(19,8)),
+                                 OTHER_COST = CAST('${OTHER_COST}' AS NUMERIC(19,8)),
+                                 STAMP_TAX = CAST('${STAMP_TAX}' AS NUMERIC(19,8)),
+                                 UP_DATE ='${UP_DATE}',UP_TIME ='${UP_TIME}'
+        <where>
+            <if test="OUTLAY_TYPE !='' and OUTLAY_TYPE != null">
+                and OUTLAY_TYPE ='${OUTLAY_TYPE}'
+            </if>
+            <if test="CUACCT_LVL !='' and CUACCT_LVL != null">
+                and CUACCT_LVL ='${CUACCT_LVL}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="STK_CLS !='' and STK_CLS != null">
+                and STK_CLS ='${STK_CLS}'
+            </if>
+            <if test="TRADE_DIRECT !='' and TRADE_DIRECT != null">
+                and TRADE_DIRECT ='${TRADE_DIRECT}'
+            </if>
+
+        </where>
+    </update>
+    <!--删除客户费用设置信息-->
+    <delete id="delete_T_OUTLAY_SET" parameterType="hashmap">
+        delete  from T_OUTLAY_SET
+        <where>
+            <if test="OUTLAY_TYPE !='' and OUTLAY_TYPE != null">
+                and OUTLAY_TYPE ='${OUTLAY_TYPE}'
+            </if>
+            <if test="CUACCT_LVL !='' and CUACCT_LVL != null">
+                and CUACCT_LVL ='${CUACCT_LVL}'
+            </if>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="STK_CLS !='' and STK_CLS != null">
+                and STK_CLS ='${STK_CLS}'
+            </if>
+            <if test="TRADE_DIRECT !='' and TRADE_DIRECT != null">
+                and TRADE_DIRECT ='${TRADE_DIRECT}'
+            </if>
+        </where>
+    </delete>
+
+    <!--手动新增股票建仓信息-->
+    <insert id="insert_T_STOK_BUILD_POS_HAND" parameterType="hashmap">
+      INSERT INTO T_STOK_BUILD_POS (STK_ID, STK_NAME, BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME, ORDER_TYPE,
+                                      IS_OMS,REMARK,SIGNAL_TYPE,OP_ID,AUDIT_OP_ID,AUDIT_SIGNAL_STATE)
+      VALUES ('${STK_ID}','${STK_NAME}','${BUILD_PRICE}','${TRADE_DIRECT}', '${UP_DATE}', '${UP_TIME}','${ORDER_TYPE}',
+                '${IS_OMS}', '${REMARK}','${SIGNAL_TYPE}','${OP_ID}','${AUDIT_OP_ID}','${AUDIT_SIGNAL_STATE}')
+    </insert>
+    <!--查询股票建仓信息-->
+    <select id="query_T_STOK_BUILD_POS" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       SELECT STK_ID, STK_NAME,BUILD_PRICE, TRADE_DIRECT, UP_DATE, UP_TIME, ORDER_TYPE, IS_OMS,SIGNAL_TYPE,
+       OP_ID,(SELECT USER_NAME FROM kdbase..UUM_USER WHERE USER_CODE=OP_ID) AS OP_NAME,AUDIT_SIGNAL_STATE,
+        AUDIT_OP_ID,REMARK
+       FROM T_STOK_BUILD_POS
+       <where>
+           <if test="STK_ID != '' and STK_ID != null">
+               and STK_ID='${STK_ID}'
+           </if>
+           <if test="TRADE_DIRECT != '' and TRADE_DIRECT != null">
+               and TRADE_DIRECT='${TRADE_DIRECT}'
+           </if>
+           <if test="UP_DATE != '' and UP_DATE != null">
+               and UP_DATE='${UP_DATE}'
+           </if>
+           <if test="ORDER_TYPE != '' and ORDER_TYPE != null">
+               and ORDER_TYPE='${ORDER_TYPE}'
+           </if>
+           <if test="IS_OMS != '' and IS_OMS != null">
+               and IS_OMS='${IS_OMS}'
+           </if>
+           <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+               and OP_ID = '${OP_ID}'
+           </if>
+           <if test="AUDIT_SIGNAL_STATE != '' and AUDIT_SIGNAL_STATE != null">
+               and AUDIT_SIGNAL_STATE='${AUDIT_SIGNAL_STATE}'
+           </if>
+           <if test="AUDIT_OP_ID != '' and AUDIT_OP_ID != null">
+               and AUDIT_OP_ID='${AUDIT_OP_ID}'
+           </if>
+           order by UP_DATE desc,UP_TIME desc
+       </where>
+    </select>
+    <!--更新手工信号的审核状态-->
+    <update id="update_HAND_SIGNAL_AUDIT_STA" parameterType="hashmap">
+       update T_STOK_BUILD_POS set AUDIT_SIGNAL_STATE='${AUDIT_SIGNAL_STATE}'
+       <where>
+           <if test="STK_ID != '' and STK_ID != null">
+               and STK_ID='${STK_ID}'
+           </if>
+           <if test="UP_DATE != '' and UP_DATE != null">
+               and UP_DATE='${UP_DATE}'
+           </if>
+           <if test="UP_TIME != '' and UP_TIME != null">
+               and UP_TIME='${UP_TIME}'
+           </if>
+       </where>
+    </update>
+    <!--委托单股票未成交费用总计-->
+    <select id="SIGLE_STOCK_ENTRACT_UNMATCH_AMT_SUM" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT ISNULL(SUM(DEPOS_PRICE*UNMATCH_QTY),0) AS UNMATCH_AMT_SUM
+        FROM  T_OMS T2
+        <where>
+            <if test="STK_ID != '' and STK_ID != null">
+                and STK_ID='${STK_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="UP_DATE != '' and UP_DATE != null">
+                and UP_DATE='${UP_DATE}'
+            </if>
+        </where>
+    </select>
+    <!--单股票当前持仓余额总计-->
+    <select id="SIGLE_STOCK_ENTRACT_HOLD_INST_MARKET_SUM" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select ISNULL(SUM(isnull(stk_price,0)*INST_BAL),0) as INST_MARKET_SUM
+        FROM   (select K1.CUST_ID, K1.INST_ID,
+                    (select distinct stk_price
+                        from OPENQUERY(my, 'select * from t_stk_hq_t')
+                        K2 WHERE K2.stk_id=K1.INST_ID ) as stk_price,
+                        K1.INST_BAL
+                    from  T_MTS_ASSET_SUB K1
+                        <where>
+                            <if test="INST_ID != '' and INST_ID != null">
+                                and INST_ID='${INST_ID}'
+                            </if>
+                            <if test="OP_ID !='' and OP_ID != null and USER_POST!='1' and OP_ID != '8888'">
+                                and OP_ID = '${OP_ID}'
+                            </if>
+                        </where>
+                    ) T
+    </select>
+
+</mapper>

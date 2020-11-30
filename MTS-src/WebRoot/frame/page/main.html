@@ -1,0 +1,265 @@
+<script type="text/javascript">
+ $(document).ready(function(){
+	initFrame();
+	bindEvent();
+});
+
+function initFrame(){
+    $('#frameTab').tabs({
+        onSelect: function(title,index){
+            $k.highlightTab(title,index);
+        },
+        onBeforeClose:function(title,index){
+            return $k.checkEditor(title,index);
+        },
+        onInitSuccess:function(){
+            $k.status="ready";
+        }
+    });
+
+	$k.resize();
+	$k.initUserInfo();
+	lockDiv();
+}
+
+function lockDiv(){
+	var lockUser = $.cookie('lockUser');
+	if(lockUser == "true"){
+		$("#masklayer").show();
+		$("#lock").show();
+		posit($("#lock"));
+	}
+}
+
+function bindEvent(){
+	$("#userImg").bind("click",function(e){
+		 
+		   $("#userForm").form("clear").form("load",g_user); 
+        $("#userInfoDialog").dialog({
+            width:700,
+            modal:true,
+            title:"修改用户信息",
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    $k.updateUseInfo();
+                }
+            },{
+                text:'取消',
+                handler:function(){
+                    $("#userInfoDialog").dialog("close");
+                    $("body").removeData("imgName");
+                }
+            }],
+            onClose:function(){
+                $("body").removeData("imgName");
+            }
+        });
+        $("#userInfoDialog").dialog("move",{left:400,top:200});
+	});
+	
+	$("#frame_password_update").bind("click",function(){
+		using("dialog",function(){
+			$("#frame-password-update-dialog").dialog({
+				width:320,
+				height:200,
+				title:"修改密码",
+				modal:true,
+				buttons:[{
+					text:'保存',
+					handler:function(){
+						$k.passwordModify();
+					}
+				},{
+					text:'取消',
+					handler:function(){
+						$("#passwordModifyForm").form("reset");
+						$("#frame-password-update-dialog").dialog("close");
+					}
+				}],
+				onClose:function(){
+					$("#passwordModifyForm").form("reset");
+				}
+			});
+		});
+		
+	});
+
+    $(window).resize(function() {
+        $k.resize();
+    });
+}
+
+function posit(target){
+    var top = ($(window).height()-target.height())/2 + $(window).scrollTop();
+    var left = ($(window).width()-target.width())/2 + $(window).scrollLeft();
+    $(target).css({"position":"absolute","top":top+"px","left":left+"px"});
+}
+</script>
+<div id="masklayer" class="lockDiv"></div>
+	<div id="frame-password-update-dialog" style="display: none; ">
+		<form id="passwordModifyForm" class="kui-form">
+			<table style="width: 300px;margin-left:6px; margin-top: 10px;">
+				<tr>
+					<td>旧密码:</td>
+					<td><input type="password" id="oldPsd" class="kui-validatebox" kui-options="validType:'numchar[6,25]',required:true" style="width:200px"></td>
+				</tr>
+				<tr>
+					<td>新密码:</td>
+					<td><input type="password" id="newPsd" class="kui-validatebox" kui-options="validType:'numchar[6,25]',required:true" style="width:200px"></td>
+				</tr>
+				<tr>
+					<td>确认密码:</td>
+					<td><input type="password" id="confirmPsd" class="kui-validatebox" kui-options="validType:'numchar[6,25]',required:true" style="width:200px"></td>
+				</tr>
+			</table>
+		</form>
+		
+	</div>
+<div id="lock" class="frame-lock" style="display: none;">
+	<div class="frame-lock-head">
+		<span class="lock-icon"></span><span class="frame-lock-title">系统锁定</span>
+	</div>
+	<div class="frame-lock-content">
+		<form>
+			<div align="center" style="border: none;">
+				<img id="lockIcon" src="frame/images/frame/user-head-big.png" width="76px" height="76px">
+			</div>
+			<div>
+				<span class="name-input-icon"></span><span><input type="text" id='lock_username' readOnly /></span>
+			</div>
+			<div>
+				<span class="psd-input-icon"></span><span><input type='password' id='lock_password'/></span>
+			</div>
+			<div class="frame-lock-btn">
+				<span>解锁</span>
+			</div>
+		</form>
+		<div style="text-align:center;margin-top:10px; color: blue;">
+			<span style="margin-right: 10px;cursor: pointer;" onclick="$k.logout(true)">切换用户</span>
+		</div>
+	</div>
+</div>
+<div id="userInfoDialog"  style="display: none;">
+		<iframe id="hideFrame" name="hideFrame" src="" style="display: none;" ></iframe>
+		<form id="userForm" action="" method="post" target="hideFrame" enctype="multipart/form-data">
+		<table>
+		<tr>
+		<td>
+		<div style="width: 560px;">
+		<table style="width: 560px;margin-left: 15px;">
+			<tr>
+				<td width="80px">用户编号:</td>
+				<td ><input type="text" id="userId" name="userId" class="kui-validatebox" kui-options="disabled:true"/></td>
+				<td width="80px">用户名称:</td>
+				<td ><input type="text" id="user_Name" name="userName" class="kui-validatebox" kui-options="disabled:true"/></td>
+			</tr>
+			<tr >
+				<td >开户日期:</td>
+				<td ><input type="text" id="openDate" name="openDate" class="kui-validatebox" kui-options="disabled:true"/></td>
+				<td >办公电话:</td>
+				<td ><input type="text" id="offTel" name="offTel" class="kui-validatebox" kui-options="validType:'tel'"/></td>
+			</tr>
+			<tr>
+				<td>移动电话:</td>
+				<td><input type="text" id="mobile" name="mobile" class="kui-validatebox" kui-options="validType:'mobile'"/></td>
+				<td>电子邮箱:</td>
+				<td><input type="text" id="email" name="email" class="kui-validatebox" kui-options="validType:'email;length[0,32]'"/></td>
+			</tr>
+			<tr>
+				<td>签名备注:</td>
+				<td colspan="3">
+					<textarea rows="3"  cols="56" id="asigntrue" name="asign" class="kui-textarea" kui-options="validType:'length[0,256]'" style="min-width: 450px;min-height: 50px; max-width: 450px;max-height: 50px;">
+					
+				  </textarea>
+				</td>
+			</tr>
+		</table>
+		</div>
+		</td>
+		<td>
+		<div>
+		   <table>		   
+		      <tr>
+			      <td width="100px" align="center" >
+					<img id="userPhone" src="frame/images/frame/user-head-big.png" width="100px" height="100px;"/>
+					<span style="color: blue;cursor: pointer;display:inline-block; position:relative; overflow:hidden;">更换头像<input type="file" name="user_icon" onchange="$k.upload(this.value)" accept="image/*" style="position:absolute; right:0; top:0; font-size:100px; opacity:0; filter:alpha(opacity=0);"/></span>
+				</td>
+			  </tr>
+			  
+		   </table>
+		</div>
+		</td>
+		</tr>
+		</table></form>
+</div>
+<div class="ui-layout-top">
+	<div class="ui-frame-layout-top">
+		<div class="ui-frame-logo">
+			<div class="ui-frame-logo-img"></div>
+			<div class="ui-frame-logo-title"></div>
+		</div>
+		<div class="ui-frame-tools">
+			<div id="userImg" class="ui-frame-user-img" title="用户信息">
+				<img id="frameUserImg" src="frame/images/frame/user-pic.png" width="43px" height="43px;"/>
+			</div>
+			<span id="user" class="ui-frame-user-name"> </span>
+            <div id="frame_password_update" class="frame_password_update" title="修改密码">
+				<img src="frame/images/frame/psw_edit.png" alt="修改密码"/>
+			</div>
+                <div class="tools-trans-bg">
+                    <div class="ui-frame-tools-bg tools-line">
+                    </div>
+                    <div class="tools-box">
+                        <div class="ui-frame-tools-bg tools-box-left"></div>
+                        <div class="ui-frame-tools-bg tools-box-center">
+                            <div class="tools-icons-bg tools-icons-1" onclick="$k.goback()" title="返回首页">
+                            </div>
+                            <div class="tools-icons-bg tools-icons-2" onclick="$k.lock()" title="锁定系统">
+                            </div>
+                            <div class="tools-icons-bg tools-icons-3" onclick="$k.logout()" title="退出登录">
+                            </div>
+                        </div>
+                        <div class="ui-frame-tools-bg tools-box-right">
+                        </div>
+                    </div>
+                </div>
+		</div>
+	</div>
+</div>
+<div class="ui-layout-west">
+	<div class="search-box">
+		<div class="ui-frame-tools-bg search-box-left"></div>
+		<div class="ui-frame-tools-bg search-box-center">
+			<input type="text" id="frame-search" value="请输入关键字..." >
+			<div id="frame-search-icon" class="search-icons-bg search-ico" title="关键字搜索"></div>
+		</div>
+		<div class="ui-frame-tools-bg search-box-right"></div>
+	</div>
+	<div id="kingdomMenu" style="min-width:180px; height: 540px;overflow-y: auto"></div>
+	<!-- <div id="menus" class="ui-frame-menus" ></div> -->
+</div>
+<div class="ui-layout-east">
+	<div id="frameTab" class="kui-tabs"  style="height: 600px;" plain="true" border="false" kui-options="onContextMenu:$k.tabContextMenu">
+		<div title="&nbsp;首 &nbsp; &nbsp;页&nbsp; ">
+			<div class="frame-welcome">
+				<div style="margin: 3px;">欢迎<span id="uName"></span>登录，您最后一次登录时间: <span id="locTime"></span>   当前登录IP地址是:<span id="locIp"></span></div>
+				<div style="margin: 3px;">签名：<span id="asign"></span></div>
+			</div>
+			<div class="sysFunMap" ><span style="margin-left: 15px;">系统功能导航</span></div>
+			<div class='frame-map'></div>
+		</div>
+	</div>
+	<div id="tabsMenu" class="kui-menu" kui-options="onClick:$k.tabMenuEvent" style="width:150px;display:none;">
+        <div kui-options="name:'update'">刷新</div>
+        <div class="menu-sep"></div>
+        <div kui-options="name:'close'">关闭</div>
+        <div kui-options="name:'closeAll'">全部关闭</div>
+        <div kui-options="name:'closeOther'">关闭其他</div>
+        <div class="menu-sep"></div>
+        <div kui-options="name:'closeRight'">当前页右侧全部关闭</div>
+        <div kui-options="name:'closeLeft'">当前页左侧全部关闭</div>
+        <div class="menu-sep"></div>
+      </div>
+</div>
+

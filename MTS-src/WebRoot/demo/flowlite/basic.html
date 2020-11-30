@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>流程组件测试</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript">
+window.$ready = function() {
+using("flowlite", function() {
+	var flowPanel = $("#flow_panel");
+	
+	flowPanel.flowlite({
+		onTodoNodeClick: function(e, nodeData) {
+			console.log("onTodoNodeClick");
+			console.log(nodeData);
+			if(nodeData.index === flowPanel.flowlite("getNodeData", flowPanel.flowlite("getNextNode")).index) {
+				flowPanel.flowlite("go2Node", this);
+			}
+		},
+		onIngNodeClick: function(e, nodeData) {
+			console.log("onIngNodeClick");
+			console.log(nodeData);
+			flowPanel.flowlite("go2Node", this);
+		},
+		onDoneNodeClick: function(e, nodeData) {
+			console.log("onDoneNodeClick");
+			console.log(nodeData);
+			flowPanel.flowlite("go2Node", this);
+		},
+		onSelectedNodeClick: function(e, nodeData) {
+			console.log("onSelectedNodeClick");
+			console.log(nodeData);
+		},
+		onBeforeNodeJump: function(nodeData) {
+			console.log("onBeforeNodeJump");
+			console.log(nodeData);
+			if(flowPanel.flowlite("isDoneNode", this)) {
+				//return false;
+			}
+		},
+		onNodeJumpSuccess: function(nodeData) {
+			console.log("onNodeJumpSuccess");
+			console.log(nodeData);
+		}
+	});
+
+	$(window).resize(function() {
+		flowPanel.flowlite("resize");
+	});
+});
+}
+</script>
+</head>
+<body>
+<div id="flow_panel" kui-options="freeTodoNode:false">
+	<div kui-options="priority:1,text:'abc'">测试流程节点1</div>
+	<div kui-options="priority:1,text:'测试流程节点2'"></div>
+	<div kui-options="priority:1,isCurrent:true">测试流程节点3</div>
+	<div kui-options="priority:1,revisit:false">测试流程节点4</div>
+	<div kui-options="priority:1,isEnd:true">测试流程节点5</div>
+	<div kui-options="priority:1">测试流程节点6</div>
+</div>
+</body>
+</html>

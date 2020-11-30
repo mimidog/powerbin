@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.szkingdom.frame.bpm.engine.impl.persistence.entity.JobEntity">
+
+  <!-- JOB DELETE STATEMENTS-->
+
+  <delete id="BpmJobDelete" parameterType="map">
+    delete from UWK_RU_JOB where job_id = #{job.id} and REV = #{job.revision}
+  </delete>
+  
+  <delete id="BpmJobDeleteTimer" parameterType="map">
+    delete from UWK_RU_JOB where job_id = #{timer.id} and REV = #{timer.revision}
+  </delete>
+  
+  <delete id="BpmJobDeleteMessage" parameterType="map">
+    delete from UWK_RU_JOB where job_id = #{message.id} and REV = #{message.revision}
+  </delete>
+  
+  <!-- JOB SELECT (FOR TIMER AND MESSAGE) -->  
+
+  <resultMap id="jobResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.JobEntity">
+    <id property="id" column="JOB_ID" jdbcType="VARCHAR" />
+    <result property="revision" column="REV" jdbcType="INTEGER" />
+    <result property="lockOwner" column="LOCK_OWNER" jdbcType="VARCHAR" />
+    <result property="lockExpirationTime" column="LOCK_EXP_TIME" jdbcType="TIMESTAMP" />
+    <result property="exclusive" column="JOB_EXCLUSIVE" jdbcType="BOOLEAN" />
+    <result property="executionId" column="EXECUTION_ID" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROCESS_INSTANCE_ID" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID" jdbcType="VARCHAR" />
+    <result property="retries" column="RETRIES" jdbcType="INTEGER" />
+    <result property="exceptionByteArrayRef" column="EXCEPTION_STACK_ID" typeHandler="ByteArrayRefTypeHandler" />
+    <result property="exceptionMessage" column="EXCEPTION_MSG" jdbcType="VARCHAR" />
+    <result property="jobHandlerType" column="HANDLER_TYPE" jdbcType="VARCHAR" />
+    <result property="jobHandlerConfiguration" column="HANDLER_CFG" jdbcType="VARCHAR" />
+    <discriminator javaType="string" column="JOB_TYPE">
+      <case value="message" resultMap="messageResultMap"/> 
+      <case value="timer" resultMap="timerResultMap"/> 
+    </discriminator>
+  </resultMap>
+
+  <resultMap id="messageResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.MessageEntity" extends="jobResultMap"/>
+
+  <resultMap id="timerResultMap" type="com.szkingdom.frame.bpm.engine.impl.persistence.entity.TimerEntity" extends="jobResultMap">
+    <result property="duedate" column="DUEDATE" jdbcType="TIMESTAMP" />
+    <result property="repeat" column="JOB_REPEAT" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="BpmJobSelect" parameterType="map" resultMap="jobResultMap">
+    select * from UWK_RU_JOB where job_id = #{id}
+  </select>
+
+  <select id="BpmJobSelectNextToExecute" parameterType="map" resultMap="jobResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select 
+    	RES.* <include refid="bpm.limitBetween"/>  		
+    from UWK_RU_JOB RES    
+    	LEFT OUTER JOIN UWK_RU_EXECUTION PI ON PI.EXECUTION_ID = RES.PROCESS_INSTANCE_ID
+    where (RES.RETRIES &gt; 0)
+      and (RES.DUEDATE is null or RES.DUEDATE &lt; #{dueDate, jdbcType=TIMESTAMP})
+      and (RES.LOCK_OWNER is null or RES.LOCK_EXP_TIME &lt; #{lockExpTime, jdbcType=TIMESTAMP})
+	  and (
+	  	    (RES.EXECUTION_ID is null)
+	  		or 
+	  		(PI.SUSPENSION_STATE = 1)
+      )  
+    <include refid="bpm.limitAfter"/>    
+  </select>     
+  
+  <select id="BpmJobSelectNextToExecute_mysql" parameterType="map" resultMap="jobResultMap">
+    <include refid="bpm.limitBefore"/>
+    SELECT RES.* <include refid="bpm.limitBetween"/>  
+    FROM UWK_RU_JOB RES
+      LEFT OUTER JOIN UWK_RU_EXECUTION PI ON PI.EXECUTION_ID = RES.PROCESS_INSTANCE_ID
+    where (RETRIES &gt; 0)
+      and (DUEDATE is null or DUEDATE &lt;= #{dueDate, jdbcType=TIMESTAMP})
+      and (LOCK_OWNER is null or LOCK_EXP_TIME &lt;= #{lockExpTime, jdbcType=TIMESTAMP})
+      and (
+          (RES.EXECUTION_ID is null)
+        or 
+        (PI.SUSPENSION_STATE = 1)     
+      )  
+    <include refid="bpm.limitAfter"/>
+  </select>      
+
+  <select id="BpmJobSelectExclusiveToExecute" parameterType="map" resultMap="jobResultMap">
+  	<include refid="bpm.limitBefore"/> 
+    select RES.* <include refid="bpm.limitBetween"/>
+    from UWK_RU_JOB RES    
+    where (RETRIES &gt; 0)
+      and (DUEDATE is null or DUEDATE &lt; #{duedate, jdbcType=TIMESTAMP})
+      and (LOCK_OWNER is null or LOCK_EXP_TIME &lt; #{lockExpTime, jdbcType=TIMESTAMP})
+      and (JOB_EXCLUSIVE = TRUE)
+      and (PROCESS_INSTANCE_ID = #{pid})  
+    <include refid="bpm.limitAfter"/> 
+  </select>
+  
+  <select id="BpmJobSelectExclusiveToExecute_mysql" parameterType="map" resultMap="jobResultMap">
+    <include refid="bpm.limitBefore"/> 
+    select RES.* <include refid="bpm.limitBetween"/>
+    from UWK_RU_JOB RES
+    where (RETRIES &gt; 0)
+      and (DUEDATE is null or DUEDATE &lt;= #{duedate, jdbcType=TIMESTAMP})
+      and (LOCK_OWNER is null or LOCK_EXP_TIME &lt;= #{lockExpTime, jdbcType=TIMESTAMP})
+      and (JOB_EXCLUSIVE = TRUE)
+      and (PROCESS_INSTANCE_ID = #{pid})
+    <include refid="bpm.limitAfter"/> 
+  </select>
+  
+  <select id="BpmJobSelectExclusiveToExecute_integerBoolean" parameterType="map" resultMap="jobResultMap">
+  	<include refid="bpm.limitBefore"/>
+    select RES.* <include refid="bpm.limitBetween"/>
+    from UWK_RU_JOB RES  
+    where (RETRIES &gt; 0)
+      and (DUEDATE is null or DUEDATE &lt; #{duedate, jdbcType=TIMESTAMP})
+      and (LOCK_OWNER is null or LOCK_EXP_TIME &lt; #{lockExpTime, jdbcType=TIMESTAMP})
+      and (JOB_EXCLUSIVE = 1)
+      and (PROCESS_INSTANCE_ID = #{pid})  
+    <include refid="bpm.limitAfter"/>   
+  </select>
+  
+  <select id="BpmJobSelectByConfiguration" parameterType="map" resultMap="jobResultMap">
+      select * from UWK_RU_JOB
+      where HANDLER_TYPE = #{handlerType}
+      and HANDLER_CFG =  #{handlerConfiguration}
+  </select>
+
+  <select id="BpmJobSelectByExecutionId" parameterType="map" resultMap="jobResultMap">
+    select *
+    from UWK_RU_JOB J
+    where J.EXECUTION_ID = #{executionId}
+  </select>
+
+  <select id="BpmJobSelectByQueryCriteria" parameterType="map" resultMap="jobResultMap">
+  	<include refid="bpm.limitBefore"/> 
+    select RES.* <include refid="bpm.limitBetween"/>
+    <include refid="selectJobByQueryCriteriaSql"/>
+    <include refid="bpm.orderBy"/>
+    <include refid="bpm.limitAfter"/>
+  </select>
+
+  <select id="BpmJobSelectCountByQueryCriteria" parameterType="map" resultType="long">
+    select count(distinct RES.JOB_ID)
+    <include refid="selectJobByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectJobByQueryCriteriaSql">
+    from UWK_RU_JOB RES
+    <if test="criteria.executable">
+        LEFT OUTER JOIN UWK_RU_EXECUTION PI ON PI.EXECUTION_ID = RES.PROCESS_INSTANCE_ID
+    </if>
+    <where>
+      <if test="criteria.id != null">
+        RES.JOB_ID = #{criteria.id}
+      </if>
+      <if test="criteria.processInstanceId != null">
+        and RES.PROCESS_INSTANCE_ID = #{criteria.processInstanceId}
+      </if>
+      <if test="criteria.executionId != null">
+        and RES.EXECUTION_ID = #{criteria.executionId}
+      </if>
+      <if test="criteria.processDefinitionId != null">
+        and RES.PROC_DEF_ID = #{criteria.processDefinitionId}
+      </if>
+      <if test="criteria.retriesLeft">
+        and RES.RETRIES &gt; 0
+      </if>
+      <if test="criteria.executable">
+        and (RES.RETRIES &gt; 0)
+        and (RES.DUEDATE is null or RES.DUEDATE &lt;= #{criteria.now, jdbcType=TIMESTAMP})
+        and (
+            (RES.EXECUTION_ID is null)
+            or 
+            (PI.SUSPENSION_STATE = 1)     
+      )
+      </if>
+      <if test="criteria.onlyTimers">
+        and RES.JOB_TYPE = 'timer'
+      </if>
+      <if test="criteria.onlyMessages">
+        and RES.JOB_TYPE = 'message'
+      </if>
+      <if test="criteria.duedateHigherThan != null">
+        and RES.DUEDATE &gt; #{criteria.duedateHigherThan}
+      </if>
+      <if test="criteria.duedateLowerThan != null">
+        and RES.DUEDATE &lt; #{criteria.duedateLowerThan}
+      </if>
+      <if test="criteria.duedateHigherThanOrEqual != null">
+        and RES.DUEDATE &gt;= #{criteria.duedateHigherThanOrEqual}
+      </if>
+      <if test="criteria.duedateLowerThanOrEqual != null">
+        and RES.DUEDATE &lt;= #{criteria.duedateLowerThanOrEqual}
+      </if>
+      <if test="criteria.withException">
+      	and (RES.EXCEPTION_MSG is not null or RES.EXCEPTION_STACK_ID is not null)
+      </if>
+      <if test="criteria.exceptionMessage">
+      	and RES.EXCEPTION_MSG = #{criteria.exceptionMessage}
+      </if>
+    </where>
+  </sql>
+
+  <!-- TIMER INSERT -->
+  
+  <insert id="BpmJobInsertTimer" parameterType="map">
+    insert into UWK_RU_JOB (
+            JOB_ID, 
+            REV,
+            JOB_TYPE,
+            LOCK_OWNER, 
+            LOCK_EXP_TIME,
+            JOB_EXCLUSIVE,
+            EXECUTION_ID, 
+            PROCESS_INSTANCE_ID,
+            PROC_DEF_ID,
+            RETRIES, 
+            EXCEPTION_STACK_ID,
+            EXCEPTION_MSG,
+            DUEDATE,
+            JOB_REPEAT,
+            HANDLER_TYPE,
+            HANDLER_CFG )
+    values (#{timer.id, jdbcType=VARCHAR},
+            1,
+            'timer',
+            #{timer.lockOwner, jdbcType=VARCHAR},
+            #{timer.lockExpirationTime, jdbcType=TIMESTAMP},
+            #{timer.isExclusive, jdbcType=BOOLEAN},
+            #{timer.executionId, jdbcType=VARCHAR},
+            #{timer.processInstanceId, jdbcType=VARCHAR},
+            #{timer.processDefinitionId, jdbcType=VARCHAR},
+            #{timer.retries, jdbcType=INTEGER},
+            #{timer.exceptionByteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+            #{timer.exceptionMessage, jdbcType=VARCHAR},
+            #{timer.duedate, jdbcType=TIMESTAMP},
+            #{timer.repeat, jdbcType=VARCHAR},
+            #{timer.jobHandlerType, jdbcType=VARCHAR},
+            #{timer.jobHandlerConfiguration, jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!-- TIMER UPDATE -->
+
+  <update id="BpmJobUpdateTimer" parameterType="map">
+    update UWK_RU_JOB
+    <set>
+       REV =  #{timer.revisionNext, jdbcType=INTEGER},
+       LOCK_EXP_TIME = #{timer.lockExpirationTime, jdbcType=TIMESTAMP},
+       LOCK_OWNER = #{timer.lockOwner, jdbcType=VARCHAR},
+       RETRIES = #{timer.retries, jdbcType=INTEGER},
+       EXCEPTION_STACK_ID = #{timer.exceptionByteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+       EXCEPTION_MSG = #{timer.exceptionMessage, jdbcType=VARCHAR},
+       DUEDATE = #{timer.duedate, jdbcType=TIMESTAMP}
+    </set>
+    where JOB_ID= #{timer.id, jdbcType=VARCHAR}
+      and REV = #{timer.revision, jdbcType=INTEGER}
+  </update>
+  
+  <!-- TIMER SELECT -->
+  
+  <select id="BpmJobSelectUnlockedTimersByDuedate" parameterType="map" resultMap="jobResultMap">
+    select RES.*
+    from UWK_RU_JOB RES
+    LEFT OUTER JOIN UWK_RU_EXECUTION PI ON PI.EXECUTION_ID = RES.PROCESS_INSTANCE_ID
+    where (RES.JOB_TYPE = 'timer')
+      and (RES.DUEDATE is not null)
+      and (RES.DUEDATE &lt; #{dueDate, jdbcType=TIMESTAMP})
+      and (RES.LOCK_OWNER is null or RES.LOCK_EXP_TIME &lt; #{lockExpTime, jdbcType=TIMESTAMP})
+      and (RES.RETRIES  &gt; 0)
+      and (
+        (RES.EXECUTION_ID is null)
+        or 
+        (PI.SUSPENSION_STATE = 1)    
+      )
+    order by DUEDATE
+  </select>
+
+  <select id="BpmJobSelectTimersByExecutionId" parameterType="map" resultMap="jobResultMap">
+    select * 
+    from UWK_RU_JOB 
+    where (RETRIES &gt; 0)
+      and (JOB_TYPE = 'timer')
+      and (EXECUTION_ID = #{executionId})
+  </select>
+  
+
+  <!-- MESSAGE INSERT -->
+
+  <insert id="BpmJobInsertMessage" parameterType="map">
+    insert into UWK_RU_JOB (
+            JOB_ID, 
+            REV, 
+            JOB_TYPE,
+            LOCK_OWNER, 
+            LOCK_EXP_TIME,
+            JOB_EXCLUSIVE,
+            EXECUTION_ID, 
+            PROCESS_INSTANCE_ID,
+            PROC_DEF_ID,
+            RETRIES, 
+            EXCEPTION_STACK_ID,
+            EXCEPTION_MSG,
+            HANDLER_TYPE,
+            HANDLER_CFG)
+    values (#{message.id, jdbcType=VARCHAR},
+            1,
+            'message',
+            #{message.lockOwner, jdbcType=VARCHAR},
+            #{message.lockExpirationTime, jdbcType=TIMESTAMP},
+            #{message.exclusive, jdbcType=BOOLEAN},
+            #{message.executionId, jdbcType=VARCHAR},
+            #{message.processInstanceId, jdbcType=VARCHAR},
+            #{message.processDefinitionId, jdbcType=VARCHAR},
+            #{message.retries, jdbcType=INTEGER},
+            #{message.exceptionByteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+            #{message.exceptionMessage, jdbcType=VARCHAR},
+            #{message.jobHandlerType, jdbcType=VARCHAR},
+            #{message.jobHandlerConfiguration, jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <!-- MESSAGE UPDATE -->
+  
+  <update id="BpmJobUpdateMessage" parameterType="map">
+    update UWK_RU_JOB
+    <set>
+       REV =  #{message.revisionNext, jdbcType=INTEGER},
+       LOCK_EXP_TIME = #{message.lockExpirationTime, jdbcType=TIMESTAMP},
+       LOCK_OWNER = #{message.lockOwner, jdbcType=VARCHAR},
+       RETRIES = #{message.retries, jdbcType=INTEGER},
+       EXCEPTION_STACK_ID = #{message.exceptionByteArrayRef, typeHandler=ByteArrayRefTypeHandler},
+       EXCEPTION_MSG = #{message.exceptionMessage, jdbcType=VARCHAR}
+    </set>
+    where JOB_ID= #{message.id, jdbcType=VARCHAR}
+      and REV = #{message.revision, jdbcType=INTEGER}
+  </update>
+
+</mapper>

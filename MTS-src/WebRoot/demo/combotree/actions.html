@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ComboTree Actions - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>ComboTree Actions</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the buttons below to perform actions</div>
+	</div>
+	<div style="margin:10px 0">
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="getValue()">GetValue</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="setValue()">SetValue</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="disable()">Disable</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" onclick="enable()">Enable</a>
+	</div>
+	<div id="cc" class="kui-combotree" kui-options="url:'tree_data1Xml.json',panelWidth:200,required:true" style="width:200px;"></div>
+	<script type="text/javascript">
+		function getValue(){
+			var val = $('#cc').combotree('getValue');
+			alert(val);
+		}
+		function setValue(){
+			$('#cc').combotree('setValue', '122');
+		}
+		function disable(){
+			$('#cc').combotree('disable');
+		}
+		function enable(){
+			$('#cc').combotree('enable');
+		}
+	</script>
+
+</body>
+</html>

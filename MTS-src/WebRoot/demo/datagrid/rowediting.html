@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Row Editing DataGrid - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+<div style="margin:10px 0;"></div>
+<table  id="cc" class="kui-datagrid" title="Basic DataGrid" style="width:700px;height:250px;"
+       kui-options="singleSelect:false,collapsible:true,
+			req:[],
+			url:'../datagrid/datagrid_data1.json',
+			remoteSort:false,sortName:'listprice',sortOrder:'asc'
+			,
+			toolbar:[
+			{
+     text:'toolbar1',
+     right:'right',
+     iconCls:'icon-add',
+     handler:function(e){
+       }
+    },
+    {
+     text:'toolbar2',
+     iconCls:'icon-add',
+     handler:function(e){
+         alert(123);
+       }
+    }
+    ]
+
+  ">
+  <thead>
+    <tr>
+      <th kui-options="field:'productid',width:80,sortable:true,checkbox:true,resizable:true">productid</th>
+      <th kui-options="field:'itemid',width:100,sortable:true">itemid</th>
+      <th kui-options="field:'listprice',width:80,align:'right',sortable:true">listprice</th>
+      <th kui-options="field:'unitcost',width:80,align:'right',sortable:true">Unit Cost</th>
+      <th kui-options="field:'attr1',width:250,sortable:true">Attribute</th>
+      <th kui-options="field:'status',width:60,align:'center',sortable:true">Status</th>
+    </tr>
+  </thead>
+</table>
+	<h2>Row Editing DataGrid</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the row to start editing.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	
+	<table id="dg" class="kui-datagrid" title="Row Editing DataGrid" style="width:700px;height:auto"
+			kui-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				rowEdit:true,
+				showRowDetail:false,
+				toolbar: '#tb',
+				url: '../datagrid/datagrid_data3.json',
+				onBeforeEdit:onBeforeEdit,
+				onAfterEdit:onAfterEdit
+			">
+		<thead>
+			<tr>
+				<th kui-options="field:'itemid',width:80">Item ID</th>
+				<th kui-options="field:'productid',width:100,
+					editor:{
+						type:'combobox',
+						options:{
+							valueField:'productid',
+							textField:'productname',
+							data:[
+								{'productid':'FI-SW-01','productname':'Koi'},
+								{'productid':'K9-DL-01','productname':'Dalmation'},
+								{'productid':'RP-SN-01','productname':'Rattlesnake'},
+								{'productid':'RP-LI-02','productname':'Iguana'},
+								{'productid':'FL-DSH-01','productname':'Manx'},
+								{'productid':'FL-DLH-02','productname':'Persian'},
+								{'productid':'AV-CB-01','productname':'Amazon Parrot'}
+							],
+							required:true
+						}
+					}"
+				>Product</th>
+				<th kui-options="field:'listprice',width:80,align:'right',editor:'text'">List Price</th>
+				<th kui-options="field:'unitcost',width:80,align:'right',editor:'text'">Unit Cost</th>
+				<th kui-options="field:'attr1',width:250,editor:'text'">Attribute</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="tb" style="height:auto">
+		<a href="javascript:void(0)" class="kui-linkbutton" kui-options="iconCls:'icon-add',plain:true" onclick="append()">添加</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" kui-options="iconCls:'icon-remove',plain:true" onclick="removeRow()">删除</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" kui-options="iconCls:'icon-save',plain:true" onclick="accept()">保存到内存</a>
+		<a href="javascript:void(0)" class="kui-linkbutton" kui-options="iconCls:'icon-undo',plain:true" onclick="reject()">获取数据</a>
+		<!--a href="javascript:void(0)" class="kui-linkbutton" kui-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a-->
+	</div>
+	
+	<script type="text/javascript">
+		var editIndex = undefined;
+		function endEditing(){
+			if (editIndex == undefined){return true}
+			if ($('#dg').datagrid('validateRow', editIndex)){
+				$('#dg').datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function onClickRow(index){
+			if (editIndex != index){
+				editIndex = index;
+				if (endEditing()){
+					$('#dg').datagrid('selectRow', index)
+							.datagrid('beginEdit', index);
+				} else {
+					$('#dg').datagrid('selectRow', editIndex);
+				}
+			}
+		}
+		function onBeforeEdit(index){
+			if(endEditing()){
+				editIndex = index;
+			}
+		}
+		function onAfterEdit(index){
+			$('#dg').datagrid('endEdit', editIndex);
+		}
+		function append(){
+			if (endEditing()){
+				$('#dg').datagrid('appendRow');
+				var rows = $('#dg').datagrid('getRows');
+				editIndex = $('#dg').datagrid('getRows').length-1;
+				$('#dg').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
+			}
+		}
+		function removeRow(){
+			if (editIndex == undefined){return}
+			$('#dg').datagrid('destroyEditor', editIndex).datagrid('deleteRow', editIndex);
+			editIndex = undefined;
+
+		}
+		function accept(){
+			var rows = $('#dg').datagrid('getRows');
+			if (endEditing()){
+				$('#dg').datagrid('acceptChanges');
+			}
+		}
+		function reject(){
+			$('#dg').datagrid('rejectChanges');
+			var rows = $('#dg').datagrid('getRows');
+			alert(JSON.stringify(rows));
+		}
+		function getChanges(){
+			var rows = $('#dg').datagrid('getChanges');
+			alert(rows.length+' rows are changed!');
+		}
+	</script>
+</body>
+</html>

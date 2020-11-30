@@ -1,0 +1,32 @@
+.s-btn-downarrow {
+  display: inline-block;
+  margin: 0 0 0 4px;
+  padding: 0 0 0 1px;
+  width: 14px;
+  height: 16px;
+  line-height: 16px;
+  border-width: 0;
+  border-style: solid;
+  _vertical-align: middle;
+}
+a.s-btn-active {
+  background-position: bottom right;
+}
+a.s-btn-active span.l-btn-left {
+  background-position: bottom left;
+}
+
+.s-btn-downarrow {
+  background: url('images/menu_arrows.png') no-repeat 2px center;
+  border-color: #aac5e7;
+  border-width: 0 0 0 1px;
+  background-position: 1px center;
+}
+a:hover.l-btn .s-btn-downarrow,
+a.s-btn-active .s-btn-downarrow,
+a.s-btn-plain-active .s-btn-downarrow {
+  background-position: 1px center;
+  padding: 0;
+  border-width: 0 0 0 1px;
+}
+

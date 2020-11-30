@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Nested Panel - KINGDOM UI Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+  <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+</head>
+<body>
+	<h2>Nested Panel</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>The panel can be placed inside containers and can contain other components.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<div class="kui-panel" title="Nested Panel" style="width:500px;height:200px;padding:10px;">
+		<div class="kui-layout" kui-options="fit:true">
+			<div kui-options="region:'west',split:true" style="width:100px;padding:10px">
+				Left Content
+			</div>
+			<div kui-options="region:'center'" style="padding:10px">
+				Right Content
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><requests><![CDATA[
+[{
+	req:
+	[
+		{service:"empManage",conf:"true",pageoffset:"0",pagecount:"20",param1:"0",param2:"15"},
+		{service:"empManage",conf:"true",pageoffset:"0",pagecount:"20",param1:"0",param2:"15"}
+	]
+}]
+]]></requests>

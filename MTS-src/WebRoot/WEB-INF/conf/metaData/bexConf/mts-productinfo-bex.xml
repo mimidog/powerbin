@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--查询维度设置信息-->
+    <bex bex_code="query_T_TRADE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_TRADE_CFG" attr2="mts"/>
+    <!--插入维度设置信息-->
+    <bex bex_code="insert_T_TRADE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_TRADE_CFG" attr2="mts"/>
+    <!--修改维度设置信息-->
+    <bex bex_code="update_T_TRADE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_TRADE_CFG" attr2="mts"/>
+    <!--修改指定维度子节点的状态信息-->
+    <bex bex_code="update_T_TRADE_CFG_STA_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_TRADE_CFG_STA" attr2="mts"/>
+    <!--删除维度设置信息-->
+    <bex bex_code="delete_T_TRADE_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_TRADE_CFG" attr2="mts"/>
+
+
+    <!--查询维度证券信息-->
+    <bex bex_code="query_T_TRADE_STOCK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_TRADE_STOCK" attr2="mts"/>
+    <!--插入维度证券信息-->
+    <bex bex_code="insert_T_TRADE_STOCK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_TRADE_STOCK" attr2="mts"/>
+    <!--修改维度证券信息-->
+    <bex bex_code="update_T_TRADE_STOCK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_TRADE_STOCK" attr2="mts"/>
+    <!--删除维度证券信息-->
+    <bex bex_code="delete_T_TRADE_STOCK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_TRADE_STOCK" attr2="mts"/>
+
+    <!--查询证券产品信息-->
+    <bex bex_code="query_T_STK_INFO_Bex" bex_type="4" page_mode="1" bex_cate="1" attr1="query_T_STK_INFO" attr2="mts"/>
+    <bex bex_code="DELETE_T_STK_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="DELETE_T_STK_INFO" attr2="mts"/>
+    <bex bex_code="INSERT_T_STK_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="INSERT_T_STK_INFO" attr2="mts"/>
+    <bex bex_code="UPDATE_T_STK_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="UPDATE_T_STK_INFO" attr2="mts"/>
+    <bex bex_code="UPDATE_T_STK_INFO_ISIN_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="UPDATE_T_STK_INFO_ISIN"
+         attr2="mts"/>
+    <bex bex_code="UPDATE_T_STK_INFO_UNDL_CODE_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="UPDATE_T_STK_INFO_UNDL_CODE"
+         attr2="mts"/>
+
+    <!--查询交易员分配股票池信息-->
+    <bex bex_code="query_T_STK_POOL_REL_OP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_STK_POOL_REL_OP"
+         attr2="mts"/>
+    <!--插入交易员分配股票池信息-->
+    <bex bex_code="insert_T_STK_POOL_REL_OP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_STK_POOL_REL_OP"
+         attr2="mts"/>
+    <!--修改交易员分配股票池信息-->
+    <bex bex_code="update_T_STK_POOL_REL_OP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_STK_POOL_REL_OP"
+         attr2="mts"/>
+    <!--删除交易员分配股票池信息-->
+    <bex bex_code="delete_T_STK_POOL_REL_OP_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_STK_POOL_REL_OP"
+         attr2="mts"/>
+
+    <!--查询股票池配置信息-->
+    <bex bex_code="query_T_STK_POOL_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_STK_POOL_CFG"
+         attr2="mts"/>
+    <!--插入股票池配置信息-->
+    <bex bex_code="insert_T_STK_POOL_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_STK_POOL_CFG"
+         attr2="mts"/>
+    <!--更新股票池配置信息-->
+    <bex bex_code="update_T_STK_POOL_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_STK_POOL_CFG"
+         attr2="mts"/>
+    <!--删除股票池配置信息-->
+    <bex bex_code="delete_T_STK_POOL_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_STK_POOL_CFG"
+         attr2="mts"/>
+
+    <!--查询股票行情查询-->
+    <bex bex_code="query_T_STOCK_HQ_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_STOCK_HQ"
+         attr2="mts"/>
+
+    <!--查询分配股票池产品信息-->
+    <bex bex_code="query_T_STK_POOL_PRODUCT_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_STK_POOL_PRODUCT"
+         attr2="mts"/>
+
+    <!--维度产品批量导入-->
+    <bex bex_code="batch_insert_T_TRADE_STOCK_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_TRADE_STOCK"
+         attr2="mts"/>
+</bexs>
+ 

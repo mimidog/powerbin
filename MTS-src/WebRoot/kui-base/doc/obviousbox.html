@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<title>obviousbox - jQuery kjaxui帮助手册</title>
+		<link type="text/css" rel="stylesheet" href="css/common.css"></link>
+		<link type="text/css" rel="stylesheet" href="css/main.css"></link>
+	</head>
+	<body>
+<div id="mainwrap">
+<div id="content">
+			
+
+
+<div style="padding:10px">
+
+
+
+<h3>查询组件</h3>
+
+<p>使用$.fn.obviousbox.defaults重载默认值</p>
+
+<img src="images/obviousbox.png"/>
+
+
+
+<h4>依赖关系</h4>
+
+<ul>
+
+	<li>无</li>
+
+</ul>
+
+
+
+<h4>使用方法</h4>
+
+<h5>创建微调器</h5>
+
+<p>使用html标签创建微调器，只须要对&lt;input&gt;标签引用'easyui-spinner'类。</p>
+
+
+<p>例子：</p>
+
+<pre class="code">
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="tt"</span> <span style="color:red">class</span><span style="color:blue">="kui-selected"</span> <span style="color:red">kui-options</span><span style="color:blue">="width:'500'"&lt;div&gt;</span>
+	
+	<span style="color:blue">&lt;div</span> <span style="color:red">id</span><span style="color:blue">="aa"</span> <span style="color:red">class</span><span style="color:blue">="kui-obviousbox"</span> <span style="color:red">kui-options</span><span style="color:blue">="width:'500',
+			typeName:'功能类型',paramName:'aa',multiple:true,
+			data:[{id:'a_1',text:'高'},
+			{id:'a_2',text:'中'},{id:'a_3',text:'低'},{id:'a_4',text:'中高'},
+			{id:'a_5',text:'中低'},{id:'a_6',text:'中低'},{id:'a_7',text:'中低'},
+			{id:'a_8',text:'中低'},{id:'a_9',text:'中低'},{id:'a_11',text:'高'},
+			{id:'a_12',text:'中'},{id:'a_13',text:'低'},{id:'a_14',text:'中高'},
+			{id:'a_15',text:'中低'},{id:'a_16',text:'中低'},{id:'a_17',text:'中低'},
+			{id:'a_18',text:'中低'},{id:'a_19',text:'中低'}],callBack:fun"&gt;
+	&lt;/div&gt;</span>
+
+	
+</pre>
+
+<p>回调函数：</p>
+
+<pre class="code">
+<span style="color:blue">
+		function fun(data){
+				$("#tt").selected("setValue",data);
+			}
+</span>
+</pre>
+
+
+
+<br/>
+
+
+
+<p>&nbsp;</p>
+
+<h4>属性</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+
+<th><strong>默认值</strong></th>
+
+</tr>
+
+<tr>
+
+<td>width</td>
+
+<td>number（数字）</td>
+
+<td>组件的宽度</td>
+
+
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>height</td>
+
+<td>number（数字）</td>
+
+<td>组件的高度</td>
+
+<td>auto</td>
+
+</tr>
+
+<tr>
+
+<td>multiple</td>
+
+<td>boolean</td>
+
+
+<td>是否支持多选</td>
+
+<td>false</td>
+
+</tr>
+
+<tr>
+
+<td>data</td>
+
+<td></td>
+
+<td>选项数据</td>
+
+<td></td>
+
+</tr>
+
+
+</table>
+
+
+<h4>方法</h4>
+
+<table class="doc-table">
+
+<tr>
+
+<th><strong>名称</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>描述</strong></th>
+
+</tr>
+
+<tr>
+
+<td>clickCallBlack</td>
+
+<td> </td>
+
+<td>单击选项的回调函数</td>
+
+</tr>
+
+
+<tr>
+
+<td>options</td>
+
+<td> </td>
+
+<td>返回属性对象</td>
+
+</tr>
+
+<tr>
+
+<td>resize</td>
+
+<td>width</td>
+
+<td>重设组件宽度
+
+</td>
+
+</tr>
+
+
+</table>
+
+
+
+</div>
+
+
+
+		</div>
+		</div>
+
+	</body>
+</html>

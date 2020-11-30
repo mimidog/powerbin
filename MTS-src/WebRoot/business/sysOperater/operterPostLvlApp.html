@@ -1,0 +1,185 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>操作员岗位级别申请</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css"/>
+<link type="text/css" rel="stylesheet" href="../../kui-base/themes/trans/form.css">
+<link rel="stylesheet" type="text/css" href="../../business/common/css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../business/common/css/common.css"/>
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+    .form-table {
+
+    }
+    .form-table tr {
+        height: 28px;
+        line-height: 28px;
+    }
+    .form-label {
+        width: 100px;
+        text-align: right;
+        font-size: 13px;
+        background-color: #F5F6FF;
+        font-weight: bold;
+        text-align: right;
+    }
+    a.blue-btn {
+        background-position: right -33px;
+        outline: none;
+        text-decoration: none;
+        background: linear-gradient(to bottom, #52a8e7 0, #4899e1 100%) !important;
+        display: inline-block;
+        zoom: 1;
+        height: 24px;
+        width: 50px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        font: 13px '微软雅黑' arial sans-serif;
+        font-weight: bold;
+        color: #ffffff;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    a.blue-btn:hover {
+        background: -webkit-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+        background: -moz-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+        background: -o-linear-gradient(top, #52a8e7 0, #4899e1 100%) !important;
+        background: linear-gradient(to bottom, #52a8e7 0, #4899e1 100%) !important;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#52a8e7, endColorstr=#4899e1, GradientType=0) !important;
+        background-repeat: repeat-x !important;
+    }
+
+    a.blue-btn span.blue-btn-left {
+        background: none !important;
+        height: 24px;
+        display: block;
+        line-height: 24px;
+    }
+
+    .btn-box {
+        height: 24px;
+        text-align: center;
+        width: 100%;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#E5F5FF, GradientType=0);
+    }
+</style>
+<script>
+
+/**
+ * @desc 客户识别回调函数
+ * @param identifyInfo
+ * @author jinlw 2016-09-20
+ */
+function parentCallback(){
+    $("#custIdfDiv").height(50);
+    //展现客户识别出的基本信息
+    $("#custInfoDiv iframe")[0].src="../common/operaterBaseInfo.html?isParentCallback=true";
+}
+/**
+ * @desc 基本信息展示回调函数
+ */
+function businessCallback(){
+
+    //显示客户基本信息
+    $("#custInfoDiv").show();
+    //显示业务操作
+    $("#businessDiv").show();
+}
+//提交岗位变更申请
+function sumbitPostChgApp(){
+    var newPostLvl = $("#postLvl").combobox("getValue");
+
+    if($.trim(newPostLvl) == "") {
+        alert("请选择要变更岗位级别！");
+        return;
+    }
+    var identifyInfo = window.identifyInfo;
+
+    var reqParam={OPER_USER:identifyInfo.USER_CODE,OPER_NAME:identifyInfo.USER_NAME,OPER_ORG:identifyInfo.ORG_CODE,
+                    OPER_TYPE:identifyInfo.USER_TYPE,POST_ID:identifyInfo.POST_ID,MAIN_POST_ID:identifyInfo.MAIN_POST_ID,
+                    OPER_STA:identifyInfo.USER_STA,CHG_B_POST_LVL:identifyInfo.POST_LVL,
+        CHG_A_POST_LVL:newPostLvl,AUDIT_RS:'0'};
+
+    reqParam=$.extend(reqParam,{'service':'M0001007'});
+    // 获取页面设置的E账通
+        MaskIt($('.btn-box').parent());
+        ajaxRequest({
+            req : [reqParam],
+            func : function(){
+                UnMaskIt($('.btn-box').parent());
+                alert("操作提示","变更岗位级别申请成功！","info",function(){
+                    location.reload();
+                });
+            },
+            error : function(){
+                alert("变更岗位级别申请失败！");
+                UnMaskIt($('.btn-box').parent());
+            }
+        });
+}
+//岗位选择信息事件
+function  postLvlSel(rec) {
+
+    if($('#postLvl').combobox('getValue')==identifyInfo.POST_LVL){
+        alert("要申请变更的岗位级别不能原岗位级别相同！");
+        return;
+    }
+
+
+    var nowPostLvl=$(document.getElementById('custInfoDiv_frame').contentWindow.document.body).find('td[name=POST_LVL]').text();
+    $('#curPostLvl').text(nowPostLvl);
+    $('#willPostLvl').text(rec['dict_des']);
+    $('#postLvlChg_tr').show();
+
+}
+//清理岗位选择信息事件
+function clearPostlvlSel() {
+    $('#postLvlChg_tr').hide();
+}
+</script>
+</head>
+<body>
+<!-- 操作员识别div -->
+<div id="custIdfDiv">
+    <iframe  src="../common/operaterRecognition.html?isParentCallback=true&ver=1" width="100%" height="100%" allowtransparency="true" frameborder="0"></iframe>
+</div>
+<!-- 识别的操作员基本信息div -->
+<div id="custInfoDiv" class="hide" style="height:150px;">
+    <iframe id="custInfoDiv_frame" src="" width="100%" height="100%" allowtransparency="true" frameborder="0"></iframe>
+</div>
+
+<div id="businessDiv" class="datagrid-queryForm  f13 bgnone hide" style="width: 99.5%;position: absolute;margin-top: 5px;">
+    <div class="pack-header"><b>人员岗位级级别变更</b></div>
+    <form>
+        <input id="custCode" type="hidden" />
+        <table class="" style="width:100%;">
+            <tr>
+                <td class="form-label">岗位级别：</td>
+                <td >
+                    <input id="postLvl" class="kui-combobox" kui-options="required:true,dict:'POST_LVL',
+                        panelHeight:100,onSelect:postLvlSel,onClear:clearPostlvlSel" />
+                </td>
+            </tr>
+            <tr id="postLvlChg_tr" style="display: none">
+                <td colspan="2" style="padding-left: 20px;padding-top:20px;font-size: 24px; font-weight: bold">
+                    原级别：<span id="curPostLvl"></span>
+                    <img src="../images/right-Arrow.jpg" height="18" width="35"/>
+                    变更后:<span id="willPostLvl" style="color: red"></span>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div class="btn-box" style="position: absolute;margin-top: 5px">
+        <a  class="blue-btn"   href="javascript:sumbitPostChgApp();">
+            <span class="blue-btn-left">
+                <span class="blue-btn-text">提交</span>
+            </span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

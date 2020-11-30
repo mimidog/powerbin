@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>人员数据授权</title>
+		<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+		<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+		<script type="text/javascript" src="js/dataAuthorize.js"></script>
+		<style type="text/css">
+			.sync-mask {
+				z-index: 100;
+				color: #000000 !important;
+				font-size: 12px !important;
+				background-color: #FFFFFF;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				filter: alpha(opacity=90);
+				opacity: 0.9;
+				*zoom: 1;
+				overflow: hidden;
+			}
+			.sync-mask .content {
+				background-position: 0 2px;
+				background-repeat: no-repeat;
+				float: left;
+				height: 24px;
+				line-height: 24px;
+				padding-left: 25px;
+				width: auto;
+			}
+		</style>
+	</head>
+
+	<body style="overflow: hidden;">
+		<div class="kui-layout" kui-options="fit:true" style="overflow: hidden;">
+			<div id="northPanel" kui-options="region:'north',border:true" style="height: 70px;border: solid 1px #e6f5ff;overflow: hidden;">
+				<div class="kui-panel" title="人员数据授权" kui-options="fit:true">
+					<div style="padding-left: 10px;padding-top: 8px;padding-bottom: 4px;">
+						<div style="width:450px;float: left;">
+							<label><b>请选择授权对象：</b>
+							</label>
+							<select class="kui-combobox" id="premObj" name="premObj" kui-options="onSelect:$DataAuth.choosePermObj,required:true" style="width:175px;">
+								<option value="0">人员</option>
+								<option value="2">岗位</option>
+								<!-- option value="1">组织机构</option -->
+							</select>
+						</div>
+						<div style="float: right;margin-right: 20px;overflow: hidden;">
+							<a class="kui-linkbutton" id="save_button" kui-options=" plain:true, iconCls:'icon-save'" onclick="$DataAuth.saveDataPerm()">保存</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="westPanel" kui-options="region:'west',border:true" style="overflow:auto;width: 460px;padding-top: 2px;">
+				<div style="float: left;width: 100%;height: 100%;">
+					<div id="oper" style="padding:0px;width: 100%;height: 100%;">
+						<table id="operTbl" kui-options="fit:true"></table>
+					</div>
+					<div id="org" style="display: none;width: 100%;height: 100%;">
+						<table id="orgTbl" kui-options="fit:true"></table>
+					</div>
+					<div id="post" style="display: none;width: 100%;height: 100%;">
+						<table id="postTbl" kui-options="fit:true"></table>
+					</div>
+					<div id="role" style="display: none;width: 100%;height: 100%;">
+						<table id="roleTbl" kui-options="fit:true"></table>
+					</div>
+				</div>
+			</div>
+			<div id="centerPanel" kui-options="region:'center',border:true" style="padding-top: 2px;overflow: hidden;">
+				<div style="float: left;width: 100%;height: 100%;">
+					<div id="premTypeDiv" style="float: left;width: 100%;height: 47px;background-color: #fffef4;display: none">
+						<table style="margin-top: 10px;margin-left: 10px;width: 300px;">
+							<tr>
+								<td>授权类型：</td>
+								<td>
+									<input type="radio" name="premType" value="1" checked/>使用权限
+								</td>
+								<!-- td>
+									<input type="radio" name="premType" value="2" />授权权限
+								</td -->
+							</tr>
+						</table>
+					</div>
+					<div style="float: left;width: 100%;height: 46%;">
+						<table id="sysServiceTbl" kui-options="fit:true"></table>
+					</div>
+					<div style="float: left;width: 100%;height: 45%;">
+						<div id="dTabs" kui-options="fit:true"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</body>
+
+</html>
