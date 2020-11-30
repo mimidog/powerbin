@@ -790,4 +790,53 @@
 		<col_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE"/>
 		<col_item field="REMARK" title="备注" type="input"  />
 	</view>
+
+	<view id="handBuySignalStaConfirm_table"  render="datagrid" title="手工买信号确认" >
+		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'1'}]" pageSize="10" colNumbers="4" fit="true" />
+
+		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="1" edt_disabled="true"/>
+		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_defaultValue="1" edt_disabled="true"/>
+
+		<btn_item text="确认" service="M0000078" title="确认" handler="audit_pass" iconCls="icon-ok"/>
+
+		<col_item field="STK_ID" title="证券代码" type="input" />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="BUILD_PRICE" title="建仓价格" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="SIGNAL_TYPE" title="信号类型"  type="combobox"  edt_dict="SIGNAL_TYPE"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_dict="ORDER_TYPE"/>
+		<col_item field="IS_OMS" title="是否处理"  type="combobox"  edt_dict="YES_OR_NO"/>
+		<col_item field="OP_ID" title="操作员编号" type="input" />
+		<col_item field="OP_NAME" title="操作员姓名" type="input" />
+		<col_item field="UP_DATE" title="更新日期" type="input" />
+		<col_item field="UP_TIME" title="更新时间" type="input" />
+		<col_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE"/>
+		<col_item field="REMARK" title="备注" type="input" />
+	</view>
+
+	<view id="handSellSignalStaConfirm_table"  render="datagrid" title="手工卖信号确认" >
+		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'2'}]" pageSize="10" colNumbers="4" fit="true"
+			  onSelect="handSignalStaAudit_RowSel"/>
+
+		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="2" edt_disabled="true"/>
+		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_defaultValue="1" edt_disabled="true"/>
+
+		<btn_item text="确认" service="M0000078" title="确认" handler="audit_pass" iconCls="icon-ok"/>
+
+		<col_item field="STK_ID" title="证券代码" type="input"  />
+		<col_item field="STK_NAME" title="证券名称" type="input" />
+		<col_item field="BUILD_PRICE" title="建仓价格" type="input"   align="right"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(4));}"/>
+		<col_item field="SIGNAL_TYPE" title="信号类型"  type="combobox"  edt_dict="SIGNAL_TYPE"/>
+		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT"/>
+		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_dict="ORDER_TYPE"/>
+		<col_item field="IS_OMS" title="是否处理"  type="combobox"  edt_dict="YES_OR_NO"/>
+		<col_item field="OP_ID" title="操作员编号" type="input"  />
+		<col_item field="OP_NAME" title="操作员姓名" type="input"  />
+		<col_item field="UP_DATE" title="更新日期" type="input"  />
+		<col_item field="UP_TIME" title="更新时间" type="input"  />
+		<col_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE"/>
+		<col_item field="REMARK" title="备注" type="input"  />
+	</view>
 </views>

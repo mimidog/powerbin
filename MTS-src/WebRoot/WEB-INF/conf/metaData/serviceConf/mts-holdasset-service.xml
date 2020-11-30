@@ -237,4 +237,11 @@
         </businesses>
     </service>
 
+    <service service_code="M0000216" service_title="筛选查询客户盈亏明细信息" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_CUST_A_SETT_MAIN_INFO_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
+
 </services>

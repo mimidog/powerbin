@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>维度证券设置</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<script type="text/javascript">
+//当前选中的树节点ID
+var curTreeNodeId='';
+/**
+ * @method_desc: 维度树单击事件
+ * @param data
+ */
+function loadDimensionInfo(data) {
+
+    var opts=$('#mts_DimensionStockInfo_table').datagrid('options');
+    if(data.id !='0'){
+        $.extend(opts.queryParams, {TRADE_ID:data.id});
+    }else{
+       delete opts.queryParams.TRADE_ID;
+    }
+
+    $('#mts_DimensionStockInfo_table').datagrid('reload');
+
+    curTreeNodeId=data.id;
+}
+/**
+ * @method_desc: 维度证券新增
+ * @param
+ */
+function DimensionStockInfo_add(e) {
+    e.data.w=550;
+    e.data.h=330;
+
+    $.builder.buildCommonDialog.add(e,{TRADE_ID:curTreeNodeId});
+}
+//文件模板下载
+function stockXlsTemplateDown() {
+    confirm('提示信息','是否下载模板文件？',function(isOk){
+        if(isOk){
+            window.open('/download/DimenStock_impTemplate.xlsx');
+        }
+    });
+}
+//数据文件导入
+function stockXlsImport() {
+    using('dialog', function () {
+        $('#excelImportDialog').dialog({
+            title:'上传文件',
+            width:450,
+            height:300,
+            modal:true,
+            onClose:function(){
+                $('.cancel a').click();
+            },
+            buttons:[
+                {
+                    text:'确定',
+                    iconCls:'icon-ok',
+                    handler:function () {
+                        //已存在上传文件,调用后台接口解析上传文件
+                        ajaxRequest({
+                            req:[{
+                                service: 'M0000204',   //批量导入接口,
+                                OP_ID: g_user.USER_CODE,
+                                CUACCT_ID: '1653039999',
+                                DATA_TYPE: '2'
+                            }],
+                            func:function(data){
+                                alert('文件导入成功！');
+                            },error:function () {
+                                UnMaskIt($('#excelImportDialog').parent());
+                            }
+                        });
+                    }
+                },
+                {
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function () {
+                        $('#excelImportDialog').dialog('close');
+                        $('.cancel a').click();
+                    }
+                }
+            ]
+        });
+    });
+
+}
+</script>
+</head>
+<body>
+<div id="main_layout" class="kui-layout" kui-options="fit:true">
+  <div kui-options="region:'west'" style="width:200px;" title="维度结构">
+    <ul id="dimension_tree" class="kui-tree" kui-options="animate:true,req:[{service:'M0000020',TRADE_STATUS:'1'}],
+        conf:{
+          nodeId:'TRADE_ID',
+          nodeName:'TRADE_ID,TRADE_NAME',
+          treeType:'1',
+          parNode:'PAR_SUP_ID'
+        },
+        onClick:loadDimensionInfo,
+        onLoadSuccess:function(node, data){
+        	$('#dimension_tree').tree('collapseAll');
+        	$('#dimension_tree').find('.tree-title').each(function(){
+        		var txt = $(this).text() ;
+        		if(txt.length > 12){
+        			$(this).text(txt.substring(0,20)+'...');
+        		}
+        	});
+        }"></ul>
+  </div>
+  <div kui-options="region:'center'">
+    <table id="mts_DimensionStockInfo_table" class="kui-datagrid"></table>
+  </div>
+
+ <div id="excelImportDialog" style="display: none">
+    <h5>注：仅可上传一个文件</h5>
+    <table  width="100%">
+      <tr>
+        <td class="form-label">文件上传：</td>
+        <td >
+            <input id="processFileUpload" type="file" class="kui-uploadify" kui-options="
+            dir: 'demension_stock',
+            fileTypeDesc: '请选择xlsx文件',
+            fileTypeExts: '*.xlsx',
+            fileNumLimit: 1,
+            fileSizeLimit: '10MB',
+            LOCAL_RESOURCE:'true'"/></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

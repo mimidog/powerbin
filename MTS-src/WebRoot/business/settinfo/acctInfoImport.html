@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<title>账户清算文件导入</title>
+<link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
+<script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
+<script type="text/javascript" src="../../common/js/common.js"></script>
+<style type="text/css">
+.form-label {
+    text-align: right;
+    vertical-align: text-bottom;
+    line-height: 20px;
+    vertical-align: bottom;
+}
+.form-table{
+    border: 0px;
+    line-height: 20px;
+}
+.form-table tr{
+    height: 28px;
+    vertical-align: bottom;
+}
+.footer{
+    height: 100px;
+    width: 100%;
+    background-color: #ddd;
+    position: fixed;
+    bottom: 0;
+}
+.stockSpdTab tr{
+    line-height: 20px;
+}
+.stockSpdTab tr{
+    height: 22px;
+    vertical-align: bottom;
+}
+</style>
+<script>
+//0-交易，1-资金，2-股份，3-锚点
+var service_dict = {'0':'M0000202', '1':'M0000205', '2':'M0000204', '3':'M0000201'}
+//得到系统日期
+function getSysDate(){
+    var sysControlInfo = commonRequest({
+        service:'M0001001'
+    });
+    return sysControlInfo[0].SYSTEM_DATE;
+}
+function data_import() {
+    var selRows = $('#acct_to_file_table').datagrid('getCheckedRows');
+    if (selRows.length == 0) {
+        alert('请选择需要导入的记录！');
+        return;
+    }
+    confirm('提示', '是否确定进行导入操作?', function (flag) {
+        if (flag) {
+            setTimeout(function () {
+                for (var i = 0; i < selRows.length; i++) {
+                    index = $('#acct_to_file_table').datagrid("getRowIndex", selRows[i]);
+                    $('#acct_to_file_table').datagrid('updateRow', index, {STATUS: '处理中'});
+                    $('#acct_to_file_table').datagrid('updateRow', index, {TASK_REMARK: ''});
+                }
+                $.each(selRows, function (index, elem) {
+                    ajaxRequest({
+                        async: false,
+                        noPrompt:true,
+                        req:[{
+                            service:service_dict[elem.DATA_TYPE],
+                            OP_ID:g_user.USER_CODE,
+                            CUST_ID:elem.CUST_ID,
+                            DATA_TYPE:elem.DATA_TYPE
+                        }],
+                        func:function(data){
+                            setTimeout(function () {
+                                rowIndex = $('#acct_to_file_table').datagrid("getRowIndex", elem);
+                                $('#acct_to_file_table').datagrid('updateRow', rowIndex, {TASK_REMARK: '导入完成'});
+                                $('#acct_to_file_table').datagrid('updateRow', rowIndex, {STATUS: '成功'});
+                            },1000);
+                            // $('#handBuySignalStaAudit_table').datagrid('reload');
+                        },error:function(data) {
+                            setTimeout(function () {
+                                var retCode = data[0]["ANS_MSG_HDR"]["MSG_CODE"];
+                                var retMsg = data[0]["ANS_MSG_HDR"]["MSG_TEXT"];
+                                rowIndex = $('#acct_to_file_table').datagrid("getRowIndex", elem);
+                                $('#acct_to_file_table').datagrid('updateRow', rowIndex, {STATUS: '失败'});
+                                $('#acct_to_file_table').datagrid('updateRow', rowIndex, {TASK_REMARK: retMsg});
+                            },1000);
+                        }
+                    });
+                })
+            },1000);
+                
+        }
+    })
+
+}
+function colStaStyler(value, rowData, index) {
+        if (value == "失败") {
+            return 'color:red;';
+        }
+        // if (value == "成功") {
+        //     return 'color:green;';
+        // }
+        // if (value == "2" || value == "4") {
+        //     return 'color:#6CB0E8'
+        // }
+}
+</script>
+</head>
+<body>
+<table id="acct_to_file_table" class="kui-datagrid"></table>
+</body>
+</html>

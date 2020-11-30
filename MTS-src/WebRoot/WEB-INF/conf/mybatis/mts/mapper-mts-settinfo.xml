@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.frame.dao.ibatis.mapper.ISystemMapper">
+    
+    <!--删除锚点信息-->
+    <delete id="delete_T_ANCHOR_POINT_INFO" parameterType="hashmap">
+        DELETE FROM T_ANCHOR_POINT_INFO
+        <where>
+            <if test="STK_ID !='' and STK_ID != null">
+                and STK_ID = '${STK_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--锚点批量新增-->
+    <insert id="batch_insert_T_ANCHOR_POINT_INFO" parameterType="hashmap">
+        INSERT INTO T_ANCHOR_POINT_INFO (STK_ID, STK_NAME, UP_ANCHOR_POINT, LOW_ANCHOR_POINT, BLACKLIST, UP_ANCHOR_RADIO, LOW_ANCHOR_RADIO, LAST_CLOSE_PRICE, NEWS)
+        select * from
+        (<foreach collection="T_ANCHOR_POINT_INFO_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.STK_ID}' AS STK_ID,
+                '${item.STK_NAME}' AS STK_NAME,
+                '${item.UP_ANCHOR_POINT}' AS UP_ANCHOR_POINT,
+                '${item.LOW_ANCHOR_POINT}' AS LOW_ANCHOR_POINT,
+                '${item.BLACKLIST}' AS BLACKLIST,
+                '${item.UP_ANCHOR_RADIO}' AS UP_ANCHOR_RADIO,
+                '${item.LOW_ANCHOR_RADIO}' AS LOW_ANCHOR_RADIO,
+                '${item.LAST_CLOSE_PRICE}' AS LAST_CLOSE_PRICE,
+                '${item.NEWS}' AS NEWS
+         </foreach>) T
+    </insert>
+
+    <!--删除成交信息-->
+    <delete id="delete_sett_T_MATCH" parameterType="hashmap">
+        DELETE FROM T_MATCH
+        <where>
+            <if test="MATCH_ID !='' and MATCH_ID != null">
+                and MATCH_ID = '${MATCH_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--成交信息批量新增-->
+    <insert id="batch_insert_T_MATCH" parameterType="hashmap">
+        INSERT INTO T_MATCH (MATCH_ID,OMS_ID, OMS_DATE, OP_ID,TRADER_ID, OMS_TYPE, CUST_ID, CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,
+                              STK_ID, MATCH_PRICE, MATCH_QTY, MATCH_AMT, PROC_COST,TRANSFER_COST,OTHER_COST,STAMP_TAX,
+                              ORDER_TYPE,CHANNEL, MATCH_STATUS,TRADE_DIRECT, UP_DATE,UP_TIME, REMARK)
+        select * from
+        (<foreach collection="T_MATCH_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.MATCH_ID}' AS MATCH_ID,
+                '${item.OMS_ID}' AS OMS_ID,
+                '${item.OMS_DATE}' AS OMS_DATE,
+                '${item.OP_ID}' AS OP_ID,
+                '${item.TRADER_ID}' AS TRADER_ID,
+                '${item.OMS_TYPE}' AS OMS_TYPE,
+                '${item.CUST_ID}' AS CUST_ID,
+                '${item.CUACCT_ID}' AS CUACCT_ID,
+                '${item.CUACCT_LVL}' AS CUACCT_LVL,
+                '${item.STKBD}' AS STKBD,
+                '${item.TRDACCT}' AS TRDACCT,
+                '${item.STK_ID}' AS STK_ID,
+                CAST('${item.MATCH_PRICE}' AS NUMERIC(19,4)) AS MATCH_PRICE,
+                CAST('${item.MATCH_QTY}' AS NUMERIC(19,0)) AS MATCH_QTY,
+                CAST('${item.MATCH_AMT}' AS NUMERIC(19,4)) AS MATCH_AMT,
+                CAST('${item.PROC_COST}' AS NUMERIC(19,4)) AS PROC_COST,
+                CAST('${item.TRANSFER_COST}' AS NUMERIC(19,4)) AS TRANSFER_COST,
+                CAST('${item.OTHER_COST}' AS NUMERIC(19,4)) AS OTHER_COST,
+                CAST('${item.STAMP_TAX}' AS NUMERIC(19,4)) AS STAMP_TAX,
+                '${item.ORDER_TYPE}' AS ORDER_TYPE,
+                '${item.CHANNEL}' AS CHANNEL,
+                '${item.MATCH_STATUS}' AS MATCH_STATUS,
+                '${item.TRADE_DIRECT}' AS TRADE_DIRECT,
+                '${item.UP_DATE}' AS UP_DATE,
+                '${item.UP_TIME}' AS UP_TIME,
+                '${item.REMARK}' AS REMARK
+         </foreach>) T
+    </insert>
+
+    <!--删除委托信息-->
+    <delete id="delete_sett_T_OMS" parameterType="hashmap">
+        DELETE FROM T_OMS
+        <where>
+            <if test="OMS_ID !='' and OMS_ID != null">
+                and OMS_ID = '${OMS_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--委托信息批量新增-->
+    <insert id="batch_insert_T_OMS" parameterType="hashmap">
+        INSERT INTO T_OMS (OMS_ID, OMS_DATE, OP_ID,TRADER_ID, OMS_TYPE, CUST_ID,CUACCT_ID,CUACCT_LVL,STKBD,TRDACCT,
+                        STK_ID, OMS_PRICE, OMS_QTY,DEPOS_PRICE,DEPOS_QTY, UNMATCH_QTY,PROC_COST,TRANSFER_COST,
+                        OTHER_COST,STAMP_TAX,ORDER_TYPE,CHANNEL, OMS_STATUS,TRADE_DIRECT,UP_DATE,UP_TIME,REMARK)
+        select * from
+        (<foreach collection="T_OMS_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.OMS_ID}' AS OMS_ID,
+                '${item.OMS_DATE}' AS OMS_DATE,
+                '${item.OP_ID}' AS OP_ID,
+                '${item.TRADER_ID}' AS TRADER_ID,
+                '${item.OMS_TYPE}' AS OMS_TYPE,
+                '${item.CUST_ID}' AS CUST_ID,
+                '${item.CUACCT_ID}' AS CUACCT_ID,
+                '${item.CUACCT_LVL}' AS CUACCT_LVL,
+                '${item.STKBD}' AS STKBD,
+                '${item.TRDACCT}' AS TRDACCT,
+                '${item.STK_ID}' AS STK_ID,
+                '${item.OMS_PRICE}' AS OMS_PRICE,
+                '${item.OMS_QTY}' AS OMS_QTY,
+                CAST('${item.DEPOS_PRICE}' AS NUMERIC(19,4)) AS DEPOS_PRICE,
+                CAST('${item.DEPOS_QTY}' AS NUMERIC(19,0)) AS DEPOS_QTY,
+                CAST('${item.UNMATCH_QTY}' AS NUMERIC(19,0)) AS UNMATCH_QTY,
+                CAST('${item.PROC_COST}' AS NUMERIC(19,4)) AS PROC_COST,
+                CAST('${item.TRANSFER_COST}' AS NUMERIC(19,4)) AS TRANSFER_COST,
+                CAST('${item.OTHER_COST}' AS NUMERIC(19,4)) AS OTHER_COST,
+                CAST('${item.STAMP_TAX}' AS NUMERIC(19,4)) AS STAMP_TAX,
+               '${item.ORDER_TYPE}' AS ORDER_TYPE,
+               '${item.CHANNEL}' AS CHANNEL,
+               '${item.OMS_STATUS}' AS OMS_STATUS,
+               '${item.TRADE_DIRECT}' AS TRADE_DIRECT,
+               '${item.UP_DATE}' AS UP_DATE,
+               '${item.UP_TIME}' AS UP_TIME,
+               '${item.REMARK}' AS REMARK
+         </foreach>) T
+    </insert>
+
+    <!--删除一级资金信息-->
+    <delete id="delete_sett_T_FUND_INFO" parameterType="hashmap">
+        DELETE FROM T_FUND_INFO
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID = '${CUACCT_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--一级资金信息批量新增-->
+    <insert id="batch_insert_T_FUND_INFO" parameterType="hashmap">
+        INSERT INTO T_FUND_INFO (CUST_ID, CUACCT_ID,UNUSE_AMOUNT, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ, FUND_LONG_FRZ,
+                           FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE, UP_DATE,  REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND)
+        select * from
+        (<foreach collection="T_FUND_INFO_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.CUST_ID}' AS CUST_ID,
+                '${item.CUACCT_ID}' AS CUACCT_ID,
+                CAST('${item.UNUSE_AMOUNT}' AS NUMERIC(19,4)) AS UNUSE_AMOUNT,
+                CAST('${item.FUND_LAST_BAL}' AS NUMERIC(19,4)) AS FUND_LAST_BAL,
+                CAST('${item.FUND_BAL}' AS NUMERIC(19,4)) AS FUND_BAL,
+                CAST('${item.FUND_AVL}' AS NUMERIC(19,4)) AS FUND_AVL,
+                CAST('${item.FUND_TRD_FRZ}' AS NUMERIC(19,4)) AS FUND_TRD_FRZ,
+                CAST('${item.FUND_LONG_FRZ}' AS NUMERIC(19,4)) AS FUND_LONG_FRZ,
+                CAST('${item.FUND_DEBT}' AS NUMERIC(19,4)) AS FUND_DEBT,
+                CAST('${item.FUND_OTD}' AS NUMERIC(19,4)) AS FUND_OTD,
+                CAST('${item.FUND_CREDIT}' AS NUMERIC(19,4)) AS FUND_CREDIT,
+                CAST('${item.FUND_BLN_ACCU}'AS NUMERIC(19,4)) AS FUND_BLN_ACCU,
+                '${item.LAST_CAL_DATE}' AS LAST_CAL_DATE,
+                CAST('${item.FUND_RATE}' AS NUMERIC(19,8)) AS FUND_RATE,
+                '${item.CREDIT_RATE}' AS CREDIT_RATE,
+                '${item.UP_DATE}' AS UP_DATE,
+                '${item.REMARK}' AS REMARK,
+                CAST('${item.CALLOT_IN_FUND}' AS NUMERIC(19,4)) AS CALLOT_IN_FUND,
+                CAST('${item.CALLOT_OUT_FUND}' AS NUMERIC(19,4)) AS CALLOT_OUT_FUND
+         </foreach>) T
+    </insert>
+
+    <!--删除二级资金信息-->
+    <delete id="delete_sett_T_FUND_INFO_SUB" parameterType="hashmap">
+        DELETE FROM T_FUND_INFO_SUB
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID = '${CUACCT_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--二级资金批量新增-->
+    <insert id="batch_insert_T_FUND_INFO_SUB" parameterType="hashmap">
+        INSERT INTO T_FUND_INFO_SUB (CUST_ID, OP_ID, CUACCT_ID, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ,
+                FUND_LONG_FRZ,FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE, UP_DATE,  REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND)
+        select * from
+        (<foreach collection="T_FUND_INFO_SUB_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.CUST_ID}' AS CUST_ID,
+                '${item.OP_ID}' AS OP_ID,
+                '${item.CUACCT_ID}' AS CUACCT_ID,
+                CAST('${item.FUND_LAST_BAL}' AS NUMERIC(19,4)) AS FUND_LAST_BAL,
+                CAST('${item.FUND_BAL}' AS NUMERIC(19,4)) AS FUND_BAL,
+                CAST('${item.FUND_AVL}' AS NUMERIC(19,4)) AS FUND_AVL,
+                CAST('${item.FUND_TRD_FRZ}' AS NUMERIC(19,4)) AS FUND_TRD_FRZ,
+                CAST('${item.FUND_LONG_FRZ}' AS NUMERIC(19,4)) AS FUND_LONG_FRZ,
+                CAST('${item.FUND_DEBT}' AS NUMERIC(19,4)) AS FUND_DEBT,
+                CAST('${item.FUND_OTD}' AS NUMERIC(19,4)) AS FUND_OTD,
+                CAST('${item.FUND_CREDIT}' AS NUMERIC(19,4)) AS FUND_CREDIT,
+                CAST('${item.FUND_BLN_ACCU}'AS NUMERIC(19,4)) AS FUND_BLN_ACCU,
+                '${item.LAST_CAL_DATE}' AS LAST_CAL_DATE,
+                CAST('${item.FUND_RATE}' AS NUMERIC(19,8)) AS FUND_RATE,
+                '${item.CREDIT_RATE}' AS CREDIT_RATE,
+                '${item.UP_DATE}' AS UP_DATE,
+                '${item.REMARK}' AS REMARK,
+                CAST('${item.CALLOT_IN_FUND}' AS NUMERIC(19,4)) AS CALLOT_IN_FUND,
+                CAST('${item.CALLOT_OUT_FUND}' AS NUMERIC(19,4)) AS CALLOT_OUT_FUND
+         </foreach>) T
+    </insert>
+
+    <!--删除一级持仓信息-->
+    <delete id="delete_sett_T_MTS_ASSET" parameterType="hashmap">
+        DELETE FROM T_MTS_ASSET
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT = '${TRDACCT}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                and INST_ID = '${INST_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--一级持仓信息批量新增-->
+    <insert id="batch_insert_T_MTS_ASSET" parameterType="hashmap">
+        INSERT INTO T_MTS_ASSET (CUST_ID,TRDACCT,INST_ID,COST_PRICE,INST_LAST_BAL, INST_BAL, INST_AVL,UNUSE_AMOUNT,INST_TRD_FRZ,
+                                  INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, UP_DATE, REMARK,BUY_COST_AMT,CUACCT_ID,CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+        select * from
+        (<foreach collection="T_MTS_ASSET_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.CUST_ID}' AS CUST_ID,
+                '${item.TRDACCT}' AS TRDACCT,
+                '${item.INST_ID}' AS INST_ID,
+                CAST('${item.COST_PRICE}' AS NUMERIC(19,4)) AS COST_PRICE,
+                CAST('${item.INST_LAST_BAL}' AS NUMERIC(19,0)) AS INST_LAST_BAL,
+                CAST('${item.INST_BAL}' AS NUMERIC(19,0)) AS INST_BAL,
+                CAST('${item.INST_AVL}' AS NUMERIC(19,0)) AS INST_AVL,
+                CAST('${item.UNUSE_AMOUNT}' AS NUMERIC(19,0)) AS UNUSE_AMOUNT,
+                CAST('${item.INST_TRD_FRZ}' AS NUMERIC(19,0)) AS INST_TRD_FRZ,
+                CAST('${item.INST_LONG_FRZ}' AS NUMERIC(19,0)) AS INST_LONG_FRZ,
+                CAST('${item.INST_OTD}' AS NUMERIC(19,0)) AS INST_OTD,
+                CAST('${item.INST_BAL_OTD}' AS NUMERIC(19,0)) AS INST_BAL_OTD,
+                CAST('${item.MKT_VALUE}' AS NUMERIC(19,4)) AS MKT_VALUE,
+                '${item.UP_DATE}' AS UP_DATE,
+                '${item.REMARK}' AS REMARK,
+                CAST('${item.BUY_COST_AMT}' AS NUMERIC(19,4)) AS BUY_COST_AMT,
+                '${item.CUACCT_ID}' AS CUACCT_ID,
+                CAST('${item.CALLOT_IN_ASSET}' AS NUMERIC(19,0)) AS CALLOT_IN_ASSET,
+                CAST('${item.CALLOT_OUT_ASSET}' AS NUMERIC(19,0)) AS CALLOT_OUT_ASSET
+         </foreach>) T
+    </insert>
+
+    <!--删除二级持仓信息-->
+    <delete id="delete_sett_T_MTS_ASSET_SUB" parameterType="hashmap">
+        DELETE FROM T_MTS_ASSET_SUB
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID = '${CUST_ID}'
+            </if>
+            <if test="OP_ID !='' and OP_ID != null">
+                and OP_ID = '${OP_ID}'
+            </if>
+            <if test="TRDACCT !='' and TRDACCT != null">
+                and TRDACCT = '${TRDACCT}'
+            </if>
+            <if test="INST_ID !='' and INST_ID != null">
+                and INST_ID = '${INST_ID}'
+            </if>
+        </where>
+    </delete>
+
+    <!--二级持仓信息批量新增-->
+    <insert id="batch_insert_T_MTS_ASSET_SUB" parameterType="hashmap">
+        INSERT INTO T_MTS_ASSET_SUB (CUST_ID, OP_ID,TRDACCT, INST_ID, COST_PRICE,INST_LAST_BAL, INST_BAL, INST_AVL, INST_TRD_FRZ,INST_LONG_FRZ, INST_OTD, INST_BAL_OTD, MKT_VALUE, CREATE_DATE,UP_DATE, REMARK, STK_PRICE, BUY_COST_AMT, CUACCT_ID, CALLOT_IN_ASSET,CALLOT_OUT_ASSET)
+        select * from
+        (<foreach collection="T_MTS_ASSET_SUB_LIST" item="item" separator="UNION ALL">
+        SELECT   '${item.CUST_ID}' AS CUST_ID,
+                '${item.OP_ID}' AS OP_ID,
+                '${item.TRDACCT}' AS TRDACCT,
+                '${item.INST_ID}' AS INST_ID,
+                CAST('${item.COST_PRICE}' AS NUMERIC(19,4)) AS COST_PRICE,
+                CAST('${item.INST_LAST_BAL}' AS NUMERIC(19,0)) AS INST_LAST_BAL,
+                CAST('${item.INST_BAL}' AS NUMERIC(19,0)) AS INST_BAL,
+                CAST('${item.INST_AVL}' AS NUMERIC(19,0)) AS INST_AVL,
+                CAST('${item.INST_TRD_FRZ}' AS NUMERIC(19,0)) AS INST_TRD_FRZ,
+                CAST('${item.INST_LONG_FRZ}' AS NUMERIC(19,0)) AS INST_LONG_FRZ,
+                CAST('${item.INST_OTD}' AS NUMERIC(19,0)) AS INST_OTD,
+                CAST('${item.INST_BAL_OTD}' AS NUMERIC(19,0)) AS INST_BAL_OTD,
+                CAST('${item.MKT_VALUE}' AS NUMERIC(19,4)) AS MKT_VALUE,
+                '${item.CREATE_DATE}' AS CREATE_DATE,
+                '${item.UP_DATE}' AS UP_DATE,
+                '${item.REMARK}' AS REMARK,
+                CAST('${item.STK_PRICE}' AS NUMERIC(19,4)) AS STK_PRICE,
+                CAST('${item.BUY_COST_AMT}' AS NUMERIC(19,4)) AS BUY_COST_AMT,
+                '${item.CUACCT_ID}' AS CUACCT_ID,
+                CAST('${item.CALLOT_IN_ASSET}' AS NUMERIC(19,0)) AS CALLOT_IN_ASSET,
+                CAST('${item.CALLOT_OUT_ASSET}' AS NUMERIC(19,0)) AS CALLOT_OUT_ASSET
+         </foreach>) T
+    </insert>
+
+    <!--账户清算文件管理操作    start  -->
+    <select id="AcctToFileQuery" parameterType="hashmap" resultType="java.util.HashMap">
+        SELECT CUST_ID, DATA_TYPE, FILE_PATH, REMARK
+        FROM T_ACCT_TO_FILE
+        WHERE 1 = 1
+        <if test="CUST_ID != '' and CUST_ID !=null">
+            AND CUST_ID = '${CUST_ID}'  
+        </if>
+        <if test="DATA_TYPE != '' and DATA_TYPE !=null">
+            AND DATA_TYPE = '${DATA_TYPE}'
+        </if>
+        ORDER BY CUST_ID
+    </select>
+    <insert id="AcctToFileInsert" parameterType="hashmap">
+        INSERT INTO T_ACCT_TO_FILE (CUST_ID, DATA_TYPE, FILE_PATH, REMARK)
+        VALUES ('${CUST_ID}', '${DATA_TYPE}', '${FILE_PATH}', '${REMARK}')
+    </insert>
+    <update id="AcctToFileUpdate" parameterType="hashmap">
+        UPDATE T_ACCT_TO_FILE SET
+            CUST_ID='${CUST_ID}',
+            DATA_TYPE=#{DATA_TYPE},
+            FILE_PATH='${FILE_PATH}',
+            REMARK = '${REMARK}'
+        WHERE CUST_ID='${CUST_ID}'
+        AND DATA_TYPE='${DATA_TYPE}'
+    </update>
+    <delete id="AcctToFileDelete" parameterType="int">
+        DELETE FROM T_ACCT_TO_FILE WHERE CUST_ID='${CUST_ID}' AND DATA_TYPE='${DATA_TYPE}'
+    </delete>
+    <!--账户清算文件管理操作 end-->
+    <!---->
+    <!--查询账户清算文件(权限内)-->
+    <select id="queryAcctToFile" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT K.CUST_ID, (SELECT CUST_NAME FROM T_CUSTOMER T WHERE T.CUST_ID=K.CUST_ID) AS CUST_NAME, K.DATA_TYPE, 
+        K.FILE_PATH, K.REMARK  FROM T_ACCT_TO_FILE K,T_CUST_BASE_INFO T  WHERE T.CUST_ID=K.CUST_ID
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and K.CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="DATA_TYPE != '' and DATA_TYPE !=null">
+                AND DATA_TYPE = '${DATA_TYPE}'
+            </if>
+            <if test="PERMISSION_SQL !='' and PERMISSION_SQL != null and OP_CODE !='8888'">
+                ${PERMISSION_SQL}
+            </if>
+    </select>
+    <select id="queryAcctToFileAch" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT CUST_ID, DATA_TYPE, FILE_PATH, REMARK
+        FROM T_ACCT_TO_FILE
+        WHERE 1 = 1
+        <if test="DATA_TYPE != '' and DATA_TYPE !=null">
+            AND DATA_TYPE = '${DATA_TYPE}'
+        </if>
+        ORDER BY CUST_ID
+    </select>
+
+</mapper>

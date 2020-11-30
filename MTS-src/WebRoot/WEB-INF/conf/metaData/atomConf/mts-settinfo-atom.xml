@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<atoms>
+
+	<atom atom_code="AnchorPiontImportAtom" atom_name="锚点数据导入"
+		  atom_method="AnchorPiontImport"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+	<atom atom_code="MatchInfoImportAtom" atom_name="成交数据导入"
+		  atom_method="MatchInfoImport"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+	<atom atom_code="OmsInfoImportAtom" atom_name="委托数据导入"
+		  atom_method="OmsInfoImport"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+	<atom atom_code="AssetInfoImportAtom" atom_name="股份数据导入"
+		  atom_method="AssetInfoImport"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+	<atom atom_code="FundInfoImportAtom" atom_name="股份数据导入"
+		  atom_method="FundInfoImport"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="AcctToFileQueryAtom" atom_name="查询股票池配置信息"
+		  atom_method="AcctToFileQuery"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="AcctToFileInsertAtom" atom_name="新增股票池配置信息"
+		  atom_method="AcctToFileInsert"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="AcctToFileUpdateAtom" atom_name="修改股票池配置信息"
+		  atom_method="AcctToFileUpdate"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="AcctToFileDeleteAtom" atom_name="删除股票池配置信息"
+		  atom_method="AcctToFileDelete"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="queryAcctToFileAtom" atom_name="查询账户清算文件(权限内)"
+		  atom_method="queryAcctToFile"  atom_class="com.szkingdom.business.mts.SettInfoImport"
+		   attr1="" attr2=""/>
+</atoms>
+ 

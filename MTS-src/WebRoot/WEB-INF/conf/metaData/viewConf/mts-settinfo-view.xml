@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views>
+	<!--账户清算文件配置管理view   start-->
+    <view id="MTS_acct_to_file" title="账户清算文件配置管理" render="datagrid">
+        <conf service="M0000210" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'"
+			  fit="true" showRowDetail="true" isShowDetail=""/>
+		<qry_item field="CUST_ID" title="客户代码" type="input" dt_validType="val[1,30]"/>
+		<qry_item field="DATA_TYPE" title="数据类型" type="combobox" edt_multiple="false" edt_data="[{'dict_des':'0-交易数据','dict_val':'0'},{'dict_des':'1-资金数据','dict_val':'1'},{'dict_des':'2-股份数据','dict_val':'2'},{'dict_des':'3-锚点数据','dict_val':'3'}]" />
+        <btn_item text="新增" service="M0000211" title="新增"  handler="commonAdd" iconCls="icon-add"/>
+        <btn_item text="修改" service="M0000212" title="修改" handler="commonModify" iconCls="icon-edit"/>
+        <btn_item text="删除" service="M0000213" handler="commonDelete" iconCls="icon-remove"/>
+        <col_item field="CUST_ID" title="客户代码" width="120" type="input" edt_validType="val[1,30]" edt_required="true" edit_flag="1"/>
+		<col_item field="DATA_TYPE" title="数据类型" width="120" type="combobox" edt_required="true" edt_data="[{'dict_des':'0-交易数据','dict_val':'0'},{'dict_des':'1-资金数据','dict_val':'1'},{'dict_des':'2-股份数据','dict_val':'2'},{'dict_des':'3-锚点数据','dict_val':'3'}]" edit_flag="1"/>
+        <col_item field="FILE_PATH" title="文件路径" width="200" type="input" edt_required="true" edt_width="300" colspan="4"/>
+        <col_item field="REMARK" title="备注" width="120" type="input" edt_required="false"/>
+    </view>
+
+    <!--账户清算文件查询view   start-->
+    <view id="acct_to_file_table" title="账户清算文件导入" render="datagrid">
+        <conf service="M0000214" pageSize="10" colNumbers="4" gridMenu="'restoreDefault,freezeColumns,hideColumns,hideCols,fileExport,printReport'" fit="true" showRowDetail="true" isShowDetail="" selectOnCheck="true" checkOnSelect="true" singleSelect="false" />
+		<qry_item field="CUST_ID" title="客户代码" type="input" dt_validType="val[1,30]"/>
+		<qry_item field="DATA_TYPE" title="数据类型" type="combobox" edt_multiple="false" edt_data="[{'dict_des':'0-交易数据','dict_val':'0'},{'dict_des':'1-资金数据','dict_val':'1'},{'dict_des':'2-股份数据','dict_val':'2'},{'dict_des':'3-锚点数据','dict_val':'3'}]" />
+        <btn_item text="导入" title="导入" handler="data_import" iconCls="icon-ok"/>
+        <col_item field="CHK" title="选择处理" type="checkbox" edt_required="false" width="100"/>
+        <col_item field="CUST_ID" title="客户代码" width="120" type="input" edt_validType="val[1,30]" edt_required="true" edit_flag="1"/>
+		<col_item field="DATA_TYPE" title="数据类型" width="120" type="combobox" edt_required="true" edt_data="[{'dict_des':'0-交易数据','dict_val':'0'},{'dict_des':'1-资金数据','dict_val':'1'},{'dict_des':'2-股份数据','dict_val':'2'},{'dict_des':'3-锚点数据','dict_val':'3'}]" edit_flag="1"/>
+        <col_item field="FILE_PATH" title="文件路径" width="200" type="input" edt_required="true"/>
+        <col_item field="STATUS" title="处理状态" width="100" type="input" edt_required="false" styler="colStaStyler"/>
+        <col_item field="TASK_REMARK" title="处理信息" width="435" type="input" edt_required="false"/>
+    </view>
+
+</views>

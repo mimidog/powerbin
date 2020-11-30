@@ -22,7 +22,7 @@ public class XlsxUtil {
         //判断文件是否存在
         File file = new File(filePath);
         if(!file.exists()){
-            throw new AtomException(AtomError.PLEASE_WAIT_FILE_UPLOAD_ATOM_ERROR_CODE,AtomError.PLEASE_WAIT_FILE_UPLOAD_ATOM_ERROR_MSG, FrameworkConstants.ATOM_LVL);
+            throw new AtomException(AtomError.File_PATH_OR_FILE_ATOM_ERROR_CODE,AtomError.File_PATH_OR_FILE_ATOM_ERROR_MSG, FrameworkConstants.ATOM_LVL);
         }
         //存储读取结果
         List<Map> fileInfo = new ArrayList<Map>();

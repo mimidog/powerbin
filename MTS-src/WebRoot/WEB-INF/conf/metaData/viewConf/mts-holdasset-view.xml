@@ -348,4 +348,44 @@
 		<col_item field="UP_DATE" title="更新日期" type="input"  />
 	</view>
 
+	<view id="mts_CUST_SURPLUS_DETAIL_QRY_table"  render="datagrid" title="查询客户盈亏明细信息" script="../../common/js/common.js">
+		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000216'}]"/>
+		<qry_item field="CUST_ID" title="客户代码" type="input" edt_validType="val[1,30]" />
+
+		<col_item field="INST_ID" title="股票代码" type="input"  frozen="true"/>
+		<col_item field="STK_NAME" title="股票名称" type="input"  frozen="true"/>
+		<col_item field="COST_PRICE" title="成本价" type="input"  align="right"
+				  formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+		<col_item field="YES_PRICE" title="昨收" type="input"  align="right"
+				  formatter="function(value){return parseFloat(value).toFixed(2);}"/>
+		<col_item field="INCREASE" title="涨幅" type="input" align="right"/>
+		<col_item field="NEW_PRICE" title="最新价" type="input"  align="right"/>
+		<col_item field="UP_ANCHOR" title="上锚比" type="input" align="right"/>
+		<col_item field="LOW_ANCHOR" title="下锚比" type="input" align="right"/>
+		<col_item field="PROFIT_PRICE" title="前日盈亏" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="INST_AVL" title="持股数" type="input" align="right"/>
+		<col_item field="BEGIN_AMT" title="底仓资金" type="input" align="right"/>
+		<col_item field="TODAY_QTY" title="当日数量" type="input" align="right"/>
+		<col_item field="TODAY_AMT" title="当日金额" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="INST_BAL" title="当日持股" type="input" />
+		<col_item field="MKT_VALUE" title="市值" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="PROFIT" title="盈亏额" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="PROFIT_RATE" title="收益率" type="input" align="right"/>
+		<col_item field="POST_CORRECT" title="底仓校准" type="input" align="right"/>
+		<col_item field="BUY_QTY" title="买入数量" type="input" align="right"/>
+		<col_item field="RECYCLE_AMT" title="可回收金额" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="SELL_QTY" title="卖出数量" type="input" align="right"/>
+		<col_item field="MOD_PRICE" title="调整成本价" type="input"
+				  formatter="function(value){return parseFloat(value).toFixed(2);}" align="right"/>
+		<col_item field="IS_PROFIT" title="盈利" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<col_item field="IS_LOSS" title="亏损" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+	</view>
+
 </views>

@@ -63,6 +63,7 @@
         <mapper resource="../conf/mybatis/mts/mapper-mts-holdasset.xml"/>
         <mapper resource="../conf/mybatis/mts/mapper-mts-statistics.xml"/>
         <mapper resource="../conf/mybatis/mts/mapper-mts-serial-manage.xml"/>
+        <mapper resource="../conf/mybatis/mts/mapper-mts-settinfo.xml"/>
 
 </mappers>
 </configuration>

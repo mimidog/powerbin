@@ -545,6 +545,36 @@ public class AtomError {
     public static final int  MOD_T_OMS_ORDER_LVL_ERROR_CODE = -100174;
     public static final String MOD_T_OMS_ORDER_LVL_ERROR_MSG = "修改订单管级别信息失败";
 
+    public static final int QUERY_T_SETT_INFO_ERROR_CODE = -100201;
+    public static final String QUERY_T_SETT_INFO_ERROR_MSG = "查询导入信息失败";
+
+    public static final int ADD_T_SETT_INFO_ERROR_CODE = -100202;
+    public static final String ADD_T_SETT_INFO_ERROR_MSG = "新增导入信息失败";
+
+    public static final int MOD_T_SETT_INFO_ERROR_CODE = -100203;
+    public static final String MOD_T_SETT_INFO_ERROR_MSG = "更新导入信息失败";
+
+    public static final int DEL_T_SETT_INFO_ERROR_CODE = -100204;
+    public static final String DEL_T_SETT_INFO_ERROR_MSG = "删除导入信息失败";
+
+    public static final int QUERY_T_ACCT_TO_FILE_ERROR_CODE = -100205;
+    public static final String QUERY_T_ACCT_TO_FILE_ERROR_MSG = "查询账户清算文件配置失败";
+
+    public static final int ADD_T_ACCT_TO_FILE_ERROR_CODE = -100206;
+    public static final String ADD_T_ACCT_TO_FILE_ERROR_MSG = "新增账户清算文件配置失败";
+
+    public static final int MOD_T_ACCT_TO_FILE_ERROR_CODE = -100207;
+    public static final String MOD_T_ACCT_TO_FILE_ERROR_MSG = "更新账户清算文件配置失败";
+
+    public static final int DEL_T_ACCT_TO_FILE_ERROR_CODE = -100208;
+    public static final String DEL_T_ACCT_TO_FILE_ERROR_MSG = "删除账户清算文件配置失败";
+
+    public static final int QUERY_T_ANCHOR_POINT_INFO_ERROR_CODE = -100209;
+    public static final String QUERY_T_ANCHOR_POINT_INFO_ERROR_MSG = "查询锚点信息失败";
+
+    public static final int ADD_T_ANCHOR_POINT_INFO_ERROR_CODE = -100210;
+    public static final String ADD_T_ANCHOR_POINT_INFO_ERROR_MSG = "新增锚点信息失败";
+
     /**
      * 动态错误信息
      *

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bexs>
+    <!--删除锚点信息-->
+    <bex bex_code="delete_T_ANCHOR_POINT_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_T_ANCHOR_POINT_INFO" attr2="mts"/>
+
+    <!--锚点信息批量导入-->
+    <bex bex_code="batch_insert_T_ANCHOR_POINT_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_ANCHOR_POINT_INFO"
+         attr2="mts"/>
+
+    <!--删除成交信息-->
+    <bex bex_code="delete_sett_T_MATCH_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_sett_T_MATCH" attr2="mts"/>
+
+    <!--成交信息批量导入-->
+    <bex bex_code="batch_insert_T_MATCH_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_MATCH"
+         attr2="mts"/>
+    
+    <!--删除委托信息-->
+    <bex bex_code="delete_sett_T_OMS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_sett_T_OMS" attr2="mts"/>
+
+    <!--委托信息批量导入-->
+    <bex bex_code="batch_insert_T_OMS_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_OMS"
+         attr2="mts"/>
+    
+    <!--删除股份信息-->
+    <bex bex_code="delete_sett_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_sett_T_MTS_ASSET" attr2="mts"/>
+
+    <!--股份信息批量导入-->
+    <bex bex_code="batch_insert_T_MTS_ASSET_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_MTS_ASSET"
+         attr2="mts"/>
+
+    <!--删除股份二级信息-->
+    <bex bex_code="delete_sett_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_sett_T_MTS_ASSET_SUB" attr2="mts"/>
+
+    <!--股份二级信息批量导入-->
+    <bex bex_code="batch_insert_T_MTS_ASSET_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_MTS_ASSET_SUB"
+         attr2="mts"/>
+    
+    <!--删除资金信息-->
+    <bex bex_code="delete_sett_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_sett_T_FUND_INFO" attr2="mts"/>
+
+    <!--资金信息批量导入-->
+    <bex bex_code="batch_insert_T_FUND_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_FUND_INFO"
+         attr2="mts"/>
+
+    <!--删除资金二级信息-->
+    <bex bex_code="delete_sett_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="delete_sett_T_FUND_INFO_SUB" attr2="mts"/>
+
+    <!--资金二级信息批量导入-->
+    <bex bex_code="batch_insert_T_FUND_INFO_SUB_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="batch_insert_T_FUND_INFO_SUB"
+         attr2="mts"/>
+
+    <!--账户清算文件管理   start-->
+    <bex bex_code="AcctToFileQuery_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileQuery" attr2="mts"/>
+    <bex bex_code="AcctToFileInsert_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileInsert" attr2="mts"/>
+    <bex bex_code="AcctToFileUpdate_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileUpdate" attr2="mts"/>
+    <bex bex_code="AcctToFileDelete_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileDelete" attr2="mts"/>
+    <!--账户清算文件管理   end-->
+    <!--查询账户清算文件(权限内)-->
+    <bex bex_code="queryAcctToFile_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="queryAcctToFile" attr2="mts"/>
+    <bex bex_code="queryAcctToFileAch_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="queryAcctToFileAch" attr2="mts"/>
+
+    <!--账户清算文件管理   start>
+    <bex bex_code="AcctToFileQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileQuery">
+        <param para_code="CUACCT_ID" para_name="资金账号"  data_type="12" para_type="0" nullable="true"/>
+        <param para_code="DATA_TYPE" para_name="数据类型"  data_type="12" para_type="0" nullable="true"/>
+    </bex>
+    <bex bex_code="AcctToFileInsert" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileInsert">
+        <param para_code="CUACCT_ID" para_name="资金账号"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="DATA_TYPE" para_name="数据类型"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="FILE_PATH" para_name="文件路径"  data_type="12" para_type="0" nullable="false"/>
+        <param para_code="REMARK" para_name="备注"  data_type="12" para_type="0" nullable="true"/>
+    </bex>
+    <bex bex_code="AcctToFileUpdate" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileUpdate">
+        <param para_code="CUACCT_ID" para_name="资金账号"  data_type="12" para_type="0" />
+        <param para_code="DATA_TYPE" para_name="数据类型"  data_type="12" para_type="0" />
+        <param para_code="FILE_PATH" para_name="文件路径"  data_type="12" para_type="0" />
+        <param para_code="REMARK" para_name="备注"  data_type="12" para_type="0" />
+    </bex>
+    <bex bex_code="AcctToFileDelete" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileDelete">
+        <param para_code="CUACCT_ID" para_name="资金账号"  data_type="12" para_type="0" />
+        <param para_code="DATA_TYPE" para_name="数据类型"  data_type="12" para_type="0" />
+    </bex>
+    <账户清算文件管理   end-->
+    
+</bexs>
+ 
