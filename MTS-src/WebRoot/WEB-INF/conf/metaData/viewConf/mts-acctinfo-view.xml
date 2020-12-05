@@ -681,6 +681,7 @@
 		<qry_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
 		<qry_item field="STK_ID" title="证券代码" type="input" />
 		<qry_item field="STK_NAME" title="证券名称" type="input" />
+		<qry_item field="CUST_ID" title="客户代码" type="input"   edt_validType="val[1,32]"/>
 
 		<col_item field="MATCH_ID" title="成交编号" type="input"   edt_validType="val[1,32]" />
 		<col_item field="OMS_ID" title="申请编号" type="input"   edt_validType="val[1,32]"/>
@@ -696,6 +697,7 @@
 		<col_item field="ORDER_TYPE" title="下单类型"  type="combobox"  edt_required="true" edt_dict="ORDER_TYPE" edt_autoFill="true"/>
 		<col_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_required="true" edt_dict="TRADE_DIRECT" edt_autoFill="true"/>
 		<col_item field="MATCH_STATUS" title="订单状态"  type="combobox"  edt_required="true" edt_dict="OMS_STATUS" edt_autoFill="true" />
+		<col_item field="CUST_ID" title="客户代码" type="input" />
 		<col_item field="TRADER_ID" title="交易员代码" type="input" />
 		<col_item field="TRADER_NAME" title="交易员名称"   />
 		<col_item field="CHANNEL" title="操作渠道"  type="combobox"  edt_required="true" edt_dict="CHANNEL" edt_autoFill="true" hidden="true"/>
