@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="content-type" />
-<title>交易员手工买信号录入确认</title>
+<title>交易员手工买卖信号录入确认</title>
 <link rel="stylesheet" type="text/css" href="../../kui-base/themes/icon.css">
 <script type="text/javascript" src="../../kui-base/js/core/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="../../kui-base/js/core/kui.loader.js"></script>
@@ -79,9 +79,62 @@ function handSignalStaAudit_RowSel(rowIndex, rowData) {
     }
 
 }
+
+function audit_pass2() {
+    var selRow = $('#handSellSignalStaConfirm_table').datagrid('getSelected');
+    if (selRow == null) {
+        alert('请选择一条记录！');
+        return;
+    }
+    ajaxRequest({
+        req:[{
+            service:'M0000109',
+            STK_ID:selRow['STK_ID'],
+            UP_DATE:selRow['UP_DATE'],
+            UP_TIME:selRow['UP_TIME'],
+            AUDIT_SIGNAL_STATE:'3'
+        }],
+        func:function(data){
+            alert('卖出信号已确认！');
+            $('#handSellSignalStaConfirm_table').datagrid('reload');
+        }
+    });
+
+}
+
+function handSignalStaAudit_RowSel2(rowIndex, rowData) {
+
+    $('.datagrid-toolbar a').linkbutton('enable');
+    switch (rowData.AUDIT_SIGNAL_STATE) {
+        case "1":
+            $('.datagrid-toolbar a').linkbutton('disable');
+            break;
+        case "2":
+            $('.datagrid-toolbar a:eq(1)').linkbutton('disable');
+    }
+
+}
+//行样式
+function buyStyler(index,row){
+    if(row.AUDIT_SIGNAL_STATE == '1'){
+        return 'background-color:#FF5500;';
+    }
+}
+function sellStyler(index,row){
+    if(row.AUDIT_SIGNAL_STATE == '1'){
+        return 'background-color:#2BD870;';
+    }
+}
 </script>
 </head>
 <body>
-<table id="handBuySignalStaConfirm_table" class="kui-datagrid"></table>
+<div  id="main_layout" class="kui-layout" kui-options="fit:true">
+    <div kui-options="region:'north'" style="height:270px">
+        <table id="handBuySignalStaConfirm_table" class="kui-datagrid"></table>
+    </div>
+    <div kui-options="region:'center'">
+        <table id="handSellSignalStaConfirm_table" class="kui-datagrid"></table>
+    </div>
+</div>
 </body>
 </html>

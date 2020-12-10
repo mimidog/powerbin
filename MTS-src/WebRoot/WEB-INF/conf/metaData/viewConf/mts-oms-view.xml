@@ -741,7 +741,7 @@
 
 	<view id="handBuySignalStaAudit_table"  render="datagrid" title="手工买信号审核" >
 		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'1'}]" pageSize="10" colNumbers="4" fit="true"
-			  onSelect="handSignalStaAudit_RowSel"/>
+			  onSelect="handSignalStaAudit_RowSel" rowStyler="buyStyler"/>
 
 		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="1" edt_disabled="true"/>
 		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_autoFill="true"/>
@@ -767,13 +767,13 @@
 
 	<view id="handSellSignalStaAudit_table"  render="datagrid" title="手工买信号审核" >
 		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'2'}]" pageSize="10" colNumbers="4" fit="true"
-			  onSelect="handSignalStaAudit_RowSel"/>
+			  onSelect="handSignalStaAudit_RowSel2" rowStyler="sellStyler"/>
 
 		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="2" edt_disabled="true"/>
 		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_autoFill="true"/>
 
-		<btn_item text="通过" service="M0000078" title="通过" handler="audit_pass" iconCls="icon-ok"/>
-		<btn_item text="驳回" service="M0000078" title="驳回" handler="audit_reject" iconCls="icon-cancel"/>
+		<btn_item text="通过" service="M0000078" title="通过" handler="audit_pass2" iconCls="icon-ok"/>
+		<btn_item text="驳回" service="M0000078" title="驳回" handler="audit_reject2" iconCls="icon-cancel"/>
 
 		<col_item field="STK_ID" title="证券代码" type="input"  />
 		<col_item field="STK_NAME" title="证券名称" type="input" />
@@ -792,10 +792,10 @@
 	</view>
 
 	<view id="handBuySignalStaConfirm_table"  render="datagrid" title="手工买信号确认" >
-		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'1'}]" pageSize="10" colNumbers="4" fit="true" />
+		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'1'}]" pageSize="10" colNumbers="4" fit="true" rowStyler="buyStyler"/>
 
 		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="1" edt_disabled="true"/>
-		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_defaultValue="1" edt_disabled="true"/>
+		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE[1|3]" edt_defaultValue="1" edt_disabled="false" edt_required="true"/>
 
 		<btn_item text="确认" service="M0000078" title="确认" handler="audit_pass" iconCls="icon-ok"/>
 
@@ -816,13 +816,12 @@
 	</view>
 
 	<view id="handSellSignalStaConfirm_table"  render="datagrid" title="手工卖信号确认" >
-		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'2'}]" pageSize="10" colNumbers="4" fit="true"
-			  onSelect="handSignalStaAudit_RowSel"/>
+		<conf req="[{service:'M0000079',ORDER_TYPE:'1',UP_DATE:getSysDate(),TRADE_DIRECT:'2'}]" pageSize="10" colNumbers="4" fit="true" rowStyler="sellStyler"/>
 
 		<qry_item field="TRADE_DIRECT" title="交易方向"  type="combobox"  edt_dict="TRADE_DIRECT" edt_defaultValue="2" edt_disabled="true"/>
-		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE" edt_defaultValue="1" edt_disabled="true"/>
+		<qry_item field="AUDIT_SIGNAL_STATE" title="审核状态"  type="combobox"  edt_dict="AUDIT_SIGNAL_STATE[1|3]" edt_defaultValue="1" edt_disabled="false" edt_required="true"/>
 
-		<btn_item text="确认" service="M0000078" title="确认" handler="audit_pass" iconCls="icon-ok"/>
+		<btn_item text="确认" service="M0000078" title="确认" handler="audit_pass2" iconCls="icon-ok"/>
 
 		<col_item field="STK_ID" title="证券代码" type="input"  />
 		<col_item field="STK_NAME" title="证券名称" type="input" />

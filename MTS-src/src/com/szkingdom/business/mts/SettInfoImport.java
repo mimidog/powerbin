@@ -136,12 +136,18 @@ public class SettInfoImport {
                 lineParam.put("OMS_ID", ObjectUtils.toString(lineParam.get("OMS_ID")));
                 lineParam.put("OMS_DATE", ObjectUtils.toString(lineParam.get("OMS_DATE")));
                 lineParam.put("OP_ID", params.get("OP_ID"));
-                lineParam.put("TRADER_ID", ObjectUtils.toString(lineParam.get("TRADER_ID")));
-                lineParam.put("OMS_TYPE", ObjectUtils.toString(lineParam.get("OMS_TYPE")));
-                lineParam.put("CUST_ID", ObjectUtils.toString(lineParam.get("CUST_ID")));
-                lineParam.put("CUACCT_ID", params.get("CUACCT_ID"));
+                lineParam.put("TRADER_ID", params.get("OP_ID"));
+                String omsType = ObjectUtils.toString(lineParam.get("OMS_TYPE"));
+                if (omsType.indexOf("-") != -1) {
+                    lineParam.put("OMS_TYPE", omsType.split("-")[0]);
+                }
+                lineParam.put("CUST_ID", ObjectUtils.toString(params.get("CUST_ID")));
+                lineParam.put("CUACCT_ID", ObjectUtils.toString(params.get("CUST_ID")));
                 lineParam.put("CUACCT_LVL", ObjectUtils.toString(lineParam.get("CUACCT_LVL")));
-                lineParam.put("STKBD", ObjectUtils.toString(lineParam.get("STKBD")));
+                String stkBd = ObjectUtils.toString(lineParam.get("STKBD"));
+                if (stkBd.indexOf("-") != -1) {
+                    lineParam.put("STKBD", stkBd.split("-")[0]);
+                }
                 lineParam.put("TRDACCT", ObjectUtils.toString(lineParam.get("TRDACCT")));
                 lineParam.put("STK_ID", ObjectUtils.toString(lineParam.get("STK_ID")));
                 lineParam.put("MATCH_PRICE", ObjectUtils.toString(lineParam.get("MATCH_PRICE")));
@@ -151,10 +157,20 @@ public class SettInfoImport {
                 lineParam.put("TRANSFER_COST", ObjectUtils.toString(lineParam.get("TRANSFER_COST")));
                 lineParam.put("OTHER_COST", ObjectUtils.toString(lineParam.get("OTHER_COST")));
                 lineParam.put("STAMP_TAX", ObjectUtils.toString(lineParam.get("STAMP_TAX")));
-                lineParam.put("ORDER_TYPE", ObjectUtils.toString(lineParam.get("ORDER_TYPE")));
-                lineParam.put("CHANNEL", ObjectUtils.toString(lineParam.get("CHANNEL")));
+                String ordertype = ObjectUtils.toString(lineParam.get("ORDER_TYPE"));
+                if (ordertype.indexOf("-") != -1) {
+                    lineParam.put("ORDER_TYPE", ordertype.split("-")[0]);
+                }
+                String channel = ObjectUtils.toString(lineParam.get("CHANNEL"));
+                if (channel.indexOf("-") != -1) {
+                    lineParam.put("CHANNEL", channel.split("-")[0]);
+                }
                 lineParam.put("MATCH_STATUS", ObjectUtils.toString(lineParam.get("MATCH_STATUS")));
-                lineParam.put("TRADE_DIRECT", ObjectUtils.toString(lineParam.get("TRADE_DIRECT")));
+                lineParam.put("TRADE_DIRECT", ObjectUtils.toString(lineParam.get("TRADE_DIRECT")).equals("证券卖出") ? "2":"1");
+                /*String tradeDirect = ObjectUtils.toString(lineParam.get("TRADE_DIRECT"));
+                if (tradeDirect.indexOf("-") != -1) {
+                    lineParam.put("TRADE_DIRECT", tradeDirect.split("-")[0]);
+                }*/
                 lineParam.put("UP_DATE",DateUtil.today());
                 lineParam.put("UP_TIME", DateUtil.nowMinute());
                 lineParam.put("REMARK", ObjectUtils.toString(lineParam.get("REMARK")));
@@ -225,11 +241,17 @@ public class SettInfoImport {
                 lineParam.put("OMS_DATE", ObjectUtils.toString(lineParam.get("OMS_DATE")));
                 lineParam.put("OP_ID", params.get("OP_ID"));
                 lineParam.put("TRADER_ID", ObjectUtils.toString(lineParam.get("TRADER_ID")));
-                lineParam.put("OMS_TYPE", ObjectUtils.toString(lineParam.get("OMS_TYPE")));
-                lineParam.put("CUST_ID", ObjectUtils.toString(lineParam.get("CUST_ID")));
-                lineParam.put("CUACCT_ID", ObjectUtils.toString(lineParam.get("CUST_ID")));
+                String omsType = ObjectUtils.toString(lineParam.get("OMS_TYPE"));
+                if (omsType.indexOf("-") != -1) {
+                    lineParam.put("OMS_TYPE", omsType.split("-")[0]);
+                }
+                lineParam.put("CUST_ID", ObjectUtils.toString(params.get("CUST_ID")));
+                lineParam.put("CUACCT_ID", ObjectUtils.toString(params.get("CUST_ID")));
                 lineParam.put("CUACCT_LVL", ObjectUtils.toString(lineParam.get("CUACCT_LVL")));
-                lineParam.put("STKBD", ObjectUtils.toString(lineParam.get("STKBD")));
+                String stkBd = ObjectUtils.toString(lineParam.get("STKBD"));
+                if (stkBd.indexOf("-") != -1) {
+                    lineParam.put("STKBD", stkBd.split("-")[0]);
+                }
                 lineParam.put("TRDACCT", ObjectUtils.toString(lineParam.get("TRDACCT")));
                 lineParam.put("STK_ID", ObjectUtils.toString(lineParam.get("STK_ID")));
                 lineParam.put("OMS_PRICE", ObjectUtils.toString(lineParam.get("OMS_PRICE")));
@@ -239,11 +261,23 @@ public class SettInfoImport {
                 lineParam.put("UMMATCH_QTY", ObjectUtils.toString(lineParam.get("UMMATCH_QTY")));
                 lineParam.put("TRANSFER_COST", ObjectUtils.toString(lineParam.get("TRANSFER_COST")));
                 lineParam.put("OTHER_COST", ObjectUtils.toString(lineParam.get("OTHER_COST")));
-                lineParam.put("ORDER_TYPE", ObjectUtils.toString(lineParam.get("ORDER_TYPE")));
-                lineParam.put("CHANNEL", ObjectUtils.toString(lineParam.get("CHANNEL")));
-                lineParam.put("OMS_STATUS", ObjectUtils.toString(lineParam.get("OMS_STATUS")));
-                //lineParam.put("TRADE_DIRECT", ObjectUtils.toString(lineParam.get("TRADE_DIRECT")).equals("证券卖出") ? "S":"B");
-                lineParam.put("TRADE_DIRECT", ObjectUtils.toString(lineParam.get("TRADE_DIRECT")));
+                String ordertype = ObjectUtils.toString(lineParam.get("ORDER_TYPE"));
+                if (ordertype.indexOf("-") != -1) {
+                    lineParam.put("ORDER_TYPE", ordertype.split("-")[0]);
+                }
+                String channel = ObjectUtils.toString(lineParam.get("CHANNEL"));
+                if (channel.indexOf("-") != -1) {
+                    lineParam.put("CHANNEL", channel.split("-")[0]);
+                }
+                String omsStatus = ObjectUtils.toString(lineParam.get("OMS_STATUS"));
+                if (omsStatus.indexOf("-") != -1) {
+                    lineParam.put("OMS_STATUS", omsStatus.split("-")[0]);
+                }
+                lineParam.put("TRADE_DIRECT", ObjectUtils.toString(lineParam.get("TRADE_DIRECT")).equals("证券卖出") ? "2":"1");
+                /*String tradeDirect = ObjectUtils.toString(lineParam.get("TRADE_DIRECT"));
+                if (tradeDirect.indexOf("-") != -1) {
+                    lineParam.put("TRADE_DIRECT", tradeDirect.split("-")[0]);
+                }*/
                 lineParam.put("UP_DATE",DateUtil.today());
                 lineParam.put("UP_TIME", DateUtil.nowMinute());
                 lineParam.put("REMARK", ObjectUtils.toString(lineParam.get("REMARK")));
@@ -307,11 +341,11 @@ public class SettInfoImport {
             for (int j = 0; j < xlsxInfoList.size(); j++) {
                 Map lineParam = xlsxInfoList.get(j);
                 //校验必输项
-                MapUtil.chkIRowNoNull(lineParam, j + 1,"CUST_ID","CUACCT_ID");
+                //MapUtil.chkIRowNoNull(lineParam, j + 1,"CUST_ID","CUACCT_ID");
 
                 lineParam.put("UP_DATE",DateUtil.today());
-                lineParam.put("CUST_ID", ObjectUtils.toString(lineParam.get("CUST_ID")));
-                lineParam.put("CUACCT_ID", ObjectUtils.toString(lineParam.get("CUST_ID")));
+                lineParam.put("CUST_ID", ObjectUtils.toString(params.get("CUST_ID")));
+                lineParam.put("CUACCT_ID", ObjectUtils.toString(params.get("CUST_ID")));
                 lineParam.put("OP_ID", params.get("OP_ID"));
                 lineParam.put("UNUSE_AMOUNT", ObjectUtils.toString(lineParam.get("UNUSE_AMOUNT")));
                 lineParam.put("FUND_LAST_BAL", ObjectUtils.toString(lineParam.get("FUND_LAST_BAL")));
@@ -332,7 +366,7 @@ public class SettInfoImport {
                 lineParam.put("CALLOT_OUT_FUND", ObjectUtils.toString(lineParam.get("CALLOT_OUT_FUND")));
 
                 //给为空值参数设置0
-                MapUtil.isNullSetDefVal(lineParam, "0","UNUSE_AMOUNT","FUND_LAST_AVL","LAST_BAL","LAST_AVL","FUND_TRD_FRZ",
+                MapUtil.isNullSetDefVal(lineParam, "0","UNUSE_AMOUNT","FUND_LAST_BAL","FUND_BAL","FUND_AVL","FUND_TRD_FRZ",
                         "FUND_LONG_FRZ","FUND_DEBT","FUND_OTD","FUND_CREDIT","FUND_BLN_ACCU","FUND_RATE","CREDIT_RATE",
                         "CALLOT_IN_FUND","CALLOT_OUT_FUND");
 
@@ -356,7 +390,7 @@ public class SettInfoImport {
             //todo 分批导入数据
             int  iRetCode = DBUtil.savebyGroup(new HashMap(), commParams, result, lastList,
                     "T_FUND_INFO_LIST","batch_insert_T_FUND_INFO_Bex",
-                    AtomError.ADD_T_FUND_INFO_SUB_ERROR_CODE, AtomError.ADD_T_FUND_INFO_SUB_ERROR_MSG,
+                    AtomError.ADD_T_FUND_INFO_ERROR_CODE, AtomError.ADD_T_FUND_INFO_ERROR_MSG,
                     100);
             //todo 分批导入数据
             int iRetCodeSub = DBUtil.savebyGroup(new HashMap(), commParams, result, lastList,
@@ -404,13 +438,13 @@ public class SettInfoImport {
             for (int j = 0; j < xlsxInfoList.size(); j++) {
                 Map lineParam = xlsxInfoList.get(j);
                 //校验必输项
-                MapUtil.chkIRowNoNull(lineParam, j + 1,"CUST_ID","TRDACCT","INST_ID");
+                MapUtil.chkIRowNoNull(lineParam, j + 1,"TRDACCT","INST_ID");
 
                 //lineParam.put("UP_DATE",DateUtil.today());
-                lineParam.put("CUST_ID", ObjectUtils.toString(lineParam.get("CUST_ID")));
+                lineParam.put("CUST_ID", ObjectUtils.toString(params.get("CUST_ID")));
                 lineParam.put("TRDACCT", ObjectUtils.toString(lineParam.get("TRDACCT")));
                 lineParam.put("OP_ID", params.get("OP_ID"));
-                lineParam.put("CUACCT_ID", ObjectUtils.toString(lineParam.get("CUST_ID")));
+                lineParam.put("CUACCT_ID", ObjectUtils.toString(params.get("CUST_ID")));
                 lineParam.put("INST_ID", ObjectUtils.toString(lineParam.get("INST_ID")));
                 lineParam.put("COST_PRICE", ObjectUtils.toString(lineParam.get("COST_PRICE")));
                 lineParam.put("INST_LAST_BAL", ObjectUtils.toString(lineParam.get("INST_LAST_BAL")));
@@ -432,8 +466,8 @@ public class SettInfoImport {
 
                 //给为空值参数设置0
                 MapUtil.isNullSetDefVal(lineParam, "0","COST_PRICE","INST_LAST_BAL","INST_BAL","INST_AVL","UNUSE_AMOUNT",
-                        "INST_TRD_FRZ","INST_LONG_FRZ","INST_OTD","INST_BAL_OTD","MKT_VALUE","UP_DATE","STK_PRICE","BUY_COST_AMT","CALLOT_IN_ASSET",
-                        "CALLOT_OUT_ASSET");
+                        "INST_TRD_FRZ","INST_LONG_FRZ","INST_OTD","INST_BAL_OTD","MKT_VALUE","UP_DATE","STK_PRICE",
+                        "BUY_COST_AMT","CALLOT_IN_ASSET","CALLOT_OUT_ASSET");
 
                 Map qryMap = new HashMap();
                 qryMap.put("CUST_ID", lineParam.get("CUST_ID"));

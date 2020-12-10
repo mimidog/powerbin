@@ -11,7 +11,7 @@
     <service service_code="M0000202" service_title="成交数据导入" arrange_type="1" service_type="1" service_cate="1">
         <businesses>
             <service_business business_code="MatchInfoImportAtom" business_type="3" business_cat="1"/>
-            <service_business business_code="OmsInfoImportAtom" business_type="3" business_cat="1"/>
+            <!--service_business business_code="OmsInfoImportAtom" business_type="3" business_cat="1"/-->
         </businesses>
     </service>
 
