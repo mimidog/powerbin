@@ -243,5 +243,11 @@
             <service_business business_code="query_CUST_A_SETT_MAIN_INFO_Bex" business_type="1" business_cat="1"/>
         </businesses>
     </service>
+    <service service_code="M0000217" service_title="指定账户盈亏汇总查询" arrange_type="1" service_type="1" service_cate="1"
+             result_position="1" attr1="mts">
+        <businesses>
+            <service_business business_code="query_CUST_SURPLUS_SUM_FILTER_Bex" business_type="1" business_cat="1"/>
+        </businesses>
+    </service>
 
 </services>

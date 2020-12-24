@@ -664,6 +664,8 @@
             (SELECT SYSTEM_DATE FROM T_SYS_CONTROL) as UP_DATE,'' as REMARK
         FROM T_MTS_ASSET_SUB T1
         WHERE T1.UP_DATE !='${UP_DATE}'
+          AND CUST_ID+TRDACCT+INST_ID  not  in 
+        (select CUST_ID+TRDACCT+STK_ID from T_MATCH)
     </insert>
 
     <!--删除客户二级费用信息-->
@@ -1020,5 +1022,9 @@
     <!--查询客户盈亏信息 筛选查-->
     <select id="query_CUST_A_SETT_MAIN_INFO"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
         exec proCustASettDetail '${CUST_ID}'
+    </select>
+    <!--查询客户盈亏信息 筛选查-->
+    <select id="query_CUST_SURPLUS_SUM_FILTER"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        exec proCustSurplusSumFilter '${CUST_ID}'
     </select>
 </mapper>

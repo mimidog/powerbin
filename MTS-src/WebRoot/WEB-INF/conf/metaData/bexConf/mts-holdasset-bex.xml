@@ -220,5 +220,9 @@
     <!--筛选查询客户盈亏明细信息-->
     <bex bex_code="query_CUST_A_SETT_MAIN_INFO_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_CUST_A_SETT_MAIN_INFO"
          attr2="mts"/>
+
+    <!--筛选查询指定账户盈亏汇总信息-->
+    <bex bex_code="query_CUST_SURPLUS_SUM_FILTER_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_CUST_SURPLUS_SUM_FILTER"
+         attr2="mts"/>
 </bexs>
  

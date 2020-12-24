@@ -38,9 +38,16 @@
 </style>
 <script>
 //渲染上半部的数据
-window.$ready=function () {
+var custid = '';
+function applyTitle(custid) {
+    $('#custSurplusSum_table').find('td[name]').each(function () {
+        var fieldName = $(this).attr("name");
+        $(this).empty();
+
+    })
     var custTotalSurplusRs=commonRequest({
-        service:'M0000103'
+        service:'M0000217',
+        CUST_ID:custid
     })
     if(custTotalSurplusRs.length>0){
         $('#custSurplusSum_table').find('td[name]').each(function () {
@@ -84,7 +91,56 @@ function negNumDisRed(value,row,index) {
     return "<div style='color:red;font-weight: bold;font-size: 14px;'>"
         +toThousands(parseFloat(value).toFixed(2))+"</div>"
 }
-
+//查询事件
+var refreshFlag = "0";
+var setTimeflag;
+function qrySurplusDetail(data) {
+    var cc = data;
+    var freshTime = Number(data.REFRESH_TIME) * 1000;
+    if (freshTime == 0) {
+        doAutoQry(data.CUST_ID);
+    } else {
+        if (refreshFlag == "0") {
+            refreshFlag = "1";
+            $(".datagrid-queryForm").find(".l-btn-wrap > a").linkbutton("disable");
+            setTimeflag = setInterval(function () {
+                doAutoQry(data.CUST_ID);
+            }, freshTime)
+        } else {
+            confirm('提示', '确定停止自动刷新吗?', function (flag) {
+                clearInterval(setTimeflag);
+                refreshFlag = "0";
+            })
+        }
+    }
+    
+}
+function doAutoQry(custid) {
+    applyTitle(custid);
+    $('#mts_CUST_SURPLUS_DETAIL_QRY_table').datagrid("clean");
+    ajaxRequest({
+        req:[{
+            service: 'M0000216', 
+            CUST_ID: custid
+        }],
+        func:function(data){
+            if (data[0].length > 0) {
+                $('#mts_CUST_SURPLUS_DETAIL_QRY_table').datagrid('loadData', {"rows": data[0], "total": data[0].length});
+            }
+        }
+    });
+}
+function stopRefresh() {
+    if (refreshFlag == "1") {
+        confirm('提示', '确定停止自动刷新吗?', function (flag) {
+            clearInterval(setTimeflag);
+            $(".datagrid-queryForm").find(".l-btn-wrap > a").linkbutton("enable");
+            refreshFlag = "0";
+        })
+    } else {
+        alert("自动刷新未进行，无需进行此项操作！")
+    }
+}
 </script>
 
 </head>

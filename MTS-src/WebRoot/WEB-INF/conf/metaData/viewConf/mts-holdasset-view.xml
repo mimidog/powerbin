@@ -349,21 +349,23 @@
 	</view>
 
 	<view id="mts_CUST_SURPLUS_DETAIL_QRY_table"  render="datagrid" title="查询客户盈亏明细信息" script="../../common/js/common.js">
-		<conf  pageSize="10" colNumbers="4"  fit="true" req="[{service:'M0000216'}]"/>
-		<qry_item field="CUST_ID" title="客户代码" type="input" edt_validType="val[1,30]" />
+		<conf  pageSize="100" colNumbers="4"  fit="true" req="[{service:'M0000216'}]" onQueryButtonClick="qrySurplusDetail" required="true" pageList="[50,100]"/>
+		<qry_item field="CUST_ID" title="客户代码" type="input" edt_validType="val[1,30]" id="dtime" edt_required="true"/>
+		<qry_item field="REFRESH_TIME" title="间隔时间(秒)"  type="numberspinner" edt_required="false" edt_width="135" edt_increment="1" edt_min="0" edt_precision="0" />
+
 
 		<col_item field="INST_ID" title="股票代码" type="input"  frozen="true"/>
 		<col_item field="STK_NAME" title="股票名称" type="input"  frozen="true"/>
 		<col_item field="COST_PRICE" title="成本价" type="input"  align="right"
 				  formatter="function(value){return parseFloat(value).toFixed(2);}"/>
-		<col_item field="YES_PRICE" title="昨收" type="input"  align="right"
+		<col_item field="YEST_PRICE" title="昨收" type="input"  align="right"
 				  formatter="function(value){return parseFloat(value).toFixed(2);}"/>
 		<col_item field="INCREASE" title="涨幅" type="input" align="right"/>
 		<col_item field="NEW_PRICE" title="最新价" type="input"  align="right"/>
 		<col_item field="UP_ANCHOR" title="上锚比" type="input" align="right"/>
 		<col_item field="LOW_ANCHOR" title="下锚比" type="input" align="right"/>
-		<col_item field="PROFIT_PRICE" title="前日盈亏" type="input"
-				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+		<!-- <col_item field="PROFIT_PRICE" title="前日盈亏" type="input"
+				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/> -->
 		<col_item field="INST_AVL" title="持股数" type="input" align="right"/>
 		<col_item field="BEGIN_AMT" title="底仓资金" type="input" align="right"/>
 		<col_item field="TODAY_QTY" title="当日数量" type="input" align="right"/>
@@ -386,6 +388,7 @@
 				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
 		<col_item field="IS_LOSS" title="亏损" type="input"
 				  formatter="function(value){return toThousands(parseFloat(value).toFixed(2));}" align="right"/>
+	    <btn_item text="停止刷新"  title="停止刷新" handler="stopRefresh" iconCls="icon-redo" />
 	</view>
 
 </views>

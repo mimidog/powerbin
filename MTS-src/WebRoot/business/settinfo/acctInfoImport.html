@@ -55,12 +55,12 @@ function data_import() {
     }
     confirm('提示', '是否确定进行导入操作?', function (flag) {
         if (flag) {
+            for (var i = 0; i < selRows.length; i++) {
+                index = $('#acct_to_file_table').datagrid("getRowIndex", selRows[i]);
+                $('#acct_to_file_table').datagrid('updateRow', index, {STATUS: '处理中'});
+                $('#acct_to_file_table').datagrid('updateRow', index, {TASK_REMARK: ''});
+            }
             setTimeout(function () {
-                for (var i = 0; i < selRows.length; i++) {
-                    index = $('#acct_to_file_table').datagrid("getRowIndex", selRows[i]);
-                    $('#acct_to_file_table').datagrid('updateRow', index, {STATUS: '处理中'});
-                    $('#acct_to_file_table').datagrid('updateRow', index, {TASK_REMARK: ''});
-                }
                 $.each(selRows, function (index, elem) {
                     ajaxRequest({
                         async: false,
