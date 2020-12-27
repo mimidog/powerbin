@@ -61,6 +61,7 @@ public class SettInfoImport {
                 Map lineParam = xlsxInfoList.get(j);
                 //校验必输项
                 MapUtil.chkIRowNoNull(lineParam, j + 1, "STK_ID");
+                lineParam.put("STK_ID", ObjectUtils.toString(lineParam.get("STK_ID")).substring(2));
                 //lineParam.put("UP_DATE",DateUtil.today());
                 lineParam.put("UP_ANCHOR_POINT", NumberUtil.parseBigDecimal(ObjectUtils.toString(lineParam.get("UP_ANCHOR_POINT"))));
                 lineParam.put("LOW_ANCHOR_POINT", NumberUtil.parseBigDecimal(ObjectUtils.toString(lineParam.get("LOW_ANCHOR_POINT"))));
@@ -468,7 +469,6 @@ public class SettInfoImport {
                 MapUtil.isNullSetDefVal(lineParam, "0","COST_PRICE","INST_LAST_BAL","INST_BAL","INST_AVL","UNUSE_AMOUNT",
                         "INST_TRD_FRZ","INST_LONG_FRZ","INST_OTD","INST_BAL_OTD","MKT_VALUE","UP_DATE","STK_PRICE",
                         "BUY_COST_AMT","CALLOT_IN_ASSET","CALLOT_OUT_ASSET");
-
                 Map qryMap = new HashMap();
                 qryMap.put("CUST_ID", lineParam.get("CUST_ID"));
                 qryMap.put("CUACCT_ID", lineParam.get("CUACCT_ID"));
@@ -483,7 +483,9 @@ public class SettInfoImport {
                 qryMapSub.put("INST_ID", lineParam.get("INST_ID"));
                 CommBiz.commBexCall("delete_sett_T_MTS_ASSET_SUB_Bex", qryMapSub, commParams, result,
                         AtomError.QUERY_T_MTS_ASSET_ERROR_CODE, AtomError.QUERY_T_MTS_ASSET_ERROR_MSG);
-
+                if (ObjectUtils.toString(lineParam.get("MKT_VALUE")).trim().equals("0")){
+                    continue;
+                }
                 lastList.add(lineParam);
 
             }

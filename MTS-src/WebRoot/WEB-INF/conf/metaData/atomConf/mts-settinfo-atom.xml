@@ -36,5 +36,17 @@
 	<atom atom_code="queryAcctToFileAtom" atom_name="查询账户清算文件(权限内)"
 		  atom_method="queryAcctToFile"  atom_class="com.szkingdom.business.mts.SettInfoImport"
 		   attr1="" attr2=""/>
+
+	<atom atom_code="queryFunInfoCfgAtom" atom_name="查询客户资金出入信息"
+		  atom_method="queryFunInfoCfg"  atom_class="com.szkingdom.business.mts.FundCfgManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="modFunInfoCfgAtom" atom_name="修改客户资金出入信息"
+		  atom_method="modFunInfoCfg"  atom_class="com.szkingdom.business.mts.FundCfgManager"
+		  attr1="" attr2=""/>
+
+	<atom atom_code="initFunInfoCfgAtom" atom_name="初始化客户资金出入信息"
+		  atom_method="initFunInfoCfg"  atom_class="com.szkingdom.business.mts.FundCfgManager"
+		  attr1="" attr2=""/>
 </atoms>
  

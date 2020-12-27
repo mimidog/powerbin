@@ -59,6 +59,16 @@
     <bex bex_code="queryAcctToFile_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="queryAcctToFile" attr2="mts"/>
     <bex bex_code="queryAcctToFileAch_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="queryAcctToFileAch" attr2="mts"/>
 
+    <!--查询客户资金CFG信息-->
+    <bex bex_code="query_T_FUND_INFO_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="query_T_FUND_INFO_CFG"
+         attr2="mts"/>
+    <!--修改客户资金CFG信息-->
+    <bex bex_code="update_T_FUND_INFO_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="update_T_FUND_INFO_CFG"
+         attr2="mts"/>
+    <!--新增客户资金CFG信息-->
+    <bex bex_code="insert_T_FUND_INFO_CFG_Bex" bex_type="4" page_mode="2" bex_cate="1" attr1="insert_T_FUND_INFO_CFG"
+         attr2="mts"/>
+
     <!--账户清算文件管理   start>
     <bex bex_code="AcctToFileQuery" bex_type="4" page_mode="2" bex_cate="1" attr1="AcctToFileQuery">
         <param para_code="CUACCT_ID" para_name="资金账号"  data_type="12" para_type="0" nullable="true"/>

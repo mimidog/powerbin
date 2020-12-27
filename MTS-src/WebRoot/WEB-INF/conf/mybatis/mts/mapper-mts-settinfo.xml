@@ -355,4 +355,102 @@
         ORDER BY CUST_ID
     </select>
 
+    <!--客户资金CFG信息-->
+    <select id="query_T_FUND_INFO_CFG" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT F.CUST_ID, C.CUST_NAME,
+            F.CUACCT_ID, F.UNUSE_AMOUNT, F.FUND_LAST_BAL, F.FUND_BAL, F.FUND_AVL, F.FUND_TRD_FRZ,
+            F.FUND_LONG_FRZ, F.FUND_DEBT, F.FUND_OTD, F.FUND_CREDIT, F.FUND_BLN_ACCU, F.LAST_CAL_DATE,CAST(F.FUND_RATE AS VARCHAR) as FUND_RATE,
+             CAST(F.CREDIT_RATE AS VARCHAR) as CREDIT_RATE, F.UP_DATE, F.REMARK,CALLOT_IN_FUND,CALLOT_OUT_FUND
+        FROM T_FUND_INFO_CFG F, T_CUSTOMER C,T_CUST_BASE_INFO T
+        WHERE F.CUST_ID = C.CUST_ID AND C.CUST_ID=T.CUST_ID
+        <if test="CUST_ID !='' and CUST_ID != null">
+              AND F.CUST_ID ='${CUST_ID}'
+        </if>
+        <if test="CUACCT_ID !='' and CUACCT_ID != null">
+              AND F.CUACCT_ID ='${CUACCT_ID}'
+        </if>
+        <if test="TEL !='' and TEL != null">
+            AND T.TEL ='${TEL}'
+        </if>
+        <if test="PERMISSION_SQL != null and PERMISSION_SQL !=''">
+            ${PERMISSION_SQL}
+        </if>
+    </select>
+
+    <!--修改客户资金CFG信息-->
+    <update id="update_T_FUND_INFO_CFG" parameterType="hashmap" >
+        UPDATE T_FUND_INFO_CFG  SET
+                   <if test="UNUSE_AMOUNT !='' and UNUSE_AMOUNT != null">
+                    UNUSE_AMOUNT = '${UNUSE_AMOUNT}',
+                   </if>
+                   <if test="FUND_LAST_BAL !='' and FUND_LAST_BAL != null">
+                        FUND_LAST_BAL = '${FUND_LAST_BAL}',
+                   </if>
+                    <if test="FUND_BAL !='' and FUND_BAL != null">
+                        FUND_BAL = '${FUND_BAL}',
+                    </if>
+                    <if test="FUND_AVL !='' and FUND_AVL != null">
+                        FUND_AVL = '${FUND_AVL}',
+                    </if>
+                    <if test="FUND_TRD_FRZ !='' and FUND_TRD_FRZ != null">
+                        FUND_TRD_FRZ = '${FUND_TRD_FRZ}',
+                    </if>
+                    <if test="FUND_LONG_FRZ !='' and FUND_LONG_FRZ != null">
+                        FUND_LONG_FRZ = '${FUND_LONG_FRZ}',
+                    </if>
+                    <if test="FUND_DEBT !='' and FUND_DEBT != null">
+                        FUND_DEBT = '${FUND_DEBT}',
+                    </if>
+                    <if test="FUND_OTD !='' and FUND_OTD != null">
+                        FUND_OTD = '${FUND_OTD}',
+                    </if>
+                    <if test="FUND_CREDIT !='' and FUND_CREDIT != null">
+                        FUND_CREDIT = '${FUND_CREDIT}',
+                    </if>
+                    <if test="FUND_BLN_ACCU !='' and FUND_BLN_ACCU != null">
+                        FUND_BLN_ACCU = '${FUND_BLN_ACCU}',
+                    </if>
+                    <if test="LAST_CAL_DATE !='' and LAST_CAL_DATE != null">
+                        LAST_CAL_DATE = '${LAST_CAL_DATE}',
+                    </if>
+                    <if test="FUND_RATE !='' and FUND_RATE != null">
+                        FUND_RATE = '${FUND_RATE}',
+                    </if>
+                    <if test="CREDIT_RATE !='' and CREDIT_RATE != null">
+                        CREDIT_RATE = '${CREDIT_RATE}',
+                    </if>
+                    <if test="UP_DATE !='' and UP_DATE != null">
+                        UP_DATE = '${UP_DATE}',
+                    </if>
+                    <if test="REMARK !='' and REMARK != null">
+                        REMARK = '${REMARK}',
+                    </if>
+                    <if test="CALLOT_IN_FUND !='' and CALLOT_IN_FUND != null">
+                        CALLOT_IN_FUND = '${CALLOT_IN_FUND}',
+                    </if>
+                    <if test="CALLOT_OUT_FUND !='' and CALLOT_OUT_FUND != null">
+                        CALLOT_OUT_FUND = '${CALLOT_OUT_FUND}',
+                    </if>
+                    CUST_ID = '${CUST_ID}'
+        <where>
+            <if test="CUST_ID !='' and CUST_ID != null">
+                and CUST_ID ='${CUST_ID}'
+            </if>
+            <if test="CUACCT_ID !='' and CUACCT_ID != null">
+                and CUACCT_ID ='${CUACCT_ID}'
+            </if>
+        </where>
+    </update>
+
+    <!--新增客户资金出入信息-->
+    <insert id="insert_T_FUND_INFO_CFG" parameterType="hashmap">
+       INSERT INTO T_FUND_INFO_CFG (CUST_ID, CUACCT_ID,UNUSE_AMOUNT, FUND_LAST_BAL, FUND_BAL, FUND_AVL, FUND_TRD_FRZ, FUND_LONG_FRZ,
+             FUND_DEBT, FUND_OTD, FUND_CREDIT, FUND_BLN_ACCU, LAST_CAL_DATE, FUND_RATE, CREDIT_RATE, UP_DATE, REMARK,
+             CALLOT_IN_FUND,CALLOT_OUT_FUND)
+       VALUES ('${CUST_ID}', '${CUACCT_ID}', '${UNUSE_AMOUNT}','${FUND_LAST_BAL}', '${FUND_BAL}', '${FUND_AVL}', '${FUND_TRD_FRZ}',
+               '${FUND_LONG_FRZ}', '${FUND_DEBT}', '${FUND_OTD}', '${FUND_CREDIT}', '${FUND_BLN_ACCU}',
+                 '${LAST_CAL_DATE}', '${FUND_RATE}', '${CREDIT_RATE}', '${UP_DATE}', '${REMARK}',
+                 '${CALLOT_IN_FUND}','${CALLOT_OUT_FUND}')
+    </insert>
+
 </mapper>

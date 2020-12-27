@@ -59,6 +59,24 @@
             <service_business business_code="queryAcctToFileAtom" business_type="3" business_cat="1"/>
         </businesses>
     </service>
+
+    <service service_code="M0000220" service_title="查询客户资金CFG信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="queryFunInfoCfgAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000221" service_title="修改客户资金CFG信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="modFunInfoCfgAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
+
+    <service service_code="M0000222" service_title="初始化客户资金CFG信息" arrange_type="1" service_type="1" service_cate="1">
+        <businesses>
+            <service_business business_code="initFunInfoCfgAtom" business_type="3" business_cat="1"/>
+        </businesses>
+    </service>
     <!-- 账户清算文件管理 end -->
     <!-- 账户清算文件管理 start >
     <service service_code="M0000210" service_name="账户清算文件查询" service_type="1" service_cate="1" arrange_type="1" soap_enable="1" attr1="">
