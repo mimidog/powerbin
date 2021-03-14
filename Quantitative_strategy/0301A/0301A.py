@@ -22,9 +22,14 @@ klines_dict = {}  # K线历史行情
 quotes = {}  # 实时行情
 ticks = {}
 g_security = []
+un_buy_open = {}  # 未成交的多单开仓委托
+un_sell_open = {}  # 未成交的空单开仓委托
 un_sell_close = {}  # 未成交的多单减仓委托
 un_buy_close = {}  # 未成交的空单减仓委托
-ts_dict = {}
+C0_DICT = {}  # 信号指标序列
+close_axis_dict = {}
+ts_dict = {}  # 交易信号
+SEC_LIST = []  # 品种集合
 #******读取配置文件**********
 cf=configparser.ConfigParser()
 cf.read("0301A.ini", encoding="utf-8")
@@ -38,12 +43,13 @@ para['ACCT_ID'] = cf.get("account","acct_id")
 para['ACCT_PWD'] = cf.get("account","acct_pwd")
 para['OPEN_NUM'] = int(cf.get("config","open_num"))
 para['CLOSE_NUM'] = int(cf.get("config","close_num"))
+para['CLOSE_NUM2'] = int(cf.get("config","close_num2"))
 para['CLOSE_STEP'] = int(cf.get("config","close_step"))
 para['CANCEL_SECOND'] = int(cf.get("config","cancel_second"))
 para['CLOSE_XRADIO'] = float(cf.get("config","close_xradio"))
 para['SIGNAL_ID'] = int(cf.get("config","signal_id"))
-C0_DICT = {}
-SEC_LIST = []
+para['OPEN_ADD'] = int(cf.get("config","open_add"))
+para['CLOSE_AXIS'] = int(cf.get("config","close_axis"))
 # end 参数类--------------------------
 pd.set_option('display.max_columns', 100)  # 显示全部列
 pd.set_option('display.max_row', 500)  # 显示全部行
@@ -90,18 +96,22 @@ def append_excel(df, content_list, excel_path):
     df = df.append(ds, ignore_index=True)
     df.to_excel(excel_path, index=False, header=False)
 
-
+# 运行交易
 def run_trade(stock):
     now = datetime.datetime.now()
     current_time = now.strftime('%H%M')
-    global un_sell_close
-    global un_buy_close
     global C0_LIST
     global ts_dict
+    global un_buy_open
+    global un_sell_open
+    global un_sell_close
+    global un_buy_close
+    global close_axis_dict
     position_short = 0
     position_long = 0
     last_min_data = quotes[stock]  # 最新价
-    new_price = last_min_data['last_price']
+    new_price = last_min_data.last_price
+    price_tick = last_min_data.price_tick
     if positions.__contains__(stock):
         # 判断空单持仓
         position_short = positions[stock].pos_short
@@ -115,33 +125,44 @@ def run_trade(stock):
     log.logger.info("{0}信号值ts_dict['b_open']={1}, ts_dict['s_open']={2}, ts_dict['b_close']={3}, ts_dict['s_close']={4}".format(\
         stock, ts_dict['b_open'], ts_dict['s_open'], ts_dict['b_close'], ts_dict['s_close']))
     # 平多仓
-    if ts_dict['b_close'] == 1:
+    if ts_dict['s_close'] == 1:
+        if abs(max(C0_DICT[stock][-5:])) <= 2:
+            close_axis_dict[stock]['s_close'] += 1
+            if close_axis_dict[stock]['s_close'] < para['CLOSE_AXIS']:
+                return
+        close_axis_dict[stock]['s_close'] = 0
         if position_long > 0:
             log.logger.info('{0} 已有多仓，需平多>>>>>>'.format(stock))
             # 平仓前把之前的未成交的减仓单撤掉
             for ord in un_sell_close[stock]:
                 qry_order = api.get_order(ord)
                 if qry_order.status != "FINISHED":
-                    log.logger.info('存在预埋平多委托，单号[{0}]，对其撤单>>>>>>'.format(ord))
+                    log.logger.info('{0} 存在预埋平多委托，单号[{1}]，对其撤单>>>>>>'.format(stock, ord))
                     api.cancel_order(ord)
             un_sell_close[stock] = []
             if stock.find('SHFE') >= 0 or stock.find('INE') >= 0:
                 if positions[stock].pos_long_his > 0:
                     log.logger.info('{0}有{1}手多头老仓，进行平多>>>>>>'.format(stock, positions[stock].pos_long_his))
                     order = api.insert_order(symbol=stock, direction="SELL", offset="CLOSE", volume=positions[stock].pos_long_his,\
-                                             limit_price=new_price)
+                                             limit_price=new_price-price_tick*2)
                 elif positions[stock].pos_long_today > 0:
                     log.logger.info('{0}有{1}手多头今仓，进行平多>>>>>>'.format(stock, positions[stock].pos_long_today))
                     order = api.insert_order(symbol=stock, direction="SELL", offset="CLOSETODAY",volume=positions[stock].pos_long_today,\
-                                             limit_price=new_price)
+                                             limit_price=new_price-price_tick*2)
             else:
                 log.logger.info('{0}有{1}手多仓，进行平多>>>>>>'.format(stock, position_long))
                 order = api.insert_order(symbol=stock, direction="SELL", offset="CLOSE", volume=position_long)
             api.wait_update()
         else:
-            print(stock, "无多仓，无需平多>>>>>>")
+            log.logger.info("{0} 无多仓，无需平多>>>>>>".format(stock))
+        checkOpenAdd('s_close', stock, position_long, new_price-price_tick)
     # 平空仓
-    if ts_dict['s_close'] == 1:
+    if ts_dict['b_close'] == 1:
+        if abs(min(C0_DICT[stock][-5:])) <= 2:
+            close_axis_dict[stock]['b_close'] += 1
+            if close_axis_dict[stock]['b_close'] < para['CLOSE_AXIS']:
+                return
+        close_axis_dict[stock]['b_close'] = 0
         if position_short > 0:
             log.logger.info('{0} 已有空仓，需平空>>>>>>'.format(stock))
             for ord in un_buy_close[stock]:
@@ -154,17 +175,18 @@ def run_trade(stock):
                 if positions[stock].pos_short_his > 0:
                     log.logger.info('{0}有{1}手空头老仓，进行平空>>>>>>'.format(stock, positions[stock].pos_short_his))
                     order = api.insert_order(symbol=stock, direction="BUY", offset="CLOSE", volume=positions[stock].pos_short_his,\
-                                             limit_price=new_price)
+                                             limit_price=new_price+price_tick*2)
                 elif positions[stock].pos_short_today > 0:
                     log.logger.info('{0}有{1}手空头今仓，进行平空>>>>>>'.format(stock, positions[stock].pos_short_today))
                     order = api.insert_order(symbol=stock, direction="BUY", offset="CLOSETODAY",volume=positions[stock].pos_short_today,\
-                                             limit_price=new_price)
+                                             limit_price=new_price+price_tick*2)
             else:
                 log.logger.info('{0}有{1}手空仓，进行平空>>>>>>'.format(stock, position_long))
                 order = api.insert_order(symbol=stock, direction="BUY", offset="CLOSE", volume=position_short)
             api.wait_update()
         else:
             log.logger.info('{0} 无空仓，无需平空>>>>>>'.format(stock))
+        checkOpenAdd('b_close', stock, position_long, new_price+price_tick)
     #开多仓
     if ts_dict['b_open'] == 1:
         if position_long > 0:
@@ -172,11 +194,12 @@ def run_trade(stock):
         else:
             log.logger.info('{0} 开多仓>>>>>>{1}手,委托价格：{2}'.format(stock, para['OPEN_NUM'], new_price))
             order = api.insert_order(symbol=stock, direction="BUY", offset="OPEN", volume=para['OPEN_NUM'],
-                                     limit_price=new_price)
-            # -----设定5秒后执行检查委托状态并撤单---
+                                     limit_price=new_price+price_tick)
+            un_buy_open[stock].append(order.order_id)
+            # -----设定n秒后执行检查委托状态并撤单追单---
             scheduler = BackgroundScheduler()
             scheduler.add_job(cancelJob, 'date', run_date=now + datetime.timedelta(seconds=para['CANCEL_SECOND']),
-                              args=[order.order_id])
+                              args=[order.order_id, stock, "BUY"])
             # 一个独立的线程启动任务
             scheduler.start()
             while order.status != "FINISHED":
@@ -184,9 +207,9 @@ def run_trade(stock):
             if positions.__contains__(stock) and positions[stock].pos_long > 0:
                 offsetStr = "CLOSETODAY" if stock.find('SHFE') >= 0 or stock.find('INE') >= 0 else "CLOSE"
                 close_order1 = api.insert_order(symbol=stock, direction="SELL", offset=offsetStr, volume=para['CLOSE_NUM'],
-                                                limit_price=new_price + para['CLOSE_STEP'])
-                close_order2 = api.insert_order(symbol=stock, direction="SELL", offset=offsetStr, volume=para['CLOSE_NUM'],
-                                                limit_price=new_price + para['CLOSE_STEP'] * 2)
+                                                limit_price=new_price + price_tick*25)
+                close_order2 = api.insert_order(symbol=stock, direction="SELL", offset=offsetStr, volume=para['CLOSE_NUM2'],
+                                                limit_price=new_price + price_tick*50)
                 api.wait_update()
                 un_sell_close[stock].append(close_order1.order_id)
                 un_sell_close[stock].append(close_order2.order_id)
@@ -197,11 +220,12 @@ def run_trade(stock):
         else:
             log.logger.info('{0} 开空仓>>>>>>{1}手,委托价格：{2}'.format(stock, para['OPEN_NUM'], new_price))
             order = api.insert_order(symbol=stock, direction="SELL", offset="OPEN", volume=para['OPEN_NUM'],
-                                     limit_price=new_price)
-            # -----设定5秒后执行检查委托状态并撤单---
+                                     limit_price=new_price-price_tick)
+            un_sell_open[stock].append(order.order_id)
+            # -----设定n秒后执行检查委托状态并撤单---
             scheduler2 = BackgroundScheduler()
             scheduler2.add_job(cancelJob, 'date', run_date=now + datetime.timedelta(seconds=para['CANCEL_SECOND']),
-                               args=[order.order_id])
+                               args=[order.order_id, stock, "SELL"])
             # 一个独立的线程启动任务
             scheduler2.start()
             while order.status != "FINISHED":
@@ -209,13 +233,32 @@ def run_trade(stock):
             if positions.__contains__(stock) and positions[stock].pos_short > 0:
                 offsetStr = "CLOSETODAY" if stock.find('SHFE') >= 0 or stock.find('INE') >= 0 else "CLOSE"
                 close_order1 = api.insert_order(symbol=stock, direction="BUY", offset=offsetStr, volume=para['CLOSE_NUM'],
-                                                limit_price=new_price - para['CLOSE_STEP'])
-                close_order2 = api.insert_order(symbol=stock, direction="BUY", offset=offsetStr, volume=para['CLOSE_NUM'],
-                                                limit_price=new_price - para['CLOSE_STEP'] * 2)
+                                                limit_price=new_price - price_tick*35)
+                close_order2 = api.insert_order(symbol=stock, direction="BUY", offset=offsetStr, volume=para['CLOSE_NUM2'],
+                                                limit_price=new_price - price_tick*50)
                 api.wait_update()
                 un_buy_close[stock].append(close_order1.order_id)
                 un_buy_close[stock].append(close_order2.order_id)
 
+
+# 检查单方向平仓后是否加开反手仓
+def checkOpenAdd(signal_type, stock, position_num, price):
+    if para['OPEN_ADD'] == 0:
+        return
+    if position_num < para['OPEN_NUM']:
+        if signal_type == 's_close':
+            log.logger.info('{0} 目前空仓位{1}手,加开空仓{2}手,委托价格：{3}>>>>>>'.format(stock, position_num, \
+                              para['OPEN_NUM']-position_num, price))
+            order = api.insert_order(symbol=stock, direction="SELL", offset="OPEN", volume=para['OPEN_NUM']-position_num,
+                                     limit_price=price)
+        elif signal_type == 'b_close':
+            log.logger.info('{0} 目前多仓位{1}手,加开多仓{2}手,委托价格：{3}>>>>>>'.format(stock, position_num, \
+                              para['OPEN_NUM']-position_num, price))
+            order = api.insert_order(symbol=stock, direction="BUY", offset="OPEN", volume=para['OPEN_NUM']-position_num,
+                                     limit_price=price)
+
+
+# 达到检查比例进行减仓（暂未启用）
 def trade_close(stock,position_short,position_long):
     cur_close = klines_dict[stock].iloc[-2].close
     pre_close = klines_dict[stock].iloc[-3].close
@@ -228,25 +271,37 @@ def trade_close(stock,position_short,position_long):
             order = api.insert_order(symbol=stock, direction="SELL", offset="CLOSE", volume=1)
         api.wait_update()
 
-#延时任务撤单
-def cancelJob(order_id):
+
+# 延时任务撤单追单
+def cancelJob(order_id, stock, direct):
     qry_order = api.get_order(order_id)
+    new_price = quotes[stock].last_price
+    price_tick = quotes[stock].price_tick
     if qry_order.status != "FINISHED":
         log.logger.info('开仓委托超过{0}秒尚未成交, 发起撤单'.format(para['CANCEL_SECOND']))
         api.cancel_order(order_id)
+        log.logger.info('{0} 开多仓>>>>>>{1}手,委托价格：{2}'.format(stock, para['OPEN_NUM'], new_price))
+        # 撤单后追单
+        order = api.insert_order(symbol=stock, direction=direct, offset="OPEN", volume=para['OPEN_NUM'],
+                                 limit_price= (new_price-price_tick) if direct == "BUY" else (new_price+price_tick))
 
 
+# 定时子任务
 def closeJob():
-    global C0_DICT
+    global C0_LIST
     global ts_dict
+    global un_buy_open
+    global un_sell_open
     global un_sell_close
     global un_buy_close
+    global close_axis_dict
     now = datetime.datetime.now()
     for stock in SEC_LIST:
         if len(C0_DICT[stock]) == 0:
             continue
         last_min_data = quotes[stock]  # 最新价
-        new_price = last_min_data['last_price']
+        new_price = last_min_data.last_price
+        price_tick = last_min_data.price_tick
         C1 = min(C0_DICT[stock][-5:])  # 下穿做空,上穿平仓
         C2 = max(C0_DICT[stock][-5:])  # 上穿做多,xia穿平仓
         position_long = positions[stock].pos_long
@@ -299,14 +354,25 @@ def closeJob():
             else:
                 log.logger.info('{0}有{1}手多仓，进行平多>>>>>>'.format(stock, position_long))
                 order = api.insert_order(symbol=stock, direction="SELL", offset="CLOSE", volume=position_long)
-        if C1 > 0 and abs(C1) < 10 and klines_dict[stock].iloc[-2].close > ts_dict['D1'] and position_long == 0:
-            log.logger.info('{0} 补开多仓>>>>>>{1}手,委托价格：{2}'.format(stock, para['OPEN_NUM'], new_price))
-            order = api.insert_order(symbol=stock, direction="BUY", offset="OPEN", volume=para['OPEN_NUM'],
-                                     limit_price=new_price)
+        if C2 > 0 and (max(C0_DICT[stock][-6:-1])<0 or max(C0_DICT[stock][-7:-2])<0) and position_long == 0:
+            # 补开仓前把之前的未成交的开仓单撤掉
+            for ord in un_buy_open[stock]:
+                qry_order = api.get_order(ord)
+                if qry_order.status != "FINISHED":
+                    log.logger.info('{0} 存在未成交开多委托，单号[{1}]，对其撤单>>>>>>'.format(stock, ord))
+                    api.cancel_order(ord)
+            un_buy_open[stock] = []
+            if stock.find('SHFE') >= 0 or stock.find('INE') >= 0:
+                log.logger.info('{0} 补开多仓>>>>>>{1}手,委托价格{2}'.format(stock, para['OPEN_NUM'], new_price - price_tick))
+                order = api.insert_order(symbol=stock, direction="BUY", offset="OPEN", volume=para['OPEN_NUM'],
+                                         limit_price=new_price+price_tick)
+            else:
+                log.logger.info('{0} 补开多仓>>>>>>{1}手,以市价委托'.format(stock, para['OPEN_NUM']))
+                order = api.insert_order(symbol=stock, direction="BUY", offset="OPEN", volume=para['OPEN_NUM'])
             # -----设定5秒后执行检查委托状态并撤单---
             scheduler = BackgroundScheduler()
             scheduler.add_job(cancelJob, 'date', run_date=now + datetime.timedelta(seconds=para['CANCEL_SECOND']),
-                              args=[order.order_id])
+                              args=[order.order_id, stock, "BUY"])
             # 一个独立的线程启动任务
             scheduler.start()
             time.sleep(2) #等待两秒看是否成交再判断持仓进行下减仓
@@ -314,21 +380,30 @@ def closeJob():
                 offsetStr = "CLOSETODAY" if stock.find('SHFE') >= 0 or stock.find('INE') >= 0 else "CLOSE"
                 close_order1 = api.insert_order(symbol=stock, direction="SELL", offset=offsetStr,
                                                 volume=para['CLOSE_NUM'],
-                                                limit_price=new_price + para['CLOSE_STEP'])
+                                                limit_price=new_price + price_tick*5)
                 close_order2 = api.insert_order(symbol=stock, direction="SELL", offset=offsetStr,
-                                                volume=para['CLOSE_NUM'],
-                                                limit_price=new_price + para['CLOSE_STEP'] * 2)
-                api.wait_update()
+                                                volume=para['CLOSE_NUM2'],
+                                                limit_price=new_price + price_tick*10)
                 un_sell_close[stock].append(close_order1.order_id)
                 un_sell_close[stock].append(close_order2.order_id)
-        if C2 < 0 and abs(C2) < 10and klines_dict[stock].iloc[-2].close < ts_dict['D2'] and position_short == 0:
-            log.logger.info('{0} 补开空仓>>>>>>{1}手,委托价格：{2}'.format(stock, para['OPEN_NUM'], new_price))
-            order = api.insert_order(symbol=stock, direction="SELL", offset="OPEN", volume=para['OPEN_NUM'],
-                                     limit_price=new_price)
+        if C1 < 0 and (min(C0_DICT[stock][-6:-1])>0 or min(C0_DICT[stock][-7:-2])>0) and position_short == 0:
+            for ord in un_sell_open[stock]:
+                qry_order = api.get_order(ord)
+                if qry_order.status != "FINISHED":
+                    log.logger.info('{0} 存在未成交开空委托，单号[{1}]，对其撤单>>>>>>'.format(stock, ord))
+                    api.cancel_order(ord)
+            un_sell_open[stock] = []
+            if stock.find('SHFE') >= 0 or stock.find('INE') >= 0:
+                log.logger.info('{0} 补开空仓>>>>>>{1}手,委托价格{2}'.format(stock, para['OPEN_NUM'],new_price-price_tick))
+                order = api.insert_order(symbol=stock, direction="SELL", offset="OPEN", volume=para['OPEN_NUM'],
+                                         limit_price=new_price-price_tick)
+            else:
+                log.logger.info('{0} 补开空仓>>>>>>{1}手,以市价委托'.format(stock, para['OPEN_NUM']))
+                order = api.insert_order(symbol=stock, direction="SELL", offset="OPEN", volume=para['OPEN_NUM'])
             # -----设定5秒后执行检查委托状态并撤单---
             scheduler2 = BackgroundScheduler()
             scheduler2.add_job(cancelJob, 'date', run_date=now + datetime.timedelta(seconds=para['CANCEL_SECOND']),
-                               args=[order.order_id])
+                               args=[order.order_id, stock, "SELL"])
             # 一个独立的线程启动任务
             scheduler2.start()
             time.sleep(2) #等待两秒看是否成交再判断持仓进行下减仓
@@ -336,15 +411,15 @@ def closeJob():
                 offsetStr = "CLOSETODAY" if stock.find('SHFE') >= 0 or stock.find('INE') >= 0 else "CLOSE"
                 close_order1 = api.insert_order(symbol=stock, direction="BUY", offset=offsetStr,
                                                 volume=para['CLOSE_NUM'],
-                                                limit_price=new_price - para['CLOSE_STEP'])
+                                                limit_price=new_price - price_tick*5)
                 close_order2 = api.insert_order(symbol=stock, direction="BUY", offset=offsetStr,
-                                                volume=para['CLOSE_NUM'],
-                                                limit_price=new_price - para['CLOSE_STEP'] * 2)
-                api.wait_update()
+                                                volume=para['CLOSE_NUM2'],
+                                                limit_price=new_price - price_tick*10)
                 un_buy_close[stock].append(close_order1.order_id)
                 un_buy_close[stock].append(close_order2.order_id)
 
-#设定轮询定时任务，每分钟前10秒判断平仓信号
+
+# 设定轮询定时任务，每分钟前10秒判断平仓信号
 def setScheduler():
     sched = BackgroundScheduler()
     sched.add_job(closeJob, 'cron', minute='*', second=10)
@@ -374,18 +449,26 @@ if __name__ == '__main__':
         klines_dict[sec] = api.get_kline_serial(sec, para['BAR_UNIT'], para['BAR_NUM'] * 2)
         quotes[sec] = api.get_quote(sec)
         ticks[sec] = api.get_tick_serial(sec)
+        un_buy_open[sec] = []
+        un_sell_open[sec] = []
         un_buy_close[sec] = []
         un_sell_close[sec] = []
         C0_DICT[sec] = []
+        close_axis_dict[sec] = {}
+        close_axis_dict[sec] = {}
+        close_axis_dict[sec]['s_close'] = 0
+        close_axis_dict[sec]['b_close'] = 0
     orders = api.get_order()
     for order_id, val in orders.items():
         secid = val['exchange_id']+'.'+val['instrument_id']
-        if val['direction'] == 'BUY' and (val['offset'] == 'CLOSE' or val['offset'] == 'CLOSETODAY') and val['status'] != 'FINISHED':
+        if val['direction'] == 'BUY' and (val['offset'] == 'OPEN') and val['status'] != 'FINISHED':
+            un_buy_open[secid].append(order_id)
+        elif val['direction'] == 'SELL' and (val['offset'] == 'OPEN') and val['status'] != 'FINISHED':
+            un_sell_open[secid].append(order_id)
+        elif val['direction'] == 'BUY' and (val['offset'] == 'CLOSE' or val['offset'] == 'CLOSETODAY') and val['status'] != 'FINISHED':
             un_buy_close[secid].append(order_id)
         elif val['direction'] == 'SELL' and (val['offset'] == 'CLOSE' or val['offset'] == 'CLOSETODAY') and val['status'] != 'FINISHED':
             un_sell_close[secid].append(order_id)
-    #print(un_buy_close)
-    #print(un_sell_close)
 
     if para['SIGNAL_ID'] == 0:
         print('默认线路')

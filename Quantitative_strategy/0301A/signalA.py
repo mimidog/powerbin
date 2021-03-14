@@ -57,10 +57,10 @@ def Trade_Signal(df_base, bar_num):
     ts_dict['D1'] = D1
     ts_dict['D2'] = D2
     ts_dict['b_open'] = 1 if max(C0[-6:-1]) < 0 and C2 > 0 else 0
-    ts_dict['b_close'] = 1 if max(C0[-6:-1]) > 0 and C2 < 0 else 0
+    ts_dict['s_close'] = 1 if max(C0[-6:-1]) > 0 and C2 < 0 else 0
     ts_dict['s_open'] = 1 if min(C0[-6:-1]) > 0 and C1 < 0 else 0
-    ts_dict['s_close'] = 1 if min(C0[-6:-1]) < 0 and C1 > 0 else 0
-    return ts_dict, C0[-6:]
+    ts_dict['b_close'] = 1 if min(C0[-6:-1]) < 0 and C1 > 0 else 0
+    return ts_dict, C0[-8:]
 
 def getMaVal(data_list,n):
     ma_list = [np.mean(data_list[-n:])]
