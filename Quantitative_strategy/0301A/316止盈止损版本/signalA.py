@@ -56,10 +56,10 @@ def Trade_Signal(df_base, bar_num):
     SU = df['close'].iloc[-1] < D2
     ts_dict['D1'] = D1
     ts_dict['D2'] = D2
-    ts_dict['b_open'] = 1 if max(C0[-6:-1]) < 2 and C2 > 2 else 0
-    ts_dict['s_close'] = 1 if max(C0[-6:-1]) > -2 and C2 < -2 else 0
-    ts_dict['s_open'] = 1 if min(C0[-6:-1]) > -2 and C1 < -2 else 0
-    ts_dict['b_close'] = 1 if min(C0[-6:-1]) < 2 and C1 > 2 else 0
+    ts_dict['b_open'] = 1 if max(C0[-6:-1]) < 7 < C2 else 0
+    ts_dict['s_close'] = 1 if max(C0[-6:-1]) > -7 > C2 else 0
+    ts_dict['s_open'] = 1 if min(C0[-6:-1]) > -7 > C1 else 0
+    ts_dict['b_close'] = 1 if min(C0[-6:-1]) < 7 < C1 else 0
     return ts_dict, C0[-8:]
 
 def getMaVal(data_list,n):
