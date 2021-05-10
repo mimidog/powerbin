@@ -27,6 +27,7 @@ un_sell_open = {}  # 未成交的空单开仓委托
 un_sell_close = {}  # 未成交的多单减仓委托
 un_buy_close = {}  # 未成交的空单减仓委托
 C0_DICT = {}  # 信号指标序列
+g_CVal = {}
 close_axis_dict = {}  # 平仓信号累计值
 ts_dict = {}  # 交易信号
 SEC_LIST = []  # 品种集合
@@ -72,7 +73,7 @@ def loadConfig():
     cf.read("0301A.ini", encoding="utf-8")
 
     para['io_in'] = cf.get("config","io_in")  # 'D:\\futures.xlsx' 设置读取股票池文件
-    para['io_out'] = 'D:\\write_futures.xlsx'
+    para['io_out'] = cf.get("config","io_out")  # 记录C1、C2的持仓期间的最大值
     para['BAR_NUM'] = int(cf.get("config","bar_num"))  # 周期数
     para['BAR_UNIT']= int(cf.get("config","bar_unit"))  # K线数据周期, 以秒为单位。例如: 1分钟线为60,1小时线为3600
     para['MINDIFF'] = 1  # 最小价格变动单位，后续读文件内容
@@ -130,6 +131,15 @@ def run_trade(stock):
     ts_dict, C0 = sg.Trade_Signal(klines_dict[stock], para['BAR_NUM'])
     log.logger.info('C0值：{0}'.format(C0))
     C0_DICT[stock] = C0  # 更新指标值
+    if position_short > 0 and abs(min(C0[-5:])) > g_CVal[stock]['C1']:
+        g_CVal[stock]['C1'] = abs(min(C0[-5:]))
+    if position_long > 0 and abs(max(C0[-5:])) > g_CVal[stock]['C2']:
+        g_CVal[stock]['C2'] = abs(max(C0[-5:]))
+
+    if max(C0[-6:-1]) > 0 > max(C0[-5:]) and g_CVal[stock]['C2'] >= 20:
+        ts_dict['s_close'] = 1
+    if min(C0[-6:-1]) < 0 < min(C0[-5:]) and g_CVal[stock]['C1'] >= 20:
+        ts_dict['b_close'] = 1
     log.logger.info("{0}信号值ts_dict['b_open']={1}, ts_dict['s_open']={2}, ts_dict['b_close']={3}, ts_dict['s_close']={4}".format(\
         stock, ts_dict['b_open'], ts_dict['s_open'], ts_dict['b_close'], ts_dict['s_close']))
     # log.logger.info("close_axis_dict:{0}".format(close_axis_dict))
@@ -168,11 +178,12 @@ def run_trade(stock):
             log.logger.info('{0} 无空仓，无需平空>>>>>>'.format(stock))
         # 根据参数判断是否需要补反手仓
         checkOpenAdd('b_close', stock, position_long, new_price+price_tick)
-    #开多仓
+    # 开多仓
     if ts_dict['b_open'] == 1:
         if position_long > 0:
             log.logger.info('{0} 已有多仓，取消开多>>>>>>'.format(stock))
         else:
+            g_CVal[stock]['C2'] = abs(max(C0[-5:]))
             log.logger.info('{0} 开多仓>>>>>>{1}手,委托价格：{2}'.format(stock, para['OPEN_NUM'], new_price + price_tick))
             doOpen(stock, un_buy_open, un_sell_close, 'BUY', now)
     # 开空仓
@@ -180,6 +191,7 @@ def run_trade(stock):
         if position_short > 0:
             log.logger.info('{0} 已有空仓，取消开空>>>>>>'.format(stock))
         else:
+            g_CVal[stock]['C1'] = abs(min(C0[-5:]))
             log.logger.info('{0} 开空仓>>>>>>{1}手,委托价格：{2}'.format(stock, para['OPEN_NUM'], new_price))
             doOpen(stock, un_sell_open, un_buy_close, 'SELL', now)
 
@@ -476,7 +488,7 @@ def closeJob():
 # 设定轮询定时任务，每分钟前10秒判断平仓信号
 def setScheduler():
     sched = BackgroundScheduler()
-    sched.add_job(closeJob, 'cron', minute='*', second=15)
+    sched.add_job(closeJob, 'cron', minute='*/5', second=15)
     sched.add_job(checkTakeProfit, 'interval', seconds=25)
     sched.start()
 
@@ -566,6 +578,9 @@ if __name__ == '__main__':
     data = pd.read_excel(para['io_in'], sheet_name=0, converters={'stk_code': str})  # excel读取的品种集合
     log.logger.info('品种数：{0}'.format(len(data['stk_code'])))
     g_security = data['stk_code'].tolist()  # "'a' 品种前缀 g_security
+    # 初始化C1 C2极值
+    wt_data = pd.DataFrame(columns=['fut_code', 'C1', 'C2'])
+    wt_data.to_csv(para['io_out'], index=False)
     # wt_data = pd.DataFrame(columns=['date', 'stk_code', 'win_rate', 'short_val', 'long_val']) #输出落地的excel字段
     # wt_data.to_excel(io_out, index=False)
     # 登录连接信易快期账户
@@ -592,6 +607,9 @@ if __name__ == '__main__':
         un_buy_close[sec] = []
         un_sell_close[sec] = []
         C0_DICT[sec] = []
+        g_CVal[sec] = {}
+        g_CVal[sec]['C1'] = 0
+        g_CVal[sec]['C2'] = 0
         close_axis_dict[sec] = {}
         close_axis_dict[sec] = {}
         close_axis_dict[sec]['s_close'] = 0
