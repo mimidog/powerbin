@@ -128,7 +128,7 @@ def run_trade(stock):
         # 判断多单持仓
         position_long = positions[stock].pos_long
         # log.logger.info('{0} 当前多单持仓数：{1}'.format(stock, position_long))
-    ts_dict, C0 = sg.Trade_Signal(klines_dict[stock], para['BAR_NUM'])
+    ts_dict, C0 = sg.Trade_Signal(klines_dict[stock], para['TRADE_PARA'])
     log.logger.info('C0值：{0}'.format(C0))
     C0_DICT[stock] = C0  # 更新指标值
     if position_short > 0 and abs(min(C0[-5:])) > g_CVal[stock]['C1']:
@@ -136,9 +136,9 @@ def run_trade(stock):
     if position_long > 0 and abs(max(C0[-5:])) > g_CVal[stock]['C2']:
         g_CVal[stock]['C2'] = abs(max(C0[-5:]))
 
-    if max(C0[-6:-1]) > 0 > max(C0[-5:]) and g_CVal[stock]['C2'] >= 20:
+    if max(C0[-6:-1]) > 0 > max(C0[-5:]) and g_CVal[stock]['C2'] >= 10:
         ts_dict['s_close'] = 1
-    if min(C0[-6:-1]) < 0 < min(C0[-5:]) and g_CVal[stock]['C1'] >= 20:
+    if min(C0[-6:-1]) < 0 < min(C0[-5:]) and g_CVal[stock]['C1'] >= 10:
         ts_dict['b_close'] = 1
     log.logger.info("{0}信号值ts_dict['b_open']={1}, ts_dict['s_open']={2}, ts_dict['b_close']={3}, ts_dict['s_close']={4}".format(\
         stock, ts_dict['b_open'], ts_dict['s_open'], ts_dict['b_close'], ts_dict['s_close']))
@@ -149,11 +149,11 @@ def run_trade(stock):
     #     '{0} 空单昨仓数: {1}, 今仓数: {2}'.format(stock, positions[stock].pos_short_his, positions[stock].pos_short_today))
     # 平多仓
     if ts_dict['s_close'] == 1:
-        if abs(max(C0_DICT[stock][-5:])) <= 2:
-            close_axis_dict[stock]['s_close'] += 1
-            if close_axis_dict[stock]['s_close'] < para['CLOSE_AXIS']:
-                return
-        close_axis_dict[stock]['s_close'] = 0
+        # if abs(max(C0_DICT[stock][-5:])) <= 2:
+        #     close_axis_dict[stock]['s_close'] += 1
+        #     if close_axis_dict[stock]['s_close'] < para['CLOSE_AXIS']:
+        #         return
+        # close_axis_dict[stock]['s_close'] = 0
         if position_long > 0:
             log.logger.info('{0} 已有多仓，需平多>>>>>>'.format(stock))
             # 平仓前把之前的未成交的减仓单撤掉,再进行平仓
@@ -164,11 +164,11 @@ def run_trade(stock):
         checkOpenAdd('s_close', stock, position_long, new_price-price_tick)
     # 平空仓
     if ts_dict['b_close'] == 1:
-        if abs(min(C0_DICT[stock][-5:])) <= 2:
-            close_axis_dict[stock]['b_close'] += 1
-            if close_axis_dict[stock]['b_close'] < para['CLOSE_AXIS']:
-                return
-        close_axis_dict[stock]['b_close'] = 0
+        # if abs(min(C0_DICT[stock][-5:])) <= 2:
+        #     close_axis_dict[stock]['b_close'] += 1
+        #     if close_axis_dict[stock]['b_close'] < para['CLOSE_AXIS']:
+        #         return
+        # close_axis_dict[stock]['b_close'] = 0
         if position_short > 0:
             log.logger.info('{0} 已有空仓，需平空>>>>>>'.format(stock))
             # 平仓前把之前的未成交的减仓单撤掉,再进行平仓
@@ -196,7 +196,7 @@ def run_trade(stock):
             doOpen(stock, un_sell_open, un_buy_close, 'SELL', now)
 
 
-# 平仓前先对之前的预埋单减仓（平仓）委托进行撤单
+# 平仓前先对之前的未成交减仓（平仓）委托进行撤单
 def cancelBeforeClose(stock, dict_un_close, direct, position, quote):
     # sell_close--平多，buy_close--平空
     if direct == 'SELL':
@@ -231,7 +231,7 @@ def cancelBeforeClose(stock, dict_un_close, direct, position, quote):
         log.logger.info('{0}有{1}手{2}仓，进行平{3}>>>>>>'.format(stock, vol_common, un_close_text, un_close_text))
         order = api.insert_order(symbol=stock, direction=direct, offset="CLOSE", volume=vol_common)
 
-# 开仓逻辑，开仓后下预埋单根据配置减仓
+# 开仓逻辑，开仓后间隔设定时间后判断是否成交追单
 def doOpen(stock, dict_un_open, dict_un_close, direct, now):
     new_price = quotes[stock].last_price
     price_tick = quotes[stock].price_tick
@@ -285,7 +285,7 @@ def checkOpenAdd(signal_type, stock, position_num, price):
                                      limit_price=price)
 
 
-# 达到检查比例进行减仓（暂未启
+# 达到检查比例进行减仓（暂未启用）
 def trade_close(stock,position_short,position_long):
     cur_close = klines_dict[stock].iloc[-2].close
     pre_close = klines_dict[stock].iloc[-3].close
@@ -488,7 +488,7 @@ def closeJob():
 # 设定轮询定时任务，每分钟前10秒判断平仓信号
 def setScheduler():
     sched = BackgroundScheduler()
-    sched.add_job(closeJob, 'cron', minute='*/5', second=15)
+    sched.add_job(closeJob, 'cron', minute='*', second=15)
     sched.add_job(checkTakeProfit, 'interval', seconds=25)
     sched.start()
 
