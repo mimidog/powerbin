@@ -179,8 +179,10 @@ def Trade_Signal(stock, bar_num):
     C_S = W100[-1] > T2[-1] and (W100[-2] < T2[-2] or W100[-3] < T2[-3])
     ts_dict['b_open'] = 1 if T_B else 0
     ts_dict['s_open'] = 1 if T_S else 0
-    ts_dict['b_close'] = 1 if T_B or C_B else 0  # 买平仓，平空
-    ts_dict['s_close'] = 1 if T_S or C_S else 0  # 卖平仓，平多
+    ts_dict['b_close'] = 1 if ts_dict['b_open'] == 1 else 0  # 买平仓，平空
+    ts_dict['s_close'] = 1 if ts_dict['s_open'] == 1 else 0  # 卖平仓，平多
+    # ts_dict['b_close'] = 1 if T_B or C_B else 0  # 买平仓，平空
+    # ts_dict['s_close'] = 1 if T_S or C_S else 0  # 卖平仓，平多
 
     log.logger.info('最新价:{0} {1}'.format(quotes[stock]['last_price'], quotes[stock]['datetime']))
     log.logger.info('T2-{0},T100-{1}'.format(T2, T100))
@@ -376,7 +378,10 @@ def checkNeedClose():
         if profit_long == profit_long:
             # log.logger.info('{0} 多单昨仓数: {1}, 今仓数: {2}'.format(stock, positions[stock].pos_long_his, positions[stock].pos_long_today))
             if profit_long > 0 and OPEN_DICT[stock] - pos_long_ava < para['CLOSE_NUM'] * para['CLOSE_CNT']:
-                if T2[-1] > W100[-1] and T100[-1] > LOS100[-1] and (LOS100[-1] > LOS2[-1] and LOS100[-2] < LOS2[-2]):
+                LOS100_LOS2 = (LOS100[-1] > LOS2[-1] and LOS100[-2] < LOS2[-2])
+                LOS100_LOS2_1 = (LOS100[-2] > LOS2[-2] and LOS100[-3] < LOS2[-3])
+                W100_T2 = (W100[-1] > T2[-1] and W100[-2] < T2[-2])
+                if (T2[-1] > W100[-1] and T100[-1] > LOS100[-1] and (LOS100_LOS2 or LOS100_LOS2_1)) or W100_T2:
                     log.logger.info('{0}多单达到止盈减仓位置!!!止盈减仓{1}手>>>'.format(stock, para['CLOSE_NUM']))
                     close_order1 = api.insert_order(symbol=stock, direction='SELL', offset=offsetStr_sell,
                                                     volume=para['CLOSE_NUM'], limit_price=(new_price - price_tick*para['CUT_STEP']))
@@ -390,7 +395,10 @@ def checkNeedClose():
         if profit_short == profit_short:
             # log.logger.info('{0} 空单昨仓数: {1}, 今仓数: {2}'.format(stock, positions[stock].pos_short_his, positions[stock].pos_short_today))
             if profit_short > 0 and OPEN_DICT[stock] - pos_short_ava < para['CLOSE_NUM'] * para['CLOSE_CNT']:
-                if T2[-1] < LOS100[-1] and T100[-1] < W100[-1] and (W2[-1] > W100[-1] and W2[-2] < W100[-2]):
+                W2_W100 = (W2[-1] > W100[-1] and W2[-2] < W100[-2])
+                W2_W100_1 = (W2[-2] > W100[-2] and W2[-3] < W100[-3])
+                T2_LOS100 = (T2[-1] > LOS100[-1] and T2[-2] < LOS100[-2])
+                if (T2[-1] < LOS100[-1] and T100[-1] < W100[-1] and (W2_W100 or W2_W100_1)) or T2_LOS100:
                     log.logger.info('{0}空单达到止盈减仓位置!!!止盈减仓{1}手>>>'.format(stock, para['CLOSE_NUM']))
                     close_order1 = api.insert_order(symbol=stock, direction='BUY', offset=offsetStr_buy, \
                                                     volume=para['CLOSE_NUM'], limit_price=(new_price + price_tick*para['CUT_STEP']))
