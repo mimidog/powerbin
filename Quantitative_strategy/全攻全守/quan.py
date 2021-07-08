@@ -510,14 +510,22 @@ if __name__ == '__main__':
 
     #api.wait_update()
     setScheduler()  # 执行轮询任务
+    exit_flag = 0
     while True:
         api.wait_update()
         for sec in SEC_LIST:
+            ndate = quotes[sec].datetime
+            if ndate > '2021-10-02':
+                log.logger.info('当前程序已过有效期，即将退出程序...')
+                exit_flag = 1
+                break
             if api.is_changing(klines_dict[sec].iloc[-1], "datetime"):
                 log.logger.info('------------------------------------------')
                 log.logger.info('{0}新K线时间：{1}'.format(sec, datetime.datetime.fromtimestamp(klines_dict[sec].iloc[-1]["datetime"] / 1e9)))
                 log.logger.info('账户权益：{0}'.format(account.balance))
                 run_trade(sec)
+        if exit_flag == 1:
+            break
 
     api.close()
 
